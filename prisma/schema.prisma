@@ -1,0 +1,147 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  directUrl  = env("DIRECT_URL")
+}
+
+model User {
+  id               String        @id @default(cuid())
+  email            String        @unique
+  password         String
+  firstName        String
+  lastName         String
+  phoneNumber      String?
+  role             String        @default("member") // admin, secretary, trainer, member
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  deletedAt        DateTime?
+  memberProfile    MemberProfile? @relation("MemberProfile")
+  staffProfile     StaffProfile?
+  attendance       Attendance[]
+  memberNotes      ProgressNote[] @relation("MemberNotes")
+  trainerNotes     ProgressNote[] @relation("TrainerNotes")
+  payments         Payment[]
+  sessions         Session[]
+  approvedPayments MemberProfile[] @relation("ApprovedPayments") // New relation for staff approvals
+
+  @@index([email])
+  @@index([role])
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  @@index([userId])
+  @@index([token])
+}
+
+model MemberProfile {
+  id                  String    @id @default(cuid())
+  userId              String    @unique
+  user                User      @relation("MemberProfile", fields: [userId], references: [id], onDelete: Cascade)
+  membershipId        String
+  membership          MembershipPackage @relation(fields: [membershipId], references: [id])
+  joinDate            DateTime  @default(now())
+  expiryDate          DateTime
+  gender              String?   // "male" | "female" | "other"
+  hearAboutUs         String?   // e.g. "Friend / Family", "Social Media", ...
+  fitnessGoals        String?   // Comma-separated list of goals e.g. 'weight_loss, muscle_gain'
+  fitnessGoalsDetails String?   // free text elaboration
+  paymentMethod       String?   // "Cash", "Bank Transfer", "POS / Card" — to be confirmed later
+  fingerprint         String?   // device/browser fingerprint (stringified JSON or hash)
+  profileImage        String?
+  emergencyContact    String?
+  emergencyPhone      String?
+  qrCode              String?   @unique
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  // --- NEW FIELDS FOR VERIFICATION & APPROVAL ---
+  verified            Boolean   @default(false)
+  paymentStatus       String    @default("pending") // pending, approved, rejected
+  approvedById        String?   // Foreign key for the admin/staff who approved
+  approvedBy          User?     @relation("ApprovedPayments", fields: [approvedById], references: [id], onDelete: SetNull)
+  approvedAt          DateTime?
+
+  @@index([userId])
+  @@index([membershipId])
+  @@index([expiryDate])
+  @@index([verified])
+  @@index([approvedById])
+}
+
+model StaffProfile {
+  id             String     @id @default(cuid())
+  userId         String     @unique
+  user           User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  specialization String?
+  joinDate       DateTime   @default(now())
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  @@index([userId])
+}
+
+model MembershipPackage {
+  id          String            @id @default(cuid())
+  name        String            @unique
+  duration    Int               // in days
+  price       Float
+  description String
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  members     MemberProfile[]
+  @@index([name])
+}
+
+model Attendance {
+  id           String    @id @default(cuid())
+  userId       String
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  checkInTime  DateTime
+  checkOutTime DateTime?
+  method       String    @default("qr") // qr or manual
+  createdAt    DateTime  @default(now())
+
+  @@index([userId])
+  @@index([checkInTime])
+}
+
+model ProgressNote {
+  id        String   @id @default(cuid())
+  memberId  String
+  member    User     @relation("MemberNotes", fields: [memberId], references: [id], onDelete: Cascade)
+  trainerId String
+  trainer   User     @relation("TrainerNotes", fields: [trainerId], references: [id], onDelete: Cascade)
+  note      String
+  weight    Float?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([memberId])
+  @@index([trainerId])
+}
+
+model Payment {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  amount        Float
+  status        String   @default("pending") // pending, completed, failed
+  paymentMethod String   @default("paystack") // paystack
+  reference     String?  @unique
+  description   String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([userId])
+  @@index([status])
+  @@index([reference])
+}

@@ -1,0 +1,105 @@
+'use client'
+
+import { useEffect, useState } from 'react'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { useToast } from '@/hooks/use-toast'
+import { Users, TrendingUp, Calendar, DollarSign } from 'lucide-react'
+
+interface Stats {
+  totalMembers: number
+  activeMembers: number
+  todayCheckins: number
+  monthlyRevenue: number
+}
+
+export default function AdminStats() {
+  const [stats, setStats] = useState<Stats>({
+    totalMembers: 0,
+    activeMembers: 0,
+    todayCheckins: 0,
+    monthlyRevenue: 0,
+  })
+  const [isLoading, setIsLoading] = useState(true)
+  const { toast } = useToast()
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await fetch('/api/admin/stats')
+        const data = await response.json()
+        setStats(data)
+      } catch (error) {
+        console.error('Error fetching stats:', error)
+        toast({
+          title: 'Error',
+          description: 'Failed to load statistics',
+          variant: 'destructive',
+        })
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchStats()
+  }, [toast])
+
+  if (isLoading) {
+    return (
+      <div className="grid gap-4 md:grid-cols-4">
+        {[...Array(4)].map((_, i) => (
+          <Card key={i}>
+            <CardContent className="h-24 animate-pulse bg-muted" />
+          </Card>
+        ))}
+      </div>
+    )
+  }
+
+  return (
+    <div className="grid gap-4 md:grid-cols-4">
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium">Total Members</CardTitle>
+          <Users className="h-4 w-4 text-muted-foreground" />
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">{stats.totalMembers}</div>
+          <p className="text-xs text-muted-foreground">All registered members</p>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium">Active Members</CardTitle>
+          <TrendingUp className="h-4 w-4 text-primary" />
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">{stats.activeMembers}</div>
+          <p className="text-xs text-muted-foreground">Valid memberships</p>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium">Today's Check-ins</CardTitle>
+          <Calendar className="h-4 w-4 text-muted-foreground" />
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">{stats.todayCheckins}</div>
+          <p className="text-xs text-muted-foreground">Gym visits today</p>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium">Monthly Revenue</CardTitle>
+          <DollarSign className="h-4 w-4 text-primary" />
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">${stats.monthlyRevenue.toFixed(2)}</div>
+          <p className="text-xs text-muted-foreground">This month</p>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
