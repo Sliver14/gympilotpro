@@ -1,12 +1,34 @@
+// /** @type {import('next').NextConfig} */
+// const nextConfig = {
+//   typescript: {
+//     ignoreBuildErrors: true,
+//   },
+//   images: {
+//     unoptimized: true,
+//   },
+//   reactStrictMode: true,
+// }
+
+// export default nextConfig
+
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: process.env.NODE_ENV === 'development',
   },
+
   images: {
-    unoptimized: true,
+    remotePatterns: [
+      { protocol: 'https', hostname: '**' },
+    ],
   },
-  reactStrictMode: true,
+
+  reactStrictMode: process.env.NODE_ENV === 'development',
+
+  compress: true,
+  poweredByHeader: false,
+  swcMinify: true,
 }
 
 export default nextConfig
