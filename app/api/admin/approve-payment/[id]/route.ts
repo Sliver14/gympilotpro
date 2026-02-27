@@ -1,77 +1,96 @@
-// import { NextRequest, NextResponse } from 'next/server'
-// import { prisma } from '@/lib/prisma'
-// import { getCurrentUser } from '@/lib/auth'
+import { NextRequest, NextResponse } from 'next/server'
+import { prisma } from '@/lib/prisma'
+import { getCurrentUser } from '@/lib/auth'
 
-// interface RouteContext {
-//   params: Promise<{ id: string }>
-// }
+interface RouteContext {
+  params: Promise<{ id: string }>
+}
 
-// export async function POST(req: NextRequest, context: RouteContext) {
-//   try {
-//     const { id: memberUserId } = await context.params
+export async function POST(req: NextRequest, context: RouteContext) {
+  try {
+    // Await dynamic params (required in Next.js App Router)
+    const { id: memberUserId } = await context.params
 
-//     const user = await getCurrentUser()
+    // 1. Get current staff user
+    const staff = await getCurrentUser()
 
-//     // 1. Authorization
-//     if (!user) {
-//       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-//     }
+    if (!staff) {
+      return NextResponse.json({ error: 'Unauthorized - no session' }, { status: 401 })
+    }
 
-//     if (!['admin', 'secretary'].includes(user.role)) {
-//       return NextResponse.json(
-//         { error: 'Forbidden: Insufficient permissions' },
-//         { status: 403 }
-//       )
-//     }
+    // Only admin & secretary can approve payments
+    if (!['admin', 'secretary'].includes(staff.role)) {
+      return NextResponse.json(
+        { error: 'Forbidden: Only admin or secretary can approve payments' },
+        { status: 403 }
+      )
+    }
 
-//     if (!memberUserId) {
-//       return NextResponse.json(
-//         { error: 'Bad Request: Member ID is required' },
-//         { status: 400 }
-//       )
-//     }
+    // 2. Validate memberUserId
+    if (!memberUserId) {
+      return NextResponse.json({ error: 'Member user ID is required' }, { status: 400 })
+    }
 
-//     // 2. Update member profile
-//     const updatedProfile = await prisma.memberProfile.update({
-//       where: { userId: memberUserId },
-//       data: {
-//         verified: true,
-//         paymentStatus: 'approved',
-//         approvedById: user.id,
-//         approvedAt: new Date(),
-//       },
-//       include: {
-//         user: {
-//           select: {
-//             firstName: true,
-//             lastName: true,
-//           },
-//         },
-//       },
-//     })
+    // Optional: parse body if you want to support extra data later (status, notes, etc.)
+    // const body = await req.json()
 
-//     return NextResponse.json({
-//       success: true,
-//       message: `Payment approved for ${updatedProfile.user.firstName} ${updatedProfile.user.lastName}. Member is now verified.`,
-//       profile: {
-//         userId: updatedProfile.userId,
-//         verified: updatedProfile.verified,
-//         paymentStatus: updatedProfile.paymentStatus,
-//       },
-//     })
-//   } catch (error: any) {
-//     console.error('Approve Payment Error:', error)
+    // 3. Update member profile to approved/verified
+    const updatedProfile = await prisma.memberProfile.update({
+      where: { userId: memberUserId },
+      data: {
+        verified: true,
+        paymentStatus: 'approved',
+        approvedById: staff.id,
+        approvedAt: new Date(),
+      },
+      select: {
+        userId: true,
+        verified: true,
+        paymentStatus: true,
+        approvedAt: true,
+        user: {
+          select: {
+            firstName: true,
+            lastName: true,
+          },
+        },
+      },
+    })
 
-//     if (error.code === 'P2025') {
-//       return NextResponse.json(
-//         { error: 'Member profile not found' },
-//         { status: 404 }
-//       )
-//     }
+    // 4. Optional: you could also create/update a Payment record here if needed
+    // await prisma.payment.create({ ... })  // if you track payments separately
 
-//     return NextResponse.json(
-//       { error: 'Failed to approve payment' },
-//       { status: 500 }
-//     )
-//   }
-// }
+    return NextResponse.json({
+      success: true,
+      message: `Payment approved for ${updatedProfile.user.firstName} ${updatedProfile.user.lastName}. Member is now verified.`,
+      profile: {
+        userId: updatedProfile.userId,
+        verified: updatedProfile.verified,
+        paymentStatus: updatedProfile.paymentStatus,
+        approvedAt: updatedProfile.approvedAt?.toISOString(),
+      },
+    })
+  } catch (error: any) {
+    console.error('Approve Payment Error:', error)
+
+    if (error.code === 'P2025') {
+      // Prisma "not found" error
+      return NextResponse.json(
+        { error: 'Member profile not found' },
+        { status: 404 }
+      )
+    }
+
+    if (error instanceof SyntaxError) {
+      return NextResponse.json(
+        { error: 'Invalid request body' },
+        { status: 400 }
+      )
+    }
+
+    return NextResponse.json(
+      { error: 'Failed to approve payment' },
+      { status: 500 }
+    )
+  }
+}
