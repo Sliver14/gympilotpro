@@ -3,48 +3,52 @@ import { prisma } from '@/lib/prisma'
 import { getCurrentUser } from '@/lib/auth'
 
 interface RouteContext {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }
 
 export async function POST(req: NextRequest, context: RouteContext) {
   try {
+    const { id: memberUserId } = await context.params
+
     const user = await getCurrentUser()
 
-    // 1. Authorization: Ensure user is a logged-in staff member
+    // 1. Authorization
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
-    if (!['admin', 'secretary'].includes(user.role)) {
-      // We restrict this to admin/secretary as they handle payments
-      return NextResponse.json({ error: 'Forbidden: Insufficient permissions' }, { status: 403 })
-    }
 
-    const memberUserId = context.params.id
+    if (!['admin', 'secretary'].includes(user.role)) {
+      return NextResponse.json(
+        { error: 'Forbidden: Insufficient permissions' },
+        { status: 403 }
+      )
+    }
 
     if (!memberUserId) {
-        return NextResponse.json({ error: 'Bad Request: Member ID is required' }, { status: 400 })
+      return NextResponse.json(
+        { error: 'Bad Request: Member ID is required' },
+        { status: 400 }
+      )
     }
 
-    // 2. Update the member's profile to verified status
+    // 2. Update member profile
     const updatedProfile = await prisma.memberProfile.update({
       where: { userId: memberUserId },
       data: {
         verified: true,
         paymentStatus: 'approved',
-        approvedById: user.id, // Record which staff member approved it
+        approvedById: user.id,
         approvedAt: new Date(),
       },
       include: {
         user: {
-            select: {
-                firstName: true,
-                lastName: true,
-            }
-        }
-      }
+          select: {
+            firstName: true,
+            lastName: true,
+          },
+        },
+      },
     })
-
-    // 3. Optionally, you could trigger a welcome email here
 
     return NextResponse.json({
       success: true,
@@ -57,9 +61,17 @@ export async function POST(req: NextRequest, context: RouteContext) {
     })
   } catch (error: any) {
     console.error('Approve Payment Error:', error)
-    if (error.code === 'P2025') { // Prisma code for record not found
-        return NextResponse.json({ error: 'Member profile not found' }, { status: 404 })
+
+    if (error.code === 'P2025') {
+      return NextResponse.json(
+        { error: 'Member profile not found' },
+        { status: 404 }
+      )
     }
-    return NextResponse.json({ error: 'Failed to approve payment' }, { status: 500 })
+
+    return NextResponse.json(
+      { error: 'Failed to approve payment' },
+      { status: 500 }
+    )
   }
 }
