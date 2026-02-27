@@ -38,6 +38,15 @@ export default function RevenueAnalytics() {
     fetchRevenueData()
   }, [toast])
 
+  // Format numbers as Nigerian Naira (₦) with commas
+  const formatCurrency = (value: number) =>
+    new Intl.NumberFormat('en-NG', {
+      style: 'currency',
+      currency: 'NGN',
+      minimumFractionDigits: 0, // no kobo if whole number
+      maximumFractionDigits: 0,
+    }).format(value)
+
   if (isLoading) {
     return (
       <Card>
@@ -49,6 +58,8 @@ export default function RevenueAnalytics() {
   }
 
   const totalRevenue = data.reduce((sum, item) => sum + item.revenue, 0)
+  const totalPayments = data.reduce((sum, item) => sum + item.payments, 0)
+  const avgMonthly = data.length > 0 ? totalRevenue / data.length : 0
 
   return (
     <Card>
@@ -59,34 +70,43 @@ export default function RevenueAnalytics() {
         </CardTitle>
         <CardDescription>Monthly revenue and payment data</CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-6">
+        {/* Stats Cards */}
         <div className="grid gap-4 md:grid-cols-3">
-          <div className="rounded-lg bg-muted/50 p-3">
+          <div className="rounded-lg bg-muted/50 p-4">
             <p className="text-xs text-muted-foreground">Total Revenue (12 months)</p>
-            <p className="text-2xl font-bold">#{totalRevenue.toFixed(2)}</p>
+            <p className="text-2xl font-bold">{formatCurrency(totalRevenue)}</p>
           </div>
-          <div className="rounded-lg bg-muted/50 p-3">
+          <div className="rounded-lg bg-muted/50 p-4">
             <p className="text-xs text-muted-foreground">Average Monthly</p>
-            <p className="text-2xl font-bold">#{(totalRevenue / (data.length || 1)).toFixed(2)}</p>
+            <p className="text-2xl font-bold">{formatCurrency(avgMonthly)}</p>
           </div>
-          <div className="rounded-lg bg-muted/50 p-3">
+          <div className="rounded-lg bg-muted/50 p-4">
             <p className="text-xs text-muted-foreground">Total Transactions</p>
-            <p className="text-2xl font-bold">{data.reduce((sum, item) => sum + item.payments, 0)}</p>
+            <p className="text-2xl font-bold">{totalPayments.toLocaleString('en-NG')}</p>
           </div>
         </div>
 
-        {data.length > 0 && (
+        {/* Chart */}
+        {data.length > 0 ? (
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={data}>
-              <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" />
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
               <XAxis dataKey="month" />
-              <YAxis />
-              <Tooltip contentStyle={{ backgroundColor: 'var(--color-background)' }} />
+              <YAxis tickFormatter={(value) => `₦${(value / 1000).toFixed(0)}k`} />
+              <Tooltip
+                formatter={(value: number) => [formatCurrency(value), null]}
+                contentStyle={{ backgroundColor: 'var(--background)', border: '1px solid var(--border)' }}
+              />
               <Legend />
-              <Bar dataKey="revenue" fill="var(--color-primary)" name="Revenue (#)" />
-              <Bar dataKey="payments" fill="var(--color-muted-foreground)" name="Transactions" />
+              <Bar dataKey="revenue" fill="var(--primary)" name="Revenue (₦)" />
+              <Bar dataKey="payments" fill="var(--muted-foreground)" name="Transactions" />
             </BarChart>
           </ResponsiveContainer>
+        ) : (
+          <div className="h-80 flex items-center justify-center text-muted-foreground">
+            No revenue data available yet
+          </div>
         )}
       </CardContent>
     </Card>

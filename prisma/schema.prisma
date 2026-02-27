@@ -3,30 +3,32 @@ generator client {
 }
 
 datasource db {
-  provider   = "postgresql"
-  url        = env("DATABASE_URL")
-  directUrl  = env("DIRECT_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
-  id               String        @id @default(cuid())
-  email            String        @unique
-  password         String
-  firstName        String
-  lastName         String
-  phoneNumber      String?
-  role             String        @default("member") // admin, secretary, trainer, member
-  createdAt        DateTime      @default(now())
-  updatedAt        DateTime      @updatedAt
-  deletedAt        DateTime?
+  id          String    @id @default(cuid())
+  email       String    @unique
+  password    String
+  firstName   String
+  lastName    String
+  phoneNumber String?
+  role        String    @default("member") // admin, secretary, trainer, member
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+
   memberProfile    MemberProfile? @relation("MemberProfile")
   staffProfile     StaffProfile?
   attendance       Attendance[]
   memberNotes      ProgressNote[] @relation("MemberNotes")
   trainerNotes     ProgressNote[] @relation("TrainerNotes")
-  payments         Payment[]
-  sessions         Session[]
-  approvedPayments MemberProfile[] @relation("ApprovedPayments") // New relation for staff approvals
+  payments         Payment[]      @relation("UserPayments") // Fixed: relation name matches Payment.user
+  approvedPayments Payment[]      @relation("PaymentApprovals") // Fixed: relation name matches Payment.approvedBy
+
+  sessions Session[]
 
   @@index([email])
   @@index([role])
@@ -39,65 +41,69 @@ model Session {
   token     String   @unique
   expiresAt DateTime
   createdAt DateTime @default(now())
+
   @@index([userId])
   @@index([token])
 }
 
 model MemberProfile {
-  id                  String    @id @default(cuid())
-  userId              String    @unique
-  user                User      @relation("MemberProfile", fields: [userId], references: [id], onDelete: Cascade)
-  membershipId        String
-  membership          MembershipPackage @relation(fields: [membershipId], references: [id])
-  joinDate            DateTime  @default(now())
-  expiryDate          DateTime
-  gender              String?   // "male" | "female" | "other"
-  hearAboutUs         String?   // e.g. "Friend / Family", "Social Media", ...
-  fitnessGoals        String?   // Comma-separated list of goals e.g. 'weight_loss, muscle_gain'
-  fitnessGoalsDetails String?   // free text elaboration
-  paymentMethod       String?   // "Cash", "Bank Transfer", "POS / Card" — to be confirmed later
-  fingerprint         String?   // device/browser fingerprint (stringified JSON or hash)
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation("MemberProfile", fields: [userId], references: [id], onDelete: Cascade)
+
+  membershipId String
+  membership   MembershipPackage @relation(fields: [membershipId], references: [id])
+
+  joinDate   DateTime @default(now())
+  expiryDate DateTime
+
+  gender              String?
+  hearAboutUs         String?
+  fitnessGoals        String?
+  fitnessGoalsDetails String?
+  paymentMethod       String?
+  fingerprint         String?
   profileImage        String?
   emergencyContact    String?
   emergencyPhone      String?
-  qrCode              String?   @unique
-  createdAt           DateTime  @default(now())
-  updatedAt           DateTime  @updatedAt
+  qrCode              String? @unique
 
-  // --- NEW FIELDS FOR VERIFICATION & APPROVAL ---
-  verified            Boolean   @default(false)
-  paymentStatus       String    @default("pending") // pending, approved, rejected
-  approvedById        String?   // Foreign key for the admin/staff who approved
-  approvedBy          User?     @relation("ApprovedPayments", fields: [approvedById], references: [id], onDelete: SetNull)
-  approvedAt          DateTime?
+  verified      Boolean @default(false)
+  paymentStatus String  @default("pending") // pending, approved, rejected
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([userId])
   @@index([membershipId])
   @@index([expiryDate])
   @@index([verified])
-  @@index([approvedById])
+  @@index([paymentStatus])
 }
 
 model StaffProfile {
-  id             String     @id @default(cuid())
-  userId         String     @unique
-  user           User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id             String   @id @default(cuid())
+  userId         String   @unique
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   specialization String?
-  joinDate       DateTime   @default(now())
-  createdAt      DateTime   @default(now())
-  updatedAt      DateTime   @updatedAt
+  joinDate       DateTime @default(now())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
   @@index([userId])
 }
 
 model MembershipPackage {
-  id          String            @id @default(cuid())
-  name        String            @unique
-  duration    Int               // in days
+  id          String   @id @default(cuid())
+  name        String   @unique
+  duration    Int
   price       Float
   description String
-  createdAt   DateTime          @default(now())
-  updatedAt   DateTime          @updatedAt
-  members     MemberProfile[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  members MemberProfile[]
+
   @@index([name])
 }
 
@@ -107,7 +113,7 @@ model Attendance {
   user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   checkInTime  DateTime
   checkOutTime DateTime?
-  method       String    @default("qr") // qr or manual
+  method       String    @default("qr")
   createdAt    DateTime  @default(now())
 
   @@index([userId])
@@ -130,18 +136,25 @@ model ProgressNote {
 }
 
 model Payment {
-  id            String   @id @default(cuid())
-  userId        String
-  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation("UserPayments", fields: [userId], references: [id], onDelete: Cascade)
+
   amount        Float
-  status        String   @default("pending") // pending, completed, failed
-  paymentMethod String   @default("paystack") // paystack
-  reference     String?  @unique
+  status        String  @default("pending") // pending, approved, rejected
+  paymentMethod String
+  reference     String? @unique
   description   String?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+
+  // Who approved THIS specific payment
+  approvedById String?
+  approvedBy   User?     @relation("PaymentApprovals", fields: [approvedById], references: [id], onDelete: SetNull)
+  approvedAt   DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([userId])
   @@index([status])
-  @@index([reference])
+  @@index([approvedById])
 }

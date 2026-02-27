@@ -15,6 +15,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
+import { Checkbox } from '@/components/ui/checkbox'
 import { useToast } from '@/hooks/use-toast'
 import { UserPlus, Loader2 } from 'lucide-react'
 
@@ -49,7 +50,8 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
     paymentMethod: '',
     fitnessGoals: [] as string[],
     fitnessGoalsDetails: '',
-    startDate: new Date().toISOString().split('T')[0], // Default to today
+    startDate: new Date().toISOString().split('T')[0],
+    paymentCompleted: false,
   })
 
   useEffect(() => {
@@ -70,7 +72,7 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     if (!formData.firstName || !formData.lastName || !formData.email || !formData.membershipId || !formData.paymentMethod) {
       toast({
         title: 'Error',
@@ -88,7 +90,8 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
-          password: '12345678', // Default password as requested
+          password: '12345678',                    // Default password
+          paymentCompleted: formData.paymentCompleted || false,  // Flag for instant verification
         }),
       })
 
@@ -102,7 +105,7 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
         title: 'Success',
         description: 'Member registered successfully with default password 12345678',
       })
-      
+
       setOpen(false)
       setFormData({
         firstName: '',
@@ -114,15 +117,17 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
         paymentMethod: '',
         fitnessGoals: [],
         fitnessGoalsDetails: '',
+        startDate: new Date().toISOString().split('T')[0],
+        paymentCompleted: false,
       })
-      
+
       if (onMemberAdded) {
         onMemberAdded()
       }
     } catch (error: any) {
       toast({
         title: 'Error',
-        description: error.message,
+        description: error.message || 'Failed to register member',
         variant: 'destructive',
       })
     } finally {
@@ -261,6 +266,21 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
                 required
               />
             </div>
+          </div>
+
+          {/* Instant verification checkbox (admin-only feature) */}
+          <div className="flex items-center space-x-2 pt-2">
+            <Checkbox
+              id="payment-completed"
+              checked={formData.paymentCompleted}
+              onCheckedChange={(checked) => setFormData((prev) => ({ ...prev, paymentCompleted: !!checked }))}
+            />
+            <Label
+              htmlFor="payment-completed"
+              className="text-sm font-medium leading-none cursor-pointer peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            >
+              Mark payment as completed (instant verification & activation)
+            </Label>
           </div>
 
           <div className="space-y-2">

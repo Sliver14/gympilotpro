@@ -1,21 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { getCurrentUser } from '@/lib/auth' // CORRECTED: Using the function suggested by the compiler
+import { getCurrentUser } from '@/lib/auth'
 
 export async function POST(req: NextRequest) {
   try {
-    // 1. Authentication & Role-Based Authorization
-    const user = await getCurrentUser()
+    // 1. Authentication & Role Check (staff only)
+    const staff = await getCurrentUser()
 
-    if (!user) {
+    if (!staff) {
       return NextResponse.json({ error: 'Unauthorized: No session found' }, { status: 401 })
     }
 
-    if (!['admin', 'secretary', 'trainer'].includes(user.role)) {
+    if (!['admin', 'secretary', 'trainer'].includes(staff.role)) {
       return NextResponse.json({ error: 'Forbidden: Insufficient permissions' }, { status: 403 })
     }
 
-    // 2. Validate Request Body
+    // 2. Parse request body
     const body = await req.json()
     const { qrCodeData } = body
 
@@ -23,12 +23,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Bad Request: qrCodeData is required' }, { status: 400 })
     }
 
-    // 3. Find Member by QR Code
+    // 3. Find member profile + user info
     const memberProfile = await prisma.memberProfile.findUnique({
-      where: { qrCode: qrCodeData },
+      where: { qrCode: qrCodeData.trim() },
       include: {
         user: {
           select: {
+            id: true,
             firstName: true,
             lastName: true,
           },
@@ -39,16 +40,15 @@ export async function POST(req: NextRequest) {
     if (!memberProfile) {
       return NextResponse.json({
         isValid: false,
-        message: 'Invalid QR Code. Member not found.',
+        message: 'Invalid QR code – member not found.',
       }, { status: 404 })
     }
 
-    // 4. Check Membership Status
     const now = new Date()
-    const isExpired = memberProfile.expiryDate < now
+    const todayStart = new Date(now.toISOString().split('T')[0] + 'T00:00:00Z')
 
-    if (isExpired) {
-      // Still return a 200 OK because the QR was valid, but the membership status is not.
+    // 4. Check membership expiry
+    if (memberProfile.expiryDate < now) {
       return NextResponse.json({
         isValid: false,
         message: 'Membership has expired.',
@@ -60,7 +60,48 @@ export async function POST(req: NextRequest) {
       })
     }
 
-    // 5. Log Attendance on Successful Check-in
+    // 5. NEW: Prevent duplicate check-ins within 2 hours on the same day
+    const recentCheckIn = await prisma.attendance.findFirst({
+      where: {
+        userId: memberProfile.userId,
+        checkInTime: {
+          gte: todayStart,
+        },
+      },
+      orderBy: {
+        checkInTime: 'desc', // most recent first
+      },
+    })
+
+    if (recentCheckIn) {
+      const timeSinceLast = now.getTime() - recentCheckIn.checkInTime.getTime()
+      const twoHoursMs = 2 * 60 * 60 * 1000 // 2 hours in milliseconds
+
+      if (timeSinceLast < twoHoursMs) {
+        const lastTime = recentCheckIn.checkInTime.toLocaleTimeString([], {
+          hour: '2-digit',
+          minute: '2-digit',
+        })
+
+        const nextAllowed = new Date(recentCheckIn.checkInTime.getTime() + twoHoursMs)
+        const nextAllowedStr = nextAllowed.toLocaleTimeString([], {
+          hour: '2-digit',
+          minute: '2-digit',
+        })
+
+        return NextResponse.json({
+          isValid: false,
+          message: `Already checked in today at ${lastTime}. Next scan allowed after ${nextAllowedStr}.`,
+          member: {
+            fullName: `${memberProfile.user.firstName} ${memberProfile.user.lastName}`,
+            profileImage: memberProfile.profileImage,
+            expiryDate: memberProfile.expiryDate.toISOString(),
+          },
+        })
+      }
+    }
+
+    // 6. Log new attendance (only if all checks pass)
     await prisma.attendance.create({
       data: {
         userId: memberProfile.userId,
@@ -69,7 +110,7 @@ export async function POST(req: NextRequest) {
       },
     })
 
-    // 6. Return Success Response
+    // 7. Success response
     return NextResponse.json({
       isValid: true,
       message: 'Valid. Access granted.',
@@ -79,13 +120,13 @@ export async function POST(req: NextRequest) {
         expiryDate: memberProfile.expiryDate.toISOString(),
       },
     })
-  } catch (error) {
-    // Gracefully handle JSON parsing errors or other unexpected issues
+  } catch (error: any) {
+    console.error('QR Validation / Check-in Error:', error)
+
     if (error instanceof SyntaxError) {
-      return NextResponse.json({ error: 'Bad Request: Invalid JSON format' }, { status: 400 });
+      return NextResponse.json({ error: 'Bad Request: Invalid JSON format' }, { status: 400 })
     }
-    
-    console.error('QR Validation Error:', error)
+
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

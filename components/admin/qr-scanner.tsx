@@ -6,7 +6,7 @@ import { useToast } from '@/hooks/use-toast'
 import { Card, CardContent } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
-import { AlertCircle, CheckCircle, Camera, Loader2, RefreshCw } from 'lucide-react'
+import { AlertCircle, CheckCircle, Camera, Loader2, RefreshCw, Clock } from 'lucide-react'
 
 interface MemberInfo {
   fullName: string
@@ -31,7 +31,6 @@ export default function QRScanner() {
 
   const initializeScanner = useCallback(() => {
     if (scannerRef.current) return
-
     scannerRef.current = new Html5Qrcode(videoContainerId)
   }, [])
 
@@ -60,7 +59,6 @@ export default function QRScanner() {
           disableFlip: false,
         },
         async (decodedText) => {
-          // Pause scanning during validation
           setIsScanning(false)
           setIsValidating(true)
           scannerRef.current?.pause()
@@ -72,23 +70,34 @@ export default function QRScanner() {
               body: JSON.stringify({ qrCodeData: decodedText.trim() }),
             })
 
-            if (!res.ok) {
-              const errData = await res.json()
-              throw new Error(errData.error || 'Validation failed')
-            }
-
             const data: ValidationResult = await res.json()
+
             setResult(data)
 
-            toast({
-              title: data.isValid ? 'Valid Entry' : 'Invalid / Expired',
-              description: data.message,
-              variant: data.isValid ? 'default' : 'destructive',
-            })
-
-            // Optional: auto restart after 5 seconds if valid
             if (data.isValid) {
+              toast({
+                title: 'Valid Entry',
+                description: data.message,
+                variant: 'default',
+              })
+              // Auto-restart after success (5 seconds)
               setTimeout(() => resetScanner(), 5000)
+            } else {
+              // Differentiate duplicate vs other errors
+              if (data.message.includes('Already checked in')) {
+                toast({
+                  title: 'Duplicate Scan',
+                  description: data.message,
+                  variant: 'default', // neutral/yellow warning
+                  duration: 6000,
+                })
+              } else {
+                toast({
+                  title: data.message.includes('expired') ? 'Membership Expired' : 'Invalid Scan',
+                  description: data.message,
+                  variant: data.message.includes('expired') ? 'destructive' : 'default',
+                })
+              }
             }
           } catch (err: any) {
             toast({
@@ -102,7 +111,7 @@ export default function QRScanner() {
           }
         },
         (err) => {
-          // Ignore frequent "No MultiFormat Readers were able to detect the code" errors
+          // Suppress common "no code found" noise
           if (err?.errorMessage?.includes('No MultiFormat Readers')) return
           console.debug('Scan error:', err)
         }
@@ -110,7 +119,7 @@ export default function QRScanner() {
     } catch (err: any) {
       setError(
         err.name === 'NotAllowedError'
-          ? 'Camera access denied. Please allow camera permission in browser settings.'
+          ? 'Camera access denied. Please allow camera permission.'
           : 'Failed to start scanner. Try again.'
       )
       setIsScanning(false)
@@ -138,15 +147,12 @@ export default function QRScanner() {
 
   useEffect(() => {
     initializeScanner()
-
-    // Optional: auto-start on mount (comment out if you want manual start)
-    // startScanner()
-
+    // Auto-start disabled — use manual button
     return () => {
       stopScanner()
       scannerRef.current = null
     }
-  }, [initializeScanner, startScanner, stopScanner])
+  }, [initializeScanner, stopScanner, startScanner])
 
   return (
     <div className="flex flex-col items-center gap-6 p-4">
@@ -196,20 +202,34 @@ export default function QRScanner() {
       </Card>
 
       {result && (
-        <Card className={`w-full max-w-md border-2 ${
-          result.isValid ? 'border-green-500/50 bg-green-50/30' : 'border-destructive/50 bg-destructive/10'
-        }`}>
+        <Card
+          className={`w-full max-w-md border-2 transition-colors ${
+            result.isValid
+              ? 'border-green-500/50 bg-green-50/30'
+              : result.message.includes('Already checked in')
+              ? 'border-orange-500/50 bg-orange-50/30'
+              : 'border-destructive/50 bg-destructive/10'
+          }`}
+        >
           <CardContent className="pt-6 space-y-6">
             <div className="flex flex-col items-center text-center gap-4">
               {result.isValid ? (
                 <CheckCircle className="h-14 w-14 text-green-600" />
+              ) : result.message.includes('Already checked in') ? (
+                <Clock className="h-14 w-14 text-orange-600" />
               ) : (
                 <AlertCircle className="h-14 w-14 text-destructive" />
               )}
 
-              <h2 className={`text-2xl font-bold ${
-                result.isValid ? 'text-green-700' : 'text-destructive'
-              }`}>
+              <h2
+                className={`text-2xl font-bold ${
+                  result.isValid
+                    ? 'text-green-700'
+                    : result.message.includes('Already checked in')
+                    ? 'text-orange-700'
+                    : 'text-destructive'
+                }`}
+              >
                 {result.message}
               </h2>
 
@@ -235,7 +255,7 @@ export default function QRScanner() {
             <Button
               onClick={resetScanner}
               className="w-full gap-2"
-              variant={result.isValid ? 'default' : 'outline'}
+              variant={result.isValid ? 'default' : result.message.includes('Already checked in') ? 'secondary' : 'outline'}
             >
               <RefreshCw className="h-4 w-4" />
               Scan Next Member

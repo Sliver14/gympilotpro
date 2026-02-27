@@ -96,7 +96,13 @@ export default function AdminStats() {
           <DollarSign className="h-4 w-4 text-primary" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">#{stats.monthlyRevenue.toFixed(2)}</div>
+          <div className="text-2xl font-bold">
+            {new Intl.NumberFormat('en-NG', {
+              style: 'currency',
+              currency: 'NGN',
+              minimumFractionDigits: 0, // or 2 if you want kobo
+            }).format(stats.monthlyRevenue)}
+          </div>
           <p className="text-xs text-muted-foreground">This month</p>
         </CardContent>
       </Card>

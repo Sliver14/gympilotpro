@@ -54,7 +54,7 @@ export async function GET() {
 
     const payments = await prisma.payment.findMany({
       where: {
-        status: 'completed',
+        status: 'approved',
         createdAt: {
           gte: monthStart,
           lte: monthEnd,
