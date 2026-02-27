@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -15,7 +15,7 @@ interface PaymentDetails {
   memberEmail: string
 }
 
-export default function PaymentPage() {
+function PaymentPageInner() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const { toast } = useToast()
@@ -215,5 +215,20 @@ export default function PaymentPage() {
         </Card>
       </div>
     </div>
+  )
+}
+
+export default function PaymentPage() {
+  // Wrap the client component that uses useSearchParams in a Suspense boundary
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center">
+          <p className="text-muted-foreground">Loading payment page...</p>
+        </div>
+      }
+    >
+      <PaymentPageInner />
+    </Suspense>
   )
 }

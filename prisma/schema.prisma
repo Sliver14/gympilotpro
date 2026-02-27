@@ -32,6 +32,8 @@ model User {
 
   @@index([email])
   @@index([role])
+  // Composite index to speed up member/admin listings filtered by role and soft-delete flag
+  @@index([role, deletedAt, createdAt])
 }
 
 model Session {
@@ -79,6 +81,8 @@ model MemberProfile {
   @@index([expiryDate])
   @@index([verified])
   @@index([paymentStatus])
+  // Useful for recent-member reports and dashboard queries
+  @@index([createdAt])
 }
 
 model StaffProfile {
@@ -118,6 +122,8 @@ model Attendance {
 
   @@index([userId])
   @@index([checkInTime])
+  // Helps time-based attendance queries (e.g. charts over ranges)
+  @@index([createdAt])
 }
 
 model ProgressNote {
@@ -157,4 +163,8 @@ model Payment {
   @@index([userId])
   @@index([status])
   @@index([approvedById])
+  // Speeds up time-range revenue calculations
+  @@index([createdAt])
+  // Common filter pattern: approved payments by recency
+  @@index([status, createdAt])
 }
