@@ -20,6 +20,12 @@ export async function GET(
 
     const attendance = await prisma.attendance.findMany({
       where: { userId: id },
+      select: {
+        id: true,
+        checkInTime: true,
+        checkOutTime: true,
+        method: true,
+      },
       orderBy: { checkInTime: 'desc' },
       take: 100,
     })

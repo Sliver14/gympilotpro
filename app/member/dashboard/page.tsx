@@ -269,6 +269,7 @@ interface MemberData {
   firstName: string
   lastName: string
   phoneNumber: string
+  monthlyVisits?: number
   memberProfile: {
     expiryDate: string
     membership: {
@@ -300,23 +301,22 @@ export default function MemberDashboard() {
   useEffect(() => {
     const fetchMemberData = async () => {
       try {
-        // Fetch user data
-        const userResponse = await fetch('/api/auth/user')
-        if (!userResponse.ok) {
-          router.push('/login')
-          return
+        // Single aggregated API call instead of 3 separate calls
+        const response = await fetch('/api/member/dashboard')
+        if (!response.ok) {
+          if (response.status === 401) {
+            router.push('/login')
+            return
+          }
+          throw new Error('Failed to fetch dashboard data')
         }
 
-        const userData = await userResponse.json()
-
-        // Fetch member profile
-        const profileResponse = await fetch(`/api/members/${userData.id}`)
-        const profileData = await profileResponse.json()
-
-        setMemberData(profileData)
+        const data = await response.json()
+        setMemberData(data.member)
+        setAttendanceHistory(data.attendance)
 
         // Check membership status
-        const expiryDate = new Date(profileData.memberProfile.expiryDate)
+        const expiryDate = new Date(data.member.memberProfile.expiryDate)
         const today = new Date()
         const daysUntilExpiry = Math.floor((expiryDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24))
 
@@ -334,11 +334,6 @@ export default function MemberDashboard() {
             description: `Your membership expires in ${daysUntilExpiry} days. Consider renewing now.`,
           })
         }
-
-        // Fetch attendance history
-        const attendanceResponse = await fetch(`/api/members/${userData.id}/attendance`)
-        const attendanceData = await attendanceResponse.json()
-        setAttendanceHistory(attendanceData)
       } catch (error) {
         console.error('Error fetching member data:', error)
         toast({
@@ -465,7 +460,7 @@ export default function MemberDashboard() {
             </CardHeader>
             <CardContent>
               <p className="text-2xl font-bold">
-                {attendanceHistory.filter((a) => {
+                {memberData?.monthlyVisits ?? attendanceHistory.filter((a) => {
                   const date = new Date(a.checkInTime)
                   const now = new Date()
                   return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear()

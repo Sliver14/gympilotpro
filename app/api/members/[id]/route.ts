@@ -63,10 +63,27 @@ export async function GET(
 
     const member = await prisma.user.findUnique({
       where: { id },
-      include: {
+      select: {
+        id: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+        phoneNumber: true,
         memberProfile: {
-          include: {
-            membership: true,
+          select: {
+            expiryDate: true,
+            verified: true,
+            paymentStatus: true,
+            fitnessGoals: true,
+            profileImage: true,
+            emergencyContact: true,
+            emergencyPhone: true,
+            membership: {
+              select: {
+                name: true,
+                price: true,
+              },
+            },
           },
         },
       },

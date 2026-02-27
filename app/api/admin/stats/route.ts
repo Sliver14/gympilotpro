@@ -52,7 +52,8 @@ export async function GET() {
     monthEnd.setDate(0)
     monthEnd.setHours(23, 59, 59, 999)
 
-    const payments = await prisma.payment.findMany({
+    // Optimize: Use aggregate instead of fetching all payments
+    const monthlyRevenueResult = await prisma.payment.aggregate({
       where: {
         status: 'approved',
         createdAt: {
@@ -60,9 +61,12 @@ export async function GET() {
           lte: monthEnd,
         },
       },
+      _sum: {
+        amount: true,
+      },
     })
 
-    const monthlyRevenue = payments.reduce((sum: number, p: { amount: number }) => sum + p.amount, 0)
+    const monthlyRevenue = monthlyRevenueResult._sum.amount || 0
 
     return NextResponse.json({
       totalMembers,

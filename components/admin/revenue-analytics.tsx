@@ -20,9 +20,17 @@ export default function RevenueAnalytics() {
   useEffect(() => {
     const fetchRevenueData = async () => {
       try {
-        const response = await fetch('/api/admin/revenue')
-        const chartData = await response.json()
-        setData(chartData)
+        // Try aggregated endpoint first, fallback to individual endpoint
+        const response = await fetch('/api/admin/dashboard')
+        if (!response.ok) {
+          // Fallback to individual revenue endpoint
+          const fallbackResponse = await fetch('/api/admin/revenue')
+          const chartData = await fallbackResponse.json()
+          setData(chartData)
+        } else {
+          const data = await response.json()
+          setData(data.revenueData || [])
+        }
       } catch (error) {
         console.error('Error fetching revenue data:', error)
         toast({

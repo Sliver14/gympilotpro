@@ -20,9 +20,17 @@ export default function AttendanceOverview() {
   useEffect(() => {
     const fetchAttendanceData = async () => {
       try {
-        const response = await fetch('/api/admin/attendance-chart')
-        const chartData = await response.json()
-        setData(chartData)
+        // Try aggregated endpoint first, fallback to individual endpoint
+        const response = await fetch('/api/admin/dashboard')
+        if (!response.ok) {
+          // Fallback to individual attendance endpoint
+          const fallbackResponse = await fetch('/api/admin/attendance-chart')
+          const chartData = await fallbackResponse.json()
+          setData(chartData)
+        } else {
+          const data = await response.json()
+          setData(data.attendanceData || [])
+        }
       } catch (error) {
         console.error('Error fetching attendance data:', error)
         toast({

@@ -15,10 +15,20 @@ export async function GET() {
 
     const members = await prisma.user.findMany({
       where: { role: 'member', deletedAt: null },
-      include: {
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        email: true,
+        phoneNumber: true,
         memberProfile: {
-          include: {
-            membership: true,
+          select: {
+            expiryDate: true,
+            membership: {
+              select: {
+                name: true,
+              },
+            },
           },
         },
       },

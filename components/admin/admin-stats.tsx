@@ -34,9 +34,17 @@ export default function AdminStats() {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const response = await fetch('/api/admin/stats')
-        const data = await response.json()
-        setStats(data)
+        // Try aggregated endpoint first, fallback to individual endpoint
+        const response = await fetch('/api/admin/dashboard')
+        if (!response.ok) {
+          // Fallback to individual stats endpoint
+          const fallbackResponse = await fetch('/api/admin/stats')
+          const data = await fallbackResponse.json()
+          setStats(data)
+        } else {
+          const data = await response.json()
+          setStats(data.stats)
+        }
       } catch (error) {
         console.error('Error fetching stats:', error)
         toast({

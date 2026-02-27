@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getCurrentUser } from '@/lib/auth'
-import { Payment } from '@prisma/client'  // ← add this import
 
 export async function GET() {
   try {
@@ -14,39 +13,63 @@ export async function GET() {
       )
     }
 
-    // Get last 12 months of revenue data
-    const months: Array<{
-      month: string
-      revenue: number
-      payments: number
-    }> = []
+    // Calculate date range for last 12 months
+    const now = new Date()
+    const twelveMonthsAgo = new Date()
+    twelveMonthsAgo.setMonth(now.getMonth() - 11)
+    twelveMonthsAgo.setDate(1)
+    twelveMonthsAgo.setHours(0, 0, 0, 0)
 
+    // Single query to get all payments from last 12 months
+    const payments = await prisma.payment.findMany({
+      where: {
+        status: 'approved',
+        createdAt: {
+          gte: twelveMonthsAgo,
+        },
+      },
+      select: {
+        amount: true,
+        createdAt: true,
+      },
+    })
+
+    // Group by month using a Map for O(n) performance
+    const monthMap = new Map<string, { revenue: number; payments: number; monthName: string }>()
+
+    // Initialize all 12 months
     for (let i = 11; i >= 0; i--) {
       const date = new Date()
-      date.setMonth(date.getMonth() - i)
-      const monthStart = new Date(date.getFullYear(), date.getMonth(), 1)
-      const monthEnd = new Date(date.getFullYear(), date.getMonth() + 1, 0, 23, 59, 59, 999)
-
-      const payments = await prisma.payment.findMany({
-        where: {
-          status: 'approved',
-          createdAt: {
-            gte: monthStart,
-            lte: monthEnd,
-          },
-        },
-        select: { amount: true }, // ← optimization: only fetch amount
-      })
-
-      const revenue = payments.reduce((sum: number, p: Payment) => sum + p.amount, 0)
-      const monthName = monthStart.toLocaleString('default', { month: 'short', year: '2-digit' })
-
-      months.push({
-        month: monthName,
-        revenue,
-        payments: payments.length,
-      })
+      date.setMonth(now.getMonth() - i)
+      const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`
+      const monthName = date.toLocaleString('default', { month: 'short', year: '2-digit' })
+      monthMap.set(monthKey, { revenue: 0, payments: 0, monthName })
     }
+
+    // Aggregate payments by month
+    payments.forEach((payment: { amount: number; createdAt: Date }) => {
+      const date = new Date(payment.createdAt)
+      const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`
+      const monthData = monthMap.get(monthKey)
+      if (monthData) {
+        monthData.revenue += payment.amount
+        monthData.payments += 1
+      }
+    })
+
+    // Convert to array format
+    const months = Array.from(monthMap.entries())
+      .map(([key, data]) => ({
+        month: data.monthName,
+        revenue: data.revenue,
+        payments: data.payments,
+      }))
+      .sort((a, b) => {
+        // Sort by month order
+        const aDate = new Date(a.month)
+        const bDate = new Date(b.month)
+        return aDate.getTime() - bDate.getTime()
+      })
 
     return NextResponse.json(months)
   } catch (error) {
