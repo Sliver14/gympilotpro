@@ -9,7 +9,7 @@ import AdminStats from '@/components/admin/admin-stats'
 import MembersList from '@/components/admin/members-list'
 import RevenueAnalytics from '@/components/admin/revenue-analytics'
 import AttendanceOverview from '@/components/admin/attendance-overview'
-import QRScanner from '@/components/admin/qr-scanner' // Import the scanner component
+import CheckInPanel from '@/components/admin/check-in-panel' // Import the scanner component
 import { Users, TrendingUp, Calendar, CreditCard, QrCode } from 'lucide-react' // Import QrCode icon
 
 export default function AdminDashboard() {
@@ -123,7 +123,7 @@ export default function AdminDashboard() {
           {/* Check-in Tab */}
           <TabsContent value="check-in">
             <div className="mx-auto grid w-full max-w-2xl items-start gap-6">
-              <QRScanner />
+              <CheckInPanel />
             </div>
           </TabsContent>
 

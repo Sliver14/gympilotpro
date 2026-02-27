@@ -125,11 +125,11 @@ export default function LoginPage() {
         </Card>
 
         {/* Demo Credentials */}
-        <div className="mt-4 rounded-lg border border-border bg-muted/50 p-4">
+        {/* <div className="mt-4 rounded-lg border border-border bg-muted/50 p-4">
           <p className="text-xs font-semibold text-muted-foreground">Demo Credentials (Admin):</p>
           <p className="text-xs text-muted-foreground">Email: admin@klimarx.com</p>
           <p className="text-xs text-muted-foreground">Password: admin123</p>
-        </div>
+        </div> */}
       </div>
     </div>
   )

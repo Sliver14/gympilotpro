@@ -6,9 +6,12 @@ import { useToast } from '@/hooks/use-toast'
 import { Card, CardContent } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
-import { AlertCircle, CheckCircle, Camera, Loader2, RefreshCw, Clock } from 'lucide-react'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { AlertCircle, CheckCircle, Camera, Loader2, RefreshCw, Clock, Search, User } from 'lucide-react'
 
 interface MemberInfo {
+  id: string
   fullName: string
   profileImage: string | null
   expiryDate: string
@@ -20,19 +23,57 @@ interface ValidationResult {
   member?: MemberInfo
 }
 
-export default function QRScanner() {
+export default function CheckInPanel() {
   const { toast } = useToast()
   const [isScanning, setIsScanning] = useState(false)
   const [isValidating, setIsValidating] = useState(false)
   const [result, setResult] = useState<ValidationResult | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [searchResults, setSearchResults] = useState<MemberInfo[]>([])
+  const [searchLoading, setSearchLoading] = useState(false)
   const scannerRef = useRef<Html5Qrcode | null>(null)
   const videoContainerId = 'qr-reader'
+
+  // All members (fetched once on mount)
+  const [allMembers, setAllMembers] = useState<MemberInfo[]>([])
 
   const initializeScanner = useCallback(() => {
     if (scannerRef.current) return
     scannerRef.current = new Html5Qrcode(videoContainerId)
   }, [])
+
+  // Fetch all members once when component mounts
+  useEffect(() => {
+    const fetchAllMembers = async () => {
+      try {
+        const res = await fetch('/api/admin/members')
+        if (!res.ok) throw new Error('Failed to fetch members')
+        const members = await res.json()
+
+        const formatted = members.map((m: any) => ({
+          id: m.id,
+          fullName: `${m.firstName} ${m.lastName}`,
+          profileImage: m.memberProfile?.profileImage || null,
+          expiryDate: m.memberProfile?.expiryDate || '',
+        }))
+
+        setAllMembers(formatted)
+      } catch (err) {
+        console.error('Failed to load members:', err)
+      }
+    }
+
+    fetchAllMembers()
+  }, [])
+
+  // Filter members client-side based on search query
+  const filteredMembers = searchQuery.trim()
+    ? allMembers.filter(m =>
+        m.fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        m.id.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : []
 
   const startScanner = useCallback(async () => {
     if (!scannerRef.current) initializeScanner()
@@ -71,7 +112,6 @@ export default function QRScanner() {
             })
 
             const data: ValidationResult = await res.json()
-
             setResult(data)
 
             if (data.isValid) {
@@ -80,24 +120,15 @@ export default function QRScanner() {
                 description: data.message,
                 variant: 'default',
               })
-              // Auto-restart after success (5 seconds)
               setTimeout(() => resetScanner(), 5000)
             } else {
-              // Differentiate duplicate vs other errors
-              if (data.message.includes('Already checked in')) {
-                toast({
-                  title: 'Duplicate Scan',
-                  description: data.message,
-                  variant: 'default', // neutral/yellow warning
-                  duration: 6000,
-                })
-              } else {
-                toast({
-                  title: data.message.includes('expired') ? 'Membership Expired' : 'Invalid Scan',
-                  description: data.message,
-                  variant: data.message.includes('expired') ? 'destructive' : 'default',
-                })
-              }
+              const isDuplicate = data.message.includes('Already checked in')
+              toast({
+                title: isDuplicate ? 'Duplicate Scan' : 'Check-in Failed',
+                description: data.message,
+                variant: isDuplicate ? 'default' : 'destructive',
+                duration: isDuplicate ? 6000 : 4000,
+              })
             }
           } catch (err: any) {
             toast({
@@ -111,7 +142,6 @@ export default function QRScanner() {
           }
         },
         (err) => {
-          // Suppress common "no code found" noise
           if (err?.errorMessage?.includes('No MultiFormat Readers')) return
           console.debug('Scan error:', err)
         }
@@ -145,9 +175,49 @@ export default function QRScanner() {
     })
   }, [stopScanner, startScanner])
 
+  // Manual check-in from search results
+  const manualCheckIn = async (member: MemberInfo) => {
+    setIsValidating(true)
+
+    try {
+      const res = await fetch('/api/checkin/validate-qr', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ memberId: member.id }), // backend accepts memberId
+      })
+
+      const data: ValidationResult = await res.json()
+      setResult(data)
+
+      if (data.isValid) {
+        toast({
+          title: 'Manual Check-in Success',
+          description: data.message,
+          variant: 'default',
+        })
+        setTimeout(resetScanner, 5000)
+      } else {
+        const isDuplicate = data.message.includes('Already checked in')
+        toast({
+          title: isDuplicate ? 'Duplicate Check-in' : 'Check-in Failed',
+          description: data.message,
+          variant: isDuplicate ? 'default' : 'destructive',
+          duration: isDuplicate ? 6000 : 4000,
+        })
+      }
+    } catch (err: any) {
+      toast({
+        title: 'Check-in Error',
+        description: err.message || 'Failed to check in member.',
+        variant: 'destructive',
+      })
+    } finally {
+      setIsValidating(false)
+    }
+  }
+
   useEffect(() => {
     initializeScanner()
-    // Auto-start disabled — use manual button
     return () => {
       stopScanner()
       scannerRef.current = null
@@ -155,8 +225,9 @@ export default function QRScanner() {
   }, [initializeScanner, stopScanner, startScanner])
 
   return (
-    <div className="flex flex-col items-center gap-6 p-4">
-      <Card className="w-full max-w-md overflow-hidden border-2">
+    <div className="flex flex-col gap-6 p-4">
+      {/* QR Scanner Card */}
+      <Card className="w-full max-w-md overflow-hidden border-2 relative">
         <div
           id={videoContainerId}
           className={`w-full aspect-square bg-black transition-all ${
@@ -201,6 +272,76 @@ export default function QRScanner() {
         )}
       </Card>
 
+      {/* Manual Search & Check-in */}
+      <Card className="w-full max-w-md">
+        <CardContent className="pt-6 space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="search">Manual Check-in (search by name/email/phone)</Label>
+            <div className="flex gap-2">
+              <Input
+                id="search"
+                placeholder="Type name, email or phone..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && e.preventDefault()}
+              />
+              <Button
+                variant="secondary"
+                size="icon"
+                onClick={() => setSearchQuery('')}
+                disabled={!searchQuery}
+              >
+                <RefreshCw className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+
+          {searchQuery && (
+            <div className="max-h-64 overflow-y-auto border rounded-md">
+              {searchLoading ? (
+                <div className="p-4 text-center text-muted-foreground">
+                  <Loader2 className="h-5 w-5 animate-spin mx-auto" />
+                </div>
+              ) : filteredMembers.length > 0 ? (
+                <div className="divide-y">
+                  {filteredMembers.map((member) => (
+                    <div
+                      key={member.id}
+                      className="flex items-center justify-between p-3 hover:bg-muted/50 transition-colors"
+                    >
+                      <div className="flex items-center gap-3">
+                        <Avatar className="h-10 w-10">
+                          <AvatarImage src={member.profileImage || undefined} />
+                          <AvatarFallback>{member.fullName.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <p className="font-medium">{member.fullName}</p>
+                          <p className="text-xs text-muted-foreground">
+                            Expires: {new Date(member.expiryDate).toLocaleDateString()}
+                          </p>
+                        </div>
+                      </div>
+                      <Button
+                        size="sm"
+                        onClick={() => manualCheckIn(member)}
+                        disabled={isValidating}
+                      >
+                        Check-in
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="p-4 text-center text-sm text-muted-foreground">
+                  No members found matching "{searchQuery}"
+                </div>
+              )}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Result Display */}
       {result && (
         <Card
           className={`w-full max-w-md border-2 transition-colors ${
@@ -258,7 +399,7 @@ export default function QRScanner() {
               variant={result.isValid ? 'default' : result.message.includes('Already checked in') ? 'secondary' : 'outline'}
             >
               <RefreshCw className="h-4 w-4" />
-              Scan Next Member
+              Try Again / Scan Next
             </Button>
           </CardContent>
         </Card>

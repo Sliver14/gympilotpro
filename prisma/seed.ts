@@ -10,13 +10,13 @@ async function main() {
       name: 'Bi-Weekly Pass',
       duration: 14,
       price: 10000,
-      description: 'Unlimited gym access for 14 days. Perfect for getting started with your fitness journey.',
+      description: 'Unlimited gym access for 2 weeks. Perfect for getting started with your fitness journey.',
     },
     {
       name: 'Monthly Pass',
       duration: 30,
       price: 20000,
-      description: 'Unlimited gym access for 30 days. Perfect for getting started with your fitness journey.',
+      description: 'Unlimited gym access for 1 month. Perfect for getting started with your fitness journey.',
     },
     {
       name: 'Quarterly Pass',

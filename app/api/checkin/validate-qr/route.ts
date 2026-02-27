@@ -17,30 +17,51 @@ export async function POST(req: NextRequest) {
 
     // 2. Parse request body
     const body = await req.json()
-    const { qrCodeData } = body
+    const { qrCodeData, memberId } = body
 
-    if (!qrCodeData) {
-      return NextResponse.json({ error: 'Bad Request: qrCodeData is required' }, { status: 400 })
+    if (!qrCodeData && !memberId) {
+      return NextResponse.json(
+        { error: 'Bad Request: Provide either qrCodeData or memberId' },
+        { status: 400 }
+      )
     }
 
-    // 3. Find member profile + user info
-    const memberProfile = await prisma.memberProfile.findUnique({
-      where: { qrCode: qrCodeData.trim() },
-      include: {
-        user: {
-          select: {
-            id: true,
-            firstName: true,
-            lastName: true,
+    // 3. Find member profile (by QR or by memberId)
+    let memberProfile
+
+    if (qrCodeData) {
+      memberProfile = await prisma.memberProfile.findUnique({
+        where: { qrCode: qrCodeData.trim() },
+        include: {
+          user: {
+            select: {
+              id: true,
+              firstName: true,
+              lastName: true,
+            },
           },
         },
-      },
-    })
+      })
+    } else {
+      // Manual check-in via memberId (user ID)
+      memberProfile = await prisma.memberProfile.findFirst({
+        where: { userId: memberId },
+        include: {
+          user: {
+            select: {
+              id: true,
+              firstName: true,
+              lastName: true,
+            },
+          },
+        },
+      })
+    }
 
     if (!memberProfile) {
       return NextResponse.json({
         isValid: false,
-        message: 'Invalid QR code – member not found.',
+        message: 'Member not found.',
       }, { status: 404 })
     }
 
@@ -60,7 +81,7 @@ export async function POST(req: NextRequest) {
       })
     }
 
-    // 5. NEW: Prevent duplicate check-ins within 2 hours on the same day
+    // 5. Prevent duplicate check-ins within 2 hours on the same day
     const recentCheckIn = await prisma.attendance.findFirst({
       where: {
         userId: memberProfile.userId,
@@ -75,7 +96,7 @@ export async function POST(req: NextRequest) {
 
     if (recentCheckIn) {
       const timeSinceLast = now.getTime() - recentCheckIn.checkInTime.getTime()
-      const twoHoursMs = 2 * 60 * 60 * 1000 // 2 hours in milliseconds
+      const twoHoursMs = 2 * 60 * 60 * 1000 // 2 hours
 
       if (timeSinceLast < twoHoursMs) {
         const lastTime = recentCheckIn.checkInTime.toLocaleTimeString([], {
@@ -106,7 +127,7 @@ export async function POST(req: NextRequest) {
       data: {
         userId: memberProfile.userId,
         checkInTime: now,
-        method: 'qr',
+        method: qrCodeData ? 'qr' : 'manual', // differentiate method
       },
     })
 
@@ -121,7 +142,7 @@ export async function POST(req: NextRequest) {
       },
     })
   } catch (error: any) {
-    console.error('QR Validation / Check-in Error:', error)
+    console.error('Check-in Error:', error)
 
     if (error instanceof SyntaxError) {
       return NextResponse.json({ error: 'Bad Request: Invalid JSON format' }, { status: 400 })
