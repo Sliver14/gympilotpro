@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getCurrentUser } from '@/lib/auth'
+import { Payment } from '@prisma/client'  // ← add this import
 
 export async function GET() {
   try {
@@ -34,9 +35,10 @@ export async function GET() {
             lte: monthEnd,
           },
         },
+        select: { amount: true }, // ← optimization: only fetch amount
       })
 
-      const revenue = payments.reduce((sum, p) => sum + p.amount, 0)
+      const revenue = payments.reduce((sum: number, p: Payment) => sum + p.amount, 0)
       const monthName = monthStart.toLocaleString('default', { month: 'short', year: '2-digit' })
 
       months.push({

@@ -91,6 +91,10 @@ export default function CheckInPanel() {
 
       setIsScanning(true)
 
+      if (!scannerRef.current) {
+        throw new Error('Scanner not initialized')
+      }
+
       await scannerRef.current.start(
         { facingMode: 'environment' },
         {
@@ -142,7 +146,8 @@ export default function CheckInPanel() {
           }
         },
         (err) => {
-          if (err?.errorMessage?.includes('No MultiFormat Readers')) return
+          const errMsg = typeof err === 'string' ? err : (err as any)?.errorMessage || ''
+          if (errMsg.includes('No MultiFormat Readers')) return
           console.debug('Scan error:', err)
         }
       )

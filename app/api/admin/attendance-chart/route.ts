@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getCurrentUser } from '@/lib/auth'
+import { Attendance } from '@prisma/client'  // ← added this import
 
 export async function GET() {
   try {
@@ -39,7 +40,7 @@ export async function GET() {
       })
 
       const checkins = attendance.length
-      const checkouts = attendance.filter((a) => a.checkOutTime).length
+      const checkouts = attendance.filter((a: Attendance) => !!a.checkOutTime).length  // ← fixed here
 
       days.push({
         date: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),

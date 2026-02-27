@@ -62,7 +62,7 @@ export async function GET() {
       },
     })
 
-    const monthlyRevenue = payments.reduce((sum, p) => sum + p.amount, 0)
+    const monthlyRevenue = payments.reduce((sum: number, p: { amount: number }) => sum + p.amount, 0)
 
     return NextResponse.json({
       totalMembers,
