@@ -63,11 +63,11 @@ export default function RevenueAnalytics() {
         <div className="grid gap-4 md:grid-cols-3">
           <div className="rounded-lg bg-muted/50 p-3">
             <p className="text-xs text-muted-foreground">Total Revenue (12 months)</p>
-            <p className="text-2xl font-bold">${totalRevenue.toFixed(2)}</p>
+            <p className="text-2xl font-bold">#{totalRevenue.toFixed(2)}</p>
           </div>
           <div className="rounded-lg bg-muted/50 p-3">
             <p className="text-xs text-muted-foreground">Average Monthly</p>
-            <p className="text-2xl font-bold">${(totalRevenue / (data.length || 1)).toFixed(2)}</p>
+            <p className="text-2xl font-bold">#{(totalRevenue / (data.length || 1)).toFixed(2)}</p>
           </div>
           <div className="rounded-lg bg-muted/50 p-3">
             <p className="text-xs text-muted-foreground">Total Transactions</p>
@@ -83,7 +83,7 @@ export default function RevenueAnalytics() {
               <YAxis />
               <Tooltip contentStyle={{ backgroundColor: 'var(--color-background)' }} />
               <Legend />
-              <Bar dataKey="revenue" fill="var(--color-primary)" name="Revenue ($)" />
+              <Bar dataKey="revenue" fill="var(--color-primary)" name="Revenue (#)" />
               <Bar dataKey="payments" fill="var(--color-muted-foreground)" name="Transactions" />
             </BarChart>
           </ResponsiveContainer>
