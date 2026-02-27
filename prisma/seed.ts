@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 
 const prisma = new PrismaClient()
 
@@ -55,8 +55,7 @@ async function main() {
   })
 
   if (!existingAdmin) {
-    const bcrypt = await import('bcrypt')
-    const hashedPassword = await bcrypt.default.hash('admin123', 10)
+    const hashedPassword = await bcrypt.hash('admin123', 10)
 
     await prisma.user.create({
       data: {

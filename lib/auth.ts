@@ -1,5 +1,5 @@
 import { prisma } from './prisma'
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import { cookies } from 'next/headers'
 
 const JWT_SECRET = process.env.NEXTAUTH_SECRET || 'your-secret-key'
