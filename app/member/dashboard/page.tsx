@@ -248,16 +248,20 @@
 
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Badge } from '@/components/ui/badge'
 import { useToast } from '@/hooks/use-toast'
-import { Dumbbell, LogOut, QrCode, TrendingUp, Calendar, User, AlertCircle } from 'lucide-react'
-import MemberHeader from '@/components/member/member-header'
+import { AlertCircle } from 'lucide-react'
+import {
+  SidebarProvider,
+  SidebarInset,
+  SidebarTrigger,
+} from '@/components/ui/sidebar'
+import { MemberSidebar } from '@/components/member/member-sidebar'
+import { MemberMobileNav } from '@/components/member/member-mobile-nav'
 import MemberProfile from '@/components/member/member-profile'
 import AttendanceHistory from '@/components/member/attendance-history'
 import ProgressNotes from '@/components/member/progress-notes'
@@ -290,13 +294,15 @@ interface AttendanceData {
   method: string
 }
 
-export default function MemberDashboard() {
+function MemberDashboardContent() {
   const [memberData, setMemberData] = useState<MemberData | null>(null)
   const [attendanceHistory, setAttendanceHistory] = useState<AttendanceData[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [membershipStatus, setMembershipStatus] = useState<'active' | 'expiring' | 'expired'>('active')
   const router = useRouter()
+  const searchParams = useSearchParams()
   const { toast } = useToast()
+  const currentTab = searchParams.get('tab') || 'overview'
 
   useEffect(() => {
     const fetchMemberData = async () => {
@@ -383,136 +389,120 @@ export default function MemberDashboard() {
   const daysUntilExpiry = Math.floor((expiryDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24))
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <MemberHeader memberData={memberData} onLogout={handleLogout} />
+    <SidebarProvider>
+      <MemberSidebar memberData={memberData} onLogout={handleLogout} />
+      <SidebarInset>
+        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+          <SidebarTrigger className="-ml-1" />
+          <div className="flex items-center gap-2">
+            <h1 className="text-lg font-semibold">Member Dashboard</h1>
+          </div>
+        </header>
+        <div className="flex flex-1 flex-col gap-4 p-4 md:p-6 md:pb-20">
+          {/* Membership Status Alert */}
+          {membershipStatus === 'expired' && (
+            <Card className="border-destructive bg-destructive/5">
+              <CardContent className="flex items-start gap-4 pt-6">
+                <AlertCircle className="h-5 w-5 text-destructive" />
+                <div>
+                  <h3 className="font-semibold text-destructive">Membership Expired</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Your membership expired on {expiryDate.toLocaleDateString()}. Please renew to continue using the gym.
+                  </p>
+                  <Link href="/member/renew-membership">
+                    <Button size="sm" className="mt-2" variant="default">
+                      Renew Membership
+                    </Button>
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
-      {/* Main Content */}
-      <div className="container mx-auto px-4 py-8">
-        {/* Membership Status Alert */}
-        {membershipStatus === 'expired' && (
-          <Card className="mb-6 border-destructive bg-destructive/5">
-            <CardContent className="flex items-start gap-4 pt-6">
-              <AlertCircle className="h-5 w-5 text-destructive" />
-              <div>
-                <h3 className="font-semibold text-destructive">Membership Expired</h3>
-                <p className="text-sm text-muted-foreground">
-                  Your membership expired on {expiryDate.toLocaleDateString()}. Please renew to continue using the gym.
+          {membershipStatus === 'expiring' && (
+            <Card className="border-yellow-600 bg-yellow-50 dark:bg-yellow-950/20">
+              <CardContent className="flex items-start gap-4 pt-6">
+                <AlertCircle className="h-5 w-5 text-yellow-600" />
+                <div>
+                  <h3 className="font-semibold text-yellow-600">Membership Expiring Soon</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Your membership expires in {daysUntilExpiry} days on {expiryDate.toLocaleDateString()}. Consider renewing early.
+                  </p>
+                  <Link href="/member/renew-membership">
+                    <Button size="sm" className="mt-2" variant="outline">
+                      Renew Now
+                    </Button>
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Stats Grid */}
+          <div className="grid gap-4 md:grid-cols-3">
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm font-medium">Membership Status</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-2xl font-bold">{memberData.memberProfile.membership.name}</p>
+                <p className="text-xs text-muted-foreground">
+                  {membershipStatus === 'active' && 'Active'}
+                  {membershipStatus === 'expiring' && 'Expiring Soon'}
+                  {membershipStatus === 'expired' && 'Expired'}
                 </p>
-                <Link href="/member/renew-membership">
-                  <Button size="sm" className="mt-2" variant="default">
-                    Renew Membership
-                  </Button>
-                </Link>
-              </div>
-            </CardContent>
-          </Card>
-        )}
+              </CardContent>
+            </Card>
 
-        {membershipStatus === 'expiring' && (
-          <Card className="mb-6 border-yellow-600 bg-yellow-50 dark:bg-yellow-950/20">
-            <CardContent className="flex items-start gap-4 pt-6">
-              <AlertCircle className="h-5 w-5 text-yellow-600" />
-              <div>
-                <h3 className="font-semibold text-yellow-600">Membership Expiring Soon</h3>
-                <p className="text-sm text-muted-foreground">
-                  Your membership expires in {daysUntilExpiry} days on {expiryDate.toLocaleDateString()}. Consider renewing early.
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm font-medium">Days Remaining</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-2xl font-bold">{Math.max(0, daysUntilExpiry)}</p>
+                <p className="text-xs text-muted-foreground">Until {expiryDate.toLocaleDateString()}</p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm font-medium">This Month</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-2xl font-bold">
+                  {memberData?.monthlyVisits ?? attendanceHistory.filter((a) => {
+                    const date = new Date(a.checkInTime)
+                    const now = new Date()
+                    return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear()
+                  }).length}
                 </p>
-                <Link href="/member/renew-membership">
-                  <Button size="sm" className="mt-2" variant="outline">
-                    Renew Now
-                  </Button>
-                </Link>
-              </div>
-            </CardContent>
-          </Card>
-        )}
+                <p className="text-xs text-muted-foreground">Visits</p>
+              </CardContent>
+            </Card>
+          </div>
 
-        {/* Stats Grid */}
-        <div className="mb-8 grid gap-4 md:grid-cols-3">
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium">Membership Status</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-2xl font-bold">{memberData.memberProfile.membership.name}</p>
-              <p className="text-xs text-muted-foreground">
-                {membershipStatus === 'active' && 'Active'}
-                {membershipStatus === 'expiring' && 'Expiring Soon'}
-                {membershipStatus === 'expired' && 'Expired'}
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium">Days Remaining</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-2xl font-bold">{Math.max(0, daysUntilExpiry)}</p>
-              <p className="text-xs text-muted-foreground">Until {expiryDate.toLocaleDateString()}</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium">This Month</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-2xl font-bold">
-                {memberData?.monthlyVisits ?? attendanceHistory.filter((a) => {
-                  const date = new Date(a.checkInTime)
-                  const now = new Date()
-                  return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear()
-                }).length}
-              </p>
-              <p className="text-xs text-muted-foreground">Visits</p>
-            </CardContent>
-          </Card>
+          {/* Tab Content */}
+          <div className="space-y-4">
+            {currentTab === 'overview' && <MemberProfile memberData={memberData} />}
+            {currentTab === 'qr-code' && <QRCodeDisplay memberId={memberData.id} />}
+            {currentTab === 'attendance' && <AttendanceHistory attendance={attendanceHistory} />}
+            {currentTab === 'progress' && <ProgressNotes memberId={memberData.id} />}
+          </div>
         </div>
+        <MemberMobileNav />
+      </SidebarInset>
+    </SidebarProvider>
+  )
+}
 
-        {/* Main Tabs */}
-        <Tabs defaultValue="overview" className="space-y-4">
-          <TabsList>
-            <TabsTrigger value="overview" className="gap-2">
-              <User className="h-4 w-4" />
-              Overview
-            </TabsTrigger>
-            <TabsTrigger value="qr-code" className="gap-2">
-              <QrCode className="h-4 w-4" />
-              QR Code
-            </TabsTrigger>
-            <TabsTrigger value="attendance" className="gap-2">
-              <Calendar className="h-4 w-4" />
-              Attendance
-            </TabsTrigger>
-            <TabsTrigger value="progress" className="gap-2">
-              <TrendingUp className="h-4 w-4" />
-              Progress
-            </TabsTrigger>
-          </TabsList>
-
-          {/* Overview Tab */}
-          <TabsContent value="overview">
-            <MemberProfile memberData={memberData} />
-          </TabsContent>
-
-          {/* QR Code Tab */}
-          <TabsContent value="qr-code">
-            <QRCodeDisplay memberId={memberData.id} />
-          </TabsContent>
-
-          {/* Attendance Tab */}
-          <TabsContent value="attendance">
-            <AttendanceHistory attendance={attendanceHistory} />
-          </TabsContent>
-
-          {/* Progress Tab */}
-          <TabsContent value="progress">
-            <ProgressNotes memberId={memberData.id} />
-          </TabsContent>
-        </Tabs>
+export default function MemberDashboard() {
+  return (
+    <Suspense fallback={
+      <div className="flex min-h-screen items-center justify-center">
+        <p className="text-muted-foreground">Loading...</p>
       </div>
-    </div>
+    }>
+      <MemberDashboardContent />
+    </Suspense>
   )
 }

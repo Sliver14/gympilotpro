@@ -1,22 +1,28 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { useRouter } from 'next/navigation'
+import { useEffect, useState, Suspense } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useToast } from '@/hooks/use-toast'
-import AdminHeader from '@/components/admin/admin-header'
+import {
+  SidebarProvider,
+  SidebarInset,
+  SidebarTrigger,
+} from '@/components/ui/sidebar'
+import { AdminSidebar } from '@/components/admin/admin-sidebar'
+import { AdminMobileNav } from '@/components/admin/admin-mobile-nav'
 import AdminStats from '@/components/admin/admin-stats'
 import MembersList from '@/components/admin/members-list'
 import RevenueAnalytics from '@/components/admin/revenue-analytics'
 import AttendanceOverview from '@/components/admin/attendance-overview'
-import CheckInPanel from '@/components/admin/check-in-panel' // Import the scanner component
-import { Users, TrendingUp, Calendar, CreditCard, QrCode } from 'lucide-react' // Import QrCode icon
+import CheckInPanel from '@/components/admin/check-in-panel'
 
-export default function AdminDashboard() {
+function AdminDashboardContent() {
   const [adminData, setAdminData] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(true)
   const router = useRouter()
+  const searchParams = useSearchParams()
   const { toast } = useToast()
+  const currentTab = searchParams.get('tab') || 'check-in'
 
   useEffect(() => {
     const fetchAdminData = async () => {
@@ -31,9 +37,8 @@ export default function AdminDashboard() {
         
         // Ensure only authorized roles can access
         if (!['admin', 'secretary', 'trainer'].includes(userData.role)) {
-          // Redirect non-admins to their respective dashboards or login
-          router.push(userData.role === 'member' ? '/member/dashboard' : '/login');
-          toast({ title: 'Access Denied', description: 'You do not have permission to view this page.', variant: 'destructive' });
+          router.push(userData.role === 'member' ? '/member/dashboard' : '/login')
+          toast({ title: 'Access Denied', description: 'You do not have permission to view this page.', variant: 'destructive' })
           return
         }
 
@@ -83,72 +88,55 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <AdminHeader
-        adminData={adminData}           // ← Add this!
-        onLogout={handleLogout}         // ← Add this too if you want logout in header
-        title="Admin Dashboard"
-        description="Manage members, view analytics, and perform check-ins."
-      />
+    <SidebarProvider>
+      <AdminSidebar adminData={adminData} onLogout={handleLogout} />
+      <SidebarInset>
+        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+          <SidebarTrigger className="-ml-1" />
+          <div className="flex items-center gap-2">
+            <h1 className="text-lg font-semibold">Admin Dashboard</h1>
+          </div>
+        </header>
+        <div className="flex flex-1 flex-col gap-4 p-4 md:p-6 md:pb-20">
+          {/* Stats Overview */}
+          <AdminStats />
 
-      <div className="container mx-auto px-4 py-8">
-        {/* Stats Overview */}
-        <AdminStats />
+          {/* Tab Content */}
+          <div className="space-y-4">
+            {currentTab === 'check-in' && (
+              <div className="mx-auto grid w-full max-w-2xl items-start gap-6">
+                <CheckInPanel />
+              </div>
+            )}
 
-        {/* Main Tabs */}
-        <Tabs defaultValue="check-in" className="mt-8 space-y-4">
-          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-5">
-            <TabsTrigger value="check-in" className="gap-2">
-              <QrCode className="h-4 w-4" />
-              Check-in
-            </TabsTrigger>
-            <TabsTrigger value="overview" className="gap-2">
-              <TrendingUp className="h-4 w-4" />
-              Overview
-            </TabsTrigger>
-            <TabsTrigger value="members" className="gap-2">
-              <Users className="h-4 w-4" />
-              Members
-            </TabsTrigger>
-            <TabsTrigger value="attendance" className="gap-2">
-              <Calendar className="h-4 w-4" />
-              Attendance
-            </TabsTrigger>
-            <TabsTrigger value="revenue" className="gap-2">
-              <CreditCard className="h-4 w-4" />
-              Revenue
-            </TabsTrigger>
-          </TabsList>
+            {currentTab === 'overview' && (
+              <div className="space-y-4">
+                <RevenueAnalytics />
+                <AttendanceOverview />
+              </div>
+            )}
 
-          {/* Check-in Tab */}
-          <TabsContent value="check-in">
-            <div className="mx-auto grid w-full max-w-2xl items-start gap-6">
-              <CheckInPanel />
-            </div>
-          </TabsContent>
+            {currentTab === 'members' && <MembersList />}
 
-          {/* Overview Tab */}
-          <TabsContent value="overview" className="space-y-4">
-            <RevenueAnalytics />
-            <AttendanceOverview />
-          </TabsContent>
+            {currentTab === 'attendance' && <AttendanceOverview />}
 
-          {/* Members Tab */}
-          <TabsContent value="members">
-            <MembersList />
-          </TabsContent>
+            {currentTab === 'revenue' && <RevenueAnalytics />}
+          </div>
+        </div>
+        <AdminMobileNav />
+      </SidebarInset>
+    </SidebarProvider>
+  )
+}
 
-          {/* Attendance Tab */}
-          <TabsContent value="attendance">
-            <AttendanceOverview />
-          </TabsContent>
-
-          {/* Revenue Tab */}
-          <TabsContent value="revenue">
-            <RevenueAnalytics />
-          </TabsContent>
-        </Tabs>
+export default function AdminDashboard() {
+  return (
+    <Suspense fallback={
+      <div className="flex min-h-screen items-center justify-center">
+        <p className="text-muted-foreground">Loading...</p>
       </div>
-    </div>
+    }>
+      <AdminDashboardContent />
+    </Suspense>
   )
 }
