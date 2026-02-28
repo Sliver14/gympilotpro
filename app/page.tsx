@@ -1,8 +1,9 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import { Dumbbell, Users, TrendingUp, CheckCircle } from 'lucide-react'
+import { Users, TrendingUp, CheckCircle } from 'lucide-react'
 
 export default function Home() {
   return (
@@ -11,7 +12,13 @@ export default function Home() {
       <nav className="border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
           <div className="flex items-center gap-2">
-            <Dumbbell className="h-6 w-6 text-primary" />
+            <Image 
+              src="/WhatsApp_Image_2026-02-25_at_9.54.33_AM-removebg-preview.png" 
+              alt="Klimarx Space Logo" 
+              width={40} 
+              height={40} 
+              className="object-contain"
+            />
             <span className="text-xl font-bold">Klimarx Space</span>
           </div>
           <div className="flex gap-4">
@@ -28,6 +35,15 @@ export default function Home() {
       {/* Hero Section */}
       <section className="border-b border-border bg-background py-20">
         <div className="container mx-auto px-4 text-center">
+          <div className="mb-6 flex justify-center">
+            <Image 
+              src="/WhatsApp_Image_2026-02-25_at_9.54.33_AM-removebg-preview.png" 
+              alt="Klimarx Space Logo" 
+              width={120} 
+              height={120} 
+              className="object-contain"
+            />
+          </div>
           <h1 className="mb-4 text-5xl font-bold md:text-6xl">
             Welcome to <span className="text-primary">Klimarx Space</span>
           </h1>
@@ -48,7 +64,13 @@ export default function Home() {
           <h2 className="mb-12 text-center text-3xl font-bold">Why Choose Klimarx?</h2>
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
             <div className="rounded-lg border border-border bg-card p-6">
-              <Dumbbell className="mb-4 h-8 w-8 text-primary" />
+              <Image 
+                src="/WhatsApp_Image_2026-02-25_at_9.54.33_AM-removebg-preview.png" 
+                alt="Modern Equipment" 
+                width={48} 
+                height={48} 
+                className="mb-4 object-contain"
+              />
               <h3 className="mb-2 text-lg font-semibold">Modern Equipment</h3>
               <p className="text-sm text-muted-foreground">
                 Top-of-the-line fitness equipment and facilities to support your goals.

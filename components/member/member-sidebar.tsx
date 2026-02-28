@@ -2,6 +2,7 @@
 
 import { Suspense } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname, useSearchParams } from 'next/navigation'
 import {
   Sidebar,
@@ -17,7 +18,7 @@ import {
 } from '@/components/ui/sidebar'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
-import { Dumbbell, User, QrCode, Calendar, TrendingUp, LogOut, Settings } from 'lucide-react'
+import { User, QrCode, Calendar, TrendingUp, LogOut, Settings } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -70,11 +71,17 @@ function MemberSidebarContent({ memberData, onLogout }: MemberSidebarProps) {
           <SidebarMenuItem>
             <SidebarMenuButton asChild size="lg">
               <Link href="/member/dashboard">
-                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                  <Dumbbell className="size-4" />
+                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-background border border-border">
+                  <Image 
+                    src="/WhatsApp_Image_2026-02-25_at_9.54.33_AM-removebg-preview.png" 
+                    alt="Logo" 
+                    width={24} 
+                    height={24} 
+                    className="object-contain"
+                  />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">KLIMARX</span>
+                  <span className="truncate font-semibold uppercase">Klimarx</span>
                   <span className="truncate text-xs">Member Portal</span>
                 </div>
               </Link>

@@ -14,13 +14,13 @@ export const metadata: Metadata = {
     'Join Klimarx Gym in Lagos – modern fitness center with expert trainers, flexible memberships, group classes, and a motivating community. Start your transformation today.',
   keywords: [
     'Klimarx Gym',
-    'gym Lagos',
-    'fitness center Lagos',
+    'gym Ijebu-ode',
+    'fitness center Ijebu-ode',
     'gym membership Nigeria',
-    'personal training Lagos',
+    'personal training Ijebu-ode',
     'group fitness classes',
     'weight loss gym',
-    'muscle building Lagos',
+    'muscle building Ijebu-ode',
   ],
   authors: [{ name: 'Klimarx Gym', url: 'https://klimarx.com' }],
   creator: 'Klimarx Gym',
@@ -39,8 +39,8 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Klimarx Gym – Power Your Fitness Goals',
     description:
-      'Premium gym in Lagos with state-of-the-art equipment, certified trainers, and flexible plans. Join the community today.',
-    url: 'https://klimarx.com',
+      'Premium gym in Ijebu-ode with state-of-the-art equipment, certified trainers, and flexible plans. Join the community today.',
+    url: 'https://klimarspace.com',
     siteName: 'Klimarx Gym',
     images: [
       {
@@ -55,20 +55,20 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Klimarx Gym – Lagos Fitness Community',
+    title: 'Klimarx Gym – Ijebu-ode Fitness Community',
     description:
-      'Modern gym in Lagos. Memberships, classes, personal training. Start today.',
+      'Modern gym in Ijebu-ode. Memberships, classes, personal training. Start today.',
     images: ['/og-image.jpg'],
   },
   icons: {
     icon: [
-      { url: '/favicon.ico', sizes: 'any' },
-      { url: '/icon-32.png', sizes: '32x32', type: 'image/png' },
-      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/favicon-16x16.png', sizes: 'any' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/WhatsApp_Image_2026-02-25_at_9.54.33_AM-removebg-preview.png', sizes: '192x192', type: 'image/png' },
     ],
     shortcut: '/favicon.ico',
     apple: [
-      { url: '/apple-icon-180.png', sizes: '180x180', type: 'image/png' },
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
     ],
   },
   manifest: '/site.webmanifest',

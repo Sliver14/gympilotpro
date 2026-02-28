@@ -1,8 +1,9 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { Dumbbell, LogOut, Settings } from 'lucide-react'
+import { LogOut, Settings } from 'lucide-react'
 
 interface AdminHeaderProps {
   adminData: any
@@ -19,7 +20,13 @@ export default function AdminHeader({ adminData, onLogout, title, description }:
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <div className="flex flex-col">
           <Link href="/admin/dashboard" className="flex items-center gap-2">
-            <Dumbbell className="h-6 w-6 text-primary" />
+            <Image 
+              src="/WhatsApp_Image_2026-02-25_at_9.54.33_AM-removebg-preview.png" 
+              alt="Klimarx Logo" 
+              width={32} 
+              height={32} 
+              className="object-contain"
+            />
             <span className="text-xl font-bold">KLIMARX ADMIN</span>
           </Link>
           {/* Use the new props here */}

@@ -2,11 +2,12 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { useToast } from '@/hooks/use-toast'
-import { Dumbbell, AlertCircle, CheckCircle, ArrowLeft } from 'lucide-react'
+import { AlertCircle, CheckCircle, ArrowLeft } from 'lucide-react'
 import { Spinner } from '@/components/ui/spinner'
 
 interface Membership {
@@ -147,7 +148,13 @@ export default function RenewMembershipPage() {
 
         {/* Header */}
         <div className="mb-8 flex items-center justify-center gap-2">
-          <Dumbbell className="h-6 w-6 text-primary" />
+          <Image 
+            src="/WhatsApp_Image_2026-02-25_at_9.54.33_AM-removebg-preview.png" 
+            alt="Klimarx Space Logo" 
+            width={48} 
+            height={48} 
+            className="object-contain"
+          />
           <span className="text-2xl font-bold">Renew Membership</span>
         </div>
 

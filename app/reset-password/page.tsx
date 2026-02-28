@@ -3,12 +3,13 @@
 import { Suspense, useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useToast } from '@/hooks/use-toast'
-import { Dumbbell, CheckCircle, AlertCircle } from 'lucide-react'
+import { CheckCircle, AlertCircle } from 'lucide-react'
 import { Spinner } from '@/components/ui/spinner'
 
 function ResetPasswordContent() {
@@ -175,7 +176,13 @@ export default function ResetPasswordPage() {
       <div className="w-full max-w-md">
         {/* Logo */}
         <Link href="/" className="mb-8 flex items-center justify-center gap-2 hover:opacity-80 transition-opacity">
-          <Dumbbell className="h-8 w-8 text-primary" />
+          <Image 
+            src="/WhatsApp_Image_2026-02-25_at_9.54.33_AM-removebg-preview.png" 
+            alt="Klimarx Space Logo" 
+            width={48} 
+            height={48} 
+            className="object-contain"
+          />
           <span className="text-2xl font-bold">Klimarx Space</span>
         </Link>
 

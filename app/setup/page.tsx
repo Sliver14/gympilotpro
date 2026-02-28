@@ -1,10 +1,21 @@
 'use client'
 
+import Image from 'next/image'
+
 export default function SetupPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">
       <div className="max-w-md w-full p-8 bg-card rounded-lg border border-border">
-        <h1 className="text-2xl font-bold mb-4">🏋️ Klimarx Space Setup</h1>
+        <div className="mb-6 flex flex-col items-center">
+          <Image 
+            src="/WhatsApp_Image_2026-02-25_at_9.54.33_AM-removebg-preview.png" 
+            alt="Klimarx Space Logo" 
+            width={80} 
+            height={80} 
+            className="object-contain"
+          />
+          <h1 className="text-2xl font-bold mt-2">Klimarx Space Setup</h1>
+        </div>
         
         <div className="space-y-4 text-sm text-muted-foreground">
           <p>Welcome! It looks like your system needs configuration.</p>
