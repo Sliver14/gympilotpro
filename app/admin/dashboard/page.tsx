@@ -14,6 +14,7 @@ import AdminStats from '@/components/admin/admin-stats'
 import MembersList from '@/components/admin/members-list'
 import StaffList from '@/components/admin/staff-list'
 import PendingPayments from '@/components/admin/pending-payments'
+import ExpiredMembersList from '@/components/admin/expired-members-list'
 import RevenueAnalytics from '@/components/admin/revenue-analytics'
 import AttendanceOverview from '@/components/admin/attendance-overview'
 import CheckInPanel from '@/components/admin/check-in-panel'
@@ -126,7 +127,10 @@ function AdminDashboardContent() {
             </div>
 
             <div className={currentTab === 'payments' ? 'block' : 'hidden'}>
-              <PendingPayments />
+              <div className="space-y-6">
+                <PendingPayments />
+                <ExpiredMembersList />
+              </div>
             </div>
 
             <div className={currentTab === 'attendance' ? 'block' : 'hidden'}>
