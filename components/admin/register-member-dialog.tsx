@@ -203,33 +203,18 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
           </div>
 
           <div className="grid grid-cols-2 gap-4">
+            {/* Birthday */}
             <div className="space-y-2">
               <Label>Birthday (Optional)</Label>
               <div className="flex gap-2">
-                <Select
-                  value={formData.birthday?.split('-')[1] || ''}
-                  onValueChange={(day) => {
-                    const month = formData.birthday?.split('-')[0] || '01'
-                    setFormData({ ...formData, birthday: `${month}-${day.padStart(2, '0')}` })
-                  }}
-                >
-                  <SelectTrigger className="w-[80px]">
-                    <SelectValue placeholder="Day" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Array.from({ length: 31 }, (_, i) => (
-                      <SelectItem key={i + 1} value={(i + 1).toString()}>
-                        {i + 1}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-
+                {/* Month */}
                 <Select
                   value={formData.birthday?.split('-')[0] || ''}
                   onValueChange={(month) => {
-                    const day = formData.birthday?.split('-')[1] || '01'
-                    setFormData({ ...formData, birthday: `${month.padStart(2, '0')}-${day}` })
+                    const currentDay = formData.birthday?.split('-')[1] || '01'
+                    // Reset day to 01 if switching to shorter month
+                    const newDay = Number(currentDay) > 28 ? '01' : currentDay
+                    setFormData({ ...formData, birthday: `${month}-${newDay.padStart(2, '0')}` })
                   }}
                 >
                   <SelectTrigger className="flex-1">
@@ -237,17 +222,70 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
                   </SelectTrigger>
                   <SelectContent>
                     {[
-                      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-                    ].map((m, i) => (
-                      <SelectItem key={i + 1} value={(i + 1).toString()}>
-                        {m}
+                      { value: '01', label: 'January' },
+                      { value: '02', label: 'February' },
+                      { value: '03', label: 'March' },
+                      { value: '04', label: 'April' },
+                      { value: '05', label: 'May' },
+                      { value: '06', label: 'June' },
+                      { value: '07', label: 'July' },
+                      { value: '08', label: 'August' },
+                      { value: '09', label: 'September' },
+                      { value: '10', label: 'October' },
+                      { value: '11', label: 'November' },
+                      { value: '12', label: 'December' },
+                    ].map((m) => (
+                      <SelectItem key={m.value} value={m.value}>
+                        {m.label}
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
+
+                {/* Day – always two digits */}
+                <Select
+                  value={formData.birthday?.split('-')[1]?.padStart(2, '0') || ''} // pad for display
+                  onValueChange={(day) => {
+                    const month = formData.birthday?.split('-')[0] || '01'
+                    setFormData({ ...formData, birthday: `${month}-${day.padStart(2, '0')}` })
+                  }}
+                  disabled={!formData.birthday?.split('-')[0]}
+                >
+                  <SelectTrigger className="w-[100px]">
+                    <SelectValue placeholder="Day" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {(() => {
+                      const month = formData.birthday?.split('-')[0] || '01'
+                      const year = new Date().getFullYear() // approximate leap year
+                      const daysInMonth = new Date(Number(year), Number(month), 0).getDate()
+
+                      return Array.from({ length: daysInMonth }, (_, i) => {
+                        const dayNum = i + 1
+                        const dayStr = dayNum.toString().padStart(2, '0') // "01", "02", ...
+                        return (
+                          <SelectItem key={dayStr} value={dayStr}>
+                            {dayNum}
+                          </SelectItem>
+                        )
+                      })
+                    })()}
+                  </SelectContent>
+                </Select>
               </div>
+
+              {/* Optional preview */}
+              {formData.birthday && (
+                <p className="text-xs text-muted-foreground">
+                  {new Date(`2000-${formData.birthday}`).toLocaleDateString('en-GB', {
+                    day: 'numeric',
+                    month: 'long',
+                  })}
+                </p>
+              )}
             </div>
+
+            {/* Gender – unchanged */}
             <div className="space-y-2">
               <Label htmlFor="gender">Gender</Label>
               <Select
