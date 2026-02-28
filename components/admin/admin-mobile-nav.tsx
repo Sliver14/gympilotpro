@@ -14,11 +14,11 @@ interface AdminMobileNavProps {
 function AdminMobileNavContent({ className }: AdminMobileNavProps) {
   const pathname = usePathname()
   const searchParams = useSearchParams()
-  const currentTab = searchParams.get('tab') || 'check-in'
+  const currentTab = searchParams.get('tab') || 'overview'
 
   const navItems = [
-    { title: 'Check-in', tab: 'check-in', icon: QrCode },
     { title: 'Overview', tab: 'overview', icon: TrendingUp },
+    { title: 'Check-in', tab: 'check-in', icon: QrCode },
     { title: 'Members', tab: 'members', icon: Users },
     { title: 'Attendance', tab: 'attendance', icon: Calendar },
     { title: 'Revenue', tab: 'revenue', icon: CreditCard },

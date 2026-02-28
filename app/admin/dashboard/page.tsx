@@ -22,7 +22,7 @@ function AdminDashboardContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const { toast } = useToast()
-  const currentTab = searchParams.get('tab') || 'check-in'
+  const currentTab = searchParams.get('tab') || 'overview'
 
   useEffect(() => {
     const fetchAdminData = async () => {
@@ -98,9 +98,6 @@ function AdminDashboardContent() {
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 md:p-6 md:pb-20">
-          {/* Stats Overview */}
-          <AdminStats />
-
           {/* Tab Content */}
           <div className="space-y-4">
             {currentTab === 'check-in' && (
@@ -111,6 +108,8 @@ function AdminDashboardContent() {
 
             {currentTab === 'overview' && (
               <div className="space-y-4">
+                {/* Stats Overview */}
+                <AdminStats />
                 <RevenueAnalytics />
                 <AttendanceOverview />
               </div>

@@ -35,20 +35,20 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
   const initials = `${adminData.firstName?.[0] ?? ''}${adminData.lastName?.[0] ?? ''}`.toUpperCase()
 
   const searchParams = useSearchParams()
-  const currentTab = searchParams.get('tab') || 'check-in'
+  const currentTab = searchParams.get('tab') || 'overview'
 
   const menuItems = [
-    {
-      title: 'Check-in',
-      url: '/admin/dashboard?tab=check-in',
-      icon: QrCode,
-      active: currentTab === 'check-in',
-    },
     {
       title: 'Overview',
       url: '/admin/dashboard?tab=overview',
       icon: TrendingUp,
       active: currentTab === 'overview',
+    },
+    {
+      title: 'Check-in',
+      url: '/admin/dashboard?tab=check-in',
+      icon: QrCode,
+      active: currentTab === 'check-in',
     },
     {
       title: 'Members',
