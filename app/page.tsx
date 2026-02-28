@@ -108,7 +108,30 @@ export default function Home() {
           <p className="mb-12 text-center text-muted-foreground">
             Choose the perfect plan to fit your fitness goals and lifestyle.
           </p>
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            <div className="rounded-lg border border-border bg-card p-6">
+              <h3 className="mb-2 text-xl font-bold">Daily Pass</h3>
+              <p className="mb-4 text-3xl font-bold text-primary">₦3,000</p>
+              <p className="mb-6 text-sm text-muted-foreground">1 day of unlimited access</p>
+              <ul className="mb-6 space-y-2 text-sm">
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-primary" />
+                  <span>Unlimited gym access</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-primary" />
+                  <span>All equipment access</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-primary" />
+                  <span>Single entry valid for 24h</span>
+                </li>
+              </ul>
+              <Link href="/signup">
+                <Button className="w-full cursor-pointer">Join Now</Button>
+              </Link>
+            </div>
+
             <div className="rounded-lg border border-border bg-card p-6">
               <h3 className="mb-2 text-xl font-bold">Bi-Weekly Pass</h3>
               <p className="mb-4 text-3xl font-bold text-primary">₦10,000</p>

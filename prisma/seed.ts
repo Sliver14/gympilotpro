@@ -7,6 +7,12 @@ async function main() {
   // Create membership packages
   const packages = [
     {
+      name: 'Daily Pass',
+      duration: 1,
+      price: 3000,
+      description: 'Single day unlimited access. Ideal for travelers or those who want to try out our facilities.',
+    },
+    {
       name: 'Bi-Weekly Pass',
       duration: 14,
       price: 10000,

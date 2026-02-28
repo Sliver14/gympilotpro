@@ -308,13 +308,31 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
+              <Label htmlFor="membership">Membership Plan *</Label>
+              <Select
+                value={formData.membershipId}
+                onValueChange={(value) => setFormData({ ...formData, membershipId: value })}
+              >
+                <SelectTrigger id="membership">
+                  <SelectValue placeholder="Select plan" />
+                </SelectTrigger>
+                <SelectContent>
+                  {memberships.map((m) => (
+                    <SelectItem key={m.id} value={m.id}>
+                      {m.name} - ₦{m.price.toLocaleString('en-NG')}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
               <Label htmlFor="paymentMethod">Payment Method *</Label>
               <Select
                 value={formData.paymentMethod}
                 onValueChange={(value) => setFormData({ ...formData, paymentMethod: value })}
               >
                 <SelectTrigger id="paymentMethod">
-                  <SelectValue placeholder="Select payment method" />
+                  <SelectValue placeholder="Select method" />
                 </SelectTrigger>
                 <SelectContent>
                   {PAYMENT_METHODS.map((method) => (
@@ -325,17 +343,18 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
                 </SelectContent>
               </Select>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="startDate">Membership Start Date *</Label>
-              <Input
-                id="startDate"
-                type="date"
-                value={formData.startDate}
-                onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
-                max={new Date().toISOString().split('T')[0]}
-                required
-              />
-            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="startDate">Membership Start Date *</Label>
+            <Input
+              id="startDate"
+              type="date"
+              value={formData.startDate}
+              onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
+              max={new Date().toISOString().split('T')[0]}
+              required
+            />
           </div>
 
           {/* Instant verification checkbox (admin-only feature) */}
