@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid start date format' }, { status: 400 })
     }
 
-    const expiryDate = new Date(joinDate)
+    let expiryDate = new Date(joinDate)
     expiryDate.setDate(expiryDate.getDate() + membership.duration)
 
     const hashedPassword = await hashPassword(password)
@@ -80,6 +80,13 @@ export async function POST(req: NextRequest) {
     const currentUser = await getCurrentUser() // null if not authenticated
     const isStaff = currentUser && ['admin', 'secretary', 'trainer'].includes(currentUser.role)
     const shouldApproveImmediately = isStaff && paymentCompleted
+
+    // If payment is pending, set dates to a past (expired) date
+    if (!shouldApproveImmediately) {
+      const pastDate = new Date('2000-01-01')
+      joinDate = pastDate
+      expiryDate = pastDate
+    }
 
     // Create user + profile
     const user = await prisma.user.create({
