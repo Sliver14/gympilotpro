@@ -100,26 +100,32 @@ function AdminDashboardContent() {
         <div className="flex flex-1 flex-col gap-4 p-4 md:p-6 md:pb-20">
           {/* Tab Content */}
           <div className="space-y-4">
-            {currentTab === 'check-in' && (
+            <div className={currentTab === 'check-in' ? 'block' : 'hidden'}>
               <div className="mx-auto grid w-full max-w-2xl items-start gap-6">
                 <CheckInPanel />
               </div>
-            )}
+            </div>
 
-            {currentTab === 'overview' && (
+            <div className={currentTab === 'overview' ? 'block' : 'hidden'}>
               <div className="space-y-4">
                 {/* Stats Overview */}
                 <AdminStats />
                 <RevenueAnalytics />
                 <AttendanceOverview />
               </div>
-            )}
+            </div>
 
-            {currentTab === 'members' && <MembersList />}
+            <div className={currentTab === 'members' ? 'block' : 'hidden'}>
+              <MembersList />
+            </div>
 
-            {currentTab === 'attendance' && <AttendanceOverview />}
+            <div className={currentTab === 'attendance' ? 'block' : 'hidden'}>
+              <AttendanceOverview />
+            </div>
 
-            {currentTab === 'revenue' && <RevenueAnalytics />}
+            <div className={currentTab === 'revenue' ? 'block' : 'hidden'}>
+              <RevenueAnalytics />
+            </div>
           </div>
         </div>
         <AdminMobileNav />

@@ -153,11 +153,11 @@ export default function MembersList() {
               const status = getMembershipStatus(member.memberProfile.expiryDate)
               return (
                 <div key={member.id} className="flex items-center justify-between rounded-lg border border-border p-3">
-                  <div className="flex-1">
-                    <p className="font-medium">
+                  <div className="flex-1 min-w-0 mr-4">
+                    <p className="font-medium truncate">
                       {member.firstName} {member.lastName}
                     </p>
-                    <p className="text-xs text-muted-foreground">{member.email}</p>
+                    <p className="text-xs text-muted-foreground truncate">{member.email}</p>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="text-right text-sm">
