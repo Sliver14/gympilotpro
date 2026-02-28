@@ -14,7 +14,8 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { useToast } from '@/hooks/use-toast'
-import { RefreshCw, Loader2, Wallet } from 'lucide-react'
+import { RefreshCw, Wallet } from 'lucide-react'
+import { Spinner } from '@/components/ui/spinner'
 
 interface Membership {
   id: string
@@ -159,7 +160,7 @@ export default function ManualRenewalDialog({ memberId, memberName, onRenewed }:
               Cancel
             </Button>
             <Button type="submit" disabled={isLoading}>
-              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {isLoading && <Spinner className="mr-2 h-4 w-4" />}
               Renew Membership
             </Button>
           </DialogFooter>

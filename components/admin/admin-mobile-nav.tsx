@@ -9,22 +9,25 @@ import { cn } from '@/lib/utils'
 
 interface AdminMobileNavProps {
   className?: string
+  role?: string
 }
 
-function AdminMobileNavContent({ className }: AdminMobileNavProps) {
+function AdminMobileNavContent({ className, role = 'admin' }: AdminMobileNavProps) {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const currentTab = searchParams.get('tab') || 'overview'
 
-  const navItems = [
+  const allNavItems = [
     { title: 'Overview', tab: 'overview', icon: TrendingUp },
     { title: 'Check-in', tab: 'check-in', icon: QrCode },
     { title: 'Members', tab: 'members', icon: Users },
-    { title: 'Staff', tab: 'staff', icon: UserCheck },
+    { title: 'Staff', tab: 'staff', icon: UserCheck, adminOnly: true },
     { title: 'Payments', tab: 'payments', icon: Wallet },
     { title: 'Attendance', tab: 'attendance', icon: Calendar },
-    { title: 'Revenue', tab: 'revenue', icon: CreditCard },
+    { title: 'Revenue', tab: 'revenue', icon: CreditCard, adminOnly: true },
   ]
+
+  const navItems = allNavItems.filter(item => !item.adminOnly || role === 'admin')
 
   return (
     <nav
@@ -39,7 +42,7 @@ function AdminMobileNavContent({ className }: AdminMobileNavProps) {
           return (
             <Link
               key={item.tab}
-              href={`/admin/dashboard?tab=${item.tab}`}
+              href={`/${role}/dashboard?tab=${item.tab}`}
               className="flex flex-1 flex-col items-center justify-center gap-1"
             >
               <Button
@@ -68,10 +71,10 @@ function AdminMobileNavContent({ className }: AdminMobileNavProps) {
   )
 }
 
-export function AdminMobileNav({ className }: AdminMobileNavProps) {
+export function AdminMobileNav({ className, role }: AdminMobileNavProps) {
   return (
     <Suspense fallback={null}>
-      <AdminMobileNavContent className={className} />
+      <AdminMobileNavContent className={className} role={role} />
     </Suspense>
   )
 }

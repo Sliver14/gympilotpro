@@ -18,10 +18,10 @@ export async function POST(req: NextRequest, context: RouteContext) {
       return NextResponse.json({ error: 'Unauthorized - no session' }, { status: 401 })
     }
 
-    // Only admin & secretary can approve payments
-    if (!['admin', 'secretary'].includes(staff.role)) {
+    // Only staff can approve payments
+    if (!['admin', 'secretary', 'trainer'].includes(staff.role)) {
       return NextResponse.json(
-        { error: 'Forbidden: Only admin or secretary can approve payments' },
+        { error: 'Forbidden: Unauthorized role' },
         { status: 403 }
       )
     }

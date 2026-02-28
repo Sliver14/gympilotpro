@@ -8,6 +8,7 @@ import { useToast } from '@/hooks/use-toast'
 import { Search, RefreshCw, AlertTriangle, Phone, Mail, CalendarX } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import ManualRenewalDialog from './manual-renewal-dialog'
+import { Spinner } from '@/components/ui/spinner'
 
 interface ExpiredMember {
   id: string
@@ -79,7 +80,7 @@ export default function ExpiredMembersList({ onMemberRenewed }: { onMemberRenewe
     return (
       <Card>
         <CardContent className="flex items-center justify-center py-12">
-          <p className="text-muted-foreground">Loading expired members...</p>
+          <Spinner className="h-8 w-8 text-primary" />
         </CardContent>
       </Card>
     )

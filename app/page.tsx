@@ -89,7 +89,7 @@ export default function Home() {
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
             <div className="rounded-lg border border-border bg-card p-6">
               <h3 className="mb-2 text-xl font-bold">Bi-Weekly Pass</h3>
-              <p className="mb-4 text-3xl font-bold text-primary">#10,000</p>
+              <p className="mb-4 text-3xl font-bold text-primary">₦10,000</p>
               <p className="mb-6 text-sm text-muted-foreground">14 days of unlimited access</p>
               <ul className="mb-6 space-y-2 text-sm">
                 <li className="flex items-center gap-2">
@@ -115,7 +115,7 @@ export default function Home() {
                 POPULAR
               </div>
               <h3 className="mb-2 text-xl font-bold">Monthly Pass</h3>
-              <p className="mb-4 text-3xl font-bold text-primary">#20,000</p>
+              <p className="mb-4 text-3xl font-bold text-primary">₦20,000</p>
               <p className="mb-6 text-sm text-muted-foreground">1 month of unlimited access</p>
               <ul className="mb-6 space-y-2 text-sm">
                 <li className="flex items-center gap-2">
@@ -138,7 +138,7 @@ export default function Home() {
 
             <div className="rounded-lg border border-border bg-card p-6">
               <h3 className="mb-2 text-xl font-bold">Quarterly Pass</h3>
-              <p className="mb-4 text-3xl font-bold text-primary">#55,000</p>
+              <p className="mb-4 text-3xl font-bold text-primary">₦55,000</p>
               <p className="mb-6 text-sm text-muted-foreground">3 months of unlimited access</p>
               <ul className="mb-6 space-y-2 text-sm">
                 <li className="flex items-center gap-2">
@@ -161,7 +161,7 @@ export default function Home() {
 
             <div className="rounded-lg border border-border bg-card p-6">
               <h3 className="mb-2 text-xl font-bold">Semi-Annual Pass</h3>
-              <p className="mb-4 text-3xl font-bold text-primary">#110,000</p>
+              <p className="mb-4 text-3xl font-bold text-primary">₦110,000</p>
               <p className="mb-6 text-sm text-muted-foreground">6 Months of unlimited access</p>
               <ul className="mb-6 space-y-2 text-sm">
                 <li className="flex items-center gap-2">
@@ -184,7 +184,7 @@ export default function Home() {
 
             <div className="rounded-lg border border-border bg-card p-6">
               <h3 className="mb-2 text-xl font-bold">Annual Pass</h3>
-              <p className="mb-4 text-3xl font-bold text-primary">#220,000</p>
+              <p className="mb-4 text-3xl font-bold text-primary">₦220,000</p>
               <p className="mb-6 text-sm text-muted-foreground">1 year of unlimited access</p>
               <ul className="mb-6 space-y-2 text-sm">
                 <li className="flex items-center gap-2">

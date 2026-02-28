@@ -15,7 +15,8 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { useToast } from '@/hooks/use-toast'
-import { UserPlus, Loader2 } from 'lucide-react'
+import { UserPlus } from 'lucide-react'
+import { Spinner } from '@/components/ui/spinner'
 
 const STAFF_ROLES = [
   { value: 'admin', label: 'Admin' },
@@ -204,7 +205,7 @@ export default function RegisterStaffDialog({ onStaffAdded }: { onStaffAdded?: (
               Cancel
             </Button>
             <Button type="submit" disabled={isLoading}>
-              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {isLoading && <Spinner className="mr-2 h-4 w-4" />}
               Create Staff Account
             </Button>
           </DialogFooter>

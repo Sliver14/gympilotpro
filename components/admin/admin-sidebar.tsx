@@ -36,51 +36,56 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
 
   const searchParams = useSearchParams()
   const currentTab = searchParams.get('tab') || 'overview'
+  const role = adminData.role || 'admin'
 
-  const menuItems = [
+  const allMenuItems = [
     {
       title: 'Overview',
-      url: '/admin/dashboard?tab=overview',
+      url: `/${role}/dashboard?tab=overview`,
       icon: TrendingUp,
       active: currentTab === 'overview',
     },
     {
       title: 'Check-in',
-      url: '/admin/dashboard?tab=check-in',
+      url: `/${role}/dashboard?tab=check-in`,
       icon: QrCode,
       active: currentTab === 'check-in',
     },
     {
       title: 'Members',
-      url: '/admin/dashboard?tab=members',
+      url: `/${role}/dashboard?tab=members`,
       icon: Users,
       active: currentTab === 'members',
     },
     {
       title: 'Staff',
-      url: '/admin/dashboard?tab=staff',
+      url: `/${role}/dashboard?tab=staff`,
       icon: UserCheck,
       active: currentTab === 'staff',
+      adminOnly: true,
     },
     {
       title: 'Payments',
-      url: '/admin/dashboard?tab=payments',
+      url: `/${role}/dashboard?tab=payments`,
       icon: Wallet,
       active: currentTab === 'payments',
     },
     {
       title: 'Attendance',
-      url: '/admin/dashboard?tab=attendance',
+      url: `/${role}/dashboard?tab=attendance`,
       icon: Calendar,
       active: currentTab === 'attendance',
     },
     {
       title: 'Revenue',
-      url: '/admin/dashboard?tab=revenue',
+      url: `/${role}/dashboard?tab=revenue`,
       icon: CreditCard,
       active: currentTab === 'revenue',
+      adminOnly: true,
     },
   ]
+
+  const menuItems = allMenuItems.filter(item => !item.adminOnly || role === 'admin')
 
   return (
     <Sidebar collapsible="icon">

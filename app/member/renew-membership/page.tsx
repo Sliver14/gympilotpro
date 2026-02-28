@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { useToast } from '@/hooks/use-toast'
 import { Dumbbell, AlertCircle, CheckCircle, ArrowLeft } from 'lucide-react'
+import { Spinner } from '@/components/ui/spinner'
 
 interface Membership {
   id: string
@@ -124,7 +125,7 @@ export default function RenewMembershipPage() {
   if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <p className="text-muted-foreground">Loading...</p>
+        <Spinner className="h-8 w-8 text-primary" />
       </div>
     )
   }
@@ -274,7 +275,14 @@ export default function RenewMembershipPage() {
                       className="w-full"
                       size="lg"
                     >
-                      {isProcessing ? 'Processing...' : 'Request Renewal'}
+                      {isProcessing ? (
+                        <span className="flex items-center gap-2">
+                          <Spinner className="h-4 w-4" />
+                          Processing...
+                        </span>
+                      ) : (
+                        'Request Renewal'
+                      )}
                     </Button>
 
                     <p className="text-xs text-center text-muted-foreground">

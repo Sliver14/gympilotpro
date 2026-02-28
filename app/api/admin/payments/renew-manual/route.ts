@@ -6,7 +6,7 @@ export async function POST(req: NextRequest) {
   try {
     const staff = await getCurrentUser()
 
-    if (!staff || !['admin', 'secretary'].includes(staff.role)) {
+    if (!staff || !['admin', 'secretary', 'trainer'].includes(staff.role)) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }

@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/hooks/use-toast'
 import { QrCode, Download } from 'lucide-react'
+import { Spinner } from '@/components/ui/spinner'
 
 interface QRCodeDisplayProps {
   memberId: string
@@ -56,7 +57,7 @@ export default function QRCodeDisplay({ memberId }: QRCodeDisplayProps) {
     return (
       <Card>
         <CardContent className="flex items-center justify-center py-12">
-          <p className="text-muted-foreground">Loading QR code...</p>
+          <Spinner className="h-8 w-8 text-primary" />
         </CardContent>
       </Card>
     )

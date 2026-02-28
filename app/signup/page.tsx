@@ -15,6 +15,7 @@ import { useSignup } from '@/hooks/use-signup'
 import { useToast } from '@/hooks/use-toast'
 import { Dumbbell, ChevronRight, ChevronLeft, AlertTriangle, AlertCircle, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { Spinner } from '@/components/ui/spinner'
 
 interface Membership {
   id: string
@@ -444,7 +445,9 @@ export default function SignupPage() {
             {step === 2 && (
               <div className="space-y-6">
                 {loadingMemberships ? (
-                  <p className="text-center text-muted-foreground">Loading plans...</p>
+                  <div className="flex justify-center py-8">
+                    <Spinner className="h-8 w-8 text-primary" />
+                  </div>
                 ) : (
                   <div className="space-y-4">
                     <Label>Membership Package *</Label>
@@ -836,10 +839,7 @@ export default function SignupPage() {
                 >
                   {isLoading ? (
                     <span className="flex items-center gap-2">
-                      <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                      </svg>
+                      <Spinner className="h-4 w-4" />
                       Creating Account...
                     </span>
                   ) : (

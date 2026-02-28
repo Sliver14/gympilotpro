@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { useToast } from '@/hooks/use-toast'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import { Calendar } from 'lucide-react'
+import { Spinner } from '@/components/ui/spinner'
 
 interface AttendanceData {
   date: string
@@ -50,7 +51,7 @@ export default function AttendanceOverview() {
     return (
       <Card>
         <CardContent className="h-80 flex items-center justify-center">
-          <p className="text-muted-foreground">Loading...</p>
+          <Spinner className="h-8 w-8 text-primary" />
         </CardContent>
       </Card>
     )

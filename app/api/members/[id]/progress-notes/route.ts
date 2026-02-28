@@ -12,9 +12,16 @@ export async function GET(
 
     const currentUser = await getCurrentUser()
 
-    if (!currentUser || currentUser.id !== memberId) {
+    if (!currentUser) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const isStaff = ['admin', 'secretary', 'trainer'].includes(currentUser.role)
+    const isOwner = currentUser.id === memberId
+
+    if (!isStaff && !isOwner) {
       return NextResponse.json(
-        { error: 'Unauthorized - you can only view your own progress notes' },
+        { error: 'Unauthorized - you do not have permission to view these notes' },
         { status: 401 }
       )
     }

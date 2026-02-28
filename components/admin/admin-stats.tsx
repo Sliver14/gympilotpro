@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useToast } from '@/hooks/use-toast'
 import { Users, TrendingUp, Calendar, Clock } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 interface Stats {
   totalMembers: number
@@ -22,7 +23,7 @@ const formatNaira = (value: number) =>
     maximumFractionDigits: 0,
   }).format(value)
 
-export default function AdminStats() {
+export default function AdminStats({ hideRevenue = false }: { hideRevenue?: boolean }) {
   const [stats, setStats] = useState<Stats>({
     totalMembers: 0,
     activeMembers: 0,
@@ -64,8 +65,8 @@ export default function AdminStats() {
 
   if (isLoading) {
     return (
-      <div className="grid gap-4 md:grid-cols-5">
-        {[...Array(5)].map((_, i) => (
+      <div className={cn("grid gap-4", hideRevenue ? "md:grid-cols-4" : "md:grid-cols-5")}>
+        {[...Array(hideRevenue ? 4 : 5)].map((_, i) => (
           <Card key={i}>
             <CardContent className="h-24 animate-pulse bg-muted" />
           </Card>
@@ -75,7 +76,7 @@ export default function AdminStats() {
   }
 
   return (
-    <div className="grid gap-4 md:grid-cols-5">
+    <div className={cn("grid gap-4", hideRevenue ? "md:grid-cols-4" : "md:grid-cols-5")}>
       {/* Total Members */}
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -127,18 +128,20 @@ export default function AdminStats() {
       </Card>
 
       {/* Monthly Revenue */}
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Monthly Revenue</CardTitle>
-          <span className="text-primary text-xl font-bold opacity-50">₦</span>
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">
-            {formatNaira(stats.monthlyRevenue)}
-          </div>
-          <p className="text-xs text-muted-foreground">This month</p>
-        </CardContent>
-      </Card>
+      {!hideRevenue && (
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Monthly Revenue</CardTitle>
+            <span className="text-primary text-xl font-bold opacity-50">₦</span>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {formatNaira(stats.monthlyRevenue)}
+            </div>
+            <p className="text-xs text-muted-foreground">This month</p>
+          </CardContent>
+        </Card>
+      )}
     </div>
   )
 }

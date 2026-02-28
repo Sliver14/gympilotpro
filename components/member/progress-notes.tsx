@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { useToast } from '@/hooks/use-toast'
 import { TrendingUp, Calendar } from 'lucide-react'
+import { Spinner } from '@/components/ui/spinner'
 
 interface ProgressNote {
   id: string
@@ -50,7 +51,7 @@ export default function ProgressNotes({ memberId }: ProgressNotesProps) {
     return (
       <Card>
         <CardContent className="flex items-center justify-center py-12">
-          <p className="text-muted-foreground">Loading progress notes...</p>
+          <Spinner className="h-8 w-8 text-primary" />
         </CardContent>
       </Card>
     )

@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { useToast } from '@/hooks/use-toast'
 import { CreditCard, CheckCircle, RefreshCw, AlertCircle, Phone, Mail } from 'lucide-react'
+import { Spinner } from '@/components/ui/spinner'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -99,7 +100,7 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
     return (
       <Card>
         <CardContent className="flex items-center justify-center py-12">
-          <p className="text-muted-foreground">Loading pending payments...</p>
+          <Spinner className="h-8 w-8 text-primary" />
         </CardContent>
       </Card>
     )

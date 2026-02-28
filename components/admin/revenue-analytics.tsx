@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { useToast } from '@/hooks/use-toast'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import { CreditCard } from 'lucide-react'
+import { Spinner } from '@/components/ui/spinner'
 
 interface ChartData {
   month: string
@@ -59,7 +60,7 @@ export default function RevenueAnalytics() {
     return (
       <Card>
         <CardContent className="h-80 flex items-center justify-center">
-          <p className="text-muted-foreground">Loading...</p>
+          <Spinner className="h-8 w-8 text-primary" />
         </CardContent>
       </Card>
     )

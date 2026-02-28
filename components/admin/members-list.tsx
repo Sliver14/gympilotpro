@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge'
 import { useToast } from '@/hooks/use-toast'
 import { Users, Search, Download, RefreshCw } from 'lucide-react'
 import RegisterMemberDialog from './register-member-dialog'
+import { Spinner } from '@/components/ui/spinner'
 
 interface Member {
   id: string
@@ -104,7 +105,7 @@ export default function MembersList() {
     return (
       <Card>
         <CardContent className="flex items-center justify-center py-12">
-          <p className="text-muted-foreground">Loading members...</p>
+          <Spinner className="h-8 w-8 text-primary" />
         </CardContent>
       </Card>
     )

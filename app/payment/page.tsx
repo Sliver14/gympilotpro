@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { useToast } from '@/hooks/use-toast'
 import { Dumbbell, AlertCircle, CheckCircle, CreditCard } from 'lucide-react'
+import { Spinner } from '@/components/ui/spinner'
 
 interface PaymentDetails {
   amount: number
@@ -96,7 +97,7 @@ function PaymentPageInner() {
   if (!paymentDetails) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <p className="text-muted-foreground">Loading payment details...</p>
+        <Spinner className="h-8 w-8 text-primary" />
       </div>
     )
   }
@@ -180,6 +181,7 @@ function PaymentPageInner() {
             >
               {isProcessing ? (
                 <>
+                  <Spinner className="h-4 w-4" />
                   Processing Payment...
                 </>
               ) : paymentStatus === 'success' ? (
@@ -224,7 +226,7 @@ export default function PaymentPage() {
     <Suspense
       fallback={
         <div className="flex min-h-screen items-center justify-center">
-          <p className="text-muted-foreground">Loading payment page...</p>
+          <Spinner className="h-8 w-8 text-primary" />
         </div>
       }
     >

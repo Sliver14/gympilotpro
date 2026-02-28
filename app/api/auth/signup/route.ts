@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { hashPassword } from '@/lib/auth'
 import QRCode from 'qrcode'
-import { getCurrentUser } from '@/lib/auth'  // ← must exist in your lib/auth.ts
+import { getCurrentUser } from '@/lib/auth'
 
 export async function POST(req: NextRequest) {
   try {
@@ -22,10 +22,10 @@ export async function POST(req: NextRequest) {
       fitnessGoalsDetails,
       paymentMethod,
       startDate,
-      paymentCompleted = false,  // ← now read from body
+      paymentCompleted = false,
     } = body
 
-    // Validation
+    // Required fields validation
     if (
       !email ||
       !password ||
@@ -39,16 +39,17 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
-    // Basic email check
+    // Email format check
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return NextResponse.json({ error: 'Invalid email format' }, { status: 400 })
     }
 
-    // Existing user?
+    // Check existing user
     if (await prisma.user.findUnique({ where: { email } })) {
       return NextResponse.json({ error: 'Email already registered' }, { status: 409 })
     }
 
+    // Validate membership exists
     const membership = await prisma.membershipPackage.findUnique({
       where: { id: membershipId },
     })
@@ -56,7 +57,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid membership package' }, { status: 400 })
     }
 
-    // Parse startDate
+    // Parse & validate startDate
     let joinDate = startDate ? new Date(startDate) : new Date()
     if (isNaN(joinDate.getTime())) {
       return NextResponse.json({ error: 'Invalid start date format' }, { status: 400 })
@@ -71,17 +72,20 @@ export async function POST(req: NextRequest) {
       ? JSON.stringify(fitnessGoals)
       : null
 
-    // Check for Paystack - Coming Soon
+    // Paystack placeholder
     if (paymentMethod.toLowerCase() === 'paystack') {
-      return NextResponse.json({ error: 'Paystack payment is coming soon. Please use another method for now.' }, { status: 400 })
+      return NextResponse.json(
+        { error: 'Paystack payment is coming soon. Please use another method.' },
+        { status: 400 }
+      )
     }
 
-    // ── NEW: Check if admin is registering and wants instant approval ──
-    const currentUser = await getCurrentUser() // null if not authenticated
+    // Check if request is from staff + instant approval flag
+    const currentUser = await getCurrentUser()
     const isStaff = currentUser && ['admin', 'secretary', 'trainer'].includes(currentUser.role)
-    const shouldApproveImmediately = isStaff && paymentCompleted
+    const shouldApproveImmediately = isStaff && !!paymentCompleted // safe boolean coercion
 
-    // If payment is pending, set dates to a past (expired) date
+    // For pending payments, set expired dates
     if (!shouldApproveImmediately) {
       const pastDate = new Date('2000-01-01')
       joinDate = pastDate
@@ -95,11 +99,13 @@ export async function POST(req: NextRequest) {
         password: hashedPassword,
         firstName,
         lastName,
-        phoneNumber: phoneNumber,
+        phoneNumber: phoneNumber || null,
         role: 'member',
         memberProfile: {
           create: {
-            membershipId,
+            membership: {
+              connect: { id: membershipId },
+            },
             joinDate,
             expiryDate,
             birthday: birthday || null,
@@ -109,15 +115,20 @@ export async function POST(req: NextRequest) {
             fitnessGoalsDetails: fitnessGoalsDetails || null,
             paymentMethod: paymentMethod || null,
             qrCode: qrCodeData,
-            verified: shouldApproveImmediately,
             paymentStatus: shouldApproveImmediately ? 'approved' : 'pending',
+            // Only set these when approving (verified defaults to false otherwise)
+            ...(shouldApproveImmediately && {
+              verified: true,
+              approvedById: currentUser.id,
+              approvedAt: new Date(),
+            }),
           },
         },
       },
       include: { memberProfile: true },
     })
 
-    // ── Create Payment record ──
+    // Create Payment record (always, status depends on approval)
     await prisma.payment.create({
       data: {
         userId: user.id,
@@ -147,6 +158,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(responseData)
   } catch (error: any) {
     console.error('Signup error:', error)
+
     let status = 500
     let message = 'Internal server error'
 

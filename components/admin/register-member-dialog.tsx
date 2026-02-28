@@ -17,7 +17,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea'
 import { Checkbox } from '@/components/ui/checkbox'
 import { useToast } from '@/hooks/use-toast'
-import { UserPlus, Loader2 } from 'lucide-react'
+import { UserPlus } from 'lucide-react'
+import { Spinner } from '@/components/ui/spinner'
 
 interface Membership {
   id: string
@@ -329,7 +330,7 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
               Cancel
             </Button>
             <Button type="submit" disabled={isLoading}>
-              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {isLoading && <Spinner className="mr-2 h-4 w-4" />}
               Register Member
             </Button>
           </DialogFooter>

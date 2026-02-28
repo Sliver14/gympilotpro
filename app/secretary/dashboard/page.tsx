@@ -12,15 +12,13 @@ import { AdminSidebar } from '@/components/admin/admin-sidebar'
 import { AdminMobileNav } from '@/components/admin/admin-mobile-nav'
 import AdminStats from '@/components/admin/admin-stats'
 import MembersList from '@/components/admin/members-list'
-import StaffList from '@/components/admin/staff-list'
 import PendingPayments from '@/components/admin/pending-payments'
 import ExpiredMembersList from '@/components/admin/expired-members-list'
-import RevenueAnalytics from '@/components/admin/revenue-analytics'
 import AttendanceOverview from '@/components/admin/attendance-overview'
 import CheckInPanel from '@/components/admin/check-in-panel'
 import { Spinner } from '@/components/ui/spinner'
 
-function AdminDashboardContent() {
+function SecretaryDashboardContent() {
   const [adminData, setAdminData] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(true)
   const router = useRouter()
@@ -40,7 +38,7 @@ function AdminDashboardContent() {
         const userData = await userResponse.json()
         
         // Ensure only authorized roles can access
-        if (!['admin', 'secretary', 'trainer'].includes(userData.role)) {
+        if (!['admin', 'secretary'].includes(userData.role)) {
           router.push(userData.role === 'member' ? '/member/dashboard' : '/login')
           toast({ title: 'Access Denied', description: 'You do not have permission to view this page.', variant: 'destructive' })
           return
@@ -51,7 +49,7 @@ function AdminDashboardContent() {
         console.error('Error fetching admin data:', error)
         toast({
           title: 'Error',
-          description: 'Failed to load admin dashboard',
+          description: 'Failed to load dashboard',
           variant: 'destructive',
         })
       } finally {
@@ -98,7 +96,7 @@ function AdminDashboardContent() {
         <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
           <SidebarTrigger className="-ml-1" />
           <div className="flex items-center gap-2">
-            <h1 className="text-lg font-semibold">Admin Dashboard</h1>
+            <h1 className="text-lg font-semibold">Secretary Dashboard</h1>
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 md:p-6 pb-24 md:pb-20">
@@ -112,19 +110,14 @@ function AdminDashboardContent() {
 
             <div className={currentTab === 'overview' ? 'block' : 'hidden'}>
               <div className="space-y-4">
-                {/* Stats Overview */}
-                <AdminStats />
-                <RevenueAnalytics />
+                {/* Stats Overview - Revenue hidden */}
+                <AdminStats hideRevenue={true} />
                 <AttendanceOverview />
               </div>
             </div>
 
             <div className={currentTab === 'members' ? 'block' : 'hidden'}>
               <MembersList />
-            </div>
-
-            <div className={currentTab === 'staff' ? 'block' : 'hidden'}>
-              <StaffList />
             </div>
 
             <div className={currentTab === 'payments' ? 'block' : 'hidden'}>
@@ -137,10 +130,6 @@ function AdminDashboardContent() {
             <div className={currentTab === 'attendance' ? 'block' : 'hidden'}>
               <AttendanceOverview />
             </div>
-
-            <div className={currentTab === 'revenue' ? 'block' : 'hidden'}>
-              <RevenueAnalytics />
-            </div>
           </div>
         </div>
         <AdminMobileNav role={adminData.role} />
@@ -149,14 +138,14 @@ function AdminDashboardContent() {
   )
 }
 
-export default function AdminDashboard() {
+export default function SecretaryDashboard() {
   return (
     <Suspense fallback={
       <div className="flex min-h-screen items-center justify-center">
         <Spinner className="h-8 w-8 text-primary" />
       </div>
     }>
-      <AdminDashboardContent />
+      <SecretaryDashboardContent />
     </Suspense>
   )
 }

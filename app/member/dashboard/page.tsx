@@ -266,6 +266,7 @@ import MemberProfile from '@/components/member/member-profile'
 import AttendanceHistory from '@/components/member/attendance-history'
 import ProgressNotes from '@/components/member/progress-notes'
 import QRCodeDisplay from '@/components/member/qr-code-display'
+import { Spinner } from '@/components/ui/spinner'
 
 interface MemberData {
   id: string
@@ -371,7 +372,7 @@ function MemberDashboardContent() {
   if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <p className="text-muted-foreground">Loading...</p>
+        <Spinner className="h-8 w-8 text-primary" />
       </div>
     )
   }
@@ -519,7 +520,7 @@ export default function MemberDashboard() {
   return (
     <Suspense fallback={
       <div className="flex min-h-screen items-center justify-center">
-        <p className="text-muted-foreground">Loading...</p>
+        <Spinner className="h-8 w-8 text-primary" />
       </div>
     }>
       <MemberDashboardContent />

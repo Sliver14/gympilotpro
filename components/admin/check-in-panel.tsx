@@ -8,7 +8,8 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { AlertCircle, CheckCircle, Camera, Loader2, RefreshCw, Clock, Search, User } from 'lucide-react'
+import { AlertCircle, CheckCircle, Camera, RefreshCw, Clock, Search, User } from 'lucide-react'
+import { Spinner } from '@/components/ui/spinner'
 
 interface MemberInfo {
   id: string
@@ -266,7 +267,7 @@ export default function CheckInPanel() {
         {(isScanning || isValidating) && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/40">
             {isValidating ? (
-              <Loader2 className="h-12 w-12 animate-spin text-white" />
+              <Spinner className="h-12 w-12 text-white" />
             ) : (
               <div className="text-white text-center">
                 <p className="text-lg font-medium">Scanning...</p>
@@ -305,7 +306,7 @@ export default function CheckInPanel() {
             <div className="max-h-64 overflow-y-auto border rounded-md">
               {searchLoading ? (
                 <div className="p-4 text-center text-muted-foreground">
-                  <Loader2 className="h-5 w-5 animate-spin mx-auto" />
+                  <Spinner className="h-5 w-5 mx-auto" />
                 </div>
               ) : filteredMembers.length > 0 ? (
                 <div className="divide-y">

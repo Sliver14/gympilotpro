@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge'
 import { useToast } from '@/hooks/use-toast'
 import { Users, Search, RefreshCw, UserCheck } from 'lucide-react'
 import RegisterStaffDialog from './register-staff-dialog'
+import { Spinner } from '@/components/ui/spinner'
 
 interface Staff {
   id: string
@@ -72,7 +73,7 @@ export default function StaffList() {
     return (
       <Card>
         <CardContent className="flex items-center justify-center py-12">
-          <p className="text-muted-foreground">Loading staff members...</p>
+          <Spinner className="h-8 w-8 text-primary" />
         </CardContent>
       </Card>
     )

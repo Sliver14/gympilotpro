@@ -11,9 +11,16 @@ export async function GET(
 
     const currentUser = await getCurrentUser()
 
-    if (!currentUser || currentUser.id !== id) {
+    if (!currentUser) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const isStaff = ['admin', 'secretary', 'trainer'].includes(currentUser.role)
+    const isOwner = currentUser.id === id
+
+    if (!isStaff && !isOwner) {
       return NextResponse.json(
-        { error: 'Unauthorized' },
+        { error: 'Unauthorized - you do not have permission to view this attendance' },
         { status: 401 }
       )
     }
