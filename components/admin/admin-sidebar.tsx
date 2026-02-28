@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/sidebar'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
-import { Dumbbell, QrCode, TrendingUp, Users, Calendar, CreditCard, LogOut, Settings } from 'lucide-react'
+import { Dumbbell, QrCode, TrendingUp, Users, Calendar, CreditCard, LogOut, Settings, UserCheck, Wallet } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -55,6 +55,18 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
       url: '/admin/dashboard?tab=members',
       icon: Users,
       active: currentTab === 'members',
+    },
+    {
+      title: 'Staff',
+      url: '/admin/dashboard?tab=staff',
+      icon: UserCheck,
+      active: currentTab === 'staff',
+    },
+    {
+      title: 'Payments',
+      url: '/admin/dashboard?tab=payments',
+      icon: Wallet,
+      active: currentTab === 'payments',
     },
     {
       title: 'Attendance',

@@ -9,6 +9,7 @@ export interface SignupFormData {
   lastName: string
   email: string
   phoneNumber: string
+  birthday?: string
   gender: string
   hearAboutUs?: string
 
@@ -25,7 +26,6 @@ export interface SignupFormData {
   // Step 4
   password: string
   confirmPassword: string
-  profileImage?: string
 }
 
 export function useSignup() {
@@ -36,6 +36,7 @@ export function useSignup() {
     lastName: '',
     email: '',
     phoneNumber: '',
+    birthday: '',
     gender: '',
     hearAboutUs: '',
     membershipId: '',
@@ -106,6 +107,7 @@ export function useSignup() {
           firstName: formData.firstName,
           lastName: formData.lastName,
           phoneNumber: formData.phoneNumber,
+          birthday: formData.birthday,
           gender: formData.gender,
           hearAboutUs: formData.hearAboutUs,
 

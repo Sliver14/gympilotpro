@@ -13,13 +13,18 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const { membershipId } = await req.json()
+    const { membershipId, paymentMethod = 'Bank Transfer' } = await req.json()
 
     if (!membershipId) {
       return NextResponse.json(
         { error: 'Membership ID is required', success: false },
         { status: 400 }
       )
+    }
+
+    // Check for Paystack - Coming Soon
+    if (paymentMethod.toLowerCase() === 'paystack') {
+      return NextResponse.json({ error: 'Paystack payment is coming soon. Please use another method for now.', success: false }, { status: 400 })
     }
 
     // Get membership details
@@ -46,40 +51,27 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // Create payment record
+    // Create payment record with pending status
     const payment = await prisma.payment.create({
       data: {
         userId: user.id,
         amount: membership.price,
-        status: 'completed',
-        paymentMethod: 'paystack',
-        description: `Membership renewal - ${membership.name}`,
-        reference: `KLIMARX-${Date.now()}`,
-      },
-    })
-
-    // Calculate new expiry date
-    const newExpiryDate = new Date()
-    newExpiryDate.setDate(newExpiryDate.getDate() + membership.duration)
-
-    // Update member profile with new membership and expiry date
-    await prisma.memberProfile.update({
-      where: { userId: user.id },
-      data: {
-        membershipId,
-        expiryDate: newExpiryDate,
+        status: 'pending',
+        paymentMethod: paymentMethod,
+        description: `Renewal: ${membership.name} (${membership.id})`,
+        reference: `RENEW-${Date.now()}`,
       },
     })
 
     return NextResponse.json({
       success: true,
-      message: 'Membership renewed successfully',
+      message: 'Renewal request sent. Please contact staff for payment confirmation.',
       payment: {
         id: payment.id,
         amount: payment.amount,
         reference: payment.reference,
+        status: payment.status,
       },
-      membershipExpiry: newExpiryDate.toISOString(),
     })
   } catch (error) {
     console.error('Payment renewal error:', error)

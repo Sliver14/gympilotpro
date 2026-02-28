@@ -4,7 +4,7 @@ import { Suspense } from 'react'
 import Link from 'next/link'
 import { usePathname, useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import { QrCode, TrendingUp, Users, Calendar, CreditCard } from 'lucide-react'
+import { QrCode, TrendingUp, Users, Calendar, CreditCard, UserCheck, Wallet } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface AdminMobileNavProps {
@@ -20,6 +20,8 @@ function AdminMobileNavContent({ className }: AdminMobileNavProps) {
     { title: 'Overview', tab: 'overview', icon: TrendingUp },
     { title: 'Check-in', tab: 'check-in', icon: QrCode },
     { title: 'Members', tab: 'members', icon: Users },
+    { title: 'Staff', tab: 'staff', icon: UserCheck },
+    { title: 'Payments', tab: 'payments', icon: Wallet },
     { title: 'Attendance', tab: 'attendance', icon: Calendar },
     { title: 'Revenue', tab: 'revenue', icon: CreditCard },
   ]

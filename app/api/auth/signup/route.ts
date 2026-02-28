@@ -14,6 +14,7 @@ export async function POST(req: NextRequest) {
       firstName,
       lastName,
       phoneNumber,
+      birthday,
       gender,
       hearAboutUs,
       membershipId,
@@ -30,6 +31,7 @@ export async function POST(req: NextRequest) {
       !password ||
       !firstName ||
       !lastName ||
+      !phoneNumber ||
       !membershipId ||
       !paymentMethod ||
       !gender
@@ -69,6 +71,11 @@ export async function POST(req: NextRequest) {
       ? JSON.stringify(fitnessGoals)
       : null
 
+    // Check for Paystack - Coming Soon
+    if (paymentMethod.toLowerCase() === 'paystack') {
+      return NextResponse.json({ error: 'Paystack payment is coming soon. Please use another method for now.' }, { status: 400 })
+    }
+
     // ── NEW: Check if admin is registering and wants instant approval ──
     const currentUser = await getCurrentUser() // null if not authenticated
     const isStaff = currentUser && ['admin', 'secretary', 'trainer'].includes(currentUser.role)
@@ -81,13 +88,14 @@ export async function POST(req: NextRequest) {
         password: hashedPassword,
         firstName,
         lastName,
-        phoneNumber: phoneNumber || null,
+        phoneNumber: phoneNumber,
         role: 'member',
         memberProfile: {
           create: {
             membershipId,
             joinDate,
             expiryDate,
+            birthday: birthday || null,
             gender,
             hearAboutUs: hearAboutUs || null,
             fitnessGoals: goalsJson,
@@ -102,22 +110,19 @@ export async function POST(req: NextRequest) {
       include: { memberProfile: true },
     })
 
-    // ── NEW: If instant approval, create Payment record ──
-    let payment = null
-    if (shouldApproveImmediately) {
-      payment = await prisma.payment.create({
-        data: {
-          userId: user.id,
-          amount: membership.price,
-          status: 'approved',
-          paymentMethod: paymentMethod || 'Cash', // fallback
-          reference: `ADMIN-${Date.now()}`,
-          description: `Admin registration - ${membership.name}`,
-          approvedById: currentUser.id,
-          approvedAt: new Date(),
-        },
-      })
-    }
+    // ── Create Payment record ──
+    await prisma.payment.create({
+      data: {
+        userId: user.id,
+        amount: membership.price,
+        status: shouldApproveImmediately ? 'approved' : 'pending',
+        paymentMethod: paymentMethod || 'Cash',
+        reference: shouldApproveImmediately ? `ADMIN-${Date.now()}` : `REG-${Date.now()}`,
+        description: `New Registration - ${membership.name}`,
+        approvedById: shouldApproveImmediately ? currentUser.id : null,
+        approvedAt: shouldApproveImmediately ? new Date() : null,
+      },
+    })
 
     // Response
     const responseData: any = {

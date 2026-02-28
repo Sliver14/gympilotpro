@@ -3,12 +3,13 @@
 import { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useToast } from '@/hooks/use-toast'
-import { Users, TrendingUp, Calendar } from 'lucide-react'
+import { Users, TrendingUp, Calendar, Clock } from 'lucide-react'
 
 interface Stats {
   totalMembers: number
   activeMembers: number
   todayCheckins: number
+  pendingPayments: number
   monthlyRevenue: number
 }
 
@@ -26,6 +27,7 @@ export default function AdminStats() {
     totalMembers: 0,
     activeMembers: 0,
     todayCheckins: 0,
+    pendingPayments: 0,
     monthlyRevenue: 0,
   })
   const [isLoading, setIsLoading] = useState(true)
@@ -62,8 +64,8 @@ export default function AdminStats() {
 
   if (isLoading) {
     return (
-      <div className="grid gap-4 md:grid-cols-4">
-        {[...Array(4)].map((_, i) => (
+      <div className="grid gap-4 md:grid-cols-5">
+        {[...Array(5)].map((_, i) => (
           <Card key={i}>
             <CardContent className="h-24 animate-pulse bg-muted" />
           </Card>
@@ -73,7 +75,7 @@ export default function AdminStats() {
   }
 
   return (
-    <div className="grid gap-4 md:grid-cols-4">
+    <div className="grid gap-4 md:grid-cols-5">
       {/* Total Members */}
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -82,7 +84,7 @@ export default function AdminStats() {
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{stats.totalMembers.toLocaleString('en-NG')}</div>
-          <p className="text-xs text-muted-foreground">All registered members</p>
+          <p className="text-xs text-muted-foreground">All registered</p>
         </CardContent>
       </Card>
 
@@ -110,11 +112,25 @@ export default function AdminStats() {
         </CardContent>
       </Card>
 
+      {/* Pending Payments */}
+      <Card className={stats.pendingPayments > 0 ? 'border-orange-500 bg-orange-50/10' : ''}>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium">Pending Payments</CardTitle>
+          <Clock className={`h-4 w-4 ${stats.pendingPayments > 0 ? 'text-orange-500 animate-pulse' : 'text-muted-foreground'}`} />
+        </CardHeader>
+        <CardContent>
+          <div className={`text-2xl font-bold ${stats.pendingPayments > 0 ? 'text-orange-600' : ''}`}>
+            {stats.pendingPayments}
+          </div>
+          <p className="text-xs text-muted-foreground">Awaiting approval</p>
+        </CardContent>
+      </Card>
+
       {/* Monthly Revenue */}
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Monthly Revenue</CardTitle>
-          <span className="text-primary text-xl font-bold opacity-50">₦</span> {/* Replaced DollarSign with ₦ */}
+          <span className="text-primary text-xl font-bold opacity-50">₦</span>
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">

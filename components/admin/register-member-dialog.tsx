@@ -45,13 +45,14 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
     lastName: '',
     email: '',
     phoneNumber: '',
+    birthday: '',
     gender: '',
     membershipId: '',
     paymentMethod: '',
     fitnessGoals: [] as string[],
     fitnessGoalsDetails: '',
     startDate: new Date().toISOString().split('T')[0],
-    paymentCompleted: false,
+    paymentCompleted: true,
   })
 
   useEffect(() => {
@@ -73,10 +74,10 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (!formData.firstName || !formData.lastName || !formData.email || !formData.membershipId || !formData.paymentMethod) {
+    if (!formData.firstName || !formData.lastName || !formData.email || !formData.phoneNumber || !formData.membershipId || !formData.paymentMethod) {
       toast({
         title: 'Error',
-        description: 'Please fill in all required fields',
+        description: 'Please fill in all required fields (including phone number)',
         variant: 'destructive',
       })
       return
@@ -112,13 +113,14 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
         lastName: '',
         email: '',
         phoneNumber: '',
+        birthday: '',
         gender: '',
         membershipId: '',
         paymentMethod: '',
         fitnessGoals: [],
         fitnessGoalsDetails: '',
         startDate: new Date().toISOString().split('T')[0],
-        paymentCompleted: false,
+        paymentCompleted: true,
       })
 
       if (onMemberAdded) {
@@ -187,18 +189,64 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="phoneNumber">Phone Number</Label>
+              <Label htmlFor="phoneNumber">Phone Number *</Label>
               <Input
                 id="phoneNumber"
                 type="tel"
                 value={formData.phoneNumber}
                 onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
                 placeholder="08012345678"
+                required
               />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label>Birthday (Optional)</Label>
+              <div className="flex gap-2">
+                <Select
+                  value={formData.birthday?.split('-')[1] || ''}
+                  onValueChange={(day) => {
+                    const month = formData.birthday?.split('-')[0] || '01'
+                    setFormData({ ...formData, birthday: `${month}-${day.padStart(2, '0')}` })
+                  }}
+                >
+                  <SelectTrigger className="w-[80px]">
+                    <SelectValue placeholder="Day" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Array.from({ length: 31 }, (_, i) => (
+                      <SelectItem key={i + 1} value={(i + 1).toString()}>
+                        {i + 1}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                <Select
+                  value={formData.birthday?.split('-')[0] || ''}
+                  onValueChange={(month) => {
+                    const day = formData.birthday?.split('-')[1] || '01'
+                    setFormData({ ...formData, birthday: `${month.padStart(2, '0')}-${day}` })
+                  }}
+                >
+                  <SelectTrigger className="flex-1">
+                    <SelectValue placeholder="Month" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {[
+                      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+                    ].map((m, i) => (
+                      <SelectItem key={i + 1} value={(i + 1).toString()}>
+                        {m}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
             <div className="space-y-2">
               <Label htmlFor="gender">Gender</Label>
               <Select
@@ -212,24 +260,6 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
                   {GENDER_OPTIONS.map((opt) => (
                     <SelectItem key={opt.value} value={opt.value}>
                       {opt.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="membership">Membership Plan *</Label>
-              <Select
-                value={formData.membershipId}
-                onValueChange={(value) => setFormData({ ...formData, membershipId: value })}
-              >
-                <SelectTrigger id="membership">
-                  <SelectValue placeholder="Select plan" />
-                </SelectTrigger>
-                <SelectContent>
-                  {memberships.map((m) => (
-                    <SelectItem key={m.id} value={m.id}>
-                      {m.name} - #{m.price}
                     </SelectItem>
                   ))}
                 </SelectContent>

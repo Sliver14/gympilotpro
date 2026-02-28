@@ -19,11 +19,19 @@ interface Membership {
 export default function RenewMembershipPage() {
   const [memberships, setMemberships] = useState<Membership[]>([])
   const [selectedId, setSelectedId] = useState<string>('')
+  const [paymentMethod, setPaymentMethod] = useState<string>('Bank Transfer')
   const [isLoading, setIsLoading] = useState(true)
   const [isProcessing, setIsProcessing] = useState(false)
   const [paymentStatus, setPaymentStatus] = useState<'idle' | 'processing' | 'success' | 'failed'>('idle')
   const router = useRouter()
   const { toast } = useToast()
+
+  const PAYMENT_METHODS = [
+    { id: 'Bank Transfer', name: 'Bank Transfer', comingSoon: false },
+    { id: 'POS', name: 'POS / Card', comingSoon: false },
+    { id: 'Cash', name: 'Cash', comingSoon: false },
+    { id: 'Paystack', name: 'Paystack', comingSoon: true },
+  ]
 
   useEffect(() => {
     const fetchMemberships = async () => {
@@ -61,6 +69,14 @@ export default function RenewMembershipPage() {
       return
     }
 
+    if (paymentMethod === 'Paystack') {
+      toast({
+        title: 'Coming Soon',
+        description: 'Paystack payment is not yet available.',
+      })
+      return
+    }
+
     setIsProcessing(true)
     setPaymentStatus('processing')
 
@@ -69,7 +85,7 @@ export default function RenewMembershipPage() {
       const response = await fetch('/api/payments/renew', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ membershipId: selectedId }),
+        body: JSON.stringify({ membershipId: selectedId, paymentMethod }),
       })
 
       const data = await response.json()
@@ -77,18 +93,18 @@ export default function RenewMembershipPage() {
       if (data.success) {
         setPaymentStatus('success')
         toast({
-          title: 'Success',
-          description: 'Membership renewed successfully!',
+          title: 'Renewal Request Sent',
+          description: data.message || 'Membership renewal request has been sent for approval.',
         })
-        // Redirect after 2 seconds
+        // Redirect after 3 seconds
         setTimeout(() => {
           router.push('/member/dashboard')
-        }, 2000)
+        }, 3000)
       } else {
         setPaymentStatus('failed')
         toast({
-          title: 'Payment Failed',
-          description: data.message || 'Failed to process payment',
+          title: 'Renewal Failed',
+          description: data.message || 'Failed to process renewal request',
           variant: 'destructive',
         })
       }
@@ -97,7 +113,7 @@ export default function RenewMembershipPage() {
       setPaymentStatus('failed')
       toast({
         title: 'Error',
-        description: 'An error occurred during payment processing',
+        description: 'An error occurred during renewal processing',
         variant: 'destructive',
       })
     } finally {
@@ -167,12 +183,49 @@ export default function RenewMembershipPage() {
                     <p className="text-sm text-muted-foreground">{membership.duration} days</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-2xl font-bold text-primary">${membership.price}</p>
+                    <p className="text-2xl font-bold text-primary">₦{membership.price.toLocaleString('en-NG')}</p>
                   </div>
                 </div>
                 <p className="mt-3 text-sm">{membership.description}</p>
               </div>
             ))}
+
+            <h2 className="text-xl font-semibold mt-8">Select Payment Method</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              {PAYMENT_METHODS.map((method) => (
+                <div
+                  key={method.id}
+                  className={`relative cursor-pointer rounded-lg border-2 p-4 text-center transition-all ${
+                    paymentMethod === method.id
+                      ? 'border-primary bg-primary/5'
+                      : 'border-border hover:border-primary/50'
+                  } ${method.comingSoon ? 'opacity-60 cursor-not-allowed' : ''}`}
+                  onClick={() => !method.comingSoon && setPaymentMethod(method.id)}
+                >
+                  <p className="font-medium text-sm">{method.name}</p>
+                  {method.comingSoon && (
+                    <Badge variant="secondary" className="absolute -top-2 -right-2 text-[8px] px-1 py-0 h-4">
+                      Coming Soon
+                    </Badge>
+                  )}
+                </div>
+              ))}
+            </div>
+            
+            {paymentMethod === 'Bank Transfer' && (
+              <div className="p-4 rounded-lg bg-yellow-50 dark:bg-yellow-950/20 border border-yellow-200 dark:border-yellow-900 mt-4">
+                <p className="text-xs font-medium text-yellow-800 dark:text-yellow-500 mb-1 flex items-center gap-1">
+                  <AlertCircle className="h-3 w-3" />
+                  Bank Transfer Instructions
+                </p>
+                <div className="text-xs text-yellow-700 dark:text-yellow-600 space-y-1">
+                  <p>Account Name: KLIMARX SPACE ENTERPRISES</p>
+                  <p>Bank: FIRST CITY MONUMENT BANK (FCMB)</p>
+                  <p>Account Number: 1042020132</p>
+                  <p className="mt-2 font-semibold">After payment, send your proof of transfer to WhatsApp: 07048430667</p>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Summary */}
@@ -193,9 +246,13 @@ export default function RenewMembershipPage() {
                         <span className="text-sm text-muted-foreground">Duration</span>
                         <span className="text-sm font-medium">{selectedMembership.duration} days</span>
                       </div>
+                      <div className="flex justify-between">
+                        <span className="text-sm text-muted-foreground">Method</span>
+                        <span className="text-sm font-medium">{paymentMethod}</span>
+                      </div>
                       <div className="border-t border-border pt-3 flex justify-between">
                         <span className="font-semibold">Total</span>
-                        <span className="text-lg font-bold text-primary">${selectedMembership.price.toFixed(2)}</span>
+                        <span className="text-lg font-bold text-primary">₦{selectedMembership.price.toLocaleString('en-NG')}</span>
                       </div>
                     </div>
 
@@ -205,11 +262,11 @@ export default function RenewMembershipPage() {
                       className="w-full"
                       size="lg"
                     >
-                      {isProcessing ? 'Processing Payment...' : 'Renew Membership'}
+                      {isProcessing ? 'Processing...' : 'Request Renewal'}
                     </Button>
 
                     <p className="text-xs text-center text-muted-foreground">
-                      Payment is secure and encrypted
+                      Staff will verify your payment and activate your membership
                     </p>
                   </>
                 ) : (
@@ -223,13 +280,12 @@ export default function RenewMembershipPage() {
         {/* Payment Methods Info */}
         <Card className="mt-8 border-dashed">
           <CardHeader>
-            <CardTitle className="text-base">Payment Methods</CardTitle>
+            <CardTitle className="text-base">Important Information</CardTitle>
           </CardHeader>
           <CardContent className="text-sm text-muted-foreground space-y-2">
-            <p>• Paystack (Credit/Debit Card, Mobile Money)</p>
-            <p>• Bank Transfer</p>
-            <p>• E-Wallet (if configured)</p>
-            <p>All payments are securely processed through Paystack</p>
+            <p>• For manual payments (Bank Transfer, POS, Cash), your membership will be renewed once staff confirms the payment.</p>
+            <p>• For faster verification of Bank Transfer, please send proof of payment to our WhatsApp line.</p>
+            <p>• Membership expiry date will be calculated from the moment of approval.</p>
           </CardContent>
         </Card>
       </div>

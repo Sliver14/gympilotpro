@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Badge } from '@/components/ui/badge'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -43,7 +44,12 @@ const HEAR_ABOUT_US_OPTIONS = [
   'Other',
 ]
 
-const PAYMENT_METHODS = ['Cash', 'Bank Transfer', 'POS / Card']
+const PAYMENT_METHODS = [
+  { id: 'Cash', name: 'Cash', comingSoon: false },
+  { id: 'Bank Transfer', name: 'Bank Transfer', comingSoon: false },
+  { id: 'POS / Card', name: 'POS / Card', comingSoon: false },
+  { id: 'Paystack', name: 'Paystack', comingSoon: true },
+]
 
 const BANK_TRANSFER_DETAILS = `KLIMARX SPACE ENTERPRISES
 FIRST CITY MONUMENT BANK (FCMB)
@@ -358,30 +364,78 @@ export default function SignupPage() {
                   )}
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="phoneNumber">Phone Number *</Label>
-                  <Input
-                    id="phoneNumber"
-                    type="tel"
-                    value={formData.phoneNumber}
-                    onChange={(e) => {
-                      updateFormData({ phoneNumber: e.target.value })
-                      if (fieldErrors.phoneNumber) {
-                          setFieldErrors((prev) => {
-                            const { phoneNumber, ...rest } = prev
-                            return rest
-                          })
-                      }
-                      if (error) setError(null)
-                    }}
-                    className={cn(fieldErrors.phoneNumber && 'border-destructive focus-visible:ring-destructive')}
-                  />
-                  {fieldErrors.phoneNumber && (
-                    <p className="text-sm text-destructive flex items-center gap-1">
-                      <AlertCircle className="h-3 w-3" />
-                      {fieldErrors.phoneNumber}
-                    </p>
-                  )}
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div className="space-y-2">
+                    <Label htmlFor="phoneNumber">Phone Number *</Label>
+                    <Input
+                      id="phoneNumber"
+                      type="tel"
+                      value={formData.phoneNumber}
+                      onChange={(e) => {
+                        updateFormData({ phoneNumber: e.target.value })
+                        if (fieldErrors.phoneNumber) {
+                            setFieldErrors((prev) => {
+                              const { phoneNumber, ...rest } = prev
+                              return rest
+                            })
+                        }
+                        if (error) setError(null)
+                      }}
+                      className={cn(fieldErrors.phoneNumber && 'border-destructive focus-visible:ring-destructive')}
+                    />
+                    {fieldErrors.phoneNumber && (
+                      <p className="text-sm text-destructive flex items-center gap-1">
+                        <AlertCircle className="h-3 w-3" />
+                        {fieldErrors.phoneNumber}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label>Birthday (Optional)</Label>
+                    <div className="flex gap-2">
+                      <Select
+                        value={formData.birthday?.split('-')[1] || ''}
+                        onValueChange={(day) => {
+                          const month = formData.birthday?.split('-')[0] || '01'
+                          updateFormData({ birthday: `${month}-${day.padStart(2, '0')}` })
+                        }}
+                      >
+                        <SelectTrigger className="w-[100px]">
+                          <SelectValue placeholder="Day" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {Array.from({ length: 31 }, (_, i) => (
+                            <SelectItem key={i + 1} value={(i + 1).toString()}>
+                              {i + 1}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+
+                      <Select
+                        value={formData.birthday?.split('-')[0] || ''}
+                        onValueChange={(month) => {
+                          const day = formData.birthday?.split('-')[1] || '01'
+                          updateFormData({ birthday: `${month.padStart(2, '0')}-${day}` })
+                        }}
+                      >
+                        <SelectTrigger className="flex-1">
+                          <SelectValue placeholder="Month" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {[
+                            'January', 'February', 'March', 'April', 'May', 'June',
+                            'July', 'August', 'September', 'October', 'November', 'December'
+                          ].map((m, i) => (
+                            <SelectItem key={i + 1} value={(i + 1).toString()}>
+                              {m}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
@@ -417,7 +471,7 @@ export default function SignupPage() {
                           }}
                         >
                           <h3 className="font-semibold">{m.name}</h3>
-                          <p className="text-2xl font-bold text-primary">#{m.price}</p>
+                          <p className="text-2xl font-bold text-primary">₦{m.price.toLocaleString('en-NG')}</p>
                           <p className="text-xs text-muted-foreground">{m.duration} days</p>
                           <p className="mt-2 text-sm text-muted-foreground">{m.description}</p>
                         </div>
@@ -434,19 +488,21 @@ export default function SignupPage() {
 
                 <div className="space-y-4">
                   <Label>Payment Method (to be confirmed by staff) *</Label>
-                  <div className="grid gap-3 md:grid-cols-3">
+                  <div className="grid gap-3 md:grid-cols-2">
                     {PAYMENT_METHODS.map((method) => (
                       <div
-                        key={method}
+                        key={method.id}
                         className={cn(
-                          'cursor-pointer rounded-lg border-2 p-4 text-center transition-colors',
-                          formData.paymentMethod === method
+                          'relative cursor-pointer rounded-lg border-2 p-4 text-center transition-colors',
+                          formData.paymentMethod === method.id
                             ? 'border-primary bg-primary/5'
                             : 'border-border hover:border-primary/50',
-                          fieldErrors.paymentMethod && !formData.paymentMethod && 'border-destructive'
+                          fieldErrors.paymentMethod && !formData.paymentMethod && 'border-destructive',
+                          method.comingSoon && 'opacity-60 cursor-not-allowed'
                         )}
                         onClick={() => {
-                          updateFormData({ paymentMethod: method })
+                          if (method.comingSoon) return
+                          updateFormData({ paymentMethod: method.id })
                           setPaymentConfirmed(false)
                           if (fieldErrors.paymentMethod) {
                             setFieldErrors((prev) => {
@@ -457,7 +513,12 @@ export default function SignupPage() {
                           if (error) setError(null)
                         }}
                       >
-                        {method}
+                        {method.name}
+                        {method.comingSoon && (
+                          <Badge variant="secondary" className="absolute -top-2 -right-2 text-[8px] px-1 py-0 h-4">
+                            Coming Soon
+                          </Badge>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -714,6 +775,7 @@ export default function SignupPage() {
                           firstName: formData.firstName,
                           lastName: formData.lastName,
                           phoneNumber: formData.phoneNumber,
+                          birthday: formData.birthday,
                           gender: formData.gender,
                           hearAboutUs: formData.hearAboutUs,
                           membershipId: formData.membershipId,

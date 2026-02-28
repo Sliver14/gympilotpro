@@ -12,6 +12,8 @@ import { AdminSidebar } from '@/components/admin/admin-sidebar'
 import { AdminMobileNav } from '@/components/admin/admin-mobile-nav'
 import AdminStats from '@/components/admin/admin-stats'
 import MembersList from '@/components/admin/members-list'
+import StaffList from '@/components/admin/staff-list'
+import PendingPayments from '@/components/admin/pending-payments'
 import RevenueAnalytics from '@/components/admin/revenue-analytics'
 import AttendanceOverview from '@/components/admin/attendance-overview'
 import CheckInPanel from '@/components/admin/check-in-panel'
@@ -117,6 +119,14 @@ function AdminDashboardContent() {
 
             <div className={currentTab === 'members' ? 'block' : 'hidden'}>
               <MembersList />
+            </div>
+
+            <div className={currentTab === 'staff' ? 'block' : 'hidden'}>
+              <StaffList />
+            </div>
+
+            <div className={currentTab === 'payments' ? 'block' : 'hidden'}>
+              <PendingPayments />
             </div>
 
             <div className={currentTab === 'attendance' ? 'block' : 'hidden'}>

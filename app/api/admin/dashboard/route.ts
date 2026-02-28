@@ -39,6 +39,7 @@ export async function GET() {
       totalMembers,
       activeMembers,
       todayCheckins,
+      pendingPaymentsCount,
       monthlyRevenueResult,
       payments,
       attendance,
@@ -62,6 +63,12 @@ export async function GET() {
             gte: todayStart,
             lte: todayEnd,
           },
+        },
+      }),
+      // Pending payments
+      prisma.payment.count({
+        where: {
+          status: 'pending',
         },
       }),
       // Monthly revenue (aggregate)
@@ -177,6 +184,7 @@ export async function GET() {
         totalMembers,
         activeMembers,
         todayCheckins,
+        pendingPayments: pendingPaymentsCount,
         monthlyRevenue: monthlyRevenueResult._sum.amount || 0,
       },
       revenueData,
