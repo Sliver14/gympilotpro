@@ -429,7 +429,7 @@ function MemberDashboardContent() {
                     Your membership expires in {daysUntilExpiry} days on {expiryDate.toLocaleDateString()}. Extend your subscription now to stay active.
                   </p>
                   <Link href="/member/renew-membership">
-                    <Button size="sm" className="mt-2" variant="outline" className="gap-2">
+                    <Button size="sm" variant="outline" className="mt-2 gap-2">
                       Extend Subscription
                     </Button>
                   </Link>
