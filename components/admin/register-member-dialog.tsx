@@ -332,6 +332,7 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
                 type="date"
                 value={formData.startDate}
                 onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
+                max={new Date().toISOString().split('T')[0]}
                 required
               />
             </div>

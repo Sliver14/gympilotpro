@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { useToast } from '@/hooks/use-toast'
 import { RefreshCw, Wallet } from 'lucide-react'
@@ -35,6 +36,7 @@ export default function ManualRenewalDialog({ memberId, memberName, onRenewed }:
   const [formData, setFormData] = useState({
     membershipId: '',
     paymentMethod: 'Cash',
+    startDate: new Date().toISOString().split('T')[0],
   })
 
   useEffect(() => {
@@ -56,10 +58,10 @@ export default function ManualRenewalDialog({ memberId, memberName, onRenewed }:
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (!formData.membershipId || !formData.paymentMethod) {
+    if (!formData.membershipId || !formData.paymentMethod || !formData.startDate) {
       toast({
         title: 'Error',
-        description: 'Please select a membership plan and payment method',
+        description: 'Please fill in all required fields',
         variant: 'destructive',
       })
       return
@@ -89,6 +91,11 @@ export default function ManualRenewalDialog({ memberId, memberName, onRenewed }:
       })
 
       setOpen(false)
+      setFormData({
+        membershipId: '',
+        paymentMethod: 'Cash',
+        startDate: new Date().toISOString().split('T')[0],
+      })
       if (onRenewed) onRenewed()
     } catch (error: any) {
       toast({
@@ -100,6 +107,8 @@ export default function ManualRenewalDialog({ memberId, memberName, onRenewed }:
       setIsLoading(false)
     }
   }
+
+  const today = new Date().toISOString().split('T')[0]
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -136,23 +145,36 @@ export default function ManualRenewalDialog({ memberId, memberName, onRenewed }:
             </Select>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="paymentMethod">Payment Method *</Label>
-            <Select
-              value={formData.paymentMethod}
-              onValueChange={(value) => setFormData({ ...formData, paymentMethod: value })}
-            >
-              <SelectTrigger id="paymentMethod">
-                <SelectValue placeholder="Select payment method" />
-              </SelectTrigger>
-              <SelectContent>
-                {PAYMENT_METHODS.map((method) => (
-                  <SelectItem key={method} value={method}>
-                    {method}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="startDate">Start Date *</Label>
+              <Input
+                id="startDate"
+                type="date"
+                value={formData.startDate}
+                onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
+                max={today}
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="paymentMethod">Payment Method *</Label>
+              <Select
+                value={formData.paymentMethod}
+                onValueChange={(value) => setFormData({ ...formData, paymentMethod: value })}
+              >
+                <SelectTrigger id="paymentMethod">
+                  <SelectValue placeholder="Select method" />
+                </SelectTrigger>
+                <SelectContent>
+                  {PAYMENT_METHODS.map((method) => (
+                    <SelectItem key={method} value={method}>
+                      {method}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
           <DialogFooter>

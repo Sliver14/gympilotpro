@@ -169,3 +169,13 @@ model Payment {
   // Common filter pattern: approved payments by recency
   @@index([status, createdAt])
 }
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  email     String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([email])
+}

@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json()
-    const { memberId, membershipId, paymentMethod } = body
+    const { memberId, membershipId, paymentMethod, startDate } = body
 
     if (!memberId || !membershipId || !paymentMethod) {
       return NextResponse.json(
@@ -44,10 +44,11 @@ export async function POST(req: NextRequest) {
 
     const now = new Date()
     let newExpiryDate: Date
+    const baseDate = startDate ? new Date(startDate) : now
 
-    // If already expired, start from now. If active, extend it.
-    if (new Date(memberProfile.expiryDate) < now) {
-      newExpiryDate = new Date(now)
+    // If already expired, start from baseDate. If active, extend it.
+    if (new Date(memberProfile.expiryDate) < baseDate) {
+      newExpiryDate = new Date(baseDate)
     } else {
       newExpiryDate = new Date(memberProfile.expiryDate)
     }
