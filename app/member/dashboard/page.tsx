@@ -398,7 +398,7 @@ function MemberDashboardContent() {
             <h1 className="text-lg font-semibold">Member Dashboard</h1>
           </div>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4 md:p-6 md:pb-20">
+        <div className="flex flex-1 flex-col gap-4 p-4 md:p-6 pb-24 md:pb-20">
           {/* Membership Status Alert */}
           {membershipStatus === 'expired' && (
             <Card className="border-destructive bg-destructive/5">
@@ -426,11 +426,11 @@ function MemberDashboardContent() {
                 <div>
                   <h3 className="font-semibold text-yellow-600">Membership Expiring Soon</h3>
                   <p className="text-sm text-muted-foreground">
-                    Your membership expires in {daysUntilExpiry} days on {expiryDate.toLocaleDateString()}. Consider renewing early.
+                    Your membership expires in {daysUntilExpiry} days on {expiryDate.toLocaleDateString()}. Extend your subscription now to stay active.
                   </p>
                   <Link href="/member/renew-membership">
-                    <Button size="sm" className="mt-2" variant="outline">
-                      Renew Now
+                    <Button size="sm" className="mt-2" variant="outline" className="gap-2">
+                      Extend Subscription
                     </Button>
                   </Link>
                 </div>
@@ -438,55 +438,75 @@ function MemberDashboardContent() {
             </Card>
           )}
 
-          {/* Stats Grid */}
-          <div className="grid gap-4 md:grid-cols-3">
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium">Membership Status</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-2xl font-bold">{memberData.memberProfile.membership.name}</p>
-                <p className="text-xs text-muted-foreground">
-                  {membershipStatus === 'active' && 'Active'}
-                  {membershipStatus === 'expiring' && 'Expiring Soon'}
-                  {membershipStatus === 'expired' && 'Expired'}
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium">Days Remaining</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-2xl font-bold">{Math.max(0, daysUntilExpiry)}</p>
-                <p className="text-xs text-muted-foreground">Until {expiryDate.toLocaleDateString()}</p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium">This Month</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-2xl font-bold">
-                  {memberData?.monthlyVisits ?? attendanceHistory.filter((a) => {
-                    const date = new Date(a.checkInTime)
-                    const now = new Date()
-                    return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear()
-                  }).length}
-                </p>
-                <p className="text-xs text-muted-foreground">Visits</p>
-              </CardContent>
-            </Card>
-          </div>
-
           {/* Tab Content */}
           <div className="space-y-4">
-            {currentTab === 'overview' && <MemberProfile memberData={memberData} />}
-            {currentTab === 'qr-code' && <QRCodeDisplay memberId={memberData.id} />}
-            {currentTab === 'attendance' && <AttendanceHistory attendance={attendanceHistory} />}
-            {currentTab === 'progress' && <ProgressNotes memberId={memberData.id} />}
+            <div className={currentTab === 'overview' ? 'block' : 'hidden'}>
+              <div className="space-y-6">
+                {/* Stats Grid */}
+                <div className="grid gap-4 md:grid-cols-3">
+                  <Card>
+                    <CardHeader className="pb-3 flex flex-row items-center justify-between space-y-0">
+                      <CardTitle className="text-sm font-medium">Membership Status</CardTitle>
+                      {membershipStatus !== 'expired' && (
+                        <Link href="/member/renew-membership">
+                          <Button variant="ghost" size="sm" className="h-8 px-2 text-xs font-semibold text-primary hover:bg-primary/10">
+                            Extend
+                          </Button>
+                        </Link>
+                      )}
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-2xl font-bold">{memberData.memberProfile.membership.name}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {membershipStatus === 'active' && 'Active'}
+                        {membershipStatus === 'expiring' && 'Expiring Soon'}
+                        {membershipStatus === 'expired' && 'Expired'}
+                      </p>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-sm font-medium">Days Remaining</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-2xl font-bold">{Math.max(0, daysUntilExpiry)}</p>
+                      <p className="text-xs text-muted-foreground">Until {expiryDate.toLocaleDateString()}</p>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-sm font-medium">This Month</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-2xl font-bold">
+                        {memberData?.monthlyVisits ?? attendanceHistory.filter((a) => {
+                          const date = new Date(a.checkInTime)
+                          const now = new Date()
+                          return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear()
+                        }).length}
+                      </p>
+                      <p className="text-xs text-muted-foreground">Visits</p>
+                    </CardContent>
+                  </Card>
+                </div>
+                
+                <MemberProfile memberData={memberData} />
+              </div>
+            </div>
+
+            <div className={currentTab === 'qr-code' ? 'block' : 'hidden'}>
+              <QRCodeDisplay memberId={memberData.id} />
+            </div>
+
+            <div className={currentTab === 'attendance' ? 'block' : 'hidden'}>
+              <AttendanceHistory attendance={attendanceHistory} />
+            </div>
+
+            <div className={currentTab === 'progress' ? 'block' : 'hidden'}>
+              <ProgressNotes memberId={memberData.id} />
+            </div>
           </div>
         </div>
         <MemberMobileNav />

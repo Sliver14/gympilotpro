@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { useToast } from '@/hooks/use-toast'
-import { Dumbbell, AlertCircle, CheckCircle } from 'lucide-react'
+import { Dumbbell, AlertCircle, CheckCircle, ArrowLeft } from 'lucide-react'
 
 interface Membership {
   id: string
@@ -132,6 +132,18 @@ export default function RenewMembershipPage() {
   return (
     <div className="min-h-screen bg-background py-8">
       <div className="container mx-auto px-4">
+        {/* Back Button */}
+        <div className="mb-6">
+          <Button
+            variant="ghost"
+            onClick={() => router.push('/member/dashboard')}
+            className="gap-2 -ml-2 text-muted-foreground hover:text-primary"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back to Dashboard
+          </Button>
+        </div>
+
         {/* Header */}
         <div className="mb-8 flex items-center justify-center gap-2">
           <Dumbbell className="h-6 w-6 text-primary" />

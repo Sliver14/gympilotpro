@@ -100,7 +100,7 @@ function AdminDashboardContent() {
             <h1 className="text-lg font-semibold">Admin Dashboard</h1>
           </div>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4 md:p-6 md:pb-20">
+        <div className="flex flex-1 flex-col gap-4 p-4 md:p-6 pb-24 md:pb-20">
           {/* Tab Content */}
           <div className="space-y-4">
             <div className={currentTab === 'check-in' ? 'block' : 'hidden'}>

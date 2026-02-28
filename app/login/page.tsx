@@ -106,10 +106,10 @@ export default function LoginPage() {
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="w-full max-w-md">
         {/* Logo */}
-        <div className="mb-8 flex items-center justify-center gap-2">
+        <Link href="/" className="mb-8 flex items-center justify-center gap-2 hover:opacity-80 transition-opacity">
           <Dumbbell className="h-8 w-8 text-primary" />
           <span className="text-2xl font-bold">Klimarx Space</span>
-        </div>
+        </Link>
 
         {/* Login Card */}
         <Card>
