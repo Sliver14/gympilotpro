@@ -59,6 +59,7 @@ model MemberProfile {
   joinDate   DateTime @default(now())
   expiryDate DateTime
 
+  birthday            DateTime?
   gender              String?
   hearAboutUs         String?
   fitnessGoals        String?
