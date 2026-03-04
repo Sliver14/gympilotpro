@@ -15,6 +15,7 @@ model User {
   firstName   String
   lastName    String
   phoneNumber String?
+  profileImage String?
   role        String    @default("member") // admin, secretary, trainer, member
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -66,7 +67,6 @@ model MemberProfile {
   fitnessGoalsDetails String?
   paymentMethod       String?
   fingerprint         String?
-  profileImage        String?
   emergencyContact    String?
   emergencyPhone      String?
   qrCode              String? @unique

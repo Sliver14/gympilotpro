@@ -24,7 +24,7 @@ interface Member {
   }
 }
 
-export default function MembersList() {
+export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => void }) {
   const [members, setMembers] = useState<Member[]>([])
   const [filteredMembers, setFilteredMembers] = useState<Member[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -123,7 +123,10 @@ export default function MembersList() {
             <CardDescription>{members.length} total members</CardDescription>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <RegisterMemberDialog onMemberAdded={fetchMembers} />
+            <RegisterMemberDialog onMemberAdded={() => {
+              fetchMembers()
+              if (onMemberAdded) onMemberAdded()
+            }} />
             <Button onClick={fetchMembers} variant="outline" size="sm" className="gap-2">
               <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
               Refresh

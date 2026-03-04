@@ -58,7 +58,7 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json()
-    const {
+    let {
       email,
       password,
       firstName,
@@ -74,6 +74,9 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       )
     }
+
+    // Normalize email
+    email = email.toLowerCase().trim()
 
     // Basic email check
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {

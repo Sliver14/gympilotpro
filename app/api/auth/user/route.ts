@@ -18,6 +18,9 @@ export async function GET() {
       firstName: user.firstName,
       lastName: user.lastName,
       role: user.role,
+      profileImage: user.profileImage || null,
+      memberProfile: user.memberProfile || null,
+      staffProfile: user.staffProfile || null,
     })
   } catch (error) {
     console.error('Get user error:', error)

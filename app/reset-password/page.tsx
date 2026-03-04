@@ -42,10 +42,10 @@ function ResetPasswordContent() {
       return
     }
 
-    if (password.length < 8) {
+    if (password.length < 4) {
       toast({
         title: 'Error',
-        description: 'Password must be at least 8 characters long',
+        description: 'Password must be at least 4 characters long',
         variant: 'destructive',
       })
       return

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, Suspense } from 'react'
+import { useEffect, useState, Suspense, useCallback } from 'react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
@@ -26,6 +26,7 @@ interface MemberData {
   firstName: string
   lastName: string
   phoneNumber: string
+  profileImage?: string | null
   monthlyVisits?: number
   memberProfile: {
     expiryDate: string
@@ -57,56 +58,56 @@ function MemberDashboardContent() {
   const { toast } = useToast()
   const currentTab = searchParams.get('tab') || 'overview'
 
-  useEffect(() => {
-    const fetchMemberData = async () => {
-      try {
-        // Single aggregated API call instead of 3 separate calls
-        const response = await fetch('/api/member/dashboard')
-        if (!response.ok) {
-          if (response.status === 401) {
-            router.push('/login')
-            return
-          }
-          throw new Error('Failed to fetch dashboard data')
+  const fetchMemberData = useCallback(async (silent = false) => {
+    if (!silent) setIsLoading(true)
+    try {
+      // Single aggregated API call instead of 3 separate calls
+      const response = await fetch('/api/member/dashboard')
+      if (!response.ok) {
+        if (response.status === 401) {
+          router.push('/login')
+          return
         }
+        throw new Error('Failed to fetch dashboard data')
+      }
 
-        const data = await response.json()
-        setMemberData(data.member)
-        setAttendanceHistory(data.attendance)
+      const data = await response.json()
+      setMemberData(data.member)
+      setAttendanceHistory(data.attendance)
 
-        // Check membership status
-        const expiryDate = new Date(data.member.memberProfile.expiryDate)
-        const today = new Date()
-        const daysUntilExpiry = Math.floor((expiryDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24))
+      // Check membership status
+      const expiryDate = new Date(data.member.memberProfile.expiryDate)
+      const today = new Date()
+      const daysUntilExpiry = Math.floor((expiryDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24))
 
-        if (daysUntilExpiry < 0) {
-          setMembershipStatus('expired')
-          toast({
-            title: 'Membership Expired',
-            description: 'Your membership has expired. Please renew to continue accessing the gym.',
-            variant: 'destructive',
-          })
-        } else if (daysUntilExpiry <= 7) {
-          setMembershipStatus('expiring')
-          toast({
-            title: 'Membership Expiring Soon',
-            description: `Your membership expires in ${daysUntilExpiry} days. Consider renewing now.`,
-          })
-        }
-      } catch (error) {
-        console.error('Error fetching member data:', error)
+      if (daysUntilExpiry < 0) {
+        setMembershipStatus('expired')
+      } else if (daysUntilExpiry <= 7) {
+        setMembershipStatus('expiring')
+      } else {
+        setMembershipStatus('active')
+      }
+    } catch (error) {
+      console.error('Error fetching member data:', error)
+      if (!silent) {
         toast({
           title: 'Error',
           description: 'Failed to load member data',
           variant: 'destructive',
         })
-      } finally {
-        setIsLoading(false)
       }
+    } finally {
+      if (!silent) setIsLoading(false)
     }
-
-    fetchMemberData()
   }, [router, toast])
+
+  useEffect(() => {
+    fetchMemberData()
+  }, [fetchMemberData])
+
+  const refreshDashboard = () => {
+    fetchMemberData(true)
+  }
 
   const handleLogout = async () => {
     try {
@@ -245,7 +246,7 @@ function MemberDashboardContent() {
                   </Card>
                 </div>
                 
-                <MemberProfile memberData={memberData} />
+                <MemberProfile memberData={memberData} onUpdate={refreshDashboard} />
               </div>
             </div>
 

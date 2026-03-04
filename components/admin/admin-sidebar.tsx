@@ -16,7 +16,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { QrCode, TrendingUp, Users, Calendar, CreditCard, LogOut, Settings, UserCheck, Wallet } from 'lucide-react'
 import {
@@ -34,6 +34,7 @@ interface AdminSidebarProps {
 function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
   const pathname = usePathname()
   const initials = `${adminData.firstName?.[0] ?? ''}${adminData.lastName?.[0] ?? ''}`.toUpperCase()
+  const profileImage = adminData.profileImage || adminData.memberProfile?.profileImage
 
   const searchParams = useSearchParams()
   const currentTab = searchParams.get('tab') || 'overview'
@@ -146,6 +147,7 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
                   className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                 >
                   <Avatar className="size-8 rounded-lg">
+                    <AvatarImage src={profileImage || undefined} className="object-cover" />
                     <AvatarFallback className="rounded-lg">{initials || '??'}</AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
@@ -194,4 +196,3 @@ export function AdminSidebar({ adminData, onLogout }: AdminSidebarProps) {
     </Suspense>
   )
 }
-

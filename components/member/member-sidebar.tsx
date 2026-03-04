@@ -35,7 +35,8 @@ function MemberSidebarContent({ memberData, onLogout }: MemberSidebarProps) {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const currentTab = searchParams.get('tab') || 'overview'
-  const initials = `${memberData.firstName[0]}${memberData.lastName[0]}`.toUpperCase()
+  const initials = `${memberData.firstName?.[0] ?? ''}${memberData.lastName?.[0] ?? ''}`.toUpperCase()
+  const profileImage = memberData.profileImage || memberData.memberProfile?.profileImage
 
   const menuItems = [
     {
@@ -122,8 +123,8 @@ function MemberSidebarContent({ memberData, onLogout }: MemberSidebarProps) {
                   className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                 >
                   <Avatar className="size-8 rounded-lg">
-                    <AvatarImage src={memberData.memberProfile?.profileImage || undefined} />
-                    <AvatarFallback className="rounded-lg">{initials}</AvatarFallback>
+                    <AvatarImage src={profileImage || undefined} className="object-cover" />
+                    <AvatarFallback className="rounded-lg">{initials || '??'}</AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-semibold">
@@ -171,4 +172,3 @@ export function MemberSidebar({ memberData, onLogout }: MemberSidebarProps) {
     </Suspense>
   )
 }
-

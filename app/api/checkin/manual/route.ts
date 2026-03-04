@@ -12,9 +12,11 @@ export async function POST(req: NextRequest) {
       )
     }
 
+    const normalizedEmail = email.toLowerCase().trim()
+
     // Find member by email
     const user = await prisma.user.findUnique({
-      where: { email },
+      where: { email: normalizedEmail },
       include: {
         memberProfile: {
           include: {

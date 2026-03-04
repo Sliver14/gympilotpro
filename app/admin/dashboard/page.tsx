@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, Suspense } from 'react'
+import { useEffect, useState, Suspense, useCallback } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useToast } from '@/hooks/use-toast'
 import {
@@ -23,44 +23,44 @@ import { Spinner } from '@/components/ui/spinner'
 function AdminDashboardContent() {
   const [adminData, setAdminData] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [refreshTrigger, setRefreshTrigger] = useState(0)
   const router = useRouter()
   const searchParams = useSearchParams()
   const { toast } = useToast()
   const currentTab = searchParams.get('tab') || 'overview'
 
-  useEffect(() => {
-    const fetchAdminData = async () => {
-      try {
-        const userResponse = await fetch('/api/auth/user')
-        if (!userResponse.ok) {
-          router.push('/login')
-          return
-        }
-
-        const userData = await userResponse.json()
-        
-        // Ensure only authorized roles can access
-        if (!['admin', 'secretary', 'trainer'].includes(userData.role)) {
-          router.push(userData.role === 'member' ? '/member/dashboard' : '/login')
-          toast({ title: 'Access Denied', description: 'You do not have permission to view this page.', variant: 'destructive' })
-          return
-        }
-
-        setAdminData(userData)
-      } catch (error) {
-        console.error('Error fetching admin data:', error)
-        toast({
-          title: 'Error',
-          description: 'Failed to load admin dashboard',
-          variant: 'destructive',
-        })
-      } finally {
-        setIsLoading(false)
+  const fetchAdminData = useCallback(async () => {
+    try {
+      const userResponse = await fetch('/api/auth/user')
+      if (!userResponse.ok) {
+        router.push('/login')
+        return
       }
-    }
 
-    fetchAdminData()
+      const userData = await userResponse.json()
+      
+      // Ensure only authorized roles can access
+      if (!['admin', 'secretary', 'trainer'].includes(userData.role)) {
+        router.push(userData.role === 'member' ? '/member/dashboard' : '/login')
+        toast({ title: 'Access Denied', description: 'You do not have permission to view this page.', variant: 'destructive' })
+        return
+      }
+
+      setAdminData(userData)
+    } catch (error) {
+      console.error('Error fetching admin data:', error)
+    } finally {
+      setIsLoading(false)
+    }
   }, [router, toast])
+
+  useEffect(() => {
+    fetchAdminData()
+  }, [fetchAdminData])
+
+  const refreshDashboard = () => {
+    setRefreshTrigger(prev => prev + 1)
+  }
 
   const handleLogout = async () => {
     try {
@@ -113,14 +113,14 @@ function AdminDashboardContent() {
             <div className={currentTab === 'overview' ? 'block' : 'hidden'}>
               <div className="space-y-4">
                 {/* Stats Overview */}
-                <AdminStats />
+                <AdminStats refreshTrigger={refreshTrigger} />
                 <RevenueAnalytics />
                 <AttendanceOverview />
               </div>
             </div>
 
             <div className={currentTab === 'members' ? 'block' : 'hidden'}>
-              <MembersList />
+              <MembersList onMemberAdded={refreshDashboard} />
             </div>
 
             <div className={currentTab === 'staff' ? 'block' : 'hidden'}>
@@ -129,7 +129,7 @@ function AdminDashboardContent() {
 
             <div className={currentTab === 'payments' ? 'block' : 'hidden'}>
               <div className="space-y-6">
-                <PendingPayments />
+                <PendingPayments onPaymentProcessed={refreshDashboard} />
                 <ExpiredMembersList />
               </div>
             </div>

@@ -8,7 +8,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
 
-    const {
+    let {
       email,
       password,
       firstName,
@@ -38,6 +38,9 @@ export async function POST(req: NextRequest) {
     ) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
+
+    // Normalize email
+    email = email.toLowerCase().trim()
 
     // Email format check
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {

@@ -137,8 +137,8 @@ export default function SignupPage() {
     } else if (stepNumber === 4) {
       if (!formData.password) {
         errors.password = 'Password is required'
-      } else if (formData.password.length < 8) {
-        errors.password = 'Password must be at least 8 characters long'
+      } else if (formData.password.length < 4) {
+        errors.password = 'Password must be at least 4 characters long'
       }
       if (!formData.confirmPassword) {
         errors.confirmPassword = 'Please confirm your password'

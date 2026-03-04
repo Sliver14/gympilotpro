@@ -32,8 +32,8 @@ export default function MemberHeader({ memberData, onLogout }: MemberHeaderProps
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                 <Avatar className="h-8 w-8">
-                  <AvatarImage src={memberData.memberProfile.profileImage || undefined} />
-                  <AvatarFallback>{initials}</AvatarFallback>
+                  <AvatarImage src={memberData.profileImage || memberData.memberProfile?.profileImage || undefined} />
+                  <AvatarFallback className="text-[10px]">{initials}</AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>

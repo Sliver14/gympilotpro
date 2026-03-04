@@ -23,7 +23,13 @@ const formatNaira = (value: number) =>
     maximumFractionDigits: 0,
   }).format(value)
 
-export default function AdminStats({ hideRevenue = false }: { hideRevenue?: boolean }) {
+export default function AdminStats({ 
+  hideRevenue = false,
+  refreshTrigger = 0 
+}: { 
+  hideRevenue?: boolean,
+  refreshTrigger?: number
+}) {
   const [stats, setStats] = useState<Stats>({
     totalMembers: 0,
     activeMembers: 0,
@@ -36,6 +42,7 @@ export default function AdminStats({ hideRevenue = false }: { hideRevenue?: bool
 
   useEffect(() => {
     const fetchStats = async () => {
+      // setIsLoading(true) // Optional: show loading state on refresh
       try {
         // Try aggregated endpoint first, fallback to individual endpoint
         const response = await fetch('/api/admin/dashboard')
@@ -61,7 +68,7 @@ export default function AdminStats({ hideRevenue = false }: { hideRevenue?: bool
     }
 
     fetchStats()
-  }, [toast])
+  }, [toast, refreshTrigger])
 
   if (isLoading) {
     return (
