@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
@@ -12,9 +12,10 @@ import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { useSignup } from '@/hooks/use-signup'
 import { useToast } from '@/hooks/use-toast'
-import { ChevronRight, ChevronLeft, AlertTriangle, AlertCircle, X } from 'lucide-react'
+import { ChevronRight, ChevronLeft, AlertTriangle, AlertCircle, X, Camera, Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Spinner } from '@/components/ui/spinner'
 
@@ -80,7 +81,45 @@ export default function SignupPage() {
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [uploading, setUploading] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
   const isLoading = hookIsLoading || isSubmitting
+
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    if (!file.type.startsWith('image/')) {
+      toast({ title: 'Error', description: 'Please upload an image file', variant: 'destructive' })
+      return
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast({ title: 'Error', description: 'File size should be less than 5MB', variant: 'destructive' })
+      return
+    }
+
+    setUploading(true)
+    const formDataUpload = new FormData()
+    formDataUpload.append('file', file)
+
+    try {
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: formDataUpload,
+      })
+
+      if (!res.ok) throw new Error('Upload failed')
+      const data = await res.json()
+      updateFormData({ profileImage: data.imageUrl })
+      toast({ title: 'Success', description: 'Profile picture uploaded' })
+    } catch (error) {
+      console.error('Upload error:', error)
+      toast({ title: 'Error', description: 'Failed to upload image', variant: 'destructive' })
+    } finally {
+      setUploading(false)
+    }
+  }
 
   useEffect(() => {
     const fetchMemberships = async () => {
@@ -126,6 +165,7 @@ export default function SignupPage() {
       }
       if (!formData.phoneNumber?.trim()) errors.phoneNumber = 'Phone number is required'
       if (!formData.gender) errors.gender = 'Gender is required'
+      if (!formData.profileImage) errors.profileImage = 'Profile picture is required'
     } else if (stepNumber === 2) {
       if (!formData.membershipId) errors.membershipId = 'Please select a membership package'
       if (!formData.paymentMethod) errors.paymentMethod = 'Please select a payment method'
@@ -246,7 +286,52 @@ export default function SignupPage() {
 
             {/* Step 1 */}
             {step === 1 && (
-              <div className="space-y-4">
+              <div className="space-y-6">
+                <div className="flex flex-col items-center gap-4">
+                  <div className="relative group">
+                    <Avatar className={cn(
+                      "h-32 w-32 border-4 transition-all",
+                      fieldErrors.profileImage ? "border-destructive" : "border-primary/10 group-hover:border-primary/30"
+                    )}>
+                      <AvatarImage src={formData.profileImage} className="object-cover" />
+                      <AvatarFallback className="text-3xl bg-primary/5">
+                        {formData.firstName?.[0] || formData.lastName?.[0] || '?'}
+                      </AvatarFallback>
+                    </Avatar>
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      size="icon"
+                      className="absolute bottom-1 right-1 h-10 w-10 rounded-full shadow-lg transition-transform hover:scale-110"
+                      disabled={uploading}
+                      onClick={() => fileInputRef.current?.click()}
+                    >
+                      {uploading ? (
+                        <Loader2 className="h-5 w-5 animate-spin" />
+                      ) : (
+                        <Camera className="h-5 w-5" />
+                      )}
+                    </Button>
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      className="hidden"
+                      accept="image/*"
+                      onChange={handleUpload}
+                    />
+                  </div>
+                  <div className="text-center">
+                    <p className="text-sm font-medium">Profile Picture *</p>
+                    <p className="text-xs text-muted-foreground mt-1">Required for gym access identification</p>
+                    {fieldErrors.profileImage && (
+                      <p className="text-xs text-destructive mt-1 flex items-center justify-center gap-1">
+                        <AlertCircle className="h-3 w-3" />
+                        {fieldErrors.profileImage}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
                 <div className="grid gap-4 md:grid-cols-2">
                   <div className="space-y-2">
                     <Label htmlFor="firstName">First Name *</Label>
@@ -821,6 +906,7 @@ export default function SignupPage() {
                           firstName: formData.firstName,
                           lastName: formData.lastName,
                           phoneNumber: formData.phoneNumber,
+                          profileImage: formData.profileImage,
                           birthday: formData.birthday,
                           gender: formData.gender,
                           hearAboutUs: formData.hearAboutUs,

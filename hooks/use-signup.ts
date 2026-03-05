@@ -9,6 +9,7 @@ export interface SignupFormData {
   lastName: string
   email: string
   phoneNumber: string
+  profileImage: string
   birthday?: string
   gender: string
   hearAboutUs?: string
@@ -36,6 +37,7 @@ export function useSignup() {
     lastName: '',
     email: '',
     phoneNumber: '',
+    profileImage: '',
     birthday: '',
     gender: '',
     hearAboutUs: '',
@@ -66,7 +68,7 @@ export function useSignup() {
 
   const submitSignup = async () => {
     // --- 3. CENTRALIZED AND IMPROVED VALIDATION ---
-    if (!formData.firstName || !formData.lastName || !formData.email || !formData.phoneNumber || !formData.gender) {
+    if (!formData.firstName || !formData.lastName || !formData.email || !formData.phoneNumber || !formData.gender || !formData.profileImage) {
       toast({ title: 'Error', description: 'Please fill in all personal information (Step 1)', variant: 'destructive' })
       setStep(1)
       return
@@ -107,6 +109,7 @@ export function useSignup() {
           firstName: formData.firstName,
           lastName: formData.lastName,
           phoneNumber: formData.phoneNumber,
+          profileImage: formData.profileImage,
           birthday: formData.birthday,
           gender: formData.gender,
           hearAboutUs: formData.hearAboutUs,

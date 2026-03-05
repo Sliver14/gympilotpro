@@ -14,6 +14,7 @@ export async function POST(req: NextRequest) {
       firstName,
       lastName,
       phoneNumber,
+      profileImage,
       birthday,
       gender,
       hearAboutUs,
@@ -32,6 +33,7 @@ export async function POST(req: NextRequest) {
       !firstName ||
       !lastName ||
       !phoneNumber ||
+      !profileImage ||
       !membershipId ||
       !paymentMethod ||
       !gender
@@ -103,6 +105,7 @@ export async function POST(req: NextRequest) {
         firstName,
         lastName,
         phoneNumber: phoneNumber || null,
+        profileImage: profileImage || null,
         role: 'member',
         memberProfile: {
           create: {
