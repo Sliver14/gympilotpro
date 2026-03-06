@@ -38,6 +38,7 @@ export async function POST(req: NextRequest) {
               id: true,
               firstName: true,
               lastName: true,
+              profileImage: true,
             },
           },
         },
@@ -52,6 +53,7 @@ export async function POST(req: NextRequest) {
               id: true,
               firstName: true,
               lastName: true,
+              profileImage: true,
             },
           },
         },
@@ -75,7 +77,7 @@ export async function POST(req: NextRequest) {
         message: 'Membership has expired.',
         member: {
           fullName: `${memberProfile.user.firstName} ${memberProfile.user.lastName}`,
-          profileImage: memberProfile.profileImage,
+          profileImage: memberProfile.user.profileImage,
           expiryDate: memberProfile.expiryDate.toISOString(),
         },
       })
@@ -115,7 +117,7 @@ export async function POST(req: NextRequest) {
           message: `Already checked in today at ${lastTime}. Next scan allowed after ${nextAllowedStr}.`,
           member: {
             fullName: `${memberProfile.user.firstName} ${memberProfile.user.lastName}`,
-            profileImage: memberProfile.profileImage,
+            profileImage: memberProfile.user.profileImage,
             expiryDate: memberProfile.expiryDate.toISOString(),
           },
         })
@@ -137,7 +139,7 @@ export async function POST(req: NextRequest) {
       message: 'Valid. Access granted.',
       member: {
         fullName: `${memberProfile.user.firstName} ${memberProfile.user.lastName}`,
-        profileImage: memberProfile.profileImage,
+        profileImage: memberProfile.user.profileImage,
         expiryDate: memberProfile.expiryDate.toISOString(),
       },
     })

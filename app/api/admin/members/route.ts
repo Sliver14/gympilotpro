@@ -21,6 +21,7 @@ export async function GET() {
         lastName: true,
         email: true,
         phoneNumber: true,
+        profileImage: true,
         memberProfile: {
           select: {
             expiryDate: true,

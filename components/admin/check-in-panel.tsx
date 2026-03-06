@@ -55,7 +55,7 @@ export default function CheckInPanel() {
         const formatted = members.map((m: any) => ({
           id: m.id,
           fullName: `${m.firstName} ${m.lastName}`,
-          profileImage: m.memberProfile?.profileImage || null,
+          profileImage: m.profileImage || null,
           expiryDate: m.memberProfile?.expiryDate || '',
         }))
 
@@ -317,8 +317,10 @@ export default function CheckInPanel() {
                     >
                       <div className="flex items-center gap-3">
                         <Avatar className="h-10 w-10">
-                          <AvatarImage src={member.profileImage || undefined} />
-                          <AvatarFallback>{member.fullName.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                          <AvatarImage src={member.profileImage || undefined} className="object-cover" />
+                          <AvatarFallback>
+                            <User className="h-5 w-5" />
+                          </AvatarFallback>
                         </Avatar>
                         <div>
                           <p className="font-medium">{member.fullName}</p>
@@ -383,9 +385,9 @@ export default function CheckInPanel() {
               {result.member && (
                 <>
                   <Avatar className="h-28 w-28 border-4 border-background shadow-xl">
-                    <AvatarImage src={result.member.profileImage || '/default-avatar.png'} />
+                    <AvatarImage src={result.member.profileImage || undefined} className="object-cover" />
                     <AvatarFallback className="text-2xl">
-                      {result.member.fullName.split(' ').map(n => n[0]).join('')}
+                      <User className="h-12 w-12" />
                     </AvatarFallback>
                   </Avatar>
 
