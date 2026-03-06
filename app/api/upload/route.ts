@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
     const buffer = Buffer.from(arrayBuffer);
 
     // Use async/await style with Promise — cleaner than .end()
-    const result = await new Promise<cloudinary.UploadApiResponse>((resolve, reject) => {
+    const result = await new Promise<any>((resolve, reject) => {
       cloudinary.uploader
         .upload_stream(
           {
@@ -109,9 +109,4 @@ export async function POST(req: NextRequest) {
 }
 
 // Optional: Add runtime config if you expect large uploads
-export const config = {
-  api: {
-    bodyParser: false,           // Important when handling FormData manually
-    maxDuration: 30,             // Increase if you allow bigger/slower uploads
-  },
-};
+export const maxDuration = 30; // Increase if you allow bigger/slower uploads

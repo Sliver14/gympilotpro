@@ -52,6 +52,7 @@ function MemberDashboardContent() {
   const [memberData, setMemberData] = useState<MemberData | null>(null)
   const [attendanceHistory, setAttendanceHistory] = useState<AttendanceData[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [membershipStatus, setMembershipStatus] = useState<'active' | 'expiring' | 'expired'>('active')
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -60,6 +61,7 @@ function MemberDashboardContent() {
 
   const fetchMemberData = useCallback(async (silent = false) => {
     if (!silent) setIsLoading(true)
+    setError(null)
     try {
       // Single aggregated API call instead of 3 separate calls
       const response = await fetch('/api/member/dashboard')
@@ -68,7 +70,25 @@ function MemberDashboardContent() {
           router.push('/login')
           return
         }
-        throw new Error('Failed to fetch dashboard data')
+        
+        // If 404, the user might be a staff member trying to access the member dashboard
+        if (response.status === 404) {
+          try {
+            const userRes = await fetch('/api/auth/user')
+            if (userRes.ok) {
+              const userData = await userRes.json()
+              if (userData.role !== 'member') {
+                router.push(`/${userData.role}/dashboard`)
+                return
+              }
+            }
+          } catch (e) {
+            console.error('Failed to fetch user role for redirect:', e)
+          }
+        }
+
+        const errorData = await response.json().catch(() => ({}))
+        throw new Error(errorData.error || 'Failed to fetch dashboard data')
       }
 
       const data = await response.json()
@@ -87,12 +107,14 @@ function MemberDashboardContent() {
       } else {
         setMembershipStatus('active')
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching member data:', error)
+      const errorMessage = error.message || 'Failed to load member data'
+      setError(errorMessage)
       if (!silent) {
         toast({
           title: 'Error',
-          description: 'Failed to load member data',
+          description: errorMessage,
           variant: 'destructive',
         })
       }
@@ -130,10 +152,18 @@ function MemberDashboardContent() {
     )
   }
 
-  if (!memberData) {
+  if (error || !memberData) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <p className="text-muted-foreground">Failed to load member data</p>
+      <div className="flex min-h-screen flex-col items-center justify-center gap-4 p-4 text-center">
+        <AlertCircle className="h-12 w-12 text-destructive" />
+        <div className="space-y-2">
+          <h2 className="text-xl font-bold">Dashboard Error</h2>
+          <p className="text-muted-foreground max-w-md">{error || 'Failed to load member data'}</p>
+        </div>
+        <div className="flex gap-4">
+          <Button onClick={() => fetchMemberData()}>Try Again</Button>
+          <Button variant="outline" onClick={handleLogout}>Log out</Button>
+        </div>
       </div>
     )
   }

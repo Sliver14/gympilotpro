@@ -121,9 +121,11 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
                 {memberData.firstName} {memberData.lastName}
               </h3>
               <p className="text-sm text-muted-foreground">{memberData.email}</p>
-              <div className="mt-2 inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-semibold text-primary">
-                {memberData.role.charAt(0).toUpperCase() + memberData.role.slice(1)}
-              </div>
+              {memberData.role && (
+                <div className="mt-2 inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-semibold text-primary">
+                  {memberData.role.charAt(0).toUpperCase() + memberData.role.slice(1)}
+                </div>
+              )}
             </div>
           </div>
 

@@ -23,6 +23,7 @@ export async function GET() {
           email: true,
           firstName: true,
           lastName: true,
+          role: true,
           phoneNumber: true,
           memberProfile: {
             select: {
@@ -30,7 +31,6 @@ export async function GET() {
               verified: true,
               paymentStatus: true,
               fitnessGoals: true,
-              profileImage: true,
               emergencyContact: true,
               emergencyPhone: true,
               membership: {
@@ -58,8 +58,10 @@ export async function GET() {
     ])
 
     if (!memberData || !memberData.memberProfile) {
+      // If the user exists but has no member profile, they might be a staff member
+      const role = user.role || 'user'
       return NextResponse.json(
-        { error: 'Member profile not found' },
+        { error: `Member profile not found. Your account role is ${role}.` },
         { status: 404 }
       )
     }
