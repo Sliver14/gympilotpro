@@ -18,6 +18,7 @@ interface SettingsFormProps {
 export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) {
   const router = useRouter()
   const [uploading, setUploading] = useState(false)
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const [changingPassword, setChangingPassword] = useState(false)
   const [passwords, setPasswords] = useState({
     currentPassword: '',
@@ -43,6 +44,10 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
       return
     }
 
+    // Create immediate preview
+    const objectUrl = URL.createObjectURL(file)
+    setPreviewUrl(objectUrl)
+
     setUploading(true)
     const formData = new FormData()
     formData.append('file', file)
@@ -61,6 +66,8 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
     } catch (error) {
       console.error('Upload error:', error)
       toast.error('Failed to upload image')
+      // Clear preview on failure
+      setPreviewUrl(null)
     } finally {
       setUploading(false)
     }
@@ -124,7 +131,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
           <div className="flex flex-col items-center gap-4 sm:flex-row">
             <div className="relative group">
               <Avatar className="h-24 w-24 border-2 border-primary/10">
-                <AvatarImage src={profileImage || undefined} className="object-cover" />
+                <AvatarImage src={previewUrl || profileImage || undefined} className="object-cover" />
                 <AvatarFallback className="text-2xl bg-primary/5">{initials || '??'}</AvatarFallback>
               </Avatar>
               <Button

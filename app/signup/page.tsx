@@ -82,6 +82,7 @@ export default function SignupPage() {
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [uploading, setUploading] = useState(false)
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const isLoading = hookIsLoading || isSubmitting
 
@@ -98,6 +99,14 @@ export default function SignupPage() {
       toast({ title: 'Error', description: 'File size should be less than 5MB', variant: 'destructive' })
       return
     }
+
+    // Create immediate preview
+    const objectUrl = URL.createObjectURL(file)
+    setPreviewUrl(objectUrl)
+    
+    // Also clear any previous profileImage in formData to avoid confusion
+    // but keep the preview visible
+    updateFormData({ profileImage: '' })
 
     setUploading(true)
     const formDataUpload = new FormData()
@@ -116,6 +125,8 @@ export default function SignupPage() {
     } catch (error) {
       console.error('Upload error:', error)
       toast({ title: 'Error', description: 'Failed to upload image', variant: 'destructive' })
+      // If upload fails, clear the preview since we can't use it for submission
+      setPreviewUrl(null)
     } finally {
       setUploading(false)
     }
@@ -293,7 +304,7 @@ export default function SignupPage() {
                       "h-32 w-32 border-4 transition-all",
                       fieldErrors.profileImage ? "border-destructive" : "border-primary/10 group-hover:border-primary/30"
                     )}>
-                      <AvatarImage src={formData.profileImage} className="object-cover" />
+                      <AvatarImage src={previewUrl || formData.profileImage} className="object-cover" />
                       <AvatarFallback className="text-3xl bg-primary/5">
                         {formData.firstName?.[0] || formData.lastName?.[0] || '?'}
                       </AvatarFallback>
