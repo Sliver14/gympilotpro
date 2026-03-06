@@ -14,10 +14,14 @@ cloudinary.config({
 
 export async function POST(req: NextRequest) {
   try {
-    const user = await getCurrentUser();
-    if (!user?.id) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    // Check for missing Cloudinary configuration
+    if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
+      console.error('Cloudinary environment variables are missing');
+      return NextResponse.json({ error: 'Upload service configuration missing' }, { status: 500 });
     }
+
+    // Attempt to get current user, but don't fail if not found (needed for signup)
+    const user = await getCurrentUser();
 
     const formData = await req.formData();
     const file = formData.get('file');
@@ -27,11 +31,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'No valid file uploaded' }, { status: 400 });
     }
 
-    // Optional: Add size/type validation (very recommended!)
-    const MAX_SIZE = 5 * 1024 * 1024; // 5MB
+    // Reduced to 4MB to stay safely within Vercel's 4.5MB serverless limit
+    const MAX_SIZE = 4 * 1024 * 1024; // 4MB
     if (file.size > MAX_SIZE) {
       return NextResponse.json(
-        { error: 'File too large (max 5MB allowed)' },
+        { error: 'File too large (max 4MB allowed)' },
         { status: 400 }
       );
     }
@@ -47,13 +51,18 @@ export async function POST(req: NextRequest) {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
+    // Use a specific ID for logged-in users, or a unique temp ID for signups
+    const publicId = user?.id 
+      ? `profile_${user.id}` 
+      : `signup_${Date.now()}_${Math.random().toString(36).substring(7)}`;
+
     // Use async/await style with Promise — cleaner than .end()
     const result = await new Promise<any>((resolve, reject) => {
       cloudinary.uploader
         .upload_stream(
           {
             folder: 'klimarx/profiles',
-            public_id: `profile_${user.id}`,
+            public_id: publicId,
             overwrite: true,
             // You can also do eager transformations, but inline is fine
             transformation: [
@@ -63,8 +72,6 @@ export async function POST(req: NextRequest) {
             ],
             // Very useful in production:
             resource_type: 'image',
-            // You can add tags for later management
-            // tags: ['profile', 'user-upload'],
           },
           (error, result) => {
             if (error) reject(error);
@@ -77,21 +84,19 @@ export async function POST(req: NextRequest) {
     // result.secure_url is usually what you want (https)
     const imageUrl = result.secure_url;
 
-    // Optional: store a smaller version / thumbnail if needed later
-    // const thumbnailUrl = result.eager?.[0]?.secure_url ?? imageUrl;
-
-    await prisma.user.update({
-      where: { id: user.id },
-      data: {
-        profileImage: imageUrl,
-        // Optional: updatedAt: new Date() — Prisma usually handles this
-      },
-    });
+    // ONLY update the database if we have a logged-in user context
+    if (user?.id) {
+      await prisma.user.update({
+        where: { id: user.id },
+        data: {
+          profileImage: imageUrl,
+        },
+      });
+    }
 
     return NextResponse.json({
       success: true,
       imageUrl,
-      // You can also return width, height, public_id, version, etc. if frontend needs them
     });
   } catch (error: any) {
     console.error('Profile image upload failed:', {
