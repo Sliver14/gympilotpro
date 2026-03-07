@@ -42,6 +42,7 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
   const [selectedPayment, setSelectedPayment] = useState<PendingPayment | null>(null)
   const [startDate, setStartDate] = useState<string>(new Date().toISOString().split('T')[0])
   const { toast } = useToast()
+  const today = new Date().toISOString().split('T')[0]
 
   const fetchPayments = async () => {
     setIsLoading(true)
@@ -226,6 +227,7 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
                   type="date"
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
+                  max={today}
                   className="h-16 bg-black border-white/5 rounded-2xl focus:border-[#daa857] px-6 font-black uppercase tracking-widest text-sm"
                 />
                 <div className="p-4 rounded-xl bg-[#daa857]/5 border border-[#daa857]/10">
