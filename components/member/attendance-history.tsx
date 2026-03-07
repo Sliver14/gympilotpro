@@ -86,7 +86,7 @@ export default function AttendanceHistory({ attendance }: AttendanceHistoryProps
         {sortedAttendance.length > 0 && (
           <div className="mt-12 grid gap-4 grid-cols-1 md:grid-cols-3 border-t border-white/5 pt-10">
             {[
-              { label: 'Total Deployments', value: sortedAttendance.length },
+              { label: 'Total Checkins', value: sortedAttendance.length },
               { label: 'Current Cycle', value: sortedAttendance.filter((a) => {
                 const date = new Date(a.checkInTime)
                 const now = new Date()

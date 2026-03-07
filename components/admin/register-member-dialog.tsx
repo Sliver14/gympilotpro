@@ -144,7 +144,7 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
       <DialogTrigger asChild>
         <Button className="h-10 px-6 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black uppercase text-[10px] tracking-widest gap-2 rounded-xl transition-all shadow-xl shadow-[#daa857]/10">
           <UserPlus className="h-3.5 w-3.5 stroke-[3px]" />
-          Enroll Operative
+          Enroll Member
         </Button>
       </DialogTrigger>
       <DialogContent className="bg-[#111] border-white/10 text-white rounded-[2.5rem] p-10 max-w-2xl max-h-[90vh] overflow-y-auto custom-scrollbar">

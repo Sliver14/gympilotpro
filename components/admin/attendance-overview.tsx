@@ -72,9 +72,9 @@ export default function AttendanceOverview() {
       <CardContent className="space-y-10">
         <div className="grid gap-6 md:grid-cols-3">
           {[
-            { label: 'Total Deployments', value: totalCheckins, sub: 'LAST 30 CYCLES' },
-            { label: 'Velocity Average', value: avgDaily, sub: 'DAILY FREQUENCY', accent: true },
-            { label: 'Peak Capacity', value: Math.max(...data.map((d) => d.checkins), 0), sub: 'MAX SIMULTANEOUS' }
+            { label: 'Total Checkins', value: totalCheckins, sub: 'LAST 30 CYCLES' },
+            { label: 'Average Checkins', value: avgDaily, sub: 'DAILY FREQUENCY', accent: true },
+            { label: 'Max Checkin', value: Math.max(...data.map((d) => d.checkins), 0), sub: 'MAX DAILY' }
           ].map((stat, i) => (
             <div key={i} className="rounded-2xl bg-black/40 border border-white/5 p-6 hover:border-[#daa857]/20 transition-all group">
               <p className="text-[8px] font-black uppercase tracking-[0.2em] text-gray-600 mb-2">{stat.label}</p>

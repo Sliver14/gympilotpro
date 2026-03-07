@@ -86,10 +86,10 @@ export default function AdminStats({
     <div className={cn("grid gap-6", hideRevenue ? "grid-cols-2 md:grid-cols-4" : "grid-cols-2 md:grid-cols-5")}>
       {[
         { label: 'Total Members', value: stats.totalMembers, sub: 'All registered', icon: Users },
-        { label: 'Active Force', value: stats.activeMembers, sub: 'Valid memberships', icon: TrendingUp, accent: true },
+        { label: 'Active Members', value: stats.activeMembers, sub: 'Valid memberships', icon: TrendingUp, accent: true },
         { label: 'Today Check-ins', value: stats.todayCheckins, sub: 'Live activity', icon: Calendar },
         { 
-          label: 'Pending Sync', 
+          label: 'Pending Payments', 
           value: stats.pendingPayments, 
           sub: 'Awaiting sync', 
           icon: Clock, 
