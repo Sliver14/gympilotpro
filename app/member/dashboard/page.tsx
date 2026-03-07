@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { useToast } from '@/hooks/use-toast'
 import { AlertCircle } from 'lucide-react'
+import { cn } from '@/lib/utils'
 import {
   SidebarProvider,
   SidebarInset,
@@ -175,120 +176,103 @@ function MemberDashboardContent() {
   return (
     <SidebarProvider>
       <MemberSidebar memberData={memberData} onLogout={handleLogout} />
-      <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+      <SidebarInset className="bg-[#0a0a0a]">
+        <header className="flex h-16 shrink-0 items-center gap-2 border-b border-white/5 px-6 sticky top-0 z-30 bg-black/50 backdrop-blur-md">
           <SidebarTrigger className="-ml-1" />
           <div className="flex items-center gap-2">
-            <h1 className="text-lg font-semibold">Member Dashboard</h1>
+            <h1 className="text-sm font-black uppercase italic tracking-[0.2em] text-gray-400">
+              Member <span className="text-[#daa857]">Terminal</span>
+            </h1>
           </div>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4 md:p-6 pb-24 md:pb-20">
+        <div className="flex flex-1 flex-col gap-6 p-6 md:p-10 pb-24 md:pb-20">
           {/* Membership Status Alert */}
           {membershipStatus === 'expired' && (
-            <Card className="border-destructive bg-destructive/5">
-              <CardContent className="flex items-start gap-4 pt-6">
-                <AlertCircle className="h-5 w-5 text-destructive" />
+            <div className="rounded-3xl p-8 border-2 border-red-500/20 bg-red-500/5 relative overflow-hidden group">
+              <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-red-500/10 blur-[80px]" />
+              <div className="flex items-start gap-6 relative z-10">
+                <div className="h-14 w-14 rounded-2xl bg-red-500 flex items-center justify-center shrink-0 shadow-lg shadow-red-500/20">
+                  <AlertCircle className="h-8 w-8 text-white" />
+                </div>
                 <div>
-                  <h3 className="font-semibold text-destructive">Membership Expired</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Your membership expired on {expiryDate.toLocaleDateString()}. Please renew to continue using the gym.
+                  <h3 className="text-xl font-black uppercase italic tracking-tight text-white mb-1">Access Revoked</h3>
+                  <p className="text-sm font-medium text-gray-400 max-w-xl">
+                    Your membership expired on <span className="text-red-400 font-bold">{expiryDate.toLocaleDateString()}</span>. The terminal is locked until renewal is processed.
                   </p>
                   <Link href="/member/renew-membership">
-                    <Button size="sm" className="mt-2" variant="default">
-                      Renew Membership
+                    <Button className="mt-6 h-12 px-8 bg-red-500 hover:bg-red-600 text-white font-black uppercase tracking-widest rounded-xl transition-all hover:scale-[1.02]">
+                      Initiate Renewal Protocol
                     </Button>
                   </Link>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           )}
 
           {membershipStatus === 'expiring' && (
-            <Card className="border-yellow-600 bg-yellow-50 dark:bg-yellow-950/20">
-              <CardContent className="flex items-start gap-4 pt-6">
-                <AlertCircle className="h-5 w-5 text-yellow-600" />
+            <div className="rounded-3xl p-8 border-2 border-[#daa857]/20 bg-[#daa857]/5 relative overflow-hidden group">
+              <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-[#daa857]/10 blur-[80px]" />
+              <div className="flex items-start gap-6 relative z-10">
+                <div className="h-14 w-14 rounded-2xl bg-[#daa857] flex items-center justify-center shrink-0 shadow-lg shadow-[#daa857]/20">
+                  <AlertCircle className="h-8 w-8 text-black" />
+                </div>
                 <div>
-                  <h3 className="font-semibold text-yellow-600">Membership Expiring Soon</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Your membership expires in {daysUntilExpiry} days on {expiryDate.toLocaleDateString()}. Extend your subscription now to stay active.
+                  <h3 className="text-xl font-black uppercase italic tracking-tight text-white mb-1">Subscription Warning</h3>
+                  <p className="text-sm font-medium text-gray-400 max-w-xl">
+                    Vault access expires in <span className="text-[#daa857] font-bold">{daysUntilExpiry} days</span> ({expiryDate.toLocaleDateString()}). Extend protocol now to maintain uninterrupted access.
                   </p>
                   <Link href="/member/renew-membership">
-                    <Button size="sm" variant="outline" className="mt-2 gap-2">
-                      Extend Subscription
+                    <Button className="mt-6 h-12 px-8 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black uppercase tracking-widest rounded-xl transition-all hover:scale-[1.02]">
+                      Extend Protocol
                     </Button>
                   </Link>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           )}
 
           {/* Tab Content */}
-          <div className="space-y-4">
+          <div className="space-y-8">
             <div className={currentTab === 'overview' ? 'block' : 'hidden'}>
-              <div className="space-y-6">
+              <div className="space-y-10">
                 {/* Stats Grid */}
-                <div className="grid gap-4 md:grid-cols-3">
-                  <Card>
-                    <CardHeader className="pb-3 flex flex-row items-center justify-between space-y-0">
-                      <CardTitle className="text-sm font-medium">Membership Status</CardTitle>
-                      {membershipStatus !== 'expired' && (
-                        <Link href="/member/renew-membership">
-                          <Button variant="ghost" size="sm" className="h-8 px-2 text-xs font-semibold text-primary hover:bg-primary/10">
-                            Extend
-                          </Button>
-                        </Link>
-                      )}
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-2xl font-bold">{memberData.memberProfile.membership.name}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {membershipStatus === 'active' && 'Active'}
-                        {membershipStatus === 'expiring' && 'Expiring Soon'}
-                        {membershipStatus === 'expired' && 'Expired'}
-                      </p>
-                    </CardContent>
-                  </Card>
-
-                  <Card>
-                    <CardHeader className="pb-3">
-                      <CardTitle className="text-sm font-medium">Days Remaining</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-2xl font-bold">{Math.max(0, daysUntilExpiry)}</p>
-                      <p className="text-xs text-muted-foreground">Until {expiryDate.toLocaleDateString()}</p>
-                    </CardContent>
-                  </Card>
-
-                  <Card>
-                    <CardHeader className="pb-3">
-                      <CardTitle className="text-sm font-medium">This Month</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-2xl font-bold">
-                        {memberData?.monthlyVisits ?? attendanceHistory.filter((a) => {
-                          const date = new Date(a.checkInTime)
-                          const now = new Date()
-                          return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear()
-                        }).length}
-                      </p>
-                      <p className="text-xs text-muted-foreground">Visits</p>
-                    </CardContent>
-                  </Card>
+                <div className="grid gap-6 md:grid-cols-3">
+                  {[
+                    { label: 'Current Tier', value: memberData.memberProfile.membership.name, sub: membershipStatus.toUpperCase(), accent: true },
+                    { label: 'Active Days', value: Math.max(0, daysUntilExpiry), sub: `Until ${expiryDate.toLocaleDateString()}` },
+                    { label: 'Monthly Visits', value: memberData?.monthlyVisits ?? attendanceHistory.filter((a) => {
+                      const date = new Date(a.checkInTime);
+                      const now = new Date();
+                      return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear();
+                    }).length, sub: 'TRAINING SESSIONS' }
+                  ].map((stat, i) => (
+                    <div key={i} className="bg-[#111] border border-white/5 rounded-3xl p-8 shadow-xl relative overflow-hidden group hover:border-[#daa857]/30 transition-colors">
+                      <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 mb-4">{stat.label}</p>
+                      <div className="flex items-baseline gap-2">
+                        <p className={cn("text-4xl font-black italic tracking-tighter", stat.accent ? "text-[#daa857]" : "text-white")}>
+                          {stat.value}
+                        </p>
+                      </div>
+                      <p className="text-[10px] font-black uppercase tracking-widest text-gray-600 mt-2">{stat.sub}</p>
+                    </div>
+                  ))}
                 </div>
                 
-                <MemberProfile memberData={memberData} onUpdate={refreshDashboard} />
+                <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
+                  <MemberProfile memberData={memberData} onUpdate={refreshDashboard} />
+                </div>
               </div>
             </div>
 
-            <div className={currentTab === 'qr-code' ? 'block' : 'hidden'}>
+            <div className={cn("animate-in fade-in slide-in-from-bottom-4 duration-500", currentTab === 'qr-code' ? 'block' : 'hidden')}>
               <QRCodeDisplay memberId={memberData.id} />
             </div>
 
-            <div className={currentTab === 'attendance' ? 'block' : 'hidden'}>
+            <div className={cn("animate-in fade-in slide-in-from-bottom-4 duration-500", currentTab === 'attendance' ? 'block' : 'hidden')}>
               <AttendanceHistory attendance={attendanceHistory} />
             </div>
 
-            <div className={currentTab === 'progress' ? 'block' : 'hidden'}>
+            <div className={cn("animate-in fade-in slide-in-from-bottom-4 duration-500", currentTab === 'progress' ? 'block' : 'hidden')}>
               <ProgressNotes memberId={memberData.id} />
             </div>
           </div>

@@ -4,21 +4,32 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { useToast } from '@/hooks/use-toast'
-import { ArrowLeft, Mail } from 'lucide-react'
-import { Spinner } from '@/components/ui/spinner'
+import { ArrowLeft, Mail, Loader2, Send, AlertCircle } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const { toast } = useToast()
+
+  const accent = '#daa857'
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    if (!email.trim()) {
+      toast({
+        title: 'Input Required',
+        description: 'Please enter your recovery email.',
+        variant: 'destructive',
+      })
+      return
+    }
+
     setIsLoading(true)
 
     try {
@@ -32,12 +43,15 @@ export default function ForgotPasswordPage() {
 
       if (response.ok) {
         setIsSubmitted(true)
+        setError(null)
         toast({
           title: 'Email Sent',
           description: data.message,
         })
       } else {
-        throw new Error(data.error || 'Something went wrong')
+        const errorMessage = data.error || 'Something went wrong'
+        setError(errorMessage)
+        throw new Error(errorMessage)
       }
     } catch (error: any) {
       toast({
@@ -51,76 +65,110 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-4">
+    <div className="flex min-h-screen items-center justify-center bg-[#0a0a0a] text-white selection:bg-[#daa857]/30 px-4">
       <div className="w-full max-w-md">
         {/* Logo */}
-        <Link href="/" className="mb-8 flex items-center justify-center gap-2 hover:opacity-80 transition-opacity">
-          <Image 
-            src="/WhatsApp_Image_2026-02-25_at_9.54.33_AM-removebg-preview.png" 
-            alt="Klimarx Space Logo" 
-            width={48} 
-            height={48} 
-            className="object-contain"
-          />
-          <span className="text-2xl font-bold">Klimarx Space</span>
+        <Link href="/" className="mb-12 flex flex-col items-center justify-center gap-4 group">
+          <div className="relative h-20 w-20 overflow-hidden rounded-full border-2 transition-transform group-hover:scale-110" style={{ borderColor: `${accent}80` }}>
+            <Image 
+              src="/WhatsApp_Image_2026-02-25_at_9.54.33_AM-removebg-preview.png" 
+              alt="Klimarx Space Logo" 
+              fill
+              className="object-contain p-2 bg-white"
+            />
+          </div>
+          <div className="text-center">
+            <h1 className="text-3xl font-black tracking-tighter uppercase italic">Klimarx<span style={{ color: accent }}>Space</span></h1>
+            <p className="text-[10px] uppercase tracking-[0.3em] text-gray-500 font-bold mt-1">Recovery Protocol</p>
+          </div>
         </Link>
 
-        <Card>
-          <CardHeader>
+        {/* Content Container */}
+        <div className="p-8 bg-[#111] border border-[#daa857]/20 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
+          {/* Subtle Glow Decor */}
+          <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-[#daa857]/10 blur-[80px]" />
+          <div className="absolute -bottom-24 -left-24 h-48 w-48 rounded-full bg-[#daa857]/5 blur-[80px]" />
+
+          <div className="relative z-10">
             <div className="mb-2">
-              <Link href="/login" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
-                <ArrowLeft className="h-4 w-4" /> Back to Login
+              <Link href="/login" className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 hover:text-[#daa857] transition-colors">
+                <ArrowLeft className="h-3 w-3" /> Back to Login
               </Link>
             </div>
-            <CardTitle>Forgot Password?</CardTitle>
-            <CardDescription>
-              Enter your email address and we'll send you a link to reset your password.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
+
             {isSubmitted ? (
-              <div className="text-center py-4 space-y-4">
-                <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto">
-                  <Mail className="h-8 w-8 text-primary" />
+              <div className="text-center py-6 space-y-6 animate-in fade-in zoom-in duration-500">
+                <div className="h-20 w-20 rounded-full flex items-center justify-center mx-auto border-2 border-[#daa857]/20 bg-black shadow-xl shadow-[#daa857]/5">
+                  <Mail className="h-10 w-10 text-[#daa857]" />
                 </div>
-                <div className="space-y-2">
-                  <p className="font-semibold text-lg">Check your inbox</p>
-                  <p className="text-sm text-muted-foreground">
-                    We've sent a password reset link to <strong>{email}</strong>. 
-                    Please check your email and follow the instructions.
+                <div className="space-y-3">
+                  <h2 className="text-3xl font-black uppercase italic tracking-tighter">Check Your <span style={{ color: accent }}>Inbox</span></h2>
+                  <p className="text-gray-500 text-sm font-medium leading-relaxed">
+                    We've sent a recovery link to <span className="text-white font-bold">{email}</span>. 
+                    Follow the link to reset your vault access.
                   </p>
                 </div>
-                <Button variant="outline" className="w-full mt-4" onClick={() => setIsSubmitted(false)}>
-                  Resend Email
+                <Button 
+                  variant="outline" 
+                  className="w-full h-14 border-white/10 bg-transparent hover:bg-white/5 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] mt-4" 
+                  onClick={() => setIsSubmitted(false)}
+                >
+                  Resend Link
                 </Button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email Address</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="john.doe@example.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
+              <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <div className="mb-10">
+                  <h2 className="text-4xl font-black uppercase italic tracking-tighter leading-none">Lost Your <span style={{ color: accent }}>Key?</span></h2>
+                  <p className="text-gray-500 text-sm mt-3 font-medium">Enter your registered email to receive a recovery link.</p>
                 </div>
-                <Button type="submit" className="w-full" disabled={isLoading}>
-                  {isLoading ? (
-                    <span className="flex items-center gap-2">
-                      <Spinner className="h-4 w-4" />
-                      Sending Link...
-                    </span>
-                  ) : (
-                    'Send Reset Link'
-                  )}
-                </Button>
-              </form>
+
+                {error && (
+                  <div className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center gap-3 animate-in fade-in slide-in-from-top-2">
+                    <AlertCircle className="h-5 w-5 text-red-500 shrink-0" />
+                    <p className="text-xs font-bold text-red-500 uppercase tracking-widest leading-tight">{error}</p>
+                  </div>
+                )}
+
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="space-y-1">
+                    <div className="relative group">
+                      <Mail className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 transition-colors group-focus-within:text-[#daa857]" style={{ color: `${accent}66` }} />
+                      <Input
+                        type="email"
+                        placeholder="Recovery Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                        className="h-16 pl-14 bg-black border-white/5 rounded-2xl focus:border-[#daa857] focus:ring-0 transition-all placeholder:text-gray-700 font-medium"
+                      />
+                    </div>
+                  </div>
+
+                  <Button 
+                    type="submit" 
+                    className="w-full h-16 text-black font-black uppercase tracking-[0.2em] rounded-2xl transition-all hover:scale-[1.02] active:scale-[0.98] group shadow-xl shadow-[#daa857]/10" 
+                    style={{ backgroundColor: accent }}
+                    disabled={isLoading}
+                  >
+                    {isLoading ? (
+                      <Loader2 className="h-6 w-6 animate-spin" />
+                    ) : (
+                      <span className="flex items-center gap-2">
+                        Send Recovery Link <Send className="h-4 w-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                      </span>
+                    )}
+                  </Button>
+                </form>
+              </div>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
+
+        {/* Footer info */}
+        <p className="mt-12 text-center text-[10px] text-gray-700 font-black uppercase tracking-[0.5em]">
+          Klimarx Space © 2026 • Security Protocol Active
+        </p>
       </div>
     </div>
   )

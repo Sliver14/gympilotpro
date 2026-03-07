@@ -5,14 +5,10 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { useToast } from '@/hooks/use-toast'
-import { AlertCircle, X } from 'lucide-react'
+import { AlertCircle, Lock, Mail, ArrowRight, Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { Spinner } from '@/components/ui/spinner'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -22,6 +18,8 @@ export default function LoginPage() {
   const [fieldErrors, setFieldErrors] = useState<{ email?: string; password?: string }>({})
   const router = useRouter()
   const { toast } = useToast()
+
+  const accent = '#daa857'
 
   const validateForm = () => {
     const errors: { email?: string; password?: string } = {}
@@ -50,7 +48,13 @@ export default function LoginPage() {
     setFieldErrors({})
 
     if (!validateForm()) {
-      setError('Please fix the errors below')
+      const errorMessage = 'Please fix the errors below'
+      setError(errorMessage)
+      toast({
+        title: 'Validation Error',
+        description: errorMessage,
+        variant: 'destructive',
+      })
       return
     }
 
@@ -105,134 +109,136 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="flex min-h-screen items-center justify-center bg-[#0a0a0a] text-white selection:bg-[#daa857]/30 px-4 py-20">
       <div className="w-full max-w-md">
         {/* Logo */}
-        <Link href="/" className="mb-8 flex items-center justify-center gap-2 hover:opacity-80 transition-opacity">
-          <Image 
-            src="/WhatsApp_Image_2026-02-25_at_9.54.33_AM-removebg-preview.png" 
-            alt="Klimarx Space Logo" 
-            width={48} 
-            height={48} 
-            className="object-contain"
-          />
-          <span className="text-2xl font-bold">Klimarx Space</span>
+        <Link href="/" className="mb-12 flex flex-col items-center justify-center gap-4 group">
+          <div className="relative h-20 w-20 overflow-hidden rounded-full border-2 transition-transform group-hover:scale-110" style={{ borderColor: `${accent}80` }}>
+            <Image 
+              src="/WhatsApp_Image_2026-02-25_at_9.54.33_AM-removebg-preview.png" 
+              alt="Klimarx Space Logo" 
+              fill
+              className="object-contain p-2 bg-white"
+            />
+          </div>
+          <div className="text-center">
+            {/* <h1 className="text-3xl font-black tracking-tighter uppercase italic">Klimarx<span style={{ color: accent }}>Space</span></h1> */}
+            <p className="text-[10px] uppercase tracking-[0.3em] text-gray-500 font-bold mt-1">Elite Performance Sanctuary</p>
+          </div>
         </Link>
 
-        {/* Login Card */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Welcome Back</CardTitle>
-            <CardDescription>Sign in to your Klimarx account</CardDescription>
-          </CardHeader>
-          <CardContent>
-            {/* Error Alert */}
+        {/* Login Form Container */}
+        <div className="p-8 bg-[#111] border border-[#daa857]/20 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
+          {/* Subtle Glow Decor */}
+          <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-[#daa857]/10 blur-[80px]" />
+          <div className="absolute -bottom-24 -left-24 h-48 w-48 rounded-full bg-[#daa857]/5 blur-[80px]" />
+
+          <div className="relative z-10">
+            <div className="mb-10">
+              <h2 className="text-4xl font-black uppercase italic tracking-tighter leading-none">Welcome <span style={{ color: accent }}>Back</span></h2>
+              <p className="text-gray-500 text-sm mt-3 font-medium">Enter your credentials to access the space.</p>
+            </div>
+
             {error && (
-              <Alert variant="destructive" className="mb-4">
-                <AlertCircle className="h-4 w-4" />
-                <AlertTitle>Error</AlertTitle>
-                <AlertDescription className="flex items-center justify-between">
-                  <span>{error}</span>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-4 w-4"
-                    onClick={() => setError(null)}
-                  >
-                    <X className="h-3 w-3" />
-                  </Button>
-                </AlertDescription>
-              </Alert>
+              <div className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center gap-3 animate-in fade-in slide-in-from-top-2">
+                <AlertCircle className="h-5 w-5 text-red-500 shrink-0" />
+                <p className="text-xs font-bold text-red-500 uppercase tracking-widest leading-tight">{error}</p>
+              </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="john@example.com"
-                  value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value)
-                    if (fieldErrors.email) {
-                      setFieldErrors((prev) => ({ ...prev, email: undefined }))
-                    }
-                    if (error) setError(null)
-                  }}
-                  disabled={isLoading}
-                  className={cn(fieldErrors.email && 'border-destructive focus-visible:ring-destructive')}
-                />
-                {fieldErrors.email && (
-                  <p className="text-sm text-destructive flex items-center gap-1">
-                    <AlertCircle className="h-3 w-3" />
-                    {fieldErrors.email}
-                  </p>
-                )}
-              </div>
-
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="password">Password</Label>
-                  <Link
-                    href="/forgot-password"
-                    className="text-xs text-primary hover:underline"
-                  >
-                    Forgot password?
-                  </Link>
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div className="space-y-1">
+                <div className="relative group">
+                  <Mail className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 transition-colors group-focus-within:text-[#daa857]" style={{ color: fieldErrors.email ? '#ef4444' : `${accent}66` }} />
+                  <Input
+                    type="email"
+                    placeholder="Email Address"
+                    value={email}
+                    onChange={(e) => {
+                      setEmail(e.target.value)
+                      if (fieldErrors.email) setFieldErrors((prev) => ({ ...prev, email: undefined }))
+                      if (error) setError(null)
+                    }}
+                    disabled={isLoading}
+                    className={cn(
+                      "h-16 pl-14 bg-black border-white/5 rounded-2xl focus:border-[#daa857] focus:ring-0 transition-all placeholder:text-gray-700 font-medium",
+                      fieldErrors.email && "border-red-500/50 focus:border-red-500"
+                    )}
+                  />
                 </div>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => {
-                    setPassword(e.target.value)
-                    if (fieldErrors.password) {
-                      setFieldErrors((prev) => ({ ...prev, password: undefined }))
-                    }
-                    if (error) setError(null)
-                  }}
-                  disabled={isLoading}
-                  className={cn(fieldErrors.password && 'border-destructive focus-visible:ring-destructive')}
-                />
-                {fieldErrors.password && (
-                  <p className="text-sm text-destructive flex items-center gap-1">
-                    <AlertCircle className="h-3 w-3" />
-                    {fieldErrors.password}
+                {fieldErrors.email && (
+                  <p className="text-[10px] text-red-500 font-bold uppercase tracking-widest ml-2 flex items-center gap-1">
+                    <AlertCircle className="h-3 w-3" /> {fieldErrors.email}
                   </p>
                 )}
               </div>
 
-              <Button type="submit" className="w-full" disabled={isLoading}>
+              <div className="space-y-1">
+                <div className="relative group">
+                  <Lock className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 transition-colors group-focus-within:text-[#daa857]" style={{ color: fieldErrors.password ? '#ef4444' : `${accent}66` }} />
+                  <Input
+                    type="password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => {
+                      setPassword(e.target.value)
+                      if (fieldErrors.password) setFieldErrors((prev) => ({ ...prev, password: undefined }))
+                      if (error) setError(null)
+                    }}
+                    disabled={isLoading}
+                    className={cn(
+                      "h-16 pl-14 bg-black border-white/5 rounded-2xl focus:border-[#daa857] focus:ring-0 transition-all placeholder:text-gray-700 font-medium",
+                      fieldErrors.password && "border-red-500/50 focus:border-red-500"
+                    )}
+                  />
+                </div>
+                {fieldErrors.password && (
+                  <p className="text-[10px] text-red-500 font-bold uppercase tracking-widest ml-2 flex items-center gap-1">
+                    <AlertCircle className="h-3 w-3" /> {fieldErrors.password}
+                  </p>
+                )}
+              </div>
+
+              <div className="flex justify-end pr-2">
+                <Link
+                  href="/forgot-password"
+                  className="text-xs text-gray-500 hover:text-[#daa857] transition-colors font-bold uppercase tracking-widest"
+                >
+                  Forgot Key?
+                </Link>
+              </div>
+
+              <Button 
+                type="submit" 
+                className="w-full h-16 text-black font-black uppercase tracking-[0.2em] rounded-2xl transition-all hover:scale-[1.02] active:scale-[0.98] group mt-4 shadow-xl shadow-[#daa857]/10" 
+                style={{ backgroundColor: accent }}
+                disabled={isLoading}
+              >
                 {isLoading ? (
-                  <span className="flex items-center gap-2">
-                    <Spinner className="h-4 w-4" />
-                    Signing in...
-                  </span>
+                  <Loader2 className="h-6 w-6 animate-spin" />
                 ) : (
-                  'Sign In'
+                  <span className="flex items-center gap-2">
+                    Sign In <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  </span>
                 )}
               </Button>
             </form>
 
-            <div className="mt-4 border-t border-border pt-4">
-              <p className="text-center text-sm text-muted-foreground">
-                Don't have an account?{' '}
-                <Link href="/signup" className="font-semibold text-primary hover:underline">
-                  Sign up here
+            <div className="mt-10 text-center">
+              <p className="text-sm text-gray-500 font-medium">
+                New to the space?{' '}
+                <Link href="/signup" className="font-black text-[#daa857] hover:underline uppercase tracking-tight ml-1">
+                  Apply for Membership
                 </Link>
               </p>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
-        {/* Demo Credentials */}
-        {/* <div className="mt-4 rounded-lg border border-border bg-muted/50 p-4">
-          <p className="text-xs font-semibold text-muted-foreground">Demo Credentials (Admin):</p>
-          <p className="text-xs text-muted-foreground">Email: admin@klimarx.com</p>
-          <p className="text-xs text-muted-foreground">Password: admin123</p>
-        </div> */}
+        {/* Footer info */}
+        <p className="mt-12 text-center text-[10px] text-gray-700 font-black uppercase tracking-[0.5em]">
+          Klimarx Space © 2026 • Security Protocol Active
+        </p>
       </div>
     </div>
   )

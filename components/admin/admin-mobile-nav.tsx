@@ -32,33 +32,31 @@ function AdminMobileNavContent({ className, role = 'admin' }: AdminMobileNavProp
   return (
     <nav
       className={cn(
-        'fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 md:hidden',
+        'fixed bottom-0 left-0 right-0 z-50 border-t border-white/5 bg-black/80 backdrop-blur-xl md:hidden pb-safe',
         className
       )}
     >
-      <div className="flex h-16 items-center justify-around">
+      <div className="flex h-20 items-center justify-around px-2">
         {navItems.map((item) => {
           const isActive = currentTab === item.tab
           return (
             <Link
               key={item.tab}
               href={`/${role}/dashboard?tab=${item.tab}`}
-              className="flex flex-1 flex-col items-center justify-center gap-1"
+              className="flex flex-1 flex-col items-center justify-center gap-1.5 transition-all duration-300"
             >
-              <Button
-                variant={isActive ? 'default' : 'ghost'}
-                size="icon"
+              <div
                 className={cn(
-                  'h-10 w-10',
-                  isActive && 'bg-primary text-primary-foreground'
+                  'h-10 w-14 rounded-xl flex items-center justify-center transition-all duration-300',
+                  isActive ? 'bg-[#daa857] text-black shadow-lg shadow-[#daa857]/20' : 'text-gray-500'
                 )}
               >
-                <item.icon className="h-5 w-5" />
-              </Button>
+                <item.icon className={cn('h-5 w-5', isActive ? 'stroke-[3px]' : 'stroke-[2px]')} />
+              </div>
               <span
                 className={cn(
-                  'text-[10px] font-medium',
-                  isActive ? 'text-primary' : 'text-muted-foreground'
+                  'text-[8px] font-black uppercase tracking-[0.1em]',
+                  isActive ? 'text-[#daa857]' : 'text-gray-600'
                 )}
               >
                 {item.title}

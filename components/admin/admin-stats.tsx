@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useToast } from '@/hooks/use-toast'
-import { Users, TrendingUp, Calendar, Clock } from 'lucide-react'
+import { Users, TrendingUp, Calendar, Clock, Wallet } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface Stats {
@@ -83,72 +83,56 @@ export default function AdminStats({
   }
 
   return (
-    <div className={cn("grid gap-4", hideRevenue ? "md:grid-cols-4" : "md:grid-cols-5")}>
-      {/* Total Members */}
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Total Members</CardTitle>
-          <Users className="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">{stats.totalMembers.toLocaleString('en-NG')}</div>
-          <p className="text-xs text-muted-foreground">All registered</p>
-        </CardContent>
-      </Card>
-
-      {/* Active Members */}
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Active Members</CardTitle>
-          <TrendingUp className="h-4 w-4 text-primary" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">{stats.activeMembers.toLocaleString('en-NG')}</div>
-          <p className="text-xs text-muted-foreground">Valid memberships</p>
-        </CardContent>
-      </Card>
-
-      {/* Today's Check-ins */}
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Today's Check-ins</CardTitle>
-          <Calendar className="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">{stats.todayCheckins.toLocaleString('en-NG')}</div>
-          <p className="text-xs text-muted-foreground">Gym visits today</p>
-        </CardContent>
-      </Card>
-
-      {/* Pending Payments */}
-      <Card className={stats.pendingPayments > 0 ? 'border-orange-500 bg-orange-50/10' : ''}>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Pending Payments</CardTitle>
-          <Clock className={`h-4 w-4 ${stats.pendingPayments > 0 ? 'text-orange-500 animate-pulse' : 'text-muted-foreground'}`} />
-        </CardHeader>
-        <CardContent>
-          <div className={`text-2xl font-bold ${stats.pendingPayments > 0 ? 'text-orange-600' : ''}`}>
-            {stats.pendingPayments}
-          </div>
-          <p className="text-xs text-muted-foreground">Awaiting approval</p>
-        </CardContent>
-      </Card>
-
-      {/* Monthly Revenue */}
-      {!hideRevenue && (
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Monthly Revenue</CardTitle>
-            <span className="text-primary text-xl font-bold opacity-50">₦</span>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {formatNaira(stats.monthlyRevenue)}
+    <div className={cn("grid gap-6", hideRevenue ? "grid-cols-2 md:grid-cols-4" : "grid-cols-2 md:grid-cols-5")}>
+      {[
+        { label: 'Total Members', value: stats.totalMembers, sub: 'All registered', icon: Users },
+        { label: 'Active Force', value: stats.activeMembers, sub: 'Valid memberships', icon: TrendingUp, accent: true },
+        { label: 'Today Check-ins', value: stats.todayCheckins, sub: 'Live activity', icon: Calendar },
+        { 
+          label: 'Pending Sync', 
+          value: stats.pendingPayments, 
+          sub: 'Awaiting sync', 
+          icon: Clock, 
+          warning: stats.pendingPayments > 0 
+        },
+        ...(!hideRevenue ? [{ 
+          label: 'Global Revenue', 
+          value: formatNaira(stats.monthlyRevenue), 
+          sub: 'This cycle', 
+          icon: Wallet,
+          accent: true 
+        }] : [])
+      ].map((item: any, i) => (
+        <div 
+          key={i} 
+          className={cn(
+            "bg-[#111] border border-white/5 rounded-3xl p-6 shadow-xl relative overflow-hidden group hover:border-[#daa857]/30 transition-all duration-500",
+            item.warning && "border-red-500/20 bg-red-500/5 hover:border-red-500/40"
+          )}
+        >
+          <div className="absolute -top-12 -right-12 h-24 w-24 rounded-full bg-white/5 blur-2xl group-hover:bg-[#daa857]/10 transition-colors" />
+          
+          <div className="flex flex-col gap-4 relative z-10">
+            <div className="flex items-center justify-between">
+              <p className="text-[8px] font-black uppercase tracking-[0.3em] text-gray-500">{item.label}</p>
+              <item.icon className={cn(
+                "h-4 w-4",
+                item.accent ? "text-[#daa857]" : item.warning ? "text-red-500 animate-pulse" : "text-gray-700"
+              )} />
             </div>
-            <p className="text-xs text-muted-foreground">This month</p>
-          </CardContent>
-        </Card>
-      )}
+            <div>
+              <p className={cn(
+                "text-2xl md:text-3xl font-black italic tracking-tighter",
+                item.accent ? "text-[#daa857]" : "text-white",
+                item.warning && "text-red-500"
+              )}>
+                {item.value}
+              </p>
+              <p className="text-[8px] font-bold uppercase tracking-widest text-gray-600 mt-1">{item.sub}</p>
+            </div>
+          </div>
+        </div>
+      ))}
     </div>
   )
 }

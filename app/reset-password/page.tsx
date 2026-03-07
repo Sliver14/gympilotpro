@@ -5,12 +5,10 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { useToast } from '@/hooks/use-toast'
-import { CheckCircle, AlertCircle } from 'lucide-react'
-import { Spinner } from '@/components/ui/spinner'
+import { CheckCircle, AlertCircle, Lock, Loader2, ArrowRight } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 function ResetPasswordContent() {
   const [password, setPassword] = useState('')
@@ -24,9 +22,11 @@ function ResetPasswordContent() {
   const token = searchParams.get('token')
   const { toast } = useToast()
 
+  const accent = '#daa857'
+
   useEffect(() => {
     if (!token) {
-      setError('Invalid or missing reset token.')
+      setError('Invalid or missing recovery token.')
     }
   }, [token])
 
@@ -42,10 +42,10 @@ function ResetPasswordContent() {
       return
     }
 
-    if (password.length < 4) {
+    if (password.length < 8) {
       toast({
         title: 'Error',
-        description: 'Password must be at least 4 characters long',
+        description: 'Password must be at least 8 characters long',
         variant: 'destructive',
       })
       return
@@ -66,9 +66,8 @@ function ResetPasswordContent() {
         setIsSuccess(true)
         toast({
           title: 'Success',
-          description: 'Your password has been reset successfully.',
+          description: 'Your vault key has been reset successfully.',
         })
-        // Redirect after 3 seconds
         setTimeout(() => {
           router.push('/login')
         }, 3000)
@@ -88,113 +87,141 @@ function ResetPasswordContent() {
 
   if (error) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-destructive flex items-center gap-2">
-            <AlertCircle className="h-5 w-5" />
-            Invalid Link
-          </CardTitle>
-          <CardDescription>{error}</CardDescription>
-        </CardHeader>
-        <CardContent>
+      <div className="p-8 bg-[#111] border border-red-500/20 rounded-[2.5rem] shadow-2xl relative overflow-hidden text-center animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-red-500/5 blur-[80px]" />
+        <div className="relative z-10 space-y-6">
+          <div className="h-20 w-20 rounded-full flex items-center justify-center mx-auto border-2 border-red-500/20 bg-black">
+            <AlertCircle className="h-10 w-10 text-red-500" />
+          </div>
+          <div className="space-y-2">
+            <h2 className="text-3xl font-black uppercase italic tracking-tighter">Invalid <span className="text-red-500">Link</span></h2>
+            <p className="text-gray-500 text-sm font-medium">{error}</p>
+          </div>
           <Link href="/forgot-password">
-            <Button className="w-full">Request New Link</Button>
+            <Button className="w-full h-14 bg-red-500 hover:bg-red-600 text-white font-black uppercase tracking-[0.2em] rounded-2xl">
+              Request New Link
+            </Button>
           </Link>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     )
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Reset Password</CardTitle>
-        <CardDescription>
-          Enter your new password below.
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
+    <div className="p-8 bg-[#111] border border-[#daa857]/20 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
+      <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-[#daa857]/10 blur-[80px]" />
+      <div className="absolute -bottom-24 -left-24 h-48 w-48 rounded-full bg-[#daa857]/5 blur-[80px]" />
+
+      <div className="relative z-10">
         {isSuccess ? (
-          <div className="text-center py-4 space-y-4">
-            <CheckCircle className="h-12 w-12 text-green-500 mx-auto" />
-            <div className="space-y-2">
-              <p className="font-semibold text-lg">Password Reset Successfully!</p>
-              <p className="text-sm text-muted-foreground">
-                You will be redirected to the login page in a few seconds.
+          <div className="text-center py-6 space-y-6 animate-in fade-in zoom-in duration-500">
+            <div className="h-20 w-20 rounded-full flex items-center justify-center mx-auto border-2 border-green-500/20 bg-black shadow-xl shadow-green-500/5">
+              <CheckCircle className="h-10 w-10 text-green-500" />
+            </div>
+            <div className="space-y-3">
+              <h2 className="text-3xl font-black uppercase italic tracking-tighter">Protocol <span className="text-green-500">Success</span></h2>
+              <p className="text-gray-500 text-sm font-medium leading-relaxed">
+                Your vault key has been updated. Redirecting to login terminal...
               </p>
             </div>
             <Link href="/login">
-              <Button variant="outline" className="w-full mt-4">
+              <Button className="w-full h-14 bg-green-600 hover:bg-green-700 text-white font-black uppercase tracking-[0.2em] rounded-2xl mt-4">
                 Login Now
               </Button>
             </Link>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="password">New Password</Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div className="mb-10">
+              <h2 className="text-4xl font-black uppercase italic tracking-tighter leading-none">Reset <span style={{ color: accent }}>Key</span></h2>
+              <p className="text-gray-500 text-sm mt-3 font-medium">Define your new secure entry credentials.</p>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="confirmPassword">Confirm New Password</Label>
-              <Input
-                id="confirmPassword"
-                type="password"
-                placeholder="••••••••"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-              />
-            </div>
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? (
-                <span className="flex items-center gap-2">
-                  <Spinner className="h-4 w-4" />
-                  Resetting Password...
-                </span>
-              ) : (
-                'Reset Password'
-              )}
-            </Button>
-          </form>
+
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div className="space-y-1">
+                <div className="relative group">
+                  <Lock className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 transition-colors group-focus-within:text-[#daa857]" style={{ color: `${accent}66` }} />
+                  <Input
+                    type="password"
+                    placeholder="New Vault Key"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    className="h-16 pl-14 bg-black border-white/5 rounded-2xl focus:border-[#daa857] focus:ring-0 transition-all placeholder:text-gray-700 font-medium"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <div className="relative group">
+                  <Lock className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 transition-colors group-focus-within:text-[#daa857]" style={{ color: `${accent}66` }} />
+                  <Input
+                    type="password"
+                    placeholder="Confirm New Key"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                    className="h-16 pl-14 bg-black border-white/5 rounded-2xl focus:border-[#daa857] focus:ring-0 transition-all placeholder:text-gray-700 font-medium"
+                  />
+                </div>
+              </div>
+
+              <Button 
+                type="submit" 
+                className="w-full h-16 text-black font-black uppercase tracking-[0.2em] rounded-2xl transition-all hover:scale-[1.02] active:scale-[0.98] group mt-4 shadow-xl shadow-[#daa857]/10" 
+                style={{ backgroundColor: accent }}
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <Loader2 className="h-6 w-6 animate-spin" />
+                ) : (
+                  <span className="flex items-center gap-2">
+                    Update Vault Key <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  </span>
+                )}
+              </Button>
+            </form>
+          </div>
         )}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   )
 }
 
 export default function ResetPasswordPage() {
+  const accent = '#daa857'
+  
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-4">
+    <div className="flex min-h-screen items-center justify-center bg-[#0a0a0a] text-white selection:bg-[#daa857]/30 px-4">
       <div className="w-full max-w-md">
         {/* Logo */}
-        <Link href="/" className="mb-8 flex items-center justify-center gap-2 hover:opacity-80 transition-opacity">
-          <Image 
-            src="/WhatsApp_Image_2026-02-25_at_9.54.33_AM-removebg-preview.png" 
-            alt="Klimarx Space Logo" 
-            width={48} 
-            height={48} 
-            className="object-contain"
-          />
-          <span className="text-2xl font-bold">Klimarx Space</span>
+        <Link href="/" className="mb-12 flex flex-col items-center justify-center gap-4 group">
+          <div className="relative h-20 w-20 overflow-hidden rounded-full border-2 transition-transform group-hover:scale-110" style={{ borderColor: `${accent}80` }}>
+            <Image 
+              src="/WhatsApp_Image_2026-02-25_at_9.54.33_AM-removebg-preview.png" 
+              alt="Klimarx Space Logo" 
+              fill
+              className="object-contain p-2 bg-white"
+            />
+          </div>
+          <div className="text-center">
+            <h1 className="text-3xl font-black tracking-tighter uppercase italic">Klimarx<span style={{ color: accent }}>Space</span></h1>
+            <p className="text-[10px] uppercase tracking-[0.3em] text-gray-500 font-bold mt-1">Security Terminal</p>
+          </div>
         </Link>
 
         <Suspense fallback={
-          <Card>
-            <CardContent className="flex items-center justify-center py-12">
-              <Spinner className="h-8 w-8 text-primary" />
-            </CardContent>
-          </Card>
+          <div className="p-12 flex justify-center bg-[#111] border border-white/5 rounded-[2.5rem]">
+            <Loader2 className="h-10 w-10 animate-spin text-[#daa857]" />
+          </div>
         }>
           <ResetPasswordContent />
         </Suspense>
+
+        {/* Footer info */}
+        <p className="mt-12 text-center text-[10px] text-gray-700 font-black uppercase tracking-[0.5em]">
+          Klimarx Space © 2026 • Security Protocol Active
+        </p>
       </div>
     </div>
   )

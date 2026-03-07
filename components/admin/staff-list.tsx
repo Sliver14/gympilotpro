@@ -10,6 +10,7 @@ import { Users, Search, RefreshCw, UserCheck, User } from 'lucide-react'
 import RegisterStaffDialog from './register-staff-dialog'
 import { Spinner } from '@/components/ui/spinner'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { cn } from '@/lib/utils'
 
 interface Staff {
   id: string
@@ -84,66 +85,86 @@ export default function StaffList() {
   return (
     <Card>
       <CardHeader>
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <CardTitle className="flex items-center gap-2">
-              <UserCheck className="h-5 w-5" />
-              Staff Members
+            <CardTitle className="flex items-center gap-3">
+              <UserCheck className="h-5 w-5 text-[#daa857]" /> Command <span className="text-[#daa857]">Personnel</span>
             </CardTitle>
-            <CardDescription>{staff.length} total staff members</CardDescription>
+            <CardDescription>{staff.length} authorized signatures managing the vault</CardDescription>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <RegisterStaffDialog onStaffAdded={fetchStaff} />
-            <Button onClick={fetchStaff} variant="outline" size="sm" className="gap-2">
-              <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
-              Refresh
+            <Button 
+              onClick={fetchStaff} 
+              variant="outline" 
+              size="sm" 
+              className="h-10 px-4 border-white/5 bg-black hover:bg-white/5 text-gray-400 font-black uppercase text-[10px] tracking-widest gap-2 rounded-xl"
+            >
+              <RefreshCw className={cn("h-3.5 w-3.5", isLoading && "animate-spin")} />
+              Sync
             </Button>
           </div>
         </div>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="flex gap-2">
-          <Search className="h-4 w-4 text-muted-foreground mt-2.5 ml-2 absolute" />
+      <CardContent className="space-y-8">
+        <div className="relative group">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-600 transition-colors group-focus-within:text-[#daa857]" />
           <Input
-            placeholder="Search staff by name, email or role..."
+            placeholder="Search personnel by identity, channel or designation..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-8"
+            className="h-14 pl-12 bg-black border-white/5 rounded-2xl focus:border-[#daa857] font-bold text-sm"
           />
         </div>
 
         {filteredStaff.length === 0 ? (
-          <p className="text-center py-8 text-muted-foreground">No staff members found</p>
+          <div className="py-20 text-center bg-black/20 rounded-[2rem] border border-dashed border-white/5">
+            <UserCheck className="mx-auto h-12 w-12 text-gray-800 mb-4" />
+            <p className="text-sm font-bold text-gray-600 uppercase tracking-widest italic">No authorized personnel match the current query.</p>
+          </div>
         ) : (
-          <div className="space-y-2">
+          <div className="grid gap-4">
             {filteredStaff.map((s) => {
               const initials = `${s.firstName?.[0] ?? ''}${s.lastName?.[0] ?? ''}`.toUpperCase()
 
               return (
-                <div key={s.id} className="flex items-center justify-between rounded-lg border border-border p-3">
-                  <div className="flex items-center gap-3 flex-1 min-w-0 mr-4">
-                    <Avatar className="h-10 w-10">
+                <div key={s.id} className="flex flex-col md:flex-row md:items-center justify-between rounded-3xl bg-black/40 border border-white/5 p-6 hover:border-[#daa857]/30 transition-all group relative overflow-hidden">
+                  <div className="absolute -right-12 -top-12 h-24 w-24 rounded-full bg-white/5 blur-2xl group-hover:bg-[#daa857]/5 transition-colors" />
+                  
+                  <div className="flex items-center gap-5 flex-1 min-w-0 relative z-10">
+                    <Avatar className="h-14 w-14 border-2 border-white/5 group-hover:border-[#daa857]/30 transition-all duration-500 shadow-xl">
                       <AvatarImage src={s.profileImage || undefined} className="object-cover" />
-                      <AvatarFallback className="bg-primary/5 text-xs">
-                        {initials || <User className="h-4 w-4" />}
+                      <AvatarFallback className="bg-black text-[#daa857] font-black italic">
+                        {initials || <User className="h-6 w-6" />}
                       </AvatarFallback>
                     </Avatar>
                     <div className="min-w-0">
-                      <p className="font-medium truncate">
-                        {s.firstName} {s.lastName}
+                      <p className="font-black text-white uppercase italic tracking-tight text-lg leading-none mb-1">
+                        {s.firstName} <span className="text-[#daa857]">{s.lastName}</span>
                       </p>
-                      <p className="text-xs text-muted-foreground truncate">{s.email}</p>
+                      <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest flex items-center gap-2">
+                        <span>{s.email}</span>
+                        <span className="h-1 w-1 rounded-full bg-gray-800" />
+                        <span className="text-[#daa857]/50">{s.role.toUpperCase()} CORE</span>
+                      </p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <div className="text-right text-sm">
-                      <p className="font-medium capitalize">{s.role}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {s.staffProfile?.specialization || 'General Staff'}
+
+                  <div className="flex items-center justify-between md:justify-end gap-8 mt-6 md:mt-0 pt-6 md:pt-0 border-t md:border-none border-white/5 relative z-10">
+                    <div className="text-left md:text-right">
+                      <p className="text-[8px] font-black uppercase tracking-widest text-gray-600 mb-1">Specialization</p>
+                      <p className="text-xs font-black text-white uppercase italic">{s.staffProfile?.specialization || 'General Protocol'}</p>
+                    </div>
+                    
+                    <div className="text-left md:text-right">
+                      <p className="text-[8px] font-black uppercase tracking-widest text-gray-600 mb-1">Personnel Since</p>
+                      <p className="text-xs font-bold text-gray-400">
+                        {new Date(s.createdAt).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' }).toUpperCase()}
                       </p>
                     </div>
-                    <Badge variant="secondary" className="capitalize">
-                      {s.role}
+
+                    <Badge className="bg-[#daa857]/10 text-[#daa857] border border-[#daa857]/20 px-4 py-1 rounded-full text-[8px] font-black uppercase tracking-widest italic">
+                      {s.role.toUpperCase()}
                     </Badge>
                   </div>
                 </div>

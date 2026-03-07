@@ -15,7 +15,7 @@ import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { useToast } from '@/hooks/use-toast'
-import { RefreshCw, Wallet } from 'lucide-react'
+import { RefreshCw, Wallet, Loader2 } from 'lucide-react'
 import { Spinner } from '@/components/ui/spinner'
 
 interface Membership {
@@ -113,63 +113,72 @@ export default function ManualRenewalDialog({ memberId, memberName, onRenewed }:
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm" variant="outline" className="gap-2">
-          <RefreshCw className="h-4 w-4" />
+        <Button 
+          size="sm" 
+          variant="outline" 
+          className="h-10 px-6 border-red-500/20 bg-black hover:bg-red-500 hover:text-white text-red-500 font-black uppercase text-[10px] tracking-widest gap-2 rounded-xl transition-all"
+        >
+          <RefreshCw className="h-3.5 w-3.5" />
           Renew
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-md">
-        <DialogHeader>
-          <DialogTitle>Manual Renewal for {memberName}</DialogTitle>
-          <DialogDescription>
-            Select a membership plan and record the payment. This will instantly activate their membership.
+      <DialogContent className="bg-[#111] border-white/10 text-white rounded-[2.5rem] p-10 max-w-lg">
+        <DialogHeader className="space-y-4">
+          <DialogTitle className="text-3xl font-black uppercase italic tracking-tighter">
+            Protocol <span className="text-[#daa857]">Renewal</span>
+          </DialogTitle>
+          <DialogDescription className="text-gray-500 font-medium uppercase text-[10px] tracking-widest leading-relaxed">
+            Re-establishing vault access for operative <span className="text-white font-black">{memberName}</span>. 
+            Confirm deployment tier and authorization timestamp.
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4 py-4">
-          <div className="space-y-2">
-            <Label htmlFor="membership">Membership Plan *</Label>
+        
+        <form onSubmit={handleSubmit} className="space-y-8 py-6">
+          <div className="space-y-3">
+            <Label htmlFor="membership" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Deployment Tier *</Label>
             <Select
               value={formData.membershipId}
               onValueChange={(value) => setFormData({ ...formData, membershipId: value })}
             >
-              <SelectTrigger id="membership">
-                <SelectValue placeholder="Select plan" />
+              <SelectTrigger id="membership" className="h-16 bg-black border-white/5 rounded-2xl focus:border-[#daa857] px-6 font-black uppercase tracking-widest text-xs">
+                <SelectValue placeholder="SELECT MISSION TIER" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-[#111] border-white/10 text-white">
                 {memberships.map((m) => (
-                  <SelectItem key={m.id} value={m.id}>
-                    {m.name} - ₦{m.price.toLocaleString('en-NG')}
+                  <SelectItem key={m.id} value={m.id} className="focus:bg-[#daa857]/10 focus:text-[#daa857] font-bold uppercase text-[10px] tracking-widest">
+                    {m.name.toUpperCase()} - ₦{m.price.toLocaleString('en-NG')}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="startDate">Start Date *</Label>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-3">
+              <Label htmlFor="startDate" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Sync Date *</Label>
               <Input
                 id="startDate"
                 type="date"
                 value={formData.startDate}
                 onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
                 max={today}
+                className="h-14 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-4 font-black uppercase tracking-widest text-[10px]"
                 required
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="paymentMethod">Payment Method *</Label>
+            <div className="space-y-3">
+              <Label htmlFor="paymentMethod" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Authorization *</Label>
               <Select
                 value={formData.paymentMethod}
                 onValueChange={(value) => setFormData({ ...formData, paymentMethod: value })}
               >
-                <SelectTrigger id="paymentMethod">
-                  <SelectValue placeholder="Select method" />
+                <SelectTrigger id="paymentMethod" className="h-14 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-4 font-black uppercase tracking-widest text-[10px]">
+                  <SelectValue placeholder="METHOD" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-[#111] border-white/10 text-white">
                   {PAYMENT_METHODS.map((method) => (
-                    <SelectItem key={method} value={method}>
-                      {method}
+                    <SelectItem key={method} value={method} className="focus:bg-[#daa857]/10 focus:text-[#daa857] font-bold uppercase text-[10px] tracking-widest">
+                      {method.toUpperCase()}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -177,13 +186,25 @@ export default function ManualRenewalDialog({ memberId, memberName, onRenewed }:
             </div>
           </div>
 
-          <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => setOpen(false)}>
+          <DialogFooter className="gap-3 sm:gap-0 pt-4">
+            <Button 
+              type="button" 
+              variant="outline" 
+              onClick={() => setOpen(false)}
+              className="h-14 px-8 border-white/10 hover:bg-white/5 rounded-xl text-[10px] font-black uppercase tracking-widest text-gray-500"
+            >
               Cancel
             </Button>
-            <Button type="submit" disabled={isLoading}>
-              {isLoading && <Spinner className="mr-2 h-4 w-4" />}
-              Renew Membership
+            <Button 
+              type="submit" 
+              disabled={isLoading}
+              className="flex-1 h-14 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black uppercase tracking-widest rounded-xl transition-all shadow-xl shadow-[#daa857]/10"
+            >
+              {isLoading ? (
+                <Loader2 className="h-4 w-4 animate-spin mr-2" />
+              ) : (
+                'Commit Renewal'
+              )}
             </Button>
           </DialogFooter>
         </form>

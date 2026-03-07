@@ -1,275 +1,260 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import { Users, TrendingUp, CheckCircle } from 'lucide-react'
+import { 
+  Users, 
+  TrendingUp, 
+  CheckCircle, 
+  Play, 
+  Dumbbell, 
+  Trophy, 
+  MapPin, 
+  ChevronDown, 
+  ChevronUp,
+  Lock,
+  Mail,
+  ArrowRight
+} from 'lucide-react'
 
 export default function Home() {
+  const [showAll, setShowAll] = useState(false)
+
+  const packages = [
+    { name: "Daily Pass", price: "3,000", duration: "1 Day", features: ["Unlimited gym access", "All equipment access", "24h Validity"], popular: false },
+    { name: "Bi-Weekly Pass", price: "10,000", duration: "14 Days", features: ["Unlimited gym access", "All equipment access", "Locker access", "Free PT Consult"], popular: true },
+    { name: "Monthly Pass", price: "20,000", duration: "1 Month", features: ["Unlimited gym access", "Locker & Shower", "Free Wi-Fi access"], popular: false },
+    { name: "Quarterly Pass", price: "55,000", duration: "3 Months", features: ["Unlimited gym access", "Free Guest Pass (1x)", "Locker access"], popular: false },
+    { name: "Semi-Annual Pass", price: "110,000", duration: "6 Months", features: ["Unlimited gym access", "1 Month Pause option", "Discounted merch"], popular: false },
+    { name: "Annual Pass", price: "220,000", duration: "1 Year", features: ["Unlimited gym access", "Priority PT booking", "Klimarx Welcome Kit"], popular: false },
+  ]
+
+  const visiblePackages = showAll ? packages : packages.slice(0, 3)
+
+  const accent = '#daa857'
+  const accentLight = '#cdb48b'
+  const dark = '#000000'
+  const light = '#ffffff'
+
   return (
-    <main className="min-h-screen bg-background text-foreground">
-      {/* Navigation */}
-      <nav className="border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container mx-auto flex h-16 items-center justify-between px-4">
-          <div className="flex items-center gap-2">
-            <Image 
-              src="/WhatsApp_Image_2026-02-25_at_9.54.33_AM-removebg-preview.png" 
-              alt="Klimarx Space Logo" 
-              width={40} 
-              height={40} 
-              className="object-contain"
-            />
-            <span className="text-xl font-bold">Klimarx Space</span>
+    <main className="min-h-screen bg-[#0a0a0a] text-white selection:bg-[#daa857]/30 overflow-x-hidden">
+      
+      {/* Navigation - Glassmorphic / semi-transparent over video */}
+      <nav className="fixed top-0 z-50 w-full border-b border-white/5 bg-black/30 backdrop-blur-lg transition-all duration-300">
+        <div className="container mx-auto flex h-20 items-center justify-between px-6">
+          <div className="flex items-center gap-3">
+            <div className="relative h-12 w-12 overflow-hidden rounded-full border" style={{ borderColor: `${accent}80` }}>
+              <Image 
+                src="/WhatsApp_Image_2026-02-25_at_9.54.33_AM-removebg-preview.png" 
+                alt="Klimarx Space Logo" 
+                fill
+                className="object-contain p-1 bg-white"
+              />
+            </div>
+            <span className="text-2xl font-black tracking-tighter uppercase italic">Klimarx<span style={{ color: accent }}>Space</span></span>
           </div>
-          <div className="flex gap-4">
-            <Link href="/login">
-              <Button variant="ghost">Login</Button>
+          <div className="hidden md:flex items-center gap-8 text-sm font-medium uppercase tracking-widest">
+            <Link href="#features" className="hover:text-[#daa857] transition-colors">Experience</Link>
+            <Link href="#membership" className="hover:text-[#daa857] transition-colors">Memberships</Link>
+            <Link 
+              href="/login"
+              className="hover:text-[#daa857] transition-colors uppercase font-bold tracking-widest"
+            >
+              Login
             </Link>
             <Link href="/signup">
-              <Button>Join Now</Button>
+              <Button 
+                className="px-8 rounded-none transition-transform hover:scale-105 text-black font-bold bg-[#daa857] hover:bg-[#cdb48b]"
+                >                Join the Elite
+              </Button>
+            </Link>
+          </div>
+
+          {/* Mobile Login Trigger */}
+          <div className="flex md:hidden items-center gap-4">
+            <Link 
+              href="/login"
+              className="text-[10px] font-black uppercase tracking-[0.2em] text-[#daa857] border border-[#daa857]/30 px-4 py-2 rounded-full backdrop-blur-sm bg-black/20"
+            >
+              Login
             </Link>
           </div>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="border-b border-border bg-background py-20">
-        <div className="container mx-auto px-4 text-center">
-          <div className="mb-6 flex justify-center">
-            <Image 
-              src="/WhatsApp_Image_2026-02-25_at_9.54.33_AM-removebg-preview.png" 
-              alt="Klimarx Space Logo" 
-              width={120} 
-              height={120} 
-              className="object-contain"
-            />
-          </div>
-          <h1 className="mb-4 text-5xl font-bold md:text-6xl">
-            Welcome to <span className="text-primary">Klimarx Space</span>
+      <section className="relative flex h-screen items-center justify-center overflow-hidden bg-black">
+        {/* Slow Motion Cinematic Background */}
+        <video 
+          autoPlay 
+          muted 
+          loop 
+          playsInline
+          className="absolute inset-0 z-0 h-full w-full object-cover opacity-60"
+        >
+          <source 
+            src="https://videos.pexels.com/video-files/34583331/14654742_1440_2560_25fps.mp4" 
+            type="video/mp4" 
+          />
+          Your browser does not support the video tag.
+        </video>
+        
+        {/* Cinematic Overlays */}
+        <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/60 via-transparent to-[#0a0a0a]" />
+        <div className="absolute inset-0 z-10 bg-black/20" />
+
+        <div className="container relative z-20 mx-auto px-6 text-center">
+          <h1 className="mb-6 text-6xl font-black uppercase italic tracking-tighter md:text-8xl lg:text-9xl animate-in slide-in-from-bottom-8 duration-700">
+            Forge Your <span style={{ color: accent }}>Legacy</span>
           </h1>
-          <p className="mb-8 text-xl text-muted-foreground">
-            Transform your fitness journey with state-of-the-art equipment, expert trainers, and a supportive community.
+          <p className="mx-auto mb-10 max-w-2xl text-lg text-gray-300 md:text-xl font-light">
+            Luxury fitness meets raw performance. Elevate your standard at 
+            <span className="text-white font-bold"> Klimarx Space</span>.
           </p>
-          <Link href="/signup">
-            <Button size="lg" className="gap-2">
-              Get Started Today
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <Link href="/signup">
+              <Button size="lg" className="h-16 px-10 text-lg font-black uppercase text-black group bg-[#daa857] hover:bg-[#cdb48b]">
+                Start Transformation <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </Link>
+            <Button variant="outline" size="lg" className="h-16 px-10 text-lg font-bold uppercase backdrop-blur-sm text-white hover:text-white" style={{ borderColor: 'white' }}>
+              <Play className="mr-2 h-5 w-5 fill-current text-white" /> Watch Tour
             </Button>
-          </Link>
+          </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="border-b border-border py-20">
-        <div className="container mx-auto px-4">
-          <h2 className="mb-12 text-center text-3xl font-bold">Why Choose Klimarx?</h2>
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-            <div className="rounded-lg border border-border bg-card p-6">
-              <Image 
-                src="/WhatsApp_Image_2026-02-25_at_9.54.33_AM-removebg-preview.png" 
-                alt="Modern Equipment" 
-                width={48} 
-                height={48} 
-                className="mb-4 object-contain"
-              />
-              <h3 className="mb-2 text-lg font-semibold">Modern Equipment</h3>
-              <p className="text-sm text-muted-foreground">
-                Top-of-the-line fitness equipment and facilities to support your goals.
-              </p>
+      {/* Stats/Showcase Section */}
+      <section id="features" className="py-24 bg-black">
+        <div className="container mx-auto px-6">
+          <div className="grid gap-12 lg:grid-cols-2 items-center">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="relative h-64 overflow-hidden rounded-2xl border" style={{ borderColor: `${accent}33` }}>
+                <Image src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1000" alt="Gym" fill className="object-cover hover:scale-110 transition duration-700" />
+              </div>
+              <div className="relative h-64 mt-12 overflow-hidden rounded-2xl border" style={{ borderColor: `${accent}33` }}>
+                <Image src="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=1000" alt="Training" fill className="object-cover hover:scale-110 transition duration-700" />
+              </div>
             </div>
-            <div className="rounded-lg border border-border bg-card p-6">
-              <Users className="mb-4 h-8 w-8 text-primary" />
-              <h3 className="mb-2 text-lg font-semibold">Expert Trainers</h3>
-              <p className="text-sm text-muted-foreground">
-                Certified professionals ready to guide you through your fitness journey.
-              </p>
+            <div className="space-y-8">
+              <h2 className="text-4xl font-black uppercase md:text-5xl leading-tight italic">
+                World-Class <span style={{ color: accent }}>Sanctuary</span> For Athletes
+              </h2>
+              <div className="space-y-6">
+                {[
+                  { icon: <Dumbbell />, title: "Prime Equipment", desc: "Custom-engineered machines and Olympic-grade free weights." },
+                  { icon: <Users />, title: "Elite Coaching", desc: "Direct access to championship-winning personal trainers." }
+                ].map((item, i) => (
+                  <div key={i} className="flex gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/10">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-black" style={{ backgroundColor: `${accent}1a` }}>
+                      {item.icon}
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold italic uppercase">{item.title}</h3>
+                      <p className="text-gray-400">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="rounded-lg border border-border bg-card p-6">
-              <TrendingUp className="mb-4 h-8 w-8 text-primary" />
-              <h3 className="mb-2 text-lg font-semibold">Progress Tracking</h3>
-              <p className="text-sm text-muted-foreground">
-                Monitor your fitness progress with detailed analytics and notes.
-              </p>
-            </div>
-            <div className="rounded-lg border border-border bg-card p-6">
-              <CheckCircle className="mb-4 h-8 w-8 text-primary" />
-              <h3 className="mb-2 text-lg font-semibold">Community</h3>
-              <p className="text-sm text-muted-foreground">
-                Join a supportive community of fitness enthusiasts and achieve your goals together.
-              </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Video Demo Section */}
+      <section className="py-20 bg-[#0a0a0a]">
+        <div className="container mx-auto px-6">
+          <div className="relative aspect-video w-full max-w-5xl mx-auto overflow-hidden rounded-[2.5rem] border group cursor-pointer shadow-2xl" style={{ borderColor: `${accent}4d`, boxShadow: `0 0 50px ${accent}0d` }}>
+            <Image 
+              src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=2000" 
+              alt="Gym Interior" 
+              fill 
+              className="object-cover transition-transform duration-700 group-hover:scale-105 opacity-60"
+            />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="h-24 w-24 flex items-center justify-center rounded-full text-black shadow-[0_0_50px_rgba(218,168,87,0.3)] group-hover:scale-110 transition-transform" style={{ backgroundColor: accent }}>
+                <Play fill="currentColor" size={40} />
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Membership Plans Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-4">
-          <h2 className="mb-12 text-center text-3xl font-bold">Membership Plans</h2>
-          <p className="mb-12 text-center text-muted-foreground">
-            Choose the perfect plan to fit your fitness goals and lifestyle.
-          </p>
+      <section id="membership" className="py-24 bg-black">
+        <div className="container mx-auto px-6">
+          <div className="mb-16 text-center">
+            <h2 className="text-4xl md:text-7xl font-black uppercase italic tracking-tighter leading-none">
+              Choose Your <span style={{ color: accent }}>Tier</span>
+            </h2>
+          </div>
+          
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            <div className="rounded-lg border border-border bg-card p-6">
-              <h3 className="mb-2 text-xl font-bold">Daily Pass</h3>
-              <p className="mb-4 text-3xl font-bold text-primary">₦3,000</p>
-              <p className="mb-6 text-sm text-muted-foreground">1 day of unlimited access</p>
-              <ul className="mb-6 space-y-2 text-sm">
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-primary" />
-                  <span>Unlimited gym access</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-primary" />
-                  <span>All equipment access</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-primary" />
-                  <span>Single entry valid for 24h</span>
-                </li>
-              </ul>
-              <Link href="/signup">
-                <Button className="w-full cursor-pointer">Join Now</Button>
-              </Link>
-            </div>
-
-            <div className="rounded-lg border border-border bg-card p-6">
-              <h3 className="mb-2 text-xl font-bold">Bi-Weekly Pass</h3>
-              <p className="mb-4 text-3xl font-bold text-primary">₦10,000</p>
-              <p className="mb-6 text-sm text-muted-foreground">14 days of unlimited access</p>
-              <ul className="mb-6 space-y-2 text-sm">
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-primary" />
-                  <span>Unlimited gym access</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-primary" />
-                  <span>All equipment access</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-primary" />
-                  <span>Locker access</span>
-                </li>
-              </ul>
-              <Link href="/signup">
-                <Button className="w-full cursor-pointer">Join Now</Button>
-              </Link>
-            </div>
-
-                        <div className="rounded-lg border border-primary bg-card p-6 ring-2 ring-primary">
-              <div className="mb-2 inline-block rounded bg-primary px-2 py-1 text-xs font-semibold text-primary-foreground">
-                POPULAR
+            {visiblePackages.map((pkg, idx) => (
+              <div 
+                key={idx}
+                className={`relative rounded-3xl p-8 transition-all duration-500 hover:-translate-y-2 ${
+                  pkg.popular 
+                  ? 'bg-gradient-to-br text-black scale-105 z-10 shadow-2xl' 
+                  : 'bg-[#111] border border-white/10'
+                }`}
+                style={pkg.popular ? { background: `linear-gradient(to bottom right, ${accent}, #b89778)` } : {}}
+              >
+                {pkg.popular && <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-black text-[#daa857] text-[10px] font-black px-6 py-1 rounded-full uppercase">Top Choice</span>}
+                <h3 className={`text-2xl font-black uppercase italic ${pkg.popular ? 'text-black' : 'text-white'}`}>{pkg.name}</h3>
+                <div className="my-8">
+                  <span className="text-5xl font-black italic">₦{pkg.price}</span>
+                  <span className={`text-sm ml-2 font-bold ${pkg.popular ? 'text-black/60' : 'text-gray-500'}`}>/ {pkg.duration}</span>
+                </div>
+                <ul className="space-y-4 mb-10">
+                  {pkg.features.map((feat, i) => (
+                    <li key={i} className="flex items-center gap-3 text-sm font-bold tracking-tight">
+                      <CheckCircle className="h-5 w-5" style={{ color: pkg.popular ? dark : accent }} /> {feat}
+                    </li>
+                  ))}
+                </ul>
+                <Button className={`w-full py-8 font-black uppercase tracking-widest rounded-xl ${pkg.popular ? 'bg-black text-white hover:bg-zinc-900' : 'text-black'}`} style={!pkg.popular ? { backgroundColor: accent } : {}}>
+                  Join Now
+                </Button>
               </div>
-              <h3 className="mb-2 text-xl font-bold">Monthly Pass</h3>
-              <p className="mb-4 text-3xl font-bold text-primary">₦20,000</p>
-              <p className="mb-6 text-sm text-muted-foreground">1 month of unlimited access</p>
-              <ul className="mb-6 space-y-2 text-sm">
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-primary" />
-                  <span>Unlimited gym access</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-primary" />
-                  <span>All equipment access</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-primary" />
-                  <span>Locker access</span>
-                </li>
-              </ul>
-              <Link href="/signup">
-                <Button className="w-full cursor-pointer">Join Now</Button>
-              </Link>
-            </div>
+            ))}
+          </div>
 
-            <div className="rounded-lg border border-border bg-card p-6">
-              <h3 className="mb-2 text-xl font-bold">Quarterly Pass</h3>
-              <p className="mb-4 text-3xl font-bold text-primary">₦55,000</p>
-              <p className="mb-6 text-sm text-muted-foreground">3 months of unlimited access</p>
-              <ul className="mb-6 space-y-2 text-sm">
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-primary" />
-                  <span>Unlimited gym access</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-primary" />
-                  <span>All equipment access</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-primary" />
-                  <span>Locker access</span>
-                </li>
-              </ul>
-              <Link href="/signup">
-                <Button className="w-full cursor-pointer">Join Now</Button>
-              </Link>
-            </div>
-
-            <div className="rounded-lg border border-border bg-card p-6">
-              <h3 className="mb-2 text-xl font-bold">Semi-Annual Pass</h3>
-              <p className="mb-4 text-3xl font-bold text-primary">₦110,000</p>
-              <p className="mb-6 text-sm text-muted-foreground">6 Months of unlimited access</p>
-              <ul className="mb-6 space-y-2 text-sm">
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-primary" />
-                  <span>Unlimited gym access</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-primary" />
-                  <span>All equipment access</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-primary" />
-                  <span>Locker access</span>
-                </li>
-              </ul>
-              <Link href="/signup">
-                <Button className="w-full cursor-pointer">Join Now</Button>
-              </Link>
-            </div>
-
-            <div className="rounded-lg border border-border bg-card p-6">
-              <h3 className="mb-2 text-xl font-bold">Annual Pass</h3>
-              <p className="mb-4 text-3xl font-bold text-primary">₦220,000</p>
-              <p className="mb-6 text-sm text-muted-foreground">1 year of unlimited access</p>
-              <ul className="mb-6 space-y-2 text-sm">
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-primary" />
-                  <span>Unlimited gym access</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-primary" />
-                  <span>All equipment access</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-primary" />
-                  <span>Locker access</span>
-                </li>
-              </ul>
-              <Link href="/signup">
-                <Button className="w-full cursor-pointer">Join Now</Button>
-              </Link>
-            </div>
+          <div className="mt-16 flex justify-center">
+            <button onClick={() => setShowAll(!showAll)} className="flex items-center gap-4 font-black uppercase tracking-widest group" style={{ color: accent }}>
+              {showAll ? <><ChevronUp /> Show Less</> : <>View All Tiers <ChevronDown className="animate-bounce" /></>}
+            </button>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="border-t border-border bg-primary/5 py-12">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="mb-4 text-2xl font-bold">Ready to Transform Your Fitness?</h2>
-          <p className="mb-6 text-muted-foreground">
-            Join Klimarx Space today and start your journey to a healthier, stronger you.
-          </p>
-          <Link href="/signup">
-            <Button size="lg">Sign Up Now</Button>
-          </Link>
+      <section className="py-32 bg-black flex justify-center">
+        <div className="container px-6">
+          <div className="rounded-[3rem] p-12 md:p-20 text-center relative overflow-hidden group" style={{ backgroundColor: accent, color: dark }}>
+            <Dumbbell className="absolute -top-10 -left-10 h-64 w-64 opacity-10 -rotate-12 group-hover:rotate-0 transition-transform duration-1000" />
+            <h2 className="text-5xl md:text-8xl font-black uppercase italic tracking-tighter mb-8">No More <span className="text-white">Excuses</span></h2>
+            <Link href="/signup">
+              <Button size="lg" className="h-20 px-16 text-2xl font-black uppercase rounded-full transition-all bg-black text-[#daa857] hover:bg-white/10">
+                Get Started
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border bg-background py-8">
-        <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          <p>© {new Date().getFullYear()} Klimarx Space. All rights reserved.</p>
+      <footer className="border-t bg-[#050505] py-20 px-6" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
+        <div className="container mx-auto flex flex-col md:flex-row justify-between items-center gap-10">
+          <div className="text-4xl font-black uppercase italic tracking-tighter">Klimarx<span style={{ color: accent }}>Space</span></div>
+          <div className="flex gap-12 font-bold uppercase text-xs tracking-widest text-gray-500">
+            <span className="hover:text-[#daa857] transition-colors cursor-pointer">Instagram</span>
+            <span className="hover:text-[#daa857] transition-colors cursor-pointer">Twitter</span>
+            <span className="hover:text-[#daa857] transition-colors cursor-pointer">Facebook</span>
+          </div>
+          <p className="text-xs text-gray-600 font-bold tracking-widest uppercase italic">© 2026 KLIMARX SPACE. ELITE ONLY.</p>
         </div>
       </footer>
     </main>

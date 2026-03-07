@@ -17,8 +17,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea'
 import { Checkbox } from '@/components/ui/checkbox'
 import { useToast } from '@/hooks/use-toast'
-import { UserPlus } from 'lucide-react'
+import { UserPlus, Loader2 } from 'lucide-react'
 import { Spinner } from '@/components/ui/spinner'
+import { cn } from '@/lib/utils'
 
 interface Membership {
   id: string
@@ -141,130 +142,124 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="gap-2">
-          <UserPlus className="h-4 w-4" />
-          Register Member
+        <Button className="h-10 px-6 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black uppercase text-[10px] tracking-widest gap-2 rounded-xl transition-all shadow-xl shadow-[#daa857]/10">
+          <UserPlus className="h-3.5 w-3.5 stroke-[3px]" />
+          Enroll Operative
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>Register New Member</DialogTitle>
-          <DialogDescription>
-            Create a new member account. The default password will be 12345678.
+      <DialogContent className="bg-[#111] border-white/10 text-white rounded-[2.5rem] p-10 max-w-2xl max-h-[90vh] overflow-y-auto custom-scrollbar">
+        <DialogHeader className="space-y-4">
+          <DialogTitle className="text-3xl font-black uppercase italic tracking-tighter">
+            New Signature <span className="text-[#daa857]">Enrollment</span>
+          </DialogTitle>
+          <DialogDescription className="text-gray-500 font-medium uppercase text-[10px] tracking-widest leading-relaxed">
+            Establishing a new elite profile in the vault. Default security key: <span className="text-[#daa857] font-black">12345678</span>
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4 py-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="firstName">First Name *</Label>
+        
+        <form onSubmit={handleSubmit} className="space-y-8 py-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-3">
+              <Label htmlFor="firstName" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">First Identity *</Label>
               <Input
                 id="firstName"
                 value={formData.firstName}
                 onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                placeholder="John"
+                placeholder="FIRST NAME"
+                className="h-14 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-6 font-bold uppercase tracking-widest text-[10px]"
                 required
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="lastName">Last Name *</Label>
+            <div className="space-y-3">
+              <Label htmlFor="lastName" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Last Identity *</Label>
               <Input
                 id="lastName"
                 value={formData.lastName}
                 onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                placeholder="Doe"
+                placeholder="LAST NAME"
+                className="h-14 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-6 font-bold uppercase tracking-widest text-[10px]"
                 required
               />
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="email">Email *</Label>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-3">
+              <Label htmlFor="email" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Comm Channel *</Label>
               <Input
                 id="email"
                 type="email"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                placeholder="john.doe@example.com"
+                placeholder="EMAIL@PROTOCOL.COM"
+                className="h-14 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-6 font-bold uppercase tracking-widest text-[10px]"
                 required
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="phoneNumber">Phone Number *</Label>
+            <div className="space-y-3">
+              <Label htmlFor="phoneNumber" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Secure Line *</Label>
               <Input
                 id="phoneNumber"
                 type="tel"
                 value={formData.phoneNumber}
                 onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
-                placeholder="08012345678"
+                placeholder="CONTACT NUMBER"
+                className="h-14 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-6 font-bold uppercase tracking-widest text-[10px]"
                 required
               />
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            {/* Birthday */}
-            <div className="space-y-2">
-              <Label>Birthday (Optional)</Label>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-3">
+              <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Cycle of Origin</Label>
               <div className="flex gap-2">
-                {/* Month */}
                 <Select
                   value={formData.birthday?.split('-')[0] || ''}
                   onValueChange={(month) => {
                     const currentDay = formData.birthday?.split('-')[1] || '01'
-                    // Reset day to 01 if switching to shorter month
                     const newDay = Number(currentDay) > 28 ? '01' : currentDay
                     setFormData({ ...formData, birthday: `${month}-${newDay.padStart(2, '0')}` })
                   }}
                 >
-                  <SelectTrigger className="flex-1">
-                    <SelectValue placeholder="Month" />
+                  <SelectTrigger className="h-14 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-4 font-black uppercase tracking-widest text-[10px] flex-1">
+                    <SelectValue placeholder="MONTH" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-[#111] border-white/10 text-white">
                     {[
-                      { value: '01', label: 'January' },
-                      { value: '02', label: 'February' },
-                      { value: '03', label: 'March' },
-                      { value: '04', label: 'April' },
-                      { value: '05', label: 'May' },
-                      { value: '06', label: 'June' },
-                      { value: '07', label: 'July' },
-                      { value: '08', label: 'August' },
-                      { value: '09', label: 'September' },
-                      { value: '10', label: 'October' },
-                      { value: '11', label: 'November' },
-                      { value: '12', label: 'December' },
+                      { value: '01', label: 'JAN' }, { value: '02', label: 'FEB' }, { value: '03', label: 'MAR' },
+                      { value: '04', label: 'APR' }, { value: '05', label: 'MAY' }, { value: '06', label: 'JUN' },
+                      { value: '07', label: 'JUL' }, { value: '08', label: 'AUG' }, { value: '09', label: 'SEP' },
+                      { value: '10', label: 'OCT' }, { value: '11', label: 'NOV' }, { value: '12', label: 'DEC' },
                     ].map((m) => (
-                      <SelectItem key={m.value} value={m.value}>
+                      <SelectItem key={m.value} value={m.value} className="focus:bg-[#daa857]/10 focus:text-[#daa857] font-bold uppercase text-[10px]">
                         {m.label}
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
 
-                {/* Day – always two digits */}
                 <Select
-                  value={formData.birthday?.split('-')[1]?.padStart(2, '0') || ''} // pad for display
+                  value={formData.birthday?.split('-')[1]?.padStart(2, '0') || ''}
                   onValueChange={(day) => {
                     const month = formData.birthday?.split('-')[0] || '01'
                     setFormData({ ...formData, birthday: `${month}-${day.padStart(2, '0')}` })
                   }}
                   disabled={!formData.birthday?.split('-')[0]}
                 >
-                  <SelectTrigger className="w-[100px]">
-                    <SelectValue placeholder="Day" />
+                  <SelectTrigger className="h-14 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-4 font-black uppercase tracking-widest text-[10px] w-24">
+                    <SelectValue placeholder="DAY" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-[#111] border-white/10 text-white">
                     {(() => {
                       const month = formData.birthday?.split('-')[0] || '01'
-                      const year = new Date().getFullYear() // approximate leap year
+                      const year = new Date().getFullYear()
                       const daysInMonth = new Date(Number(year), Number(month), 0).getDate()
-
                       return Array.from({ length: daysInMonth }, (_, i) => {
                         const dayNum = i + 1
-                        const dayStr = dayNum.toString().padStart(2, '0') // "01", "02", ...
+                        const dayStr = dayNum.toString().padStart(2, '0')
                         return (
-                          <SelectItem key={dayStr} value={dayStr}>
+                          <SelectItem key={dayStr} value={dayStr} className="focus:bg-[#daa857]/10 focus:text-[#daa857] font-bold uppercase text-[10px]">
                             {dayNum}
                           </SelectItem>
                         )
@@ -273,32 +268,21 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
                   </SelectContent>
                 </Select>
               </div>
-
-              {/* Optional preview */}
-              {formData.birthday && (
-                <p className="text-xs text-muted-foreground">
-                  {new Date(`2000-${formData.birthday}`).toLocaleDateString('en-GB', {
-                    day: 'numeric',
-                    month: 'long',
-                  })}
-                </p>
-              )}
             </div>
 
-            {/* Gender – unchanged */}
-            <div className="space-y-2">
-              <Label htmlFor="gender">Gender</Label>
+            <div className="space-y-3">
+              <Label htmlFor="gender" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Gender Protocol</Label>
               <Select
                 value={formData.gender}
                 onValueChange={(value) => setFormData({ ...formData, gender: value })}
               >
-                <SelectTrigger id="gender">
-                  <SelectValue placeholder="Select gender" />
+                <SelectTrigger id="gender" className="h-14 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-4 font-black uppercase tracking-widest text-[10px]">
+                  <SelectValue placeholder="SELECT GENDER" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-[#111] border-white/10 text-white">
                   {GENDER_OPTIONS.map((opt) => (
-                    <SelectItem key={opt.value} value={opt.value}>
-                      {opt.label}
+                    <SelectItem key={opt.value} value={opt.value} className="focus:bg-[#daa857]/10 focus:text-[#daa857] font-bold uppercase text-[10px]">
+                      {opt.label.toUpperCase()}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -306,38 +290,38 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="membership">Membership Plan *</Label>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-3">
+              <Label htmlFor="membership" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Mission Tier *</Label>
               <Select
                 value={formData.membershipId}
                 onValueChange={(value) => setFormData({ ...formData, membershipId: value })}
               >
-                <SelectTrigger id="membership">
-                  <SelectValue placeholder="Select plan" />
+                <SelectTrigger id="membership" className="h-14 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-4 font-black uppercase tracking-widest text-[10px]">
+                  <SelectValue placeholder="SELECT TIER" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-[#111] border-white/10 text-white">
                   {memberships.map((m) => (
-                    <SelectItem key={m.id} value={m.id}>
-                      {m.name} - ₦{m.price.toLocaleString('en-NG')}
+                    <SelectItem key={m.id} value={m.id} className="focus:bg-[#daa857]/10 focus:text-[#daa857] font-bold uppercase text-[10px]">
+                      {m.name.toUpperCase()} - ₦{m.price.toLocaleString('en-NG')}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="paymentMethod">Payment Method *</Label>
+            <div className="space-y-3">
+              <Label htmlFor="paymentMethod" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Authorization *</Label>
               <Select
                 value={formData.paymentMethod}
                 onValueChange={(value) => setFormData({ ...formData, paymentMethod: value })}
               >
-                <SelectTrigger id="paymentMethod">
-                  <SelectValue placeholder="Select method" />
+                <SelectTrigger id="paymentMethod" className="h-14 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-4 font-black uppercase tracking-widest text-[10px]">
+                  <SelectValue placeholder="METHOD" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-[#111] border-white/10 text-white">
                   {PAYMENT_METHODS.map((method) => (
-                    <SelectItem key={method} value={method}>
-                      {method}
+                    <SelectItem key={method} value={method} className="focus:bg-[#daa857]/10 focus:text-[#daa857] font-bold uppercase text-[10px]">
+                      {method.toUpperCase()}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -345,51 +329,66 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
             </div>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="startDate">Membership Start Date *</Label>
-            <Input
-              id="startDate"
-              type="date"
-              value={formData.startDate}
-              onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
-              max={new Date().toISOString().split('T')[0]}
-              required
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
+            <div className="space-y-3">
+              <Label htmlFor="startDate" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Deployment Start *</Label>
+              <Input
+                id="startDate"
+                type="date"
+                value={formData.startDate}
+                onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
+                max={new Date().toISOString().split('T')[0]}
+                className="h-14 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-4 font-black uppercase tracking-widest text-[10px]"
+                required
+              />
+            </div>
+            <div className="flex items-center space-x-3 h-14 px-4 rounded-xl bg-black border border-white/5">
+              <Checkbox
+                id="payment-completed"
+                checked={formData.paymentCompleted}
+                onCheckedChange={(checked) => setFormData((prev) => ({ ...prev, paymentCompleted: !!checked }))}
+                className="border-white/20 data-[state=checked]:bg-[#daa857] data-[state=checked]:text-black"
+              />
+              <Label
+                htmlFor="payment-completed"
+                className="text-[9px] font-black uppercase tracking-widest text-gray-500 cursor-pointer"
+              >
+                Instant Neural Verification & Activation
+              </Label>
+            </div>
           </div>
 
-          {/* Instant verification checkbox (admin-only feature) */}
-          <div className="flex items-center space-x-2 pt-2">
-            <Checkbox
-              id="payment-completed"
-              checked={formData.paymentCompleted}
-              onCheckedChange={(checked) => setFormData((prev) => ({ ...prev, paymentCompleted: !!checked }))}
-            />
-            <Label
-              htmlFor="payment-completed"
-              className="text-sm font-medium leading-none cursor-pointer peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
-              Mark payment as completed (instant verification & activation)
-            </Label>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="fitnessGoals">Fitness Goals / Details</Label>
+          <div className="space-y-3">
+            <Label htmlFor="fitnessGoals" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Mission Intelligence</Label>
             <Textarea
               id="fitnessGoals"
               value={formData.fitnessGoalsDetails}
               onChange={(e) => setFormData({ ...formData, fitnessGoalsDetails: e.target.value })}
-              placeholder="Any specific goals or medical conditions?"
+              placeholder="SPECIFY TARGETS OR MEDICAL CONTRAINDICATIONS..."
               rows={3}
+              className="bg-black border-white/5 rounded-2xl focus:border-[#daa857] p-6 font-bold text-xs uppercase tracking-widest"
             />
           </div>
 
-          <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => setOpen(false)}>
-              Cancel
+          <DialogFooter className="gap-3 sm:gap-0 pt-6">
+            <Button 
+              type="button" 
+              variant="outline" 
+              onClick={() => setOpen(false)}
+              className="h-14 px-8 border-white/10 hover:bg-white/5 rounded-xl text-[10px] font-black uppercase tracking-widest text-gray-500"
+            >
+              Abort
             </Button>
-            <Button type="submit" disabled={isLoading}>
-              {isLoading && <Spinner className="mr-2 h-4 w-4" />}
-              Register Member
+            <Button 
+              type="submit" 
+              disabled={isLoading}
+              className="flex-1 h-14 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black uppercase tracking-widest rounded-xl transition-all shadow-xl shadow-[#daa857]/10"
+            >
+              {isLoading ? (
+                <Loader2 className="h-4 w-4 animate-spin mr-2" />
+              ) : (
+                'Finalize Enrollment'
+              )}
             </Button>
           </DialogFooter>
         </form>

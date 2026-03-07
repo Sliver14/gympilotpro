@@ -3,6 +3,7 @@ import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 import { GeistSans } from 'geist/font/sans'
 import { GeistMono } from 'geist/font/mono'
+import { Toaster } from '@/components/ui/toaster'
 
 // Metadata – optimized for Klimarx Gym (SEO, social sharing, icons)
 export const metadata: Metadata = {
@@ -84,7 +85,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
+    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable} dark`}>
       <head>
         {/* Optional: Add any custom meta tags, Google Analytics, etc. */}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -92,6 +93,7 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen bg-background font-sans antialiased">
         {children}
+        <Toaster />
         <Analytics />
       </body>
     </html>

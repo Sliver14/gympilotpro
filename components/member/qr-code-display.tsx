@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/hooks/use-toast'
-import { QrCode, Download } from 'lucide-react'
+import { QrCode, Download, Loader2 } from 'lucide-react'
 import { Spinner } from '@/components/ui/spinner'
 
 interface QRCodeDisplayProps {
@@ -55,41 +55,48 @@ export default function QRCodeDisplay({ memberId }: QRCodeDisplayProps) {
 
   if (isLoading) {
     return (
-      <Card>
-        <CardContent className="flex items-center justify-center py-12">
-          <Spinner className="h-8 w-8 text-primary" />
-        </CardContent>
-      </Card>
+      <div className="bg-[#111] border border-white/5 rounded-[2rem] p-20 flex justify-center shadow-2xl">
+        <Loader2 className="h-8 w-8 animate-spin text-[#daa857]" />
+      </div>
     )
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <QrCode className="h-5 w-5" />
-          Your QR Code
-        </CardTitle>
-        <CardDescription>Use this code for quick check-ins at the gym</CardDescription>
-      </CardHeader>
-      <CardContent className="flex flex-col items-center gap-6">
-        {qrCode && (
-          <>
-            <div className="rounded-lg border-2 border-border bg-white p-4">
-              <img src={qrCode} alt="Member QR Code" className="h-64 w-64" />
-            </div>
-            <div className="text-center">
-              <p className="mb-4 text-sm text-muted-foreground">
-                Show this code at the gym entrance for instant check-in
-              </p>
-              <Button onClick={handleDownload} className="gap-2">
-                <Download className="h-4 w-4" />
-                Download QR Code
-              </Button>
-            </div>
-          </>
-        )}
-      </CardContent>
-    </Card>
+    <div className="bg-[#111] border border-white/5 rounded-[2rem] p-8 shadow-2xl relative overflow-hidden">
+      <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-[#daa857]/5 blur-[80px]" />
+      
+      <div className="relative z-10">
+        <div className="flex items-center justify-between mb-12 pb-4 border-b border-white/5">
+          <h3 className="text-xl font-black uppercase italic tracking-tighter text-white flex items-center gap-3">
+            <QrCode className="h-5 w-5 text-[#daa857]" /> Neural <span className="text-[#daa857]">Link</span>
+          </h3>
+          <p className="text-[10px] font-black uppercase tracking-widest text-gray-500">Access Authenticator</p>
+        </div>
+
+        <div className="flex flex-col items-center gap-10">
+          {qrCode && (
+            <>
+              <div className="relative p-8 rounded-[2.5rem] bg-white shadow-[0_0_50px_rgba(218,168,87,0.15)] group transition-all duration-500 hover:scale-[1.02]">
+                <div className="absolute inset-0 border-2 border-[#daa857]/20 rounded-[2.5rem] scale-105 group-hover:scale-110 transition-transform duration-500" />
+                <img src={qrCode} alt="Member QR Code" className="h-64 w-64 relative z-10" />
+              </div>
+              
+              <div className="text-center max-w-sm">
+                <p className="mb-8 text-xs font-bold text-gray-400 uppercase tracking-widest leading-relaxed">
+                  Present this <span className="text-[#daa857]">Neural Link</span> at the perimeter terminal for instant vault decryption.
+                </p>
+                <Button 
+                  onClick={handleDownload} 
+                  className="w-full h-14 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black uppercase tracking-widest rounded-xl transition-all shadow-xl shadow-[#daa857]/10 flex items-center justify-center gap-3"
+                >
+                  <Download className="h-5 w-5" />
+                  Extract Identity
+                </Button>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
   )
 }

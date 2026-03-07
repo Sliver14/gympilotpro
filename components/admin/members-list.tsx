@@ -10,6 +10,7 @@ import { Users, Search, Download, RefreshCw, User } from 'lucide-react'
 import RegisterMemberDialog from './register-member-dialog'
 import { Spinner } from '@/components/ui/spinner'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { cn } from '@/lib/utils'
 
 interface Member {
   id: string
@@ -116,80 +117,104 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
   return (
     <Card>
       <CardHeader>
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <CardTitle className="flex items-center gap-2">
-              <Users className="h-5 w-5" />
-              Members
+            <CardTitle className="flex items-center gap-3">
+              <Users className="h-5 w-5 text-[#daa857]" /> Operative <span className="text-[#daa857]">Directory</span>
             </CardTitle>
-            <CardDescription>{members.length} total members</CardDescription>
+            <CardDescription>{members.length} verified signatures in the vault</CardDescription>
           </div>
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-3">
             <RegisterMemberDialog onMemberAdded={() => {
               fetchMembers()
               if (onMemberAdded) onMemberAdded()
             }} />
-            <Button onClick={fetchMembers} variant="outline" size="sm" className="gap-2">
-              <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
-              Refresh
+            <Button 
+              onClick={fetchMembers} 
+              variant="outline" 
+              size="sm" 
+              className="h-10 px-4 border-white/5 bg-black hover:bg-white/5 text-gray-400 font-black uppercase text-[10px] tracking-widest gap-2 rounded-xl"
+            >
+              <RefreshCw className={cn("h-3.5 w-3.5", isLoading && "animate-spin")} />
+              Sync
             </Button>
-            <Button onClick={handleExport} variant="outline" size="sm" className="gap-2">
-              <Download className="h-4 w-4" />
-              Export
+            <Button 
+              onClick={handleExport} 
+              variant="outline" 
+              size="sm" 
+              className="h-10 px-4 border-white/5 bg-black hover:bg-white/5 text-gray-400 font-black uppercase text-[10px] tracking-widest gap-2 rounded-xl"
+            >
+              <Download className="h-3.5 w-3.5" />
+              Extract
             </Button>
           </div>
         </div>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="flex gap-2">
-          <Search className="h-4 w-4 text-muted-foreground" />
+      <CardContent className="space-y-8">
+        <div className="relative group">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-600 transition-colors group-focus-within:text-[#daa857]" />
           <Input
-            placeholder="Search members..."
+            placeholder="Filter signatures by identity or channel..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="flex-1"
+            className="h-14 pl-12 bg-black border-white/5 rounded-2xl focus:border-[#daa857] font-bold text-sm"
           />
         </div>
 
         {filteredMembers.length === 0 ? (
-          <p className="text-center py-8 text-muted-foreground">No members found</p>
+          <div className="py-20 text-center bg-black/20 rounded-[2rem] border border-dashed border-white/5">
+            <Users className="mx-auto h-12 w-12 text-gray-800 mb-4" />
+            <p className="text-sm font-bold text-gray-600 uppercase tracking-widest italic">No matching operatives found in the database.</p>
+          </div>
         ) : (
-          <div className="space-y-2">
+          <div className="grid gap-4">
             {filteredMembers.map((member) => {
               const status = getMembershipStatus(member.memberProfile.expiryDate)
               const initials = `${member.firstName?.[0] ?? ''}${member.lastName?.[0] ?? ''}`.toUpperCase()
 
               return (
-                <div key={member.id} className="flex items-center justify-between rounded-lg border border-border p-3">
-                  <div className="flex items-center gap-3 flex-1 min-w-0 mr-4">
-                    <Avatar className="h-10 w-10">
+                <div key={member.id} className="flex flex-col md:flex-row md:items-center justify-between rounded-3xl bg-black/40 border border-white/5 p-6 hover:border-[#daa857]/30 transition-all group relative overflow-hidden">
+                  <div className="absolute -right-12 -top-12 h-24 w-24 rounded-full bg-white/5 blur-2xl group-hover:bg-[#daa857]/5 transition-colors" />
+                  
+                  <div className="flex items-center gap-5 flex-1 min-w-0 relative z-10">
+                    <Avatar className="h-14 w-14 border-2 border-white/5 group-hover:border-[#daa857]/30 transition-all duration-500 shadow-xl">
                       <AvatarImage src={member.profileImage || undefined} className="object-cover" />
-                      <AvatarFallback className="bg-primary/5 text-xs">
-                        {initials || <User className="h-4 w-4" />}
+                      <AvatarFallback className="bg-black text-[#daa857] font-black italic">
+                        {initials || <User className="h-6 w-6" />}
                       </AvatarFallback>
                     </Avatar>
                     <div className="min-w-0">
-                      <p className="font-medium truncate">
-                        {member.firstName} {member.lastName}
+                      <p className="font-black text-white uppercase italic tracking-tight text-lg leading-none mb-1">
+                        {member.firstName} <span className="text-[#daa857]">{member.lastName}</span>
                       </p>
-                      <p className="text-xs text-muted-foreground truncate">{member.email}</p>
+                      <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest flex items-center gap-2">
+                        <span className="truncate max-w-[150px]">{member.email}</span>
+                        <span className="h-1 w-1 rounded-full bg-gray-800" />
+                        <span className="text-[#daa857]/50">ID: {member.id.slice(-6).toUpperCase()}</span>
+                      </p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <div className="text-right text-sm">
-                      <p className="font-medium">{member.memberProfile.membership.name}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {new Date(member.memberProfile.expiryDate).toLocaleDateString()}
+
+                  <div className="flex items-center justify-between md:justify-end gap-8 mt-6 md:mt-0 pt-6 md:pt-0 border-t md:border-none border-white/5 relative z-10">
+                    <div className="text-left md:text-right">
+                      <p className="text-[8px] font-black uppercase tracking-widest text-gray-600 mb-1">Vault Tier</p>
+                      <p className="text-xs font-black text-white uppercase italic">{member.memberProfile.membership.name}</p>
+                    </div>
+                    
+                    <div className="text-left md:text-right">
+                      <p className="text-[8px] font-black uppercase tracking-widest text-gray-600 mb-1">Expiry Date</p>
+                      <p className="text-xs font-bold text-gray-400 uppercase tracking-tighter">
+                        {new Date(member.memberProfile.expiryDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).toUpperCase()}
                       </p>
                     </div>
+
                     <Badge
-                      variant={
-                        status === 'active' ? 'default' : status === 'expiring' ? 'secondary' : 'destructive'
-                      }
+                      className={cn(
+                        "px-4 py-1.5 rounded-full text-[10px] font-black uppercase italic tracking-tighter border-none",
+                        status === 'active' ? "bg-green-500 text-black" : status === 'expiring' ? "bg-[#daa857] text-black" : "bg-red-500 text-white"
+                      )}
                     >
-                      {status === 'active' && 'Active'}
-                      {status === 'expiring' && 'Expiring'}
-                      {status === 'expired' && 'Expired'}
+                      {status.toUpperCase()}
                     </Badge>
                   </div>
                 </div>

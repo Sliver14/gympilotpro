@@ -6,6 +6,7 @@ import { useToast } from '@/hooks/use-toast'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import { CreditCard } from 'lucide-react'
 import { Spinner } from '@/components/ui/spinner'
+import { cn } from '@/lib/utils'
 
 interface ChartData {
   month: string
@@ -73,50 +74,86 @@ export default function RevenueAnalytics() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <CreditCard className="h-5 w-5" />
-          Revenue Analytics
+        <CardTitle className="flex items-center gap-3">
+          <CreditCard className="h-5 w-5 text-[#daa857]" /> Financial <span className="text-[#daa857]">Intelligence</span>
         </CardTitle>
-        <CardDescription>Monthly revenue and payment data</CardDescription>
+        <CardDescription>Fiscal cycles and revenue stream telemetry</CardDescription>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-10">
         {/* Stats Cards */}
-        <div className="grid gap-4 md:grid-cols-3">
-          <div className="rounded-lg bg-muted/50 p-4">
-            <p className="text-xs text-muted-foreground">Total Revenue (12 months)</p>
-            <p className="text-2xl font-bold">{formatCurrency(totalRevenue)}</p>
-          </div>
-          <div className="rounded-lg bg-muted/50 p-4">
-            <p className="text-xs text-muted-foreground">Average Monthly</p>
-            <p className="text-2xl font-bold">{formatCurrency(avgMonthly)}</p>
-          </div>
-          <div className="rounded-lg bg-muted/50 p-4">
-            <p className="text-xs text-muted-foreground">Total Transactions</p>
-            <p className="text-2xl font-bold">{totalPayments.toLocaleString('en-NG')}</p>
-          </div>
+        <div className="grid gap-6 md:grid-cols-3">
+          {[
+            { label: 'Cumulative Intake', value: formatCurrency(totalRevenue), sub: 'LAST 12 CYCLES' },
+            { label: 'Mean Monthly', value: formatCurrency(avgMonthly), sub: 'OPERATIONAL AVERAGE', accent: true },
+            { label: 'Total Syncs', value: totalPayments.toLocaleString('en-NG'), sub: 'TRANSACTION COUNT' }
+          ].map((stat, i) => (
+            <div key={i} className="rounded-2xl bg-black/40 border border-white/5 p-6 hover:border-[#daa857]/20 transition-all group">
+              <p className="text-[8px] font-black uppercase tracking-[0.2em] text-gray-600 mb-2">{stat.label}</p>
+              <p className={cn("text-2xl font-black italic tracking-tighter group-hover:scale-105 transition-transform origin-left", stat.accent ? "text-[#daa857]" : "text-white")}>
+                {stat.value}
+              </p>
+              <p className="text-[8px] font-black uppercase tracking-widest text-gray-700 mt-1">{stat.sub}</p>
+            </div>
+          ))}
         </div>
 
         {/* Chart */}
-        {data.length > 0 ? (
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={data}>
-              <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-              <XAxis dataKey="month" />
-              <YAxis tickFormatter={(value) => `₦${(value / 1000).toFixed(0)}k`} />
-              <Tooltip
-                formatter={(value: number) => [formatCurrency(value), null]}
-                contentStyle={{ backgroundColor: 'var(--background)', border: '1px solid var(--border)' }}
-              />
-              <Legend />
-              <Bar dataKey="revenue" fill="var(--primary)" name="Revenue (₦)" />
-              <Bar dataKey="payments" fill="var(--muted-foreground)" name="Transactions" />
-            </BarChart>
-          </ResponsiveContainer>
-        ) : (
-          <div className="h-80 flex items-center justify-center text-muted-foreground">
-            No revenue data available yet
-          </div>
-        )}
+        <div className="p-6 rounded-[2rem] bg-black/20 border border-white/5">
+          {data.length > 0 ? (
+            <ResponsiveContainer width="100%" height={350}>
+              <BarChart data={data}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#ffffff05" vertical={false} />
+                <XAxis 
+                  dataKey="month" 
+                  stroke="#4b5563" 
+                  fontSize={10} 
+                  tickLine={false} 
+                  axisLine={false}
+                  tick={{ fill: '#4b5563', fontWeight: '900' }}
+                />
+                <YAxis 
+                  stroke="#4b5563" 
+                  fontSize={10} 
+                  tickLine={false} 
+                  axisLine={false}
+                  tickFormatter={(value) => `₦${(value / 1000).toFixed(0)}k`}
+                  tick={{ fill: '#4b5563', fontWeight: '900' }}
+                />
+                <Tooltip
+                  cursor={{ fill: '#daa85705' }}
+                  contentStyle={{ 
+                    backgroundColor: '#111', 
+                    border: '1px solid rgba(218,168,87,0.2)',
+                    borderRadius: '1rem',
+                    fontSize: '10px',
+                    fontWeight: '900',
+                    textTransform: 'uppercase'
+                  }}
+                  itemStyle={{ color: '#daa857' }}
+                />
+                <Bar 
+                  dataKey="revenue" 
+                  fill="#daa857" 
+                  name="INTAKE (₦)" 
+                  radius={[4, 4, 0, 0]}
+                  barSize={30}
+                />
+                <Bar 
+                  dataKey="payments" 
+                  fill="#ffffff10" 
+                  name="SYNCS" 
+                  radius={[4, 4, 0, 0]}
+                  barSize={30}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="h-80 flex flex-col items-center justify-center text-gray-700 italic">
+              <CreditCard className="h-12 w-12 mb-4 opacity-10" />
+              <p className="text-xs font-black uppercase tracking-widest">No financial data stream detected</p>
+            </div>
+          )}
+        </div>
       </CardContent>
     </Card>
   )

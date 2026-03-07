@@ -19,6 +19,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { QrCode, TrendingUp, Users, Calendar, CreditCard, LogOut, Settings, UserCheck, Wallet } from 'lucide-react'
+import { cn } from '@/lib/utils'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -94,20 +95,20 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild size="lg">
+            <SidebarMenuButton asChild size="lg" className="hover:bg-transparent active:bg-transparent">
               <Link href={`/${role}/dashboard`}>
-                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-background border border-border">
+                <div className="flex aspect-square size-10 items-center justify-center rounded-xl bg-white p-1.5 shadow-[0_0_20px_rgba(255,255,255,0.1)] border border-[#daa857]/30 transition-transform group-hover:scale-110">
                   <Image 
                     src="/WhatsApp_Image_2026-02-25_at_9.54.33_AM-removebg-preview.png" 
                     alt="Logo" 
-                    width={24} 
+                    width={28} 
                     height={24} 
                     className="object-contain"
                   />
                 </div>
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold uppercase">Klimarx</span>
-                  <span className="truncate text-xs capitalize">{role} Dashboard</span>
+                <div className="grid flex-1 text-left text-sm leading-tight ml-2">
+                  <span className="truncate font-black uppercase italic tracking-tighter text-lg">Klimarx<span className="text-[#daa857]">Space</span></span>
+                  <span className="truncate text-[8px] font-bold uppercase tracking-[0.4em] text-gray-600 mt-0.5 capitalize">{role} Command</span>
                 </div>
               </Link>
             </SidebarMenuButton>
@@ -125,9 +126,15 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
                     asChild
                     isActive={item.active}
                     tooltip={item.title}
+                    className={cn(
+                      "transition-all duration-300 h-10 px-4",
+                      item.active 
+                        ? "bg-[#daa857]/10 text-[#daa857] font-black italic uppercase tracking-widest border-r-2 border-[#daa857]" 
+                        : "text-gray-400 hover:text-[#daa857] font-bold uppercase tracking-widest hover:bg-white/5"
+                    )}
                   >
                     <Link href={item.url}>
-                      <item.icon className="size-4" />
+                      <item.icon className={cn("size-4", item.active && "text-[#daa857]")} />
                       <span>{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
@@ -144,35 +151,43 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton
                   size="lg"
-                  className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                  className="data-[state=open]:bg-[#daa857]/10 data-[state=open]:text-[#daa857] hover:bg-white/5 transition-all duration-300 h-14 rounded-xl border border-transparent hover:border-white/5"
                 >
-                  <Avatar className="size-8 rounded-lg">
+                  <Avatar className="size-8 rounded-lg border border-white/10">
                     <AvatarImage src={profileImage || undefined} className="object-cover" />
-                    <AvatarFallback className="rounded-lg">{initials || '??'}</AvatarFallback>
+                    <AvatarFallback className="rounded-lg bg-[#daa857]/10 text-[#daa857] font-black">{initials || '??'}</AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-semibold">
+                    <span className="truncate font-black uppercase italic tracking-tight">
                       {adminData.firstName} {adminData.lastName}
                     </span>
-                    <span className="truncate text-xs">{adminData.email}</span>
+                    <span className="truncate text-[10px] font-bold text-gray-500 uppercase tracking-tighter">{adminData.email}</span>
                   </div>
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent
-                className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+                className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-2xl bg-[#111] border-white/10 text-white p-2 shadow-2xl"
                 side="bottom"
                 align="end"
-                sideOffset={4}
+                sideOffset={8}
               >
-                <DropdownMenuItem asChild>
-                  <Link href="/admin/settings" className="gap-2">
-                    <Settings className="size-4" />
-                    Settings
+                <DropdownMenuItem disabled className="opacity-100 p-4 border-b border-white/5 mb-2">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-xs font-black uppercase italic tracking-widest">{adminData.firstName} {adminData.lastName}</p>
+                    <p className="text-[10px] font-bold text-gray-500 uppercase tracking-tighter">{adminData.email}</p>
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild className="rounded-xl focus:bg-[#daa857]/10 focus:text-[#daa857] cursor-pointer py-3 px-4">
+                  <Link href="/admin/settings" className="flex items-center gap-3 font-black uppercase text-[10px] tracking-widest">
+                    <Settings className="size-4 text-[#daa857]" />
+                    Protocol Settings
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={onLogout} className="gap-2 text-destructive">
-                  <LogOut className="size-4" />
-                  Logout
+                <DropdownMenuItem onClick={onLogout} className="rounded-xl focus:bg-red-500/10 focus:text-red-500 cursor-pointer py-3 px-4 mt-1 text-red-500/80">
+                  <div className="flex items-center gap-3 font-black uppercase text-[10px] tracking-widest">
+                    <LogOut className="size-4" />
+                    Terminate Session
+                  </div>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

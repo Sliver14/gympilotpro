@@ -5,8 +5,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { useToast } from '@/hooks/use-toast'
-import { CreditCard, CheckCircle, RefreshCw, AlertCircle, Phone, Mail, Calendar as CalendarIcon } from 'lucide-react'
+import { CreditCard, CheckCircle, RefreshCw, AlertCircle, Phone, Mail, Calendar as CalendarIcon, Loader2 } from 'lucide-react'
 import { Spinner } from '@/components/ui/spinner'
+import { cn } from '@/lib/utils'
 import {
   Dialog,
   DialogContent,
@@ -115,65 +116,75 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
   return (
     <Card>
       <CardHeader>
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <CardTitle className="flex items-center gap-2">
-              <CreditCard className="h-5 w-5" />
-              Pending Payments
+            <CardTitle className="flex items-center gap-3">
+              <CreditCard className="h-5 w-5 text-[#daa857]" /> Sync <span className="text-[#daa857]">Queue</span>
             </CardTitle>
-            <CardDescription>Members awaiting payment confirmation</CardDescription>
+            <CardDescription>{payments.length} inbound transmissions awaiting verification</CardDescription>
           </div>
-          <Button onClick={fetchPayments} variant="outline" size="sm" className="gap-2">
-            <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
-            Refresh
+          <Button 
+            onClick={fetchPayments} 
+            variant="outline" 
+            size="sm" 
+            className="h-10 px-4 border-white/5 bg-black hover:bg-white/5 text-gray-400 font-black uppercase text-[10px] tracking-widest gap-2 rounded-xl"
+          >
+            <RefreshCw className={cn("h-3.5 w-3.5", isLoading && "animate-spin")} />
+            Sync
           </Button>
         </div>
       </CardHeader>
       <CardContent>
         {payments.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-8 text-center">
-            <CheckCircle className="h-12 w-12 text-muted-foreground/30 mb-2" />
-            <p className="text-muted-foreground font-medium">No pending payments</p>
-            <p className="text-xs text-muted-foreground">Everything is up to date!</p>
+          <div className="flex flex-col items-center justify-center py-20 text-center bg-black/20 rounded-[2rem] border border-dashed border-white/5">
+            <CheckCircle className="h-12 w-12 text-gray-800 mb-4 opacity-20" />
+            <p className="text-sm font-bold text-gray-600 uppercase tracking-widest italic">All systems synchronized. No pending payloads.</p>
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="grid gap-4">
             {payments.map((payment) => (
-              <div key={payment.id} className="flex flex-col md:flex-row md:items-center justify-between rounded-lg border border-border p-4 gap-4">
-                <div className="space-y-1 flex-1">
-                  <div className="flex items-center gap-2">
-                    <p className="font-semibold text-lg">
-                      {payment.user.firstName} {payment.user.lastName}
+              <div key={payment.id} className="flex flex-col md:flex-row md:items-center justify-between rounded-3xl bg-black/40 border border-white/5 p-6 hover:border-[#daa857]/30 transition-all group relative overflow-hidden">
+                <div className="absolute -right-12 -top-12 h-24 w-24 rounded-full bg-white/5 blur-2xl group-hover:bg-[#daa857]/5 transition-colors" />
+                
+                <div className="space-y-4 flex-1 min-w-0 relative z-10">
+                  <div className="flex items-center gap-3">
+                    <p className="font-black text-white uppercase italic tracking-tight text-lg">
+                      {payment.user.firstName} <span className="text-[#daa857]">{payment.user.lastName}</span>
                     </p>
-                    <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-200">
-                      {payment.paymentMethod}
+                    <Badge className="bg-[#daa857]/10 text-[#daa857] border-[#daa857]/20 text-[8px] font-black uppercase tracking-widest px-2">
+                      {payment.paymentMethod.toUpperCase()}
                     </Badge>
                   </div>
-                  <p className="text-sm font-medium text-primary">
-                    ₦{payment.amount.toLocaleString('en-NG')}
-                  </p>
-                  <p className="text-xs text-muted-foreground italic">
-                    {payment.description}
-                  </p>
-                  <div className="flex flex-wrap gap-x-4 gap-y-1 pt-2">
-                    <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
-                      <Mail className="h-3 w-3" />
+                  
+                  <div className="flex flex-wrap items-baseline gap-4">
+                    <p className="text-2xl font-black text-white italic tracking-tighter">
+                      ₦{payment.amount.toLocaleString('en-NG')}
+                    </p>
+                    <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest italic truncate max-w-xs">
+                      {payment.description}
+                    </p>
+                  </div>
+
+                  <div className="flex flex-wrap gap-x-6 gap-y-2 pt-2 border-t border-white/5">
+                    <div className="flex items-center gap-2 text-[8px] font-black uppercase tracking-widest text-gray-600">
+                      <Mail className="h-3 w-3 text-[#daa857]/50" />
                       {payment.user.email}
                     </div>
-                    <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
-                      <Phone className="h-3 w-3" />
+                    <div className="flex items-center gap-2 text-[8px] font-black uppercase tracking-widest text-gray-600">
+                      <Phone className="h-3 w-3 text-[#daa857]/50" />
                       {payment.user.phoneNumber}
                     </div>
-                    <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
+                    <div className="flex items-center gap-2 text-[8px] font-black uppercase tracking-widest text-[#daa857]/70">
                       <AlertCircle className="h-3 w-3" />
-                      Ref: {payment.reference}
+                      REF: {payment.reference.toUpperCase()}
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center gap-2 md:self-center">
+
+                <div className="flex items-center gap-3 mt-6 md:mt-0 relative z-10">
                   <Button 
                     disabled={!!processingId}
-                    className="flex-1 md:flex-none"
+                    className="flex-1 md:flex-none h-14 px-8 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black uppercase tracking-widest rounded-xl transition-all hover:scale-105 shadow-xl shadow-[#daa857]/10"
                     onClick={() => {
                       setSelectedPayment(payment)
                       setStartDate(new Date().toISOString().split('T')[0])
@@ -182,9 +193,9 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
                     {processingId === payment.id ? (
                       <RefreshCw className="h-4 w-4 animate-spin mr-2" />
                     ) : (
-                      <CheckCircle className="h-4 w-4 mr-2" />
+                      <CheckCircle className="h-4 w-4 mr-2 stroke-[3px]" />
                     )}
-                    Approve
+                    Authorize
                   </Button>
                 </div>
               </div>
@@ -193,43 +204,58 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
         )}
 
         <Dialog open={!!selectedPayment} onOpenChange={(open) => !open && setSelectedPayment(null)}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Approve Payment</DialogTitle>
-              <DialogDescription>
-                Confirm approval for <strong>{selectedPayment?.user.firstName} {selectedPayment?.user.lastName}</strong>'s payment of <strong>₦{selectedPayment?.amount.toLocaleString('en-NG')}</strong>.
+          <DialogContent className="bg-[#111] border-white/10 text-white rounded-[2.5rem] p-10 max-w-lg">
+            <DialogHeader className="space-y-4">
+              <DialogTitle className="text-3xl font-black uppercase italic tracking-tighter">
+                Manual <span className="text-[#daa857]">Authorization</span>
+              </DialogTitle>
+              <DialogDescription className="text-gray-500 font-medium uppercase text-[10px] tracking-widest leading-relaxed">
+                Confirm payload verification for <span className="text-white font-black">{selectedPayment?.user.firstName} {selectedPayment?.user.lastName}</span>
+                <br />Amount: <span className="text-[#daa857] font-black">₦{selectedPayment?.amount.toLocaleString('en-NG')}</span>
               </DialogDescription>
             </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid gap-2">
-                <Label htmlFor="startDate" className="flex items-center gap-2">
-                  <CalendarIcon className="h-4 w-4" />
-                  Membership Start Date
+            
+            <div className="grid gap-8 py-8">
+              <div className="space-y-3">
+                <Label htmlFor="startDate" className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">
+                  <CalendarIcon className="h-3.5 w-3.5 text-[#daa857]" />
+                  Protocol Start Date
                 </Label>
                 <Input
                   id="startDate"
                   type="date"
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
+                  className="h-16 bg-black border-white/5 rounded-2xl focus:border-[#daa857] px-6 font-black uppercase tracking-widest text-sm"
                 />
-                <p className="text-[10px] text-muted-foreground">
-                  The expiry date will be automatically calculated based on the member's package duration from this start date.
-                </p>
+                <div className="p-4 rounded-xl bg-[#daa857]/5 border border-[#daa857]/10">
+                  <p className="text-[9px] font-bold text-[#daa857]/70 uppercase tracking-widest leading-relaxed">
+                    Neural sync will automatically calculate expiry based on the operative's selected tier from this timestamp.
+                  </p>
+                </div>
               </div>
             </div>
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setSelectedPayment(null)}>Cancel</Button>
+
+            <DialogFooter className="gap-3 sm:gap-0">
+              <Button 
+                variant="outline" 
+                onClick={() => setSelectedPayment(null)}
+                className="h-14 px-8 border-white/10 hover:bg-white/5 rounded-xl text-[10px] font-black uppercase tracking-widest text-gray-500"
+              >
+                Abort
+              </Button>
               <Button 
                 onClick={() => selectedPayment && handleApprove(selectedPayment.id)}
                 disabled={!!processingId}
+                className="flex-1 h-14 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black uppercase tracking-widest rounded-xl transition-all shadow-xl shadow-[#daa857]/10"
               >
                 {processingId ? (
                   <>
                     <RefreshCw className="h-4 w-4 animate-spin mr-2" />
-                    Processing...
+                    Syncing...
                   </>
                 ) : (
-                  'Confirm Approval'
+                  'Commit Authorization'
                 )}
               </Button>
             </DialogFooter>
