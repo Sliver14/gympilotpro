@@ -291,24 +291,24 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
       </div>
 
       <Dialog open={isCropperModalOpen} onOpenChange={setIsCropperModalOpen}>
-        <DialogContent className="bg-[#111] border-white/10 text-white rounded-[2.5rem] p-0 overflow-hidden max-w-2xl shadow-2xl">
+        <DialogContent className="bg-[#111] border-white/10 text-white rounded-[1.5rem] md:rounded-[2.5rem] p-0 overflow-hidden w-[95vw] md:max-w-2xl shadow-2xl">
           <DialogHeader className="sr-only">
             <DialogTitle>Adjust Profile Signature</DialogTitle>
           </DialogHeader>
 
-          <div className="p-8 border-b border-white/5 flex items-center justify-between">
+          <div className="p-5 md:p-8 border-b border-white/5 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="h-10 w-10 rounded-xl bg-[#daa857]/10 flex items-center justify-center text-[#daa857]">
                 <CropIcon className="h-5 w-5" />
               </div>
-              <h3 className="text-xl font-black uppercase italic tracking-tighter">Adjust <span className="text-[#daa857]">Signature</span></h3>
+              <h3 className="text-lg md:text-xl font-black uppercase italic tracking-tighter">Adjust <span className="text-[#daa857]">Signature</span></h3>
             </div>
             <Button variant="ghost" size="icon" onClick={() => setIsCropperModalOpen(false)} className="rounded-full hover:bg-white/5">
               <X className="h-5 w-5" />
             </Button>
           </div>
 
-          <div className="relative h-[400px] w-full bg-black">
+          <div className="relative h-[300px] md:h-[400px] w-full bg-black">
             {imageToCrop && (
               <Cropper
                 image={imageToCrop}
@@ -324,7 +324,7 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
             )}
           </div>
 
-          <div className="p-8 space-y-8 bg-[#111]">
+          <div className="p-5 md:p-8 space-y-6 md:space-y-8 bg-[#111]">
             <div className="space-y-4">
               <div className="flex justify-between items-center">
                 <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">Neural Zoom</Label>
@@ -340,17 +340,17 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
               />
             </div>
 
-            <div className="flex gap-4">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
               <Button 
                 variant="outline" 
                 onClick={() => setIsCropperModalOpen(false)}
-                className="h-14 px-8 border-white/10 hover:bg-white/5 rounded-xl text-[10px] font-black uppercase tracking-widest text-gray-500"
+                className="h-12 md:h-14 px-8 border-white/10 hover:bg-white/5 rounded-xl text-[10px] font-black uppercase tracking-widest text-gray-500"
               >
                 Cancel
               </Button>
               <Button 
                 onClick={handleCropConfirm}
-                className="flex-1 h-14 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black uppercase tracking-widest rounded-xl transition-all shadow-xl shadow-[#daa857]/10"
+                className="flex-1 h-12 md:h-14 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black uppercase tracking-widest rounded-xl transition-all shadow-xl shadow-[#daa857]/10"
               >
                 Sync Optimized Signature
               </Button>
