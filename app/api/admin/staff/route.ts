@@ -24,6 +24,7 @@ export async function GET() {
         lastName: true,
         email: true,
         phoneNumber: true,
+        profileImage: true,
         role: true,
         createdAt: true,
         staffProfile: {

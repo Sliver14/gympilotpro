@@ -125,8 +125,6 @@ export async function POST(req: NextRequest) {
             // Only set these when approving (verified defaults to false otherwise)
             ...(shouldApproveImmediately && {
               verified: true,
-              approvedById: currentUser.id,
-              approvedAt: new Date(),
             }),
           },
         },

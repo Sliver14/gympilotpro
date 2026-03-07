@@ -5,19 +5,18 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { useToast } from '@/hooks/use-toast'
-import { CreditCard, CheckCircle, RefreshCw, AlertCircle, Phone, Mail } from 'lucide-react'
+import { CreditCard, CheckCircle, RefreshCw, AlertCircle, Phone, Mail, Calendar as CalendarIcon } from 'lucide-react'
 import { Spinner } from '@/components/ui/spinner'
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog'
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 
 interface PendingPayment {
   id: string
@@ -27,7 +26,7 @@ interface PendingPayment {
   reference: string
   createdAt: string
   user: {
-    id: true
+    id: string
     firstName: string
     lastName: string
     email: string
@@ -39,6 +38,8 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
   const [payments, setPayments] = useState<PendingPayment[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [processingId, setProcessingId] = useState<string | null>(null)
+  const [selectedPayment, setSelectedPayment] = useState<PendingPayment | null>(null)
+  const [startDate, setStartDate] = useState<string>(new Date().toISOString().split('T')[0])
   const { toast } = useToast()
 
   const fetchPayments = async () => {
@@ -72,6 +73,10 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
     try {
       const response = await fetch(`/api/admin/payments/approve/${id}`, {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ startDate }),
       })
       const data = await response.json()
 
@@ -80,6 +85,7 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
           title: 'Success',
           description: data.message || 'Payment approved successfully',
         })
+        setSelectedPayment(null)
         fetchPayments()
         if (onPaymentProcessed) onPaymentProcessed()
       } else {
@@ -165,40 +171,70 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
                   </div>
                 </div>
                 <div className="flex items-center gap-2 md:self-center">
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <Button 
-                        disabled={!!processingId}
-                        className="flex-1 md:flex-none"
-                      >
-                        {processingId === payment.id ? (
-                          <RefreshCw className="h-4 w-4 animate-spin mr-2" />
-                        ) : (
-                          <CheckCircle className="h-4 w-4 mr-2" />
-                        )}
-                        Approve
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>Confirm Payment Approval</AlertDialogTitle>
-                        <AlertDialogDescription>
-                          Are you sure you want to approve this payment of <strong>₦{payment.amount.toLocaleString('en-NG')}</strong> for <strong>{payment.user.firstName} {payment.user.lastName}</strong>? This will activate or extend their membership.
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction onClick={() => handleApprove(payment.id)}>
-                          Yes, Approve Payment
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
+                  <Button 
+                    disabled={!!processingId}
+                    className="flex-1 md:flex-none"
+                    onClick={() => {
+                      setSelectedPayment(payment)
+                      setStartDate(new Date().toISOString().split('T')[0])
+                    }}
+                  >
+                    {processingId === payment.id ? (
+                      <RefreshCw className="h-4 w-4 animate-spin mr-2" />
+                    ) : (
+                      <CheckCircle className="h-4 w-4 mr-2" />
+                    )}
+                    Approve
+                  </Button>
                 </div>
               </div>
             ))}
           </div>
         )}
+
+        <Dialog open={!!selectedPayment} onOpenChange={(open) => !open && setSelectedPayment(null)}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Approve Payment</DialogTitle>
+              <DialogDescription>
+                Confirm approval for <strong>{selectedPayment?.user.firstName} {selectedPayment?.user.lastName}</strong>'s payment of <strong>₦{selectedPayment?.amount.toLocaleString('en-NG')}</strong>.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              <div className="grid gap-2">
+                <Label htmlFor="startDate" className="flex items-center gap-2">
+                  <CalendarIcon className="h-4 w-4" />
+                  Membership Start Date
+                </Label>
+                <Input
+                  id="startDate"
+                  type="date"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                />
+                <p className="text-[10px] text-muted-foreground">
+                  The expiry date will be automatically calculated based on the member's package duration from this start date.
+                </p>
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setSelectedPayment(null)}>Cancel</Button>
+              <Button 
+                onClick={() => selectedPayment && handleApprove(selectedPayment.id)}
+                disabled={!!processingId}
+              >
+                {processingId ? (
+                  <>
+                    <RefreshCw className="h-4 w-4 animate-spin mr-2" />
+                    Processing...
+                  </>
+                ) : (
+                  'Confirm Approval'
+                )}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </CardContent>
     </Card>
   )

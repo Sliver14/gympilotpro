@@ -6,9 +6,10 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { useToast } from '@/hooks/use-toast'
-import { Users, Search, Download, RefreshCw } from 'lucide-react'
+import { Users, Search, Download, RefreshCw, User } from 'lucide-react'
 import RegisterMemberDialog from './register-member-dialog'
 import { Spinner } from '@/components/ui/spinner'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 interface Member {
   id: string
@@ -16,6 +17,7 @@ interface Member {
   lastName: string
   email: string
   phoneNumber: string
+  profileImage: string | null
   memberProfile: {
     expiryDate: string
     membership: {
@@ -155,13 +157,23 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
           <div className="space-y-2">
             {filteredMembers.map((member) => {
               const status = getMembershipStatus(member.memberProfile.expiryDate)
+              const initials = `${member.firstName?.[0] ?? ''}${member.lastName?.[0] ?? ''}`.toUpperCase()
+
               return (
                 <div key={member.id} className="flex items-center justify-between rounded-lg border border-border p-3">
-                  <div className="flex-1 min-w-0 mr-4">
-                    <p className="font-medium truncate">
-                      {member.firstName} {member.lastName}
-                    </p>
-                    <p className="text-xs text-muted-foreground truncate">{member.email}</p>
+                  <div className="flex items-center gap-3 flex-1 min-w-0 mr-4">
+                    <Avatar className="h-10 w-10">
+                      <AvatarImage src={member.profileImage || undefined} className="object-cover" />
+                      <AvatarFallback className="bg-primary/5 text-xs">
+                        {initials || <User className="h-4 w-4" />}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="min-w-0">
+                      <p className="font-medium truncate">
+                        {member.firstName} {member.lastName}
+                      </p>
+                      <p className="text-xs text-muted-foreground truncate">{member.email}</p>
+                    </div>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="text-right text-sm">

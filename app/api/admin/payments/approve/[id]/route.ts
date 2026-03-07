@@ -18,6 +18,17 @@ export async function POST(req: NextRequest, context: RouteContext) {
       )
     }
 
+    // Parse body for optional startDate
+    let startDate: Date | null = null
+    try {
+      const body = await req.json()
+      if (body.startDate) {
+        startDate = new Date(body.startDate)
+      }
+    } catch (e) {
+      // Body might be empty, that's fine
+    }
+
     // 1. Get payment record
     const payment = await prisma.payment.findUnique({
       where: { id: paymentId },
@@ -68,6 +79,7 @@ export async function POST(req: NextRequest, context: RouteContext) {
 
     // 3. Calculate new dates
     const now = new Date()
+    const baseDate = startDate || now
     let newJoinDate = memberProfile.joinDate
     let newExpiryDate: Date
 
@@ -75,21 +87,22 @@ export async function POST(req: NextRequest, context: RouteContext) {
 
     if (!isRenewal) {
       // It's an initial signup approval
-      newJoinDate = now
-      newExpiryDate = new Date(now)
+      newJoinDate = baseDate
+      newExpiryDate = new Date(baseDate)
       newExpiryDate.setDate(newExpiryDate.getDate() + targetMembership.duration)
     } else {
       // It's a renewal approval
+      // Consistent with renew-manual: extension logic
       const currentExpiry = new Date(memberProfile.expiryDate)
-      if (currentExpiry < now) {
-        // Already expired, start from now
-        newExpiryDate = new Date(now)
-        newExpiryDate.setDate(newExpiryDate.getDate() + targetMembership.duration)
+      
+      // If current expiry is in the past compared to baseDate, start from baseDate.
+      // Otherwise extend from current expiry.
+      if (currentExpiry < baseDate) {
+        newExpiryDate = new Date(baseDate)
       } else {
-        // Still active, extend current expiry
         newExpiryDate = new Date(currentExpiry)
-        newExpiryDate.setDate(newExpiryDate.getDate() + targetMembership.duration)
       }
+      newExpiryDate.setDate(newExpiryDate.getDate() + targetMembership.duration)
     }
 
     // 4. Execute transaction

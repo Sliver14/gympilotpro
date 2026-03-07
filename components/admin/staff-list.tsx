@@ -6,9 +6,10 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { useToast } from '@/hooks/use-toast'
-import { Users, Search, RefreshCw, UserCheck } from 'lucide-react'
+import { Users, Search, RefreshCw, UserCheck, User } from 'lucide-react'
 import RegisterStaffDialog from './register-staff-dialog'
 import { Spinner } from '@/components/ui/spinner'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 interface Staff {
   id: string
@@ -16,6 +17,7 @@ interface Staff {
   lastName: string
   email: string
   phoneNumber: string
+  profileImage: string | null
   role: string
   createdAt: string
   staffProfile: {
@@ -114,27 +116,39 @@ export default function StaffList() {
           <p className="text-center py-8 text-muted-foreground">No staff members found</p>
         ) : (
           <div className="space-y-2">
-            {filteredStaff.map((s) => (
-              <div key={s.id} className="flex items-center justify-between rounded-lg border border-border p-3">
-                <div className="flex-1 min-w-0 mr-4">
-                  <p className="font-medium truncate">
-                    {s.firstName} {s.lastName}
-                  </p>
-                  <p className="text-xs text-muted-foreground truncate">{s.email}</p>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="text-right text-sm">
-                    <p className="font-medium capitalize">{s.role}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {s.staffProfile?.specialization || 'General Staff'}
-                    </p>
+            {filteredStaff.map((s) => {
+              const initials = `${s.firstName?.[0] ?? ''}${s.lastName?.[0] ?? ''}`.toUpperCase()
+
+              return (
+                <div key={s.id} className="flex items-center justify-between rounded-lg border border-border p-3">
+                  <div className="flex items-center gap-3 flex-1 min-w-0 mr-4">
+                    <Avatar className="h-10 w-10">
+                      <AvatarImage src={s.profileImage || undefined} className="object-cover" />
+                      <AvatarFallback className="bg-primary/5 text-xs">
+                        {initials || <User className="h-4 w-4" />}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="min-w-0">
+                      <p className="font-medium truncate">
+                        {s.firstName} {s.lastName}
+                      </p>
+                      <p className="text-xs text-muted-foreground truncate">{s.email}</p>
+                    </div>
                   </div>
-                  <Badge variant="secondary" className="capitalize">
-                    {s.role}
-                  </Badge>
+                  <div className="flex items-center gap-3">
+                    <div className="text-right text-sm">
+                      <p className="font-medium capitalize">{s.role}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {s.staffProfile?.specialization || 'General Staff'}
+                      </p>
+                    </div>
+                    <Badge variant="secondary" className="capitalize">
+                      {s.role}
+                    </Badge>
+                  </div>
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         )}
       </CardContent>
