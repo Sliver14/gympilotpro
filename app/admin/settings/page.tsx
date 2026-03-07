@@ -73,15 +73,17 @@ function AdminSettingsContent() {
   return (
     <SidebarProvider>
       <AdminSidebar adminData={adminData} onLogout={handleLogout} />
-      <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+      <SidebarInset className="bg-[#0a0a0a]">
+        <header className="flex h-16 shrink-0 items-center gap-2 border-b border-white/5 px-6 sticky top-0 z-30 bg-black/50 backdrop-blur-md">
           <SidebarTrigger className="-ml-1" />
           <div className="flex items-center gap-2">
-            <h1 className="text-lg font-semibold">Settings</h1>
+            <h1 className="text-sm font-black uppercase italic tracking-[0.2em] text-gray-400">
+              Command <span className="text-[#daa857]">Settings</span>
+            </h1>
           </div>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4 md:p-6 pb-24 md:pb-20">
-          <div className="max-w-4xl">
+        <div className="flex flex-1 flex-col gap-8 p-6 md:p-10 pb-24 md:pb-20">
+          <div className="max-w-4xl mx-auto w-full">
             <SettingsForm userData={adminData} onUpdate={refreshData} />
           </div>
         </div>

@@ -1,13 +1,26 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
-import { Mail, Phone, Users, Zap, Camera, Loader2, TrendingUp } from 'lucide-react'
+import { Mail, Phone, Users, Zap, Camera, Loader2, TrendingUp, Crop as CropIcon, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { toast } from 'sonner'
+import { Label } from '@/components/ui/label'
+import { useToast } from '@/hooks/use-toast'
 import { useRouter } from 'next/navigation'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import { cn } from '@/lib/utils'
+import Cropper, { Area } from 'react-easy-crop'
+import getCroppedImg from '@/lib/image-utils'
+import { Slider } from '@/components/ui/slider'
 
 interface MemberProfileProps {
   memberData: any
@@ -25,8 +38,17 @@ const formatCurrency = (value: number) =>
 
 export default function MemberProfile({ memberData, onUpdate }: MemberProfileProps) {
   const router = useRouter()
+  const { toast } = useToast()
   const [uploading, setUploading] = useState(false)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+  
+  // Cropper state
+  const [isCropperModalOpen, setIsCropperModalOpen] = useState(false)
+  const [imageToCrop, setImageToCrop] = useState<string | null>(null)
+  const [crop, setCrop] = useState({ x: 0, y: 0 })
+  const [zoom, setZoom] = useState(1)
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null)
+
   const fileInputRef = useRef<HTMLInputElement>(null)
   
   const initials = `${memberData.firstName?.[0] ?? ''}${memberData.lastName?.[0] ?? ''}`.toUpperCase()
@@ -36,31 +58,51 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
   const membership = profile.membership || {}
   const profileImage = memberData.profileImage || profile.profileImage
 
-  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
 
-    // Validate file type
     if (!file.type.startsWith('image/')) {
-      toast.error('Please upload an image file')
+      toast({ title: 'Error', description: 'Please upload an image file', variant: 'destructive' })
       return
     }
 
-    // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
-      toast.error('File size should be less than 5MB')
+      toast({ title: 'Error', description: 'File size should be less than 5MB', variant: 'destructive' })
       return
     }
 
-    // Create immediate preview
-    const objectUrl = URL.createObjectURL(file)
-    setPreviewUrl(objectUrl)
+    const reader = new FileReader()
+    reader.addEventListener('load', () => {
+      setImageToCrop(reader.result as string)
+      setIsCropperModalOpen(true)
+    })
+    reader.readAsDataURL(file)
+  }
+
+  const onCropComplete = useCallback((_croppedArea: Area, croppedAreaPixels: Area) => {
+    setCroppedAreaPixels(croppedAreaPixels)
+  }, [])
+
+  const handleCropConfirm = async () => {
+    if (!imageToCrop || !croppedAreaPixels) return
 
     setUploading(true)
-    const formData = new FormData()
-    formData.append('file', file)
+    setIsCropperModalOpen(false)
 
     try {
+      const croppedImageBlob = await getCroppedImg(imageToCrop, croppedAreaPixels)
+      if (!croppedImageBlob) throw new Error('Failed to crop image')
+
+      const croppedFile = new File([croppedImageBlob], 'profile.jpg', { type: 'image/jpeg' })
+      
+      // Update local preview
+      const objectUrl = URL.createObjectURL(croppedImageBlob)
+      setPreviewUrl(objectUrl)
+
+      const formData = new FormData()
+      formData.append('file', croppedFile)
+
       const res = await fetch('/api/upload', {
         method: 'POST',
         body: formData,
@@ -68,16 +110,16 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
 
       if (!res.ok) throw new Error('Upload failed')
 
-      toast.success('Profile picture updated')
+      toast({ title: 'Success', description: 'Profile picture updated' })
       if (onUpdate) onUpdate()
-      router.refresh() // Keep for RSC if any
+      router.refresh()
     } catch (error) {
       console.error('Upload error:', error)
-      toast.error('Failed to upload image')
-      // Clear preview on failure
+      toast({ title: 'Error', description: 'Failed to upload image', variant: 'destructive' })
       setPreviewUrl(null)
     } finally {
       setUploading(false)
+      setImageToCrop(null)
     }
   }
 
@@ -113,7 +155,7 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
                   ref={fileInputRef}
                   className="hidden"
                   accept="image/*"
-                  onChange={handleUpload}
+                  onChange={onFileChange}
                 />
               </div>
               <div className="text-center sm:text-left space-y-1">
@@ -247,6 +289,75 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
           </div>
         </div>
       </div>
+
+      <Dialog open={isCropperModalOpen} onOpenChange={setIsCropperModalOpen}>
+        <DialogContent className="bg-[#111] border-white/10 text-white rounded-[2.5rem] p-0 overflow-hidden max-w-2xl shadow-2xl">
+          <DialogHeader className="sr-only">
+            <DialogTitle>Adjust Profile Signature</DialogTitle>
+          </DialogHeader>
+
+          <div className="p-8 border-b border-white/5 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="h-10 w-10 rounded-xl bg-[#daa857]/10 flex items-center justify-center text-[#daa857]">
+                <CropIcon className="h-5 w-5" />
+              </div>
+              <h3 className="text-xl font-black uppercase italic tracking-tighter">Adjust <span className="text-[#daa857]">Signature</span></h3>
+            </div>
+            <Button variant="ghost" size="icon" onClick={() => setIsCropperModalOpen(false)} className="rounded-full hover:bg-white/5">
+              <X className="h-5 w-5" />
+            </Button>
+          </div>
+
+          <div className="relative h-[400px] w-full bg-black">
+            {imageToCrop && (
+              <Cropper
+                image={imageToCrop}
+                crop={crop}
+                zoom={zoom}
+                aspect={1}
+                onCropChange={setCrop}
+                onCropComplete={onCropComplete}
+                onZoomChange={setZoom}
+                cropShape="round"
+                showGrid={false}
+              />
+            )}
+          </div>
+
+          <div className="p-8 space-y-8 bg-[#111]">
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">Neural Zoom</Label>
+                <span className="text-[10px] font-black text-[#daa857]">{Math.round(zoom * 100)}%</span>
+              </div>
+              <Slider
+                value={[zoom]}
+                min={1}
+                max={3}
+                step={0.1}
+                onValueChange={(value) => setZoom(value[0])}
+                className="py-4"
+              />
+            </div>
+
+            <div className="flex gap-4">
+              <Button 
+                variant="outline" 
+                onClick={() => setIsCropperModalOpen(false)}
+                className="h-14 px-8 border-white/10 hover:bg-white/5 rounded-xl text-[10px] font-black uppercase tracking-widest text-gray-500"
+              >
+                Cancel
+              </Button>
+              <Button 
+                onClick={handleCropConfirm}
+                className="flex-1 h-14 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black uppercase tracking-widest rounded-xl transition-all shadow-xl shadow-[#daa857]/10"
+              >
+                Sync Optimized Signature
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
