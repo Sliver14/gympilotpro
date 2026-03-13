@@ -162,7 +162,7 @@ function MemberSidebarContent({ memberData, onLogout }: MemberSidebarProps) {
                 <DropdownMenuItem onClick={onLogout} className="rounded-xl focus:bg-red-500/10 focus:text-red-500 cursor-pointer py-3 px-4 mt-1 text-red-500/80">
                   <div className="flex items-center gap-3 font-black uppercase text-[10px] tracking-widest">
                     <LogOut className="size-4" />
-                    Terminate Session
+                    Log Out
                   </div>
                 </DropdownMenuItem>
               </DropdownMenuContent>
