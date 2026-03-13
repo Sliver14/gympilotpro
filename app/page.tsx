@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
@@ -16,11 +16,16 @@ import {
   ChevronUp,
   Lock,
   Mail,
-  ArrowRight
+  ArrowRight,
+  Maximize2,
+  Minimize2
 } from 'lucide-react'
 
 export default function Home() {
   const [showAll, setShowAll] = useState(false)
+  const [isFullscreen, setIsFullscreen] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
 
   const packages = [
     { name: "Daily Pass", price: "3,000", duration: "1 Day", features: ["Unlimited gym access", "All equipment access", "24h Validity"], popular: false },
@@ -34,9 +39,42 @@ export default function Home() {
   const visiblePackages = showAll ? packages : packages.slice(0, 3)
 
   const accent = '#daa857'
-  const accentLight = '#cdb48b'
   const dark = '#000000'
-  const light = '#ffffff'
+
+  // Fullscreen logic
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      const isCurrentlyFull = !!(
+        document.fullscreenElement ||
+        (document as any).webkitFullscreenElement ||
+        (document as any).mozFullScreenElement ||
+        (document as any).msFullscreenElement
+      )
+      setIsFullscreen(isCurrentlyFull)
+    }
+
+    const events = ["fullscreenchange", "webkitfullscreenchange", "mozfullscreenchange", "MSFullscreenChange"]
+    events.forEach(e => document.addEventListener(e, handleFullscreenChange))
+    return () => events.forEach(e => document.removeEventListener(e, handleFullscreenChange))
+  }, [])
+
+  const toggleFullscreen = async () => {
+    if (!containerRef.current) return
+    const elem = containerRef.current as any
+    const doc = document as any
+
+    if (!isFullscreen) {
+      if (elem.requestFullscreen) await elem.requestFullscreen()
+      else if (elem.webkitRequestFullscreen) await elem.webkitRequestFullscreen()
+      else if (elem.mozRequestFullScreen) await elem.mozRequestFullScreen()
+      else if (elem.msRequestFullscreen) await elem.msRequestFullscreen()
+    } else {
+      if (doc.exitFullscreen) await doc.exitFullscreen()
+      else if (doc.webkitExitFullscreen) await doc.webkitExitFullscreen()
+      else if (doc.mozCancelFullScreen) await doc.mozCancelFullScreen()
+      else if (doc.msExitFullscreen) await doc.msExitFullscreen()
+    }
+  }
 
   return (
     <main className="min-h-screen bg-[#0a0a0a] text-white selection:bg-[#daa857]/30 overflow-x-hidden">
@@ -95,7 +133,7 @@ export default function Home() {
           className="absolute inset-0 z-0 h-full w-full object-cover opacity-60"
         >
           <source 
-            src="https://videos.pexels.com/video-files/34583331/14654742_1440_2560_25fps.mp4" 
+            src="/istockphoto-2013957555-640_adpp_is.mp4" 
             type="video/mp4" 
           />
           Your browser does not support the video tag.
@@ -119,9 +157,11 @@ export default function Home() {
                 Start Transformation <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
-            <Button variant="outline" size="lg" className="h-16 px-10 text-lg font-bold uppercase backdrop-blur-sm text-white hover:text-white" style={{ borderColor: 'white' }}>
-              <Play className="mr-2 h-5 w-5 fill-current text-white" /> Watch Tour
-            </Button>
+            <Link href="#tour">
+              <Button variant="outline" size="lg" className="h-16 px-10 text-lg font-bold uppercase backdrop-blur-sm text-white hover:text-white" style={{ borderColor: 'white' }}>
+                <Play className="mr-2 h-5 w-5 fill-current text-white" /> Watch Tour
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
@@ -164,20 +204,39 @@ export default function Home() {
       </section>
 
       {/* Video Demo Section */}
-      <section className="py-20 bg-[#0a0a0a]">
+      <section id="tour" className="py-12 md:py-24 bg-[#0a0a0a]">
         <div className="container mx-auto px-6">
-          <div className="relative aspect-video w-full max-w-5xl mx-auto overflow-hidden rounded-[2.5rem] border group cursor-pointer shadow-2xl" style={{ borderColor: `${accent}4d`, boxShadow: `0 0 50px ${accent}0d` }}>
-            <Image 
-              src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=2000" 
-              alt="Gym Interior" 
-              fill 
-              className="object-cover transition-transform duration-700 group-hover:scale-105 opacity-60"
-            />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="h-24 w-24 flex items-center justify-center rounded-full text-black shadow-[0_0_50px_rgba(218,168,87,0.3)] group-hover:scale-110 transition-transform" style={{ backgroundColor: accent }}>
-                <Play fill="currentColor" size={40} />
-              </div>
-            </div>
+          <div 
+            ref={containerRef}
+            className="group relative aspect-video w-full max-w-5xl mx-auto overflow-hidden rounded-2xl md:rounded-[2.5rem] border transition-all duration-700 shadow-2xl bg-black" 
+            style={{ borderColor: `${accent}4d`, boxShadow: `0 0 50px ${accent}0d` }}
+          >
+            <video 
+              ref={videoRef}
+              autoPlay 
+              muted 
+              loop 
+              playsInline
+              className="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 group-hover:scale-[1.02]"
+            >
+              <source src="/istockphoto-1480810276-640_adpp_is.mp4" type="video/mp4" />
+            </video>
+            
+            {/* Subtle Overlay */}
+            <div className="absolute inset-0 bg-black/20 pointer-events-none transition-opacity group-hover:opacity-10" />
+
+            {/* Fullscreen Toggle Button */}
+            <button
+              onClick={toggleFullscreen}
+              aria-label={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+              className="absolute bottom-4 right-4 md:bottom-8 md:right-8 z-10 flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-md transition-all duration-300 hover:bg-black/70 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white/20"
+            >
+              {isFullscreen ? (
+                <Minimize2 className="h-5 w-5 md:h-6 md:w-6" />
+              ) : (
+                <Maximize2 className="h-5 w-5 md:h-6 md:w-6" />
+              )}
+            </button>
           </div>
         </div>
       </section>
@@ -215,9 +274,11 @@ export default function Home() {
                     </li>
                   ))}
                 </ul>
-                <Button className={`w-full py-8 font-black uppercase tracking-widest rounded-xl ${pkg.popular ? 'bg-black text-white hover:bg-zinc-900' : 'text-black'}`} style={!pkg.popular ? { backgroundColor: accent } : {}}>
-                  Join Now
-                </Button>
+                <Link href="/signup">
+                  <Button className={`w-full py-8 font-black uppercase tracking-widest rounded-xl ${pkg.popular ? 'bg-black text-white hover:bg-zinc-900' : 'text-black'}`} style={!pkg.popular ? { backgroundColor: accent } : {}}>
+                    Join Now
+                  </Button>
+                </Link>
               </div>
             ))}
           </div>
@@ -237,7 +298,7 @@ export default function Home() {
             <Dumbbell className="absolute -top-10 -left-10 h-64 w-64 opacity-10 -rotate-12 group-hover:rotate-0 transition-transform duration-1000" />
             <h2 className="text-5xl md:text-8xl font-black uppercase italic tracking-tighter mb-8">No More <span className="text-white">Excuses</span></h2>
             <Link href="/signup">
-              <Button size="lg" className="h-20 px-16 text-2xl font-black uppercase rounded-full transition-all bg-black text-[#daa857] hover:bg-white/10">
+              <Button size="lg" className="h-20 px-16 text-2xl font-black uppercase rounded-full transition-all bg-black text-[#daa857] hover:bg-black/80">
                 Get Started
               </Button>
             </Link>
