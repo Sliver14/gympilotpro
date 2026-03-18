@@ -23,17 +23,9 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    try {
-      await requireActiveGymSubscription(gym.id);
-    } catch (e: any) {
-      // Allow admins/staff to login even if expired, but block members
-      const userToBlock = await prisma.user.findFirst({
-        where: { email: email.toLowerCase().trim(), gymId: gym.id }
-      })
-      if (userToBlock && userToBlock.role === 'member') {
-        return NextResponse.json({ error: 'Service Unavailable: Gym subscription expired' }, { status: 403 })
-      }
-    }
+    // Deliberately NOT checking requireActiveGymSubscription() here
+    // Everyone (Admin/Staff/Members) should be able to log in.
+    // The UI layout and API routes will enforce access restrictions after login.
 
     const normalizedEmail = email.toLowerCase().trim()
 

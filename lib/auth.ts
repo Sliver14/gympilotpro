@@ -81,14 +81,29 @@ export async function logout() {
   cookieStore.delete('auth-token')
 }
 
-export async function requireActiveGymSubscription(gymId: string) {
+export async function requireActiveGymSubscription(gymId: string, userRole?: string) {
   const gym = await prisma.gym.findUnique({
     where: { id: gymId },
     include: { subscriptions: { orderBy: { endDate: 'desc' }, take: 1 } }
   });
 
   const latestSub = gym?.subscriptions[0];
-  if (!latestSub || new Date(latestSub.endDate) < new Date() || latestSub.status === 'expired') {
+  const now = new Date()
+  const endDate = latestSub ? new Date(latestSub.endDate) : now
+  
+  const isExpired = !latestSub || endDate < now || latestSub.status === 'expired';
+  
+  // Add 3-day grace period
+  const finalGraceDate = new Date(endDate)
+  finalGraceDate.setDate(finalGraceDate.getDate() + 3)
+  const isGracePeriod = isExpired && now <= finalGraceDate
+  const isHardExpired = isExpired && !isGracePeriod
+
+  if (isHardExpired) {
+    // If the user is an admin or owner, bypass the block so they can fix billing
+    if (userRole === 'admin' || userRole === 'owner') {
+      return;
+    }
     throw new Error('Gym subscription expired');
   }
 }

@@ -40,14 +40,18 @@ export default function middleware(req: NextRequest) {
   // 2. Subdomains (e.g., klimarx.gympilotpro.com)
   if (hostname.endsWith(`.${ROOT_DOMAIN}`)) {
     const subdomain = hostname.replace(`.${ROOT_DOMAIN}`, '');
-    // Rewrite to our dynamic route structure: app/(gym)/[subdomain]
-    return NextResponse.rewrite(new URL(`/${subdomain}${url.pathname}`, req.url));
+    const requestHeaders = new Headers(req.headers);
+    requestHeaders.set('x-pathname', url.pathname);
+    return NextResponse.rewrite(new URL(`/${subdomain}${url.pathname}`, req.url), {
+      request: { headers: requestHeaders }
+    });
   }
 
   // 3. Custom Domains (e.g., www.klimarxgym.com)
-  // Handle WWW normalization for custom domains
   const normalizedDomain = hostname.startsWith('www.') ? hostname.replace('www.', '') : hostname;
-  
-  // Rewrite to custom domain route: app/(gym)/custom/[domain]
-  return NextResponse.rewrite(new URL(`/custom/${normalizedDomain}${url.pathname}`, req.url));
+  const requestHeaders = new Headers(req.headers);
+  requestHeaders.set('x-pathname', url.pathname);
+  return NextResponse.rewrite(new URL(`/custom/${normalizedDomain}${url.pathname}`, req.url), {
+    request: { headers: requestHeaders }
+  });
 }

@@ -3,6 +3,12 @@ import { GymProvider } from '@/components/gym-provider'
 import { prisma } from '@/lib/prisma'
 import { notFound } from 'next/navigation'
 import { getCurrentUser } from '@/lib/auth'
+import { headers } from 'next/headers'
+import { SubscriptionBanner } from '@/components/subscription-banner'
+import { ExpiredSubscriptionOverlay } from '@/components/expired-subscription-overlay'
+
+// Define unauthenticated routes that should ALWAYS be accessible
+const PUBLIC_ROUTES = ['/login', '/signup', '/forgot-password', '/reset-password', '/setup']
 
 export default async function GymSubdomainLayout({
   children,
@@ -33,49 +39,58 @@ export default async function GymSubdomainLayout({
       return notFound()
     }
 
+    // Calculate subscription status
     const latestSub = gym.subscriptions[0];
-    const isExpired = !latestSub || new Date(latestSub.endDate) < new Date() || latestSub.status === 'expired';
+    const now = new Date()
+    const endDate = latestSub ? new Date(latestSub.endDate) : now
+    
+    const isExpired = !latestSub || endDate < now || latestSub.status === 'expired';
+    const daysUntilExpiry = Math.max(0, Math.ceil((endDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)))
+    
+    // Add a 3-day grace period
+    const finalGraceDate = new Date(endDate)
+    finalGraceDate.setDate(finalGraceDate.getDate() + 3)
+    const isGracePeriod = isExpired && now <= finalGraceDate
+    const isHardExpired = isExpired && !isGracePeriod
 
-    if (isExpired) {
-      const user = await getCurrentUser();
+    // Check pathname
+    const headersList = await headers()
+    const pathname = headersList.get('x-pathname') || ''
+    
+    const isPublicRoute = PUBLIC_ROUTES.some(route => pathname.includes(route))
+
+    if (!isPublicRoute && (isHardExpired || isGracePeriod)) {
+      const user = await getCurrentUser()
       
-      // If Admin: Show a hard gate asking them to renew
-      if (user?.role === 'admin' || user?.role === 'owner' || user?.role === 'staff') {
+      // Admin/Owner view (allows entry but shows banner)
+      if (user?.role === 'admin' || user?.role === 'owner') {
         return (
-          <div className="flex min-h-screen items-center justify-center bg-black text-white p-4 font-sans selection:bg-red-500/30">
-            <div className="text-center space-y-6 p-10 border border-red-500/20 bg-red-500/5 rounded-[2.5rem] max-w-lg w-full shadow-2xl shadow-red-500/10 relative overflow-hidden">
-              <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-red-500/10 blur-[80px]" />
-              
-              <div className="relative z-10">
-                <div className="h-24 w-24 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-8 border border-red-500/20 shadow-xl shadow-red-500/20">
-                  <span className="text-red-500 text-5xl font-black italic">!</span>
-                </div>
-                <h1 className="text-2xl md:text-3xl font-black text-red-500 uppercase tracking-tighter mb-4">Subscription Expired</h1>
-                <p className="text-gray-400 font-medium leading-relaxed mb-8">
-                  Your gym's SaaS plan has expired. Please renew your subscription to restore platform access for your members and staff.
-                </p>
-                <a href="https://gympilotpro.com" target="_blank" rel="noopener noreferrer" className="inline-block w-full mt-4 p-5 bg-red-500 hover:bg-red-600 text-white font-black uppercase tracking-[0.2em] rounded-2xl transition-all hover:scale-[1.02] active:scale-[0.98] shadow-xl shadow-red-500/20">
-                  Renew Plan Now
-                </a>
-                <p className="text-[10px] text-gray-600 font-black uppercase tracking-[0.3em] mt-10">GymPilotPro Systems © 2026</p>
+          <GymProvider>
+            <div className="flex flex-col min-h-screen">
+              <SubscriptionBanner 
+                isExpired={isHardExpired} 
+                isGracePeriod={isGracePeriod} 
+                daysUntilExpiry={isGracePeriod ? Math.max(0, Math.ceil((finalGraceDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))) : 0}
+                accent={gym.primaryColor || '#daa857'} 
+              />
+              <div className="flex-1">
+                {children}
               </div>
             </div>
-          </div>
-        );
+          </GymProvider>
+        )
       }
 
-      // If Member or Unauthenticated (Login/Signup): Block entirely
-      return (
-        <div className="flex min-h-screen items-center justify-center bg-[#0a0a0a] text-white p-4 font-sans">
-          <div className="text-center space-y-4">
-            <div className="h-20 w-20 bg-[#111] rounded-[2rem] flex items-center justify-center mx-auto mb-8 border border-white/5 shadow-2xl">
-              <span className="text-gray-600 text-3xl font-black">⚡</span>
-            </div>
-            <h1 className="text-2xl md:text-4xl font-black text-gray-400 uppercase tracking-tighter italic">Service Unavailable</h1>
-            <p className="text-gray-600 font-black tracking-[0.3em] text-[10px] uppercase">This facility is currently offline.</p>
-          </div>
-        </div>
-      );
+      // Member/Staff view (Full screen block if hard expired, warning if grace period)
+      if (isHardExpired) {
+        return (
+          <GymProvider>
+            <ExpiredSubscriptionOverlay role={user?.role || 'guest'} accent={gym.primaryColor || '#daa857'} />
+          </GymProvider>
+        )
+      }
+      
+      // If grace period for members/staff, allow access but let banner show (or just allow silently)
     }
   }
 
