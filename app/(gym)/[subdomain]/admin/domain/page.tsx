@@ -52,7 +52,7 @@ export default function DomainDashboard() {
         throw new Error(data.error || 'Verification failed')
       }
 
-      setSuccess('Domain successfully verified and connected!')
+      setSuccess('Domain successfully verified and registered with Vercel!')
       // Refresh page to show updated status
       setTimeout(() => {
         window.location.reload()

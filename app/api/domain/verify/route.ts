@@ -8,11 +8,9 @@ async function addDomainToVercel(domain: string) {
   const projectId = process.env.VERCEL_PROJECT_ID;
   const token = process.env.VERCEL_TOKEN;
 
-  // If credentials are not set, we bypass the Vercel API check. 
-  // This is useful for local development, but in production, they must be set.
   if (!projectId || !token) {
-    console.warn('Vercel API credentials missing. Skipping Vercel domain registration.');
-    return { success: true, warning: 'Credentials missing' };
+    console.error('Vercel API credentials missing.');
+    return { success: false, error: 'Vercel API credentials missing' };
   }
 
   const url = `https://api.vercel.com/v10/projects/${projectId}/domains`;
@@ -33,9 +31,8 @@ async function addDomainToVercel(domain: string) {
       return { success: true, data };
     }
 
-    // If the domain already exists in the Vercel project, treat it as a success (idempotency)
-    if (data.error && data.error.code === 'domain_already_in_use') {
-       return { success: true, data };
+    if (data.error?.code === 'domain_already_in_use') {
+      return { success: false, error: 'Domain is already registered to another Vercel project or team.' };
     }
 
     return { success: false, error: data.error?.message || 'Failed to add domain to Vercel' };
