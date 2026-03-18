@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { verifyPassword, createSession } from '@/lib/auth'
+import { verifyPassword, createSession, requireActiveGymSubscription } from '@/lib/auth'
 import { cookies } from 'next/headers'
 import { getGymFromRequest } from '@/lib/gym-context'
 
@@ -21,6 +21,18 @@ export async function POST(req: NextRequest) {
         { error: 'Gym context is required for login' },
         { status: 400 }
       )
+    }
+
+    try {
+      await requireActiveGymSubscription(gym.id);
+    } catch (e: any) {
+      // Allow admins/staff to login even if expired, but block members
+      const userToBlock = await prisma.user.findFirst({
+        where: { email: email.toLowerCase().trim(), gymId: gym.id }
+      })
+      if (userToBlock && userToBlock.role === 'member') {
+        return NextResponse.json({ error: 'Service Unavailable: Gym subscription expired' }, { status: 403 })
+      }
     }
 
     const normalizedEmail = email.toLowerCase().trim()

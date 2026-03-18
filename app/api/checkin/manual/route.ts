@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getGymFromRequest } from '@/lib/gym-context'
+import { requireActiveGymSubscription } from '@/lib/auth'
 
 export async function POST(req: NextRequest) {
   try {
@@ -16,6 +17,15 @@ export async function POST(req: NextRequest) {
     const gym = await getGymFromRequest(req)
     if (!gym) {
       return NextResponse.json({ error: 'Gym not found', success: false, message: 'Gym not found' }, { status: 404 })
+    }
+
+    try {
+      await requireActiveGymSubscription(gym.id);
+    } catch (e: any) {
+      return NextResponse.json(
+        { error: 'Service Unavailable', success: false, message: 'Gym subscription expired' },
+        { status: 403 }
+      )
     }
 
     const normalizedEmail = email.toLowerCase().trim()

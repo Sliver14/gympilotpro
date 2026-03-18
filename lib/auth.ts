@@ -80,3 +80,15 @@ export async function logout() {
   const cookieStore = await cookies()
   cookieStore.delete('auth-token')
 }
+
+export async function requireActiveGymSubscription(gymId: string) {
+  const gym = await prisma.gym.findUnique({
+    where: { id: gymId },
+    include: { subscriptions: { orderBy: { endDate: 'desc' }, take: 1 } }
+  });
+
+  const latestSub = gym?.subscriptions[0];
+  if (!latestSub || new Date(latestSub.endDate) < new Date() || latestSub.status === 'expired') {
+    throw new Error('Gym subscription expired');
+  }
+}

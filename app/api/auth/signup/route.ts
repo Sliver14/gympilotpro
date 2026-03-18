@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { hashPassword, getCurrentUser } from '@/lib/auth'
+import { hashPassword, getCurrentUser, requireActiveGymSubscription } from '@/lib/auth'
 import { getGymFromRequest } from '@/lib/gym-context'
 
 export async function POST(req: NextRequest) {
@@ -10,6 +10,12 @@ export async function POST(req: NextRequest) {
 
     if (!gym) {
       return NextResponse.json({ error: 'Gym context is required for signup' }, { status: 400 })
+    }
+
+    try {
+      await requireActiveGymSubscription(gym.id);
+    } catch (e: any) {
+      return NextResponse.json({ error: 'Service Unavailable: Gym subscription expired' }, { status: 403 })
     }
 
     let {

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { getCurrentUser } from '@/lib/auth'
+import { getCurrentUser, requireActiveGymSubscription } from '@/lib/auth'
 import { getGymFromRequest } from '@/lib/gym-context'
 
 export async function POST(req: NextRequest) {
@@ -8,6 +8,12 @@ export async function POST(req: NextRequest) {
     const gym = await getGymFromRequest(req)
     if (!gym) {
       return NextResponse.json({ error: 'Gym not found' }, { status: 404 })
+    }
+
+    try {
+      await requireActiveGymSubscription(gym.id);
+    } catch (e: any) {
+      return NextResponse.json({ error: 'Service Unavailable: Gym subscription expired' }, { status: 403 })
     }
 
     // 1. Authentication & Role Check (staff only)
