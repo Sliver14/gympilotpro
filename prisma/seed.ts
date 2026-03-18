@@ -4,60 +4,88 @@ import bcrypt from 'bcryptjs'
 const prisma = new PrismaClient()
 
 async function main() {
-  // Create membership packages
+  // 1. Create default Gym
+  const gym = await prisma.gym.upsert({
+    where: { slug: 'klimarx' },
+    update: {},
+    create: {
+      name: 'Klimarx',
+      slug: 'klimarx',
+      email: 'contact@klimarx.com',
+    },
+  })
+
+  console.log(`✓ Gym created/verified: ${gym.name}`)
+
+  // 2. Create membership packages
   const packages = [
     {
       name: 'Daily Pass',
       duration: 1,
       price: 3000,
       description: 'Single day unlimited access. Ideal for travelers or those who want to try out our facilities.',
+      gymId: gym.id,
     },
     {
       name: 'Bi-Weekly Pass',
       duration: 14,
       price: 10000,
       description: 'Unlimited gym access for 2 weeks. Perfect for getting started with your fitness journey.',
+      gymId: gym.id,
     },
     {
       name: 'Monthly Pass',
       duration: 30,
       price: 20000,
       description: 'Unlimited gym access for 1 month. Perfect for getting started with your fitness journey.',
+      gymId: gym.id,
     },
     {
       name: 'Quarterly Pass',
       duration: 90,
       price: 55000,
       description: 'Unlimited gym access for 3 months. Great for commitment to your fitness goals.',
+      gymId: gym.id,
     },
-        {
-      name: 'Semi Anual Pass',
+    {
+      name: 'Semi Annual Pass',
       duration: 180,
       price: 110000,
       description: 'Unlimited gym access for 6 months. Great for commitment to your fitness goals.',
+      gymId: gym.id,
     },
     {
       name: 'Annual Pass',
       duration: 365,
       price: 220000,
       description: 'Unlimited gym access for a full year. Best value for dedicated fitness enthusiasts.',
+      gymId: gym.id,
     },
   ]
 
   for (const pkg of packages) {
     await prisma.membershipPackage.upsert({
       where: { name: pkg.name },
-      update: pkg,
-      create: pkg,
+      update: {
+        ...pkg,
+        gymId: gym.id,
+      },
+      create: {
+        ...pkg,
+        gymId: gym.id,
+      },
     })
   }
 
   console.log('✓ Database seeded with membership packages')
 
-  // Create a demo admin account (optional)
+  // 3. Create a demo admin account
   const adminEmail = 'admin@klimarx.com'
-  const existingAdmin = await prisma.user.findUnique({
-    where: { email: adminEmail },
+  const existingAdmin = await prisma.user.findFirst({
+    where: { 
+      email: adminEmail,
+      gymId: gym.id
+    },
   })
 
   if (!existingAdmin) {
@@ -65,18 +93,21 @@ async function main() {
 
     await prisma.user.create({
       data: {
+        gymId: gym.id,
         email: adminEmail,
         password: hashedPassword,
         firstName: 'Admin',
         lastName: 'User',
         role: 'admin',
         staffProfile: {
-          create: {},
+          create: {
+            gymId: gym.id,
+          },
         },
       },
     })
 
-    console.log('✓ Demo admin account created (email: admin@klimarx.com, password: admin123)')
+    console.log(`✓ Demo admin account created (email: ${adminEmail}, password: admin123)`)
   }
 }
 

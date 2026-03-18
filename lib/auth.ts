@@ -34,6 +34,7 @@ export async function verifySession(token: string) {
       user: {
         include: {
           memberProfile: true, // Include member profile for expiry check
+          staffProfile: true,  // Include staff profile
         },
       },
     },

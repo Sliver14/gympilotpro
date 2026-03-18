@@ -1,8 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { getGymFromRequest } from '@/lib/gym-context'
 
 export async function POST(req: NextRequest) {
   try {
+    const gym = await getGymFromRequest(req)
+
+    if (!gym) {
+      return NextResponse.json(
+        { error: 'Gym not found', success: false, message: 'Invalid gym context' },
+        { status: 400 }
+      )
+    }
+
     const { qrCode } = await req.json()
 
     if (!qrCode) {
@@ -21,7 +31,7 @@ export async function POST(req: NextRequest) {
       },
     })
 
-    if (!memberProfile) {
+    if (!memberProfile || memberProfile.gymId !== gym.id) {
       return NextResponse.json({
         success: false,
         message: 'Member not found',
@@ -48,6 +58,7 @@ export async function POST(req: NextRequest) {
 
     const existingCheckIn = await prisma.attendance.findFirst({
       where: {
+        gymId: gym.id,
         userId: memberProfile.userId,
         checkInTime: {
           gte: todayStart,
@@ -60,7 +71,7 @@ export async function POST(req: NextRequest) {
     if (existingCheckIn) {
       // Member is trying to check in while already checked in - do check-out instead
       await prisma.attendance.update({
-        where: { id: existingCheckIn.id },
+        where: { id: existingCheckIn.id, gymId: gym.id },
         data: { checkOutTime: new Date() },
       })
 
@@ -76,6 +87,7 @@ export async function POST(req: NextRequest) {
     // Log attendance
     const attendance = await prisma.attendance.create({
       data: {
+        gymId: gym.id,
         userId: memberProfile.userId,
         checkInTime: new Date(),
         method: 'qr',

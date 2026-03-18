@@ -1,14 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getCurrentUser } from '@/lib/auth'
+import { getGymFromRequest } from '@/lib/gym-context'
 
 export async function POST(req: NextRequest) {
   try {
+    const gym = await getGymFromRequest(req)
+    if (!gym) {
+      return NextResponse.json({ error: 'Gym not found' }, { status: 404 })
+    }
+
     // 1. Authentication & Role Check (staff only)
     const staff = await getCurrentUser()
 
     if (!staff) {
       return NextResponse.json({ error: 'Unauthorized: No session found' }, { status: 401 })
+    }
+
+    if (staff.gymId !== gym.id) {
+      return NextResponse.json({ error: 'Forbidden: You do not belong to this gym' }, { status: 403 })
     }
 
     if (!['admin', 'secretary', 'trainer'].includes(staff.role)) {
@@ -30,8 +40,11 @@ export async function POST(req: NextRequest) {
     let memberProfile
 
     if (qrCodeData) {
-      memberProfile = await prisma.memberProfile.findUnique({
-        where: { qrCode: qrCodeData.trim() },
+      memberProfile = await prisma.memberProfile.findFirst({
+        where: { 
+          qrCode: qrCodeData.trim(),
+          gymId: gym.id,
+        },
         include: {
           user: {
             select: {
@@ -46,7 +59,10 @@ export async function POST(req: NextRequest) {
     } else {
       // Manual check-in via memberId (user ID)
       memberProfile = await prisma.memberProfile.findFirst({
-        where: { userId: memberId },
+        where: { 
+          userId: memberId,
+          gymId: gym.id,
+        },
         include: {
           user: {
             select: {
@@ -63,7 +79,7 @@ export async function POST(req: NextRequest) {
     if (!memberProfile) {
       return NextResponse.json({
         isValid: false,
-        message: 'Member not found.',
+        message: 'Member not found in this gym.',
       }, { status: 404 })
     }
 
@@ -87,6 +103,7 @@ export async function POST(req: NextRequest) {
     const recentCheckIn = await prisma.attendance.findFirst({
       where: {
         userId: memberProfile.userId,
+        gymId: gym.id,
         checkInTime: {
           gte: todayStart,
         },
@@ -128,6 +145,7 @@ export async function POST(req: NextRequest) {
     await prisma.attendance.create({
       data: {
         userId: memberProfile.userId,
+        gymId: gym.id,
         checkInTime: now,
         method: qrCodeData ? 'qr' : 'manual', // differentiate method
       },

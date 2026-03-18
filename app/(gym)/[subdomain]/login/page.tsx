@@ -10,7 +10,10 @@ import { useToast } from '@/hooks/use-toast'
 import { AlertCircle, Lock, Mail, ArrowRight, Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
+import { useGym } from '@/components/gym-provider'
+
 export default function LoginPage() {
+  const { gymData, isLoading: gymLoading } = useGym()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -19,7 +22,10 @@ export default function LoginPage() {
   const router = useRouter()
   const { toast } = useToast()
 
-  const accent = '#daa857'
+  const accent = gymData?.primaryColor || '#daa857'
+  const logoUrl = gymData?.logo || '/WhatsApp_Image_2026-02-25_at_9.54.33_AM-removebg-preview.png'
+  const gymName = gymData?.name || 'Klimarx Space'
+  const tagline = gymData?.heroSubtitle || 'Elite Performance Sanctuary'
 
   const validateForm = () => {
     const errors: { email?: string; password?: string } = {}
@@ -109,29 +115,36 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#0a0a0a] text-white selection:bg-[#daa857]/30 px-4 py-20">
+    <div className="flex min-h-screen items-center justify-center bg-[#0a0a0a] text-white px-4 py-20">
+      <style jsx global>{`
+        ::selection {
+          background-color: ${accent}4d;
+        }
+      `}</style>
       <div className="w-full max-w-md">
         {/* Logo */}
         <Link href="/" className="mb-12 flex flex-col items-center justify-center gap-4 group">
           <div className="relative h-20 w-20 overflow-hidden rounded-full border-2 transition-transform group-hover:scale-110" style={{ borderColor: `${accent}80` }}>
             <Image 
-              src="/WhatsApp_Image_2026-02-25_at_9.54.33_AM-removebg-preview.png" 
-              alt="Klimarx Space Logo" 
+              src={logoUrl} 
+              alt={`${gymName} Logo`} 
               fill
               className="object-contain p-2 bg-white"
             />
           </div>
           <div className="text-center">
-            {/* <h1 className="text-3xl font-black tracking-tighter uppercase italic">Klimarx<span style={{ color: accent }}>Space</span></h1> */}
-            <p className="text-[10px] uppercase tracking-[0.3em] text-gray-500 font-bold mt-1">Elite Performance Sanctuary</p>
+            <h1 className="text-3xl font-black tracking-tighter uppercase italic">
+              {gymName.split(' ')[0]}<span style={{ color: accent }}>{gymName.split(' ').slice(1).join(' ')}</span>
+            </h1>
+            <p className="text-[10px] uppercase tracking-[0.3em] text-gray-500 font-bold mt-1">{tagline}</p>
           </div>
         </Link>
 
         {/* Login Form Container */}
-        <div className="p-8 bg-[#111] border border-[#daa857]/20 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
+        <div className="p-8 bg-[#111] border rounded-[2.5rem] shadow-2xl relative overflow-hidden" style={{ borderColor: `${accent}33` }}>
           {/* Subtle Glow Decor */}
-          <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-[#daa857]/10 blur-[80px]" />
-          <div className="absolute -bottom-24 -left-24 h-48 w-48 rounded-full bg-[#daa857]/5 blur-[80px]" />
+          <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full blur-[80px]" style={{ backgroundColor: `${accent}1a` }} />
+          <div className="absolute -bottom-24 -left-24 h-48 w-48 rounded-full blur-[80px]" style={{ backgroundColor: `${accent}0d` }} />
 
           <div className="relative z-10">
             <div className="mb-10">
@@ -149,7 +162,7 @@ export default function LoginPage() {
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="space-y-1">
                 <div className="relative group">
-                  <Mail className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 transition-colors group-focus-within:text-[#daa857]" style={{ color: fieldErrors.email ? '#ef4444' : `${accent}66` }} />
+                  <Mail className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 transition-colors group-focus-within:text-white" style={{ color: fieldErrors.email ? '#ef4444' : `${accent}66` }} />
                   <Input
                     type="email"
                     placeholder="Email Address"
@@ -161,9 +174,10 @@ export default function LoginPage() {
                     }}
                     disabled={isLoading}
                     className={cn(
-                      "h-16 pl-14 bg-black border-white/5 rounded-2xl focus:border-[#daa857] focus:ring-0 transition-all placeholder:text-gray-700 font-medium",
+                      "h-16 pl-14 bg-black border-white/5 rounded-2xl focus:ring-0 transition-all placeholder:text-gray-700 font-medium",
                       fieldErrors.email && "border-red-500/50 focus:border-red-500"
                     )}
+                    style={{ borderColor: fieldErrors.email ? undefined : `${accent}1a` }}
                   />
                 </div>
                 {fieldErrors.email && (
@@ -175,7 +189,7 @@ export default function LoginPage() {
 
               <div className="space-y-1">
                 <div className="relative group">
-                  <Lock className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 transition-colors group-focus-within:text-[#daa857]" style={{ color: fieldErrors.password ? '#ef4444' : `${accent}66` }} />
+                  <Lock className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 transition-colors group-focus-within:text-white" style={{ color: fieldErrors.password ? '#ef4444' : `${accent}66` }} />
                   <Input
                     type="password"
                     placeholder="Password"
@@ -187,9 +201,10 @@ export default function LoginPage() {
                     }}
                     disabled={isLoading}
                     className={cn(
-                      "h-16 pl-14 bg-black border-white/5 rounded-2xl focus:border-[#daa857] focus:ring-0 transition-all placeholder:text-gray-700 font-medium",
+                      "h-16 pl-14 bg-black border-white/5 rounded-2xl focus:ring-0 transition-all placeholder:text-gray-700 font-medium",
                       fieldErrors.password && "border-red-500/50 focus:border-red-500"
                     )}
+                    style={{ borderColor: fieldErrors.password ? undefined : `${accent}1a` }}
                   />
                 </div>
                 {fieldErrors.password && (
@@ -202,7 +217,8 @@ export default function LoginPage() {
               <div className="flex justify-end pr-2">
                 <Link
                   href="/forgot-password"
-                  className="text-xs text-gray-500 hover:text-[#daa857] transition-colors font-bold uppercase tracking-widest"
+                  className="text-xs text-gray-500 hover:text-white transition-colors font-bold uppercase tracking-widest"
+                  style={{ color: `${accent}cc` }}
                 >
                   Forgot Key?
                 </Link>
@@ -210,8 +226,8 @@ export default function LoginPage() {
 
               <Button 
                 type="submit" 
-                className="w-full h-16 text-black font-black uppercase tracking-[0.2em] rounded-2xl transition-all hover:scale-[1.02] active:scale-[0.98] group mt-4 shadow-xl shadow-[#daa857]/10" 
-                style={{ backgroundColor: accent }}
+                className="w-full h-16 text-black font-black uppercase tracking-[0.2em] rounded-2xl transition-all hover:scale-[1.02] active:scale-[0.98] group mt-4 shadow-xl shadow-black/20" 
+                style={{ backgroundColor: accent, color: gymData?.secondaryColor || '#000000' }}
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -227,7 +243,7 @@ export default function LoginPage() {
             <div className="mt-10 text-center">
               <p className="text-sm text-gray-500 font-medium">
                 New to the space?{' '}
-                <Link href="/signup" className="font-black text-[#daa857] hover:underline uppercase tracking-tight ml-1">
+                <Link href="/signup" className="font-black hover:underline uppercase tracking-tight ml-1" style={{ color: accent }}>
                   Apply for Membership
                 </Link>
               </p>
@@ -237,7 +253,7 @@ export default function LoginPage() {
 
         {/* Footer info */}
         <p className="mt-12 text-center text-[10px] text-gray-700 font-black uppercase tracking-[0.5em]">
-          Klimarx Space © 2026 • Security Protocol Active
+          {gymName} © 2026 • Security Protocol Active
         </p>
       </div>
     </div>

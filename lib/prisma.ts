@@ -1,37 +1,17 @@
-let prismaInstance: any = null
+import { PrismaClient } from '@prisma/client'
+
+const prismaClientSingleton = () => {
+  return new PrismaClient({
+    log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
+  })
+}
 
 declare global {
-  var prisma: any
+  var prismaGlobal: undefined | ReturnType<typeof prismaClientSingleton>
 }
 
-function getPrismaInstance() {
-  if (prismaInstance) return prismaInstance
-
-  try {
-    // Dynamically import to avoid build-time errors
-    const { PrismaClient } = require('@prisma/client')
-    prismaInstance = new PrismaClient({
-      log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
-    })
-  } catch (error) {
-    console.error('[Prisma] Failed to initialize:', error)
-    throw error
-  }
-
-  return prismaInstance
-}
-
-// Export a proxy that lazily initializes Prisma
-export const prisma = new Proxy(
-  {},
-  {
-    get: (target, prop) => {
-      const instance = getPrismaInstance()
-      return (instance as any)[prop]
-    },
-  }
-) as any
+export const prisma = globalThis.prismaGlobal ?? prismaClientSingleton()
 
 if (process.env.NODE_ENV !== 'production') {
-  globalThis.prisma = prisma
+  globalThis.prismaGlobal = prisma
 }

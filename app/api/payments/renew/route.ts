@@ -1,15 +1,29 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getCurrentUser } from '@/lib/auth'
+import { getGymFromRequest } from '@/lib/gym-context'
 
 export async function POST(req: NextRequest) {
   try {
+    const gym = await getGymFromRequest(req)
+    if (!gym) {
+      return NextResponse.json({ error: 'Gym not found', success: false }, { status: 404 })
+    }
+
     const user = await getCurrentUser()
 
     if (!user || user.role !== 'member') {
       return NextResponse.json(
         { error: 'Unauthorized', success: false },
         { status: 401 }
+      )
+    }
+
+    // Verify user belongs to this gym
+    if (user.gymId !== gym.id) {
+      return NextResponse.json(
+        { error: 'Unauthorized for this gym', success: false },
+        { status: 403 }
       )
     }
 
@@ -28,8 +42,11 @@ export async function POST(req: NextRequest) {
     }
 
     // Get membership details
-    const membership = await prisma.membershipPackage.findUnique({
-      where: { id: membershipId },
+    const membership = await prisma.membershipPackage.findFirst({
+      where: { 
+        id: membershipId,
+        gymId: gym.id
+      },
     })
 
     if (!membership) {
@@ -40,8 +57,11 @@ export async function POST(req: NextRequest) {
     }
 
     // Get current member profile
-    const memberProfile = await prisma.memberProfile.findUnique({
-      where: { userId: user.id },
+    const memberProfile = await prisma.memberProfile.findFirst({
+      where: { 
+        userId: user.id,
+        gymId: gym.id
+      },
     })
 
     if (!memberProfile) {
@@ -54,6 +74,7 @@ export async function POST(req: NextRequest) {
     // Create payment record with pending status
     const payment = await prisma.payment.create({
       data: {
+        gymId: gym.id,
         userId: user.id,
         amount: membership.price,
         status: 'pending',

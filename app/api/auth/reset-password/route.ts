@@ -1,9 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { hashPassword } from '@/lib/auth'
+import { getGymFromRequest } from '@/lib/gym-context'
 
 export async function POST(req: NextRequest) {
   try {
+    const gym = await getGymFromRequest(req)
+    if (!gym) {
+      return NextResponse.json({ error: 'Gym not found' }, { status: 404 })
+    }
+
     const { token, password } = await req.json()
 
     if (!token || !password) {
@@ -23,15 +29,27 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid or expired token' }, { status: 400 })
     }
 
-    // 2. Update user password
+    // 2. Find user in THIS gym
+    const user = await prisma.user.findFirst({
+      where: { 
+        email: resetToken.email,
+        gymId: gym.id
+      }
+    })
+
+    if (!user) {
+      return NextResponse.json({ error: 'User not found in this gym' }, { status: 404 })
+    }
+
+    // 3. Update user password
     const hashedPassword = await hashPassword(password)
 
     await prisma.user.update({
-      where: { email: resetToken.email },
+      where: { id: user.id },
       data: { password: hashedPassword },
     })
 
-    // 3. Delete the used token
+    // 4. Delete the used token
     await prisma.passwordResetToken.delete({
       where: { id: resetToken.id },
     })

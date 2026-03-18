@@ -1,15 +1,32 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getCurrentUser } from '@/lib/auth'
+import { getGymFromRequest } from '@/lib/gym-context'
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
     const user = await getCurrentUser()
+    const gym = await getGymFromRequest(request)
 
     if (!user || !['admin', 'secretary', 'trainer'].includes(user.role)) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
+      )
+    }
+
+    if (!gym) {
+      return NextResponse.json(
+        { error: 'Gym not found' },
+        { status: 404 }
+      )
+    }
+
+    // Security check: Ensure user belongs to this gym
+    if (user.gymId !== gym.id) {
+       return NextResponse.json(
+        { error: 'Access denied: User does not belong to this gym' },
+        { status: 403 }
       )
     }
 
@@ -46,11 +63,12 @@ export async function GET() {
     ] = await Promise.all([
       // Total members
       prisma.user.count({
-        where: { role: 'member', deletedAt: null },
+        where: { gymId: gym.id, role: 'member', deletedAt: null },
       }),
       // Active members
       prisma.memberProfile.count({
         where: {
+          gymId: gym.id,
           expiryDate: {
             gt: now,
           },
@@ -59,6 +77,7 @@ export async function GET() {
       // Today's check-ins
       prisma.attendance.count({
         where: {
+          gymId: gym.id,
           checkInTime: {
             gte: todayStart,
             lte: todayEnd,
@@ -68,12 +87,14 @@ export async function GET() {
       // Pending payments
       prisma.payment.count({
         where: {
+          gymId: gym.id,
           status: 'pending',
         },
       }),
       // Monthly revenue (aggregate)
       prisma.payment.aggregate({
         where: {
+          gymId: gym.id,
           status: 'approved',
           createdAt: {
             gte: monthStart,
@@ -87,6 +108,7 @@ export async function GET() {
       // Revenue data for last 12 months
       prisma.payment.findMany({
         where: {
+          gymId: gym.id,
           status: 'approved',
           createdAt: {
             gte: twelveMonthsAgo,
@@ -100,6 +122,7 @@ export async function GET() {
       // Attendance data for last 30 days
       prisma.attendance.findMany({
         where: {
+          gymId: gym.id,
           checkInTime: {
             gte: thirtyDaysAgo,
           },

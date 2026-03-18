@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import QRCode from 'qrcode'
+import { getGymFromRequest } from '@/lib/gym-context'
 
 export async function GET(
   req: NextRequest,
@@ -17,15 +18,23 @@ export async function GET(
       )
     }
 
+    const gym = await getGymFromRequest(req)
+    if (!gym) {
+      return NextResponse.json({ error: 'Gym not found' }, { status: 404 })
+    }
+
     // Fetch only the qrCode field (efficient)
     const memberProfile = await prisma.memberProfile.findFirst({
-      where: { userId: memberId }, // assuming userId stores the member/user ID
+      where: { 
+        userId: memberId,
+        gymId: gym.id,
+      }, // assuming userId stores the member/user ID
       select: { qrCode: true },
     })
 
     if (!memberProfile?.qrCode) {
       return NextResponse.json(
-        { error: 'QR code data not found for this member' },
+        { error: 'QR code data not found for this member in this gym' },
         { status: 404 }
       )
     }

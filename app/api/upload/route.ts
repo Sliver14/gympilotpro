@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { v2 as cloudinary } from 'cloudinary';
 import { getCurrentUser } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import { getGymFromRequest } from '@/lib/gym-context';
 
 // Best to configure Cloudinary **once** outside the handler (top of file or in a separate config file)
 cloudinary.config({
@@ -14,6 +15,11 @@ cloudinary.config({
 
 export async function POST(req: NextRequest) {
   try {
+    const gym = await getGymFromRequest(req)
+    if (!gym) {
+      return NextResponse.json({ error: 'Gym not found' }, { status: 404 })
+    }
+
     // Check for missing Cloudinary configuration
     if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
       console.error('Cloudinary environment variables are missing');
@@ -22,6 +28,14 @@ export async function POST(req: NextRequest) {
 
     // Attempt to get current user, but don't fail if not found (needed for signup)
     const user = await getCurrentUser();
+
+    // If user is logged in, verify they belong to this gym
+    if (user && user.gymId !== gym.id) {
+      return NextResponse.json(
+        { error: 'Unauthorized for this gym' },
+        { status: 403 }
+      )
+    }
 
     const formData = await req.formData();
     const file = formData.get('file');
@@ -61,7 +75,7 @@ export async function POST(req: NextRequest) {
       cloudinary.uploader
         .upload_stream(
           {
-            folder: 'klimarx/profiles',
+            folder: `klimarx/${gym.slug}/profiles`,
             public_id: publicId,
             overwrite: true,
             // You can also do eager transformations, but inline is fine
@@ -87,7 +101,10 @@ export async function POST(req: NextRequest) {
     // ONLY update the database if we have a logged-in user context
     if (user?.id) {
       await prisma.user.update({
-        where: { id: user.id },
+        where: { 
+          id: user.id,
+          gymId: gym.id
+        },
         data: {
           profileImage: imageUrl,
         },

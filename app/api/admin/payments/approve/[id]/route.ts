@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getCurrentUser } from '@/lib/auth'
+import { getGymFromRequest } from '@/lib/gym-context'
 
 interface RouteContext {
   params: Promise<{ id: string }>
@@ -8,6 +9,11 @@ interface RouteContext {
 
 export async function POST(req: NextRequest, context: RouteContext) {
   try {
+    const gym = await getGymFromRequest(req)
+    if (!gym) {
+      return NextResponse.json({ error: 'Gym not found' }, { status: 404 })
+    }
+
     const { id: paymentId } = await context.params
     const staff = await getCurrentUser()
 
@@ -16,6 +22,10 @@ export async function POST(req: NextRequest, context: RouteContext) {
         { error: 'Unauthorized' },
         { status: 401 }
       )
+    }
+
+    if (staff.gymId !== gym.id) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 
     // Parse body for optional startDate
@@ -30,8 +40,8 @@ export async function POST(req: NextRequest, context: RouteContext) {
     }
 
     // 1. Get payment record
-    const payment = await prisma.payment.findUnique({
-      where: { id: paymentId },
+    const payment = await prisma.payment.findFirst({
+      where: { id: paymentId, gymId: gym.id },
       include: {
         user: {
           include: {
@@ -69,8 +79,8 @@ export async function POST(req: NextRequest, context: RouteContext) {
       targetMembershipId = match[1]
     }
 
-    const targetMembership = await prisma.membershipPackage.findUnique({
-      where: { id: targetMembershipId },
+    const targetMembership = await prisma.membershipPackage.findFirst({
+      where: { id: targetMembershipId, gymId: gym.id },
     })
 
     if (!targetMembership) {

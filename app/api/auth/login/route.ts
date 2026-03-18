@@ -2,10 +2,12 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { verifyPassword, createSession } from '@/lib/auth'
 import { cookies } from 'next/headers'
+import { getGymFromRequest } from '@/lib/gym-context'
 
 export async function POST(req: NextRequest) {
   try {
     const { email, password } = await req.json()
+    const gym = await getGymFromRequest(req)
 
     if (!email || !password) {
       return NextResponse.json(
@@ -14,10 +16,20 @@ export async function POST(req: NextRequest) {
       )
     }
 
+    if (!gym) {
+       return NextResponse.json(
+        { error: 'Gym context is required for login' },
+        { status: 400 }
+      )
+    }
+
     const normalizedEmail = email.toLowerCase().trim()
 
-    const user = await prisma.user.findUnique({
-      where: { email: normalizedEmail },
+    const user = await prisma.user.findFirst({
+      where: { 
+        email: normalizedEmail,
+        gymId: gym.id 
+      },
     })
 
     if (!user) {
@@ -52,6 +64,7 @@ export async function POST(req: NextRequest) {
         firstName: user.firstName,
         lastName: user.lastName,
         role: user.role,
+        gymSlug: gym.slug,
       },
     })
   } catch (error) {

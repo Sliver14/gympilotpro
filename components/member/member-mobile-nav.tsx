@@ -3,6 +3,7 @@
 import { Suspense } from 'react'
 import Link from 'next/link'
 import { usePathname, useSearchParams } from 'next/navigation'
+import { useGym } from '@/components/gym-provider'
 import { Button } from '@/components/ui/button'
 import { User, QrCode, Calendar, TrendingUp } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -13,8 +14,11 @@ interface MemberMobileNavProps {
 
 function MemberMobileNavContent({ className }: MemberMobileNavProps) {
   const pathname = usePathname()
+  const { gymSlug, gymData } = useGym()
   const searchParams = useSearchParams()
   const currentTab = searchParams.get('tab') || 'overview'
+
+  const accent = gymData?.primaryColor || '#daa857'
 
   const navItems = [
     { title: 'Overview', tab: 'overview', icon: User },
@@ -42,16 +46,18 @@ function MemberMobileNavContent({ className }: MemberMobileNavProps) {
               <div
                 className={cn(
                   'h-10 w-14 rounded-xl flex items-center justify-center transition-all duration-300',
-                  isActive ? 'bg-[#daa857] text-black shadow-lg shadow-[#daa857]/20' : 'text-gray-500'
+                  isActive ? 'shadow-lg' : 'text-gray-500'
                 )}
+                style={isActive ? { backgroundColor: accent, color: '#000', boxShadow: `0 10px 15px -3px ${accent}33` } : {}}
               >
                 <item.icon className={cn('h-5 w-5', isActive ? 'stroke-[3px]' : 'stroke-[2px]')} />
               </div>
               <span
                 className={cn(
                   'text-[8px] font-black uppercase tracking-[0.1em]',
-                  isActive ? 'text-[#daa857]' : 'text-gray-600'
+                  isActive ? '' : 'text-gray-600'
                 )}
+                style={isActive ? { color: accent } : {}}
               >
                 {item.title}
               </span>

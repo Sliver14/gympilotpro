@@ -10,3 +10,5 @@ node_modules/
 .DS_Store
 prisma/.env
 .vercel
+.env
+.env

@@ -26,6 +26,10 @@ const nextConfig = {
 
   reactStrictMode: process.env.NODE_ENV === 'development',
 
+  experimental: {
+    allowedDevOrigins: ['klimarx.lvh.me', '*.lvh.me', 'lvh.me', 'localhost:3000', '*.lvh.me:3000'],
+  },
+
   compress: true,
   poweredByHeader: false,
 }

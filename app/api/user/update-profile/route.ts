@@ -1,15 +1,29 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getCurrentUser } from '@/lib/auth'
+import { getGymFromRequest } from '@/lib/gym-context'
 
 export async function POST(req: NextRequest) {
   try {
+    const gym = await getGymFromRequest(req)
+    if (!gym) {
+      return NextResponse.json({ error: 'Gym not found' }, { status: 404 })
+    }
+
     const user = await getCurrentUser()
 
     if (!user) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
+      )
+    }
+
+    // Verify user belongs to this gym
+    if (user.gymId !== gym.id) {
+      return NextResponse.json(
+        { error: 'Unauthorized for this gym' },
+        { status: 403 }
       )
     }
 
@@ -26,8 +40,12 @@ export async function POST(req: NextRequest) {
     } = body
 
     // 1. Update User base data
-    const updatedUser = await prisma.user.update({
-      where: { id: user.id },
+    // Use updateMany to ensure gymId is verified in the query as per requirements
+    await prisma.user.updateMany({
+      where: { 
+        id: user.id,
+        gymId: gym.id
+      },
       data: {
         firstName: firstName || undefined,
         lastName: lastName || undefined,
@@ -36,10 +54,18 @@ export async function POST(req: NextRequest) {
       }
     })
 
+    // Fetch the updated user to return it
+    const updatedUser = await prisma.user.findUnique({
+      where: { id: user.id }
+    })
+
     // 2. Update Member Profile if it exists
     if (user.role === 'member') {
-      await prisma.memberProfile.update({
-        where: { userId: user.id },
+      await prisma.memberProfile.updateMany({
+        where: { 
+          userId: user.id,
+          gymId: gym.id
+        },
         data: {
           birthday: birthday || undefined,
           gender: gender || undefined,

@@ -1,9 +1,15 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getCurrentUser } from '@/lib/auth'
+import { getGymFromRequest } from '@/lib/gym-context'
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
+    const gym = await getGymFromRequest(request)
+    if (!gym) {
+      return NextResponse.json({ error: 'Gym not found' }, { status: 404 })
+    }
+
     const user = await getCurrentUser()
 
     if (!user || user.role !== 'admin') {
@@ -11,6 +17,10 @@ export async function GET() {
         { error: 'Unauthorized' },
         { status: 401 }
       )
+    }
+
+    if (user.gymId !== gym.id) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 
     // Calculate date range for last 12 months
@@ -23,6 +33,7 @@ export async function GET() {
     // Single query to get all payments from last 12 months
     const payments = await prisma.payment.findMany({
       where: {
+        gymId: gym.id,
         status: 'approved',
         createdAt: {
           gte: twelveMonthsAgo,

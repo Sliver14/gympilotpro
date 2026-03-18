@@ -4,6 +4,7 @@ import { Suspense } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname, useSearchParams } from 'next/navigation'
+import { useGym } from '@/components/gym-provider'
 import {
   Sidebar,
   SidebarContent,
@@ -34,33 +35,38 @@ interface MemberSidebarProps {
 
 function MemberSidebarContent({ memberData, onLogout }: MemberSidebarProps) {
   const pathname = usePathname()
+  const { gymSlug, gymData } = useGym()
   const searchParams = useSearchParams()
   const currentTab = searchParams.get('tab') || 'overview'
   const initials = `${memberData.firstName?.[0] ?? ''}${memberData.lastName?.[0] ?? ''}`.toUpperCase()
   const profileImage = memberData.profileImage || memberData.memberProfile?.profileImage
 
+  const accent = gymData?.primaryColor || '#daa857'
+  const logo = gymData?.logo || "/WhatsApp_Image_2026-02-25_at_9.54.33_AM-removebg-preview.png"
+  const gymName = gymData?.name || 'Klimarx'
+
   const menuItems = [
     {
       title: 'Overview',
-      url: '/member/dashboard?tab=overview',
+      url: `/member/dashboard?tab=overview`,
       icon: User,
       active: currentTab === 'overview',
     },
     {
       title: 'QR Code',
-      url: '/member/dashboard?tab=qr-code',
+      url: `/member/dashboard?tab=qr-code`,
       icon: QrCode,
       active: currentTab === 'qr-code',
     },
     {
       title: 'Attendance',
-      url: '/member/dashboard?tab=attendance',
+      url: `/member/dashboard?tab=attendance`,
       icon: Calendar,
       active: currentTab === 'attendance',
     },
     {
       title: 'Progress',
-      url: '/member/dashboard?tab=progress',
+      url: `/member/dashboard?tab=progress`,
       icon: TrendingUp,
       active: currentTab === 'progress',
     },
@@ -72,10 +78,10 @@ function MemberSidebarContent({ memberData, onLogout }: MemberSidebarProps) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild size="lg" className="hover:bg-transparent active:bg-transparent">
-              <Link href="/member/dashboard">
-                <div className="flex aspect-square size-10 items-center justify-center rounded-xl bg-white p-1.5 shadow-[0_0_20px_rgba(255,255,255,0.1)] border border-[#daa857]/30 transition-transform group-hover:scale-110">
+              <Link href={`/member/dashboard`}>
+                <div className="flex aspect-square size-10 items-center justify-center rounded-xl bg-white p-1.5 shadow-[0_0_20px_rgba(255,255,255,0.1)] border transition-transform group-hover:scale-110" style={{ borderColor: `${accent}4d` }}>
                   <Image 
-                    src="/WhatsApp_Image_2026-02-25_at_9.54.33_AM-removebg-preview.png" 
+                    src={logo} 
                     alt="Logo" 
                     width={28} 
                     height={24} 
@@ -83,7 +89,7 @@ function MemberSidebarContent({ memberData, onLogout }: MemberSidebarProps) {
                   />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight ml-2">
-                  <span className="truncate font-black uppercase italic tracking-tighter text-lg">Klimarx<span className="text-[#daa857]">Space</span></span>
+                  <span className="truncate font-black uppercase italic tracking-tighter text-lg">{gymName}<span style={{ color: accent }}>Space</span></span>
                   <span className="truncate text-[8px] font-bold uppercase tracking-[0.4em] text-gray-600 mt-0.5">Member Portal</span>
                 </div>
               </Link>
@@ -105,12 +111,17 @@ function MemberSidebarContent({ memberData, onLogout }: MemberSidebarProps) {
                     className={cn(
                       "transition-all duration-300 h-10 px-4",
                       item.active 
-                        ? "bg-[#daa857]/10 text-[#daa857] font-black italic uppercase tracking-widest border-r-2 border-[#daa857]" 
-                        : "text-gray-400 hover:text-[#daa857] font-bold uppercase tracking-widest hover:bg-white/5"
+                        ? "font-black italic uppercase tracking-widest border-r-2" 
+                        : "text-gray-400 font-bold uppercase tracking-widest hover:bg-white/5"
                     )}
+                    style={item.active ? { 
+                      backgroundColor: `${accent}1a`, 
+                      color: accent,
+                      borderRightColor: accent
+                    } : {}}
                   >
                     <Link href={item.url}>
-                      <item.icon className={cn("size-4", item.active && "text-[#daa857]")} />
+                      <item.icon className={cn("size-4", item.active && "text-[#daa857]")} style={item.active ? { color: accent } : {}} />
                       <span>{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
@@ -127,11 +138,11 @@ function MemberSidebarContent({ memberData, onLogout }: MemberSidebarProps) {
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton
                   size="lg"
-                  className="data-[state=open]:bg-[#daa857]/10 data-[state=open]:text-[#daa857] hover:bg-white/5 transition-all duration-300 h-14 rounded-xl border border-transparent hover:border-white/5"
+                  className="data-[state=open]:bg-white/5 hover:bg-white/5 transition-all duration-300 h-14 rounded-xl border border-transparent hover:border-white/5"
                 >
                   <Avatar className="size-8 rounded-lg border border-white/10">
                     <AvatarImage src={profileImage || undefined} className="object-cover" />
-                    <AvatarFallback className="rounded-lg bg-[#daa857]/10 text-[#daa857] font-black">{initials || '??'}</AvatarFallback>
+                    <AvatarFallback className="rounded-lg font-black" style={{ backgroundColor: `${accent}1a`, color: accent }}>{initials || '??'}</AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-black uppercase italic tracking-tight">
@@ -153,9 +164,9 @@ function MemberSidebarContent({ memberData, onLogout }: MemberSidebarProps) {
                     <p className="text-[10px] font-bold text-gray-500 uppercase tracking-tighter">{memberData.email}</p>
                   </div>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild className="rounded-xl focus:bg-[#daa857]/10 focus:text-[#daa857] cursor-pointer py-3 px-4">
+                <DropdownMenuItem asChild className="rounded-xl focus:bg-white/5 cursor-pointer py-3 px-4">
                   <Link href="/member/profile" className="flex items-center gap-3 font-black uppercase text-[10px] tracking-widest">
-                    <Settings className="size-4 text-[#daa857]" />
+                    <Settings className="size-4" style={{ color: accent }} />
                     Profile Settings
                   </Link>
                 </DropdownMenuItem>

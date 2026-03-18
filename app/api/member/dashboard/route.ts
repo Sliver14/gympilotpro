@@ -1,9 +1,19 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getCurrentUser } from '@/lib/auth'
+import { getGymFromRequest } from '@/lib/gym-context'
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
+    const gym = await getGymFromRequest(req)
+
+    if (!gym) {
+      return NextResponse.json(
+        { error: 'Gym not found' },
+        { status: 400 }
+      )
+    }
+
     const user = await getCurrentUser()
 
     if (!user) {
@@ -16,8 +26,8 @@ export async function GET() {
     // Fetch all member data in parallel with optimized selects
     const [memberData, attendanceData] = await Promise.all([
       // Get member profile with only needed fields
-      prisma.user.findUnique({
-        where: { id: user.id },
+      prisma.user.findFirst({
+        where: { id: user.id, gymId: gym.id },
         select: {
           id: true,
           email: true,
@@ -46,7 +56,7 @@ export async function GET() {
       }),
       // Get recent attendance (last 100 records) with only needed fields
       prisma.attendance.findMany({
-        where: { userId: user.id },
+        where: { userId: user.id, gymId: gym.id },
         select: {
           id: true,
           checkInTime: true,

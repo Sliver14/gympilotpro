@@ -1,9 +1,15 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getCurrentUser } from '@/lib/auth'
+import { getGymFromRequest } from '@/lib/gym-context'
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
+    const gym = await getGymFromRequest(request)
+    if (!gym) {
+      return NextResponse.json({ error: 'Gym not found' }, { status: 404 })
+    }
+
     const user = await getCurrentUser()
 
     if (!user || !['admin', 'secretary', 'trainer'].includes(user.role)) {
@@ -13,15 +19,20 @@ export async function GET() {
       )
     }
 
+    if (user.gymId !== gym.id) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+    }
+
     // Total members
     const totalMembers = await prisma.user.count({
-      where: { role: 'member', deletedAt: null },
+      where: { role: 'member', deletedAt: null, gymId: gym.id },
     })
 
     // Active members (valid membership)
     const now = new Date()
     const activeMembers = await prisma.memberProfile.count({
       where: {
+        gymId: gym.id,
         expiryDate: {
           gt: now,
         },
@@ -36,6 +47,7 @@ export async function GET() {
 
     const todayCheckins = await prisma.attendance.count({
       where: {
+        gymId: gym.id,
         checkInTime: {
           gte: todayStart,
           lte: todayEnd,
@@ -55,6 +67,7 @@ export async function GET() {
     // Optimize: Use aggregate instead of fetching all payments
     const monthlyRevenueResult = await prisma.payment.aggregate({
       where: {
+        gymId: gym.id,
         status: 'approved',
         createdAt: {
           gte: monthStart,

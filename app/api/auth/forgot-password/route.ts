@@ -2,12 +2,18 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import crypto from 'crypto'
 import { Resend } from 'resend'
+import { getGymFromRequest } from '@/lib/gym-context'
 
 // Initialize Resend (do this once at module level)
 const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function POST(req: NextRequest) {
   try {
+    const gym = await getGymFromRequest(req)
+    if (!gym) {
+      return NextResponse.json({ error: 'Gym not found' }, { status: 404 })
+    }
+
     const { email } = await req.json()
 
     if (!email || typeof email !== 'string' || !email.includes('@')) {
@@ -17,9 +23,12 @@ export async function POST(req: NextRequest) {
     // Normalize email
     const normalizedEmail = email.toLowerCase().trim()
 
-    // 1. Check if user exists (but never reveal this)
-    const user = await prisma.user.findUnique({
-      where: { email: normalizedEmail },
+    // 1. Check if user exists (scoped by gymId)
+    const user = await prisma.user.findFirst({
+      where: { 
+        email: normalizedEmail,
+        gymId: gym.id
+      },
     })
 
     // For security: always return success message
@@ -48,19 +57,19 @@ export async function POST(req: NextRequest) {
       },
     })
 
-    // 5. Build reset link (use your actual app URL)
-    const resetLink = `${process.env.NEXT_PUBLIC_APP_URL}/reset-password?token=${token}`
+    // 5. Build reset link (use gym-specific URL)
+    const resetLink = `${process.env.NEXT_PUBLIC_APP_URL}/${gym.slug}/reset-password?token=${token}`
 
     // 6. Send email via Resend
     const { data, error } = await resend.emails.send({
-      from: 'Klimarx Gym <noreply@klimarsspace.com>',
+      from: `${gym.name} <noreply@klimarsspace.com>`,
       to: normalizedEmail,
-      subject: 'Reset Your Klimarx Gym Password',
+      subject: `Reset Your ${gym.name} Password`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
           <h2 style="color: #10b981;">Password Reset Request</h2>
-          <p>Hello ${user.firstName || 'Klimarx Member'},</p>
-          <p>We received a request to reset your password for your Klimarx Gym account.</p>
+          <p>Hello ${user.firstName || 'Member'},</p>
+          <p>We received a request to reset your password for your ${gym.name} account.</p>
           <p>Click the button below to set a new password:</p>
           
           <div style="text-align: center; margin: 30px 0;">
@@ -77,13 +86,12 @@ export async function POST(req: NextRequest) {
           
           <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
           <p style="color: #888; font-size: 12px; text-align: center;">
-            Klimarx Space Enterprises – Your Fitness Journey Starts Here<br>
-            Lagos, Nigeria | WhatsApp: 07048430667
+            ${gym.name}<br>
+            ${gym.address || ''}
           </p>
         </div>
       `,
-      // Optional: add text version for better deliverability
-      text: `Password Reset Request\n\nHello ${user.firstName || 'Member'},\n\nClick here to reset your password: ${resetLink}\n\nThis link expires in 1 hour.\n\nIf you didn't request this, ignore this email.\n\nKlimarx Gym Team`,
+      text: `Password Reset Request\n\nHello ${user.firstName || 'Member'},\n\nClick here to reset your password for ${gym.name}: ${resetLink}\n\nThis link expires in 1 hour.\n\nIf you didn't request this, ignore this email.\n\n${gym.name} Team`,
     })
 
     if (error) {

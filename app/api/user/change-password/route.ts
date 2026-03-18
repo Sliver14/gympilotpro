@@ -1,13 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { hashPassword, verifyPassword, getCurrentUser } from '@/lib/auth'
+import { getGymFromRequest } from '@/lib/gym-context'
 
 export async function POST(req: NextRequest) {
   try {
+    const gym = await getGymFromRequest(req)
+    if (!gym) {
+      return NextResponse.json({ error: 'Gym not found' }, { status: 404 })
+    }
+
     const user = await getCurrentUser()
 
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    // Verify user belongs to this gym
+    if (user.gymId !== gym.id) {
+      return NextResponse.json(
+        { error: 'Unauthorized for this gym' },
+        { status: 403 }
+      )
     }
 
     const { currentPassword, newPassword } = await req.json()
@@ -31,7 +45,10 @@ export async function POST(req: NextRequest) {
     const hashedPassword = await hashPassword(newPassword)
 
     await prisma.user.update({
-      where: { id: user.id },
+      where: { 
+        id: user.id,
+        gymId: gym.id
+      },
       data: { password: hashedPassword },
     })
 

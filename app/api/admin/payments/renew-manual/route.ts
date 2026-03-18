@@ -1,9 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getCurrentUser } from '@/lib/auth'
+import { getGymFromRequest } from '@/lib/gym-context'
 
 export async function POST(req: NextRequest) {
   try {
+    const gym = await getGymFromRequest(req)
+    if (!gym) {
+      return NextResponse.json({ error: 'Gym not found' }, { status: 404 })
+    }
+
     const staff = await getCurrentUser()
 
     if (!staff || !['admin', 'secretary', 'trainer'].includes(staff.role)) {
@@ -11,6 +17,10 @@ export async function POST(req: NextRequest) {
         { error: 'Unauthorized' },
         { status: 401 }
       )
+    }
+
+    if (staff.gymId !== gym.id) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 
     const body = await req.json()
@@ -24,8 +34,8 @@ export async function POST(req: NextRequest) {
     }
 
     // 1. Get member profile
-    const memberProfile = await prisma.memberProfile.findUnique({
-      where: { userId: memberId },
+    const memberProfile = await prisma.memberProfile.findFirst({
+      where: { userId: memberId, gymId: gym.id },
       include: { user: true },
     })
 
@@ -34,8 +44,8 @@ export async function POST(req: NextRequest) {
     }
 
     // 2. Get membership details
-    const membership = await prisma.membershipPackage.findUnique({
-      where: { id: membershipId },
+    const membership = await prisma.membershipPackage.findFirst({
+      where: { id: membershipId, gymId: gym.id },
     })
 
     if (!membership) {
@@ -59,6 +69,7 @@ export async function POST(req: NextRequest) {
       // Create approved Payment record
       prisma.payment.create({
         data: {
+          gymId: gym.id,
           userId: memberId,
           amount: membership.price,
           status: 'approved',
@@ -71,7 +82,7 @@ export async function POST(req: NextRequest) {
       }),
       // Update MemberProfile
       prisma.memberProfile.update({
-        where: { userId: memberId },
+        where: { id: memberProfile.id }, // Using the ID from findFirst for precise update
         data: {
           verified: true,
           paymentStatus: 'approved',

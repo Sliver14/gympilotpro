@@ -1,12 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { hashPassword } from '@/lib/auth'
-import QRCode from 'qrcode'
-import { getCurrentUser } from '@/lib/auth'
+import { hashPassword, getCurrentUser } from '@/lib/auth'
+import { getGymFromRequest } from '@/lib/gym-context'
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
+    const gym = await getGymFromRequest(req)
+
+    if (!gym) {
+      return NextResponse.json({ error: 'Gym context is required for signup' }, { status: 400 })
+    }
 
     let {
       email,
@@ -42,21 +46,28 @@ export async function POST(req: NextRequest) {
     }
 
     // Normalize email
-    email = email.toLowerCase().trim()
+    const normalizedEmail = email.toLowerCase().trim()
 
     // Email format check
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) {
       return NextResponse.json({ error: 'Invalid email format' }, { status: 400 })
     }
 
-    // Check existing user
-    if (await prisma.user.findUnique({ where: { email } })) {
-      return NextResponse.json({ error: 'Email already registered' }, { status: 409 })
+    // Check existing user in THIS gym
+    const existingUser = await prisma.user.findFirst({
+      where: { 
+        email: normalizedEmail,
+        gymId: gym.id
+      }
+    })
+
+    if (existingUser) {
+      return NextResponse.json({ error: 'Email already registered in this gym' }, { status: 409 })
     }
 
-    // Validate membership exists
-    const membership = await prisma.membershipPackage.findUnique({
-      where: { id: membershipId },
+    // Validate membership exists in this gym
+    const membership = await prisma.membershipPackage.findFirst({
+      where: { id: membershipId, gymId: gym.id },
     })
     if (!membership) {
       return NextResponse.json({ error: 'Invalid membership package' }, { status: 400 })
@@ -72,7 +83,7 @@ export async function POST(req: NextRequest) {
     expiryDate.setDate(expiryDate.getDate() + membership.duration)
 
     const hashedPassword = await hashPassword(password)
-    const qrCodeData = `${email}-${Date.now()}`
+    const qrCodeData = `${normalizedEmail}-${Date.now()}`
     const goalsJson = Array.isArray(fitnessGoals) && fitnessGoals.length > 0
       ? JSON.stringify(fitnessGoals)
       : null
@@ -100,7 +111,8 @@ export async function POST(req: NextRequest) {
     // Create user + profile
     const user = await prisma.user.create({
       data: {
-        email,
+        gymId: gym.id,
+        email: normalizedEmail,
         password: hashedPassword,
         firstName,
         lastName,
@@ -109,9 +121,8 @@ export async function POST(req: NextRequest) {
         role: 'member',
         memberProfile: {
           create: {
-            membership: {
-              connect: { id: membershipId },
-            },
+            gymId: gym.id,
+            membershipId: membershipId,
             joinDate,
             expiryDate,
             birthday: birthday || null,
@@ -135,6 +146,7 @@ export async function POST(req: NextRequest) {
     // Create Payment record (always, status depends on approval)
     await prisma.payment.create({
       data: {
+        gymId: gym.id,
         userId: user.id,
         amount: membership.price,
         status: shouldApproveImmediately ? 'approved' : 'pending',

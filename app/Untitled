@@ -1,0 +1,121 @@
+'use client'
+
+import React from 'react'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
+import { ChevronRight, Play, CheckCircle } from 'lucide-react'
+
+export default function SaaSLandingPage() {
+  return (
+    <div className="min-h-screen bg-black text-white font-sans">
+
+      {/* NAV */}
+      <nav className="border-b border-white/10 bg-black/70 backdrop-blur sticky top-0 z-50">
+        <div className="container mx-auto px-6 h-20 flex items-center justify-between">
+          <h1 className="text-xl font-black uppercase tracking-widest">
+            Insight <span className="text-yellow-500">Automated Gym</span>
+          </h1>
+          <div className="hidden md:flex items-center gap-6 text-sm uppercase">
+            <Link href="#features">Features</Link>
+            <Link href="#pricing">Pricing</Link>
+            <Button className="bg-yellow-500 text-black font-bold">Request Demo</Button>
+          </div>
+        </div>
+      </nav>
+
+      {/* HERO */}
+      <section className="py-24 text-center px-6">
+        <h1 className="text-5xl md:text-7xl font-black mb-6 leading-tight">
+          Run Your Gym Like a Business,<br />
+          <span className="text-yellow-500">Not a Struggle</span>
+        </h1>
+        <p className="text-gray-400 max-w-2xl mx-auto mb-10">
+          Automate check-ins, track members, manage payments, and grow your gym — all from one powerful system.
+        </p>
+
+        <div className="flex flex-col sm:flex-row justify-center gap-4">
+          <Button className="bg-yellow-500 text-black px-8 py-6 text-lg font-bold">
+            Request Demo <ChevronRight className="ml-2" />
+          </Button>
+          <Button variant="outline" className="px-8 py-6 text-lg">
+            <Play className="mr-2" /> Watch Demo
+          </Button>
+        </div>
+      </section>
+
+      {/* PROBLEM */}
+      <section className="py-20 bg-[#0a0a0a] text-center px-6">
+        <h2 className="text-3xl font-bold mb-6">Still Using WhatsApp or Notebooks?</h2>
+        <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto text-gray-400">
+          <p>Members forget to renew → you lose money</p>
+          <p>No clear attendance tracking</p>
+          <p>Payments are hard to monitor</p>
+          <p>Too much manual stress</p>
+        </div>
+        <p className="mt-6 text-yellow-500 font-bold">You’re losing money every day.</p>
+      </section>
+
+      {/* FEATURES */}
+      <section id="features" className="py-24 px-6">
+        <h2 className="text-center text-4xl font-black mb-16">Everything You Need</h2>
+        <div className="grid md:grid-cols-3 gap-10 max-w-6xl mx-auto">
+          {[
+            'Smart Check-ins (QR & Fingerprint)',
+            'Member Management System',
+            'Payment Tracking Dashboard',
+            'WhatsApp Auto Reminders',
+            'Attendance & Reports'
+          ].map((f, i) => (
+            <div key={i} className="p-6 border border-white/10 rounded-xl">
+              <CheckCircle className="text-yellow-500 mb-4" />
+              <p>{f}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* UNIQUE OFFER */}
+      <section className="py-20 bg-[#0a0a0a] text-center px-6">
+        <h2 className="text-3xl font-bold mb-6">You Also Get Your Own Gym Website</h2>
+        <p className="text-gray-400 mb-6">
+          Every gym gets a personalized platform with its own branding and login system.
+        </p>
+        <div className="bg-black border border-yellow-500/30 inline-block px-6 py-3 rounded-lg">
+          yourgym.yourapp.com
+        </div>
+      </section>
+
+      {/* PRICING */}
+      <section id="pricing" className="py-24 px-6 text-center">
+        <h2 className="text-4xl font-black mb-10">Simple Pricing</h2>
+        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          {[
+            { name: 'Starter', desc: 'Basic automation' },
+            { name: 'Pro', desc: 'Full system' },
+            { name: 'Enterprise', desc: 'Advanced + support' }
+          ].map((p, i) => (
+            <div key={i} className="border border-white/10 p-8 rounded-2xl">
+              <h3 className="text-xl font-bold mb-2">{p.name}</h3>
+              <p className="text-gray-400">{p.desc}</p>
+              <Button className="mt-6 bg-yellow-500 text-black w-full">Request Demo</Button>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-20 text-center px-6">
+        <h2 className="text-3xl font-bold mb-6">Stop Losing Money From Expired Memberships</h2>
+        <Button className="bg-yellow-500 text-black px-10 py-6 text-lg font-bold">
+          Request Demo
+        </Button>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="py-10 text-center text-gray-500 border-t border-white/10">
+        © 2026 Insight Automated Gym
+      </footer>
+
+    </div>
+  )
+}

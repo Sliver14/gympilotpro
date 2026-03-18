@@ -83,7 +83,10 @@ const BANK_TRANSFER_DETAILS = `KLIMARX SPACE ENTERPRISES
 FIRST CITY MONUMENT BANK (FCMB)
 1042020132`
 
+import { useGym } from '@/components/gym-provider'
+
 export default function SignupPage() {
+  const { gymData, isLoading: gymLoading } = useGym()
   const { step, formData, isLoading: hookIsLoading, updateFormData, nextStep, prevStep } = useSignup()
   const { toast } = useToast()
   const [memberships, setMemberships] = useState<Membership[]>([])
@@ -105,7 +108,10 @@ export default function SignupPage() {
   const [zoom, setZoom] = useState(1)
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null)
 
-  const accent = '#daa857'
+  const accent = gymData?.primaryColor || '#daa857'
+  const dark = gymData?.secondaryColor || '#000000'
+  const logoUrl = gymData?.logo || '/WhatsApp_Image_2026-02-25_at_9.54.33_AM-removebg-preview.png'
+  const gymName = gymData?.name || 'Klimarx Space'
 
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]

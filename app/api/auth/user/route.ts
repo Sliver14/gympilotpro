@@ -1,14 +1,28 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { getCurrentUser } from '@/lib/auth'
+import { getGymFromRequest } from '@/lib/gym-context'
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
+    const gym = await getGymFromRequest(request)
+    if (!gym) {
+      return NextResponse.json({ error: 'Gym not found' }, { status: 404 })
+    }
+
     const user = await getCurrentUser()
 
     if (!user) {
       return NextResponse.json(
         { error: 'Not authenticated' },
         { status: 401 }
+      )
+    }
+
+    // Verify user belongs to this gym
+    if (user.gymId !== gym.id) {
+      return NextResponse.json(
+        { error: 'Unauthorized for this gym' },
+        { status: 403 }
       )
     }
 

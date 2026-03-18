@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { getGymFromRequest } from '@/lib/gym-context'
 
 export async function POST(req: NextRequest) {
   try {
@@ -12,11 +13,19 @@ export async function POST(req: NextRequest) {
       )
     }
 
+    const gym = await getGymFromRequest(req)
+    if (!gym) {
+      return NextResponse.json({ error: 'Gym not found', success: false, message: 'Gym not found' }, { status: 404 })
+    }
+
     const normalizedEmail = email.toLowerCase().trim()
 
-    // Find member by email
-    const user = await prisma.user.findUnique({
-      where: { email: normalizedEmail },
+    // Find member by email and gymId
+    const user = await prisma.user.findFirst({
+      where: { 
+        email: normalizedEmail,
+        gymId: gym.id,
+      },
       include: {
         memberProfile: {
           include: {
@@ -29,7 +38,7 @@ export async function POST(req: NextRequest) {
     if (!user || !user.memberProfile) {
       return NextResponse.json({
         success: false,
-        message: 'Member not found',
+        message: 'Member not found in this gym',
       })
     }
 
@@ -54,6 +63,7 @@ export async function POST(req: NextRequest) {
     const existingCheckIn = await prisma.attendance.findFirst({
       where: {
         userId: user.id,
+        gymId: gym.id,
         checkInTime: {
           gte: todayStart,
           lte: todayEnd,
@@ -82,6 +92,7 @@ export async function POST(req: NextRequest) {
     await prisma.attendance.create({
       data: {
         userId: user.id,
+        gymId: gym.id,
         checkInTime: new Date(),
         method: 'manual',
       },

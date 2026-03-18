@@ -4,6 +4,7 @@ import { Suspense } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname, useSearchParams } from 'next/navigation'
+import { useGym } from '@/components/gym-provider'
 import {
   Sidebar,
   SidebarContent,
@@ -34,12 +35,17 @@ interface AdminSidebarProps {
 
 function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
   const pathname = usePathname()
+  const { gymSlug, gymData } = useGym()
   const initials = `${adminData.firstName?.[0] ?? ''}${adminData.lastName?.[0] ?? ''}`.toUpperCase()
   const profileImage = adminData.profileImage || adminData.memberProfile?.profileImage
 
   const searchParams = useSearchParams()
   const currentTab = searchParams.get('tab') || 'overview'
   const role = adminData.role || 'admin'
+
+  const accent = gymData?.primaryColor || '#daa857'
+  const logo = gymData?.logo || "/WhatsApp_Image_2026-02-25_at_9.54.33_AM-removebg-preview.png"
+  const gymName = gymData?.name || 'Klimarx'
 
   const allMenuItems = [
     {
@@ -97,9 +103,9 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
           <SidebarMenuItem>
             <SidebarMenuButton asChild size="lg" className="hover:bg-transparent active:bg-transparent">
               <Link href={`/${role}/dashboard`}>
-                <div className="flex aspect-square size-10 items-center justify-center rounded-xl bg-white p-1.5 shadow-[0_0_20px_rgba(255,255,255,0.1)] border border-[#daa857]/30 transition-transform group-hover:scale-110">
+                <div className="flex aspect-square size-10 items-center justify-center rounded-xl bg-white p-1.5 shadow-[0_0_20px_rgba(255,255,255,0.1)] border transition-transform group-hover:scale-110" style={{ borderColor: `${accent}4d` }}>
                   <Image 
-                    src="/WhatsApp_Image_2026-02-25_at_9.54.33_AM-removebg-preview.png" 
+                    src={logo} 
                     alt="Logo" 
                     width={28} 
                     height={24} 
@@ -107,7 +113,7 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
                   />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight ml-2">
-                  <span className="truncate font-black uppercase italic tracking-tighter text-lg">Klimarx<span className="text-[#daa857]">Space</span></span>
+                  <span className="truncate font-black uppercase italic tracking-tighter text-lg">{gymName}<span style={{ color: accent }}>Space</span></span>
                   <span className="truncate text-[8px] font-bold uppercase tracking-[0.4em] text-gray-600 mt-0.5 capitalize">{role} Command</span>
                 </div>
               </Link>
@@ -129,12 +135,17 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
                     className={cn(
                       "transition-all duration-300 h-10 px-4",
                       item.active 
-                        ? "bg-[#daa857]/10 text-[#daa857] font-black italic uppercase tracking-widest border-r-2 border-[#daa857]" 
-                        : "text-gray-400 hover:text-[#daa857] font-bold uppercase tracking-widest hover:bg-white/5"
+                        ? "font-black italic uppercase tracking-widest border-r-2" 
+                        : "text-gray-400 font-bold uppercase tracking-widest hover:bg-white/5"
                     )}
+                    style={item.active ? { 
+                      backgroundColor: `${accent}1a`, 
+                      color: accent,
+                      borderRightColor: accent
+                    } : {}}
                   >
                     <Link href={item.url}>
-                      <item.icon className={cn("size-4", item.active && "text-[#daa857]")} />
+                      <item.icon className={cn("size-4", item.active && "text-[#daa857]")} style={item.active ? { color: accent } : {}} />
                       <span>{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
@@ -151,11 +162,11 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton
                   size="lg"
-                  className="data-[state=open]:bg-[#daa857]/10 data-[state=open]:text-[#daa857] hover:bg-white/5 transition-all duration-300 h-14 rounded-xl border border-transparent hover:border-white/5"
+                  className="data-[state=open]:bg-white/5 hover:bg-white/5 transition-all duration-300 h-14 rounded-xl border border-transparent hover:border-white/5"
                 >
                   <Avatar className="size-8 rounded-lg border border-white/10">
                     <AvatarImage src={profileImage || undefined} className="object-cover" />
-                    <AvatarFallback className="rounded-lg bg-[#daa857]/10 text-[#daa857] font-black">{initials || '??'}</AvatarFallback>
+                    <AvatarFallback className="rounded-lg font-black" style={{ backgroundColor: `${accent}1a`, color: accent }}>{initials || '??'}</AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-black uppercase italic tracking-tight">
@@ -177,9 +188,9 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
                     <p className="text-[10px] font-bold text-gray-500 uppercase tracking-tighter">{adminData.email}</p>
                   </div>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild className="rounded-xl focus:bg-[#daa857]/10 focus:text-[#daa857] cursor-pointer py-3 px-4">
+                <DropdownMenuItem asChild className="rounded-xl focus:bg-white/5 cursor-pointer py-3 px-4">
                   <Link href="/admin/settings" className="flex items-center gap-3 font-black uppercase text-[10px] tracking-widest">
-                    <Settings className="size-4 text-[#daa857]" />
+                    <Settings className="size-4" style={{ color: accent }} />
                     Protocol Settings
                   </Link>
                 </DropdownMenuItem>
