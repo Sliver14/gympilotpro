@@ -131,7 +131,7 @@ export default function SaaSLandingPage() {
                 onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
                 className="h-20 px-12 bg-orange-500 text-white hover:bg-orange-600 transition-all text-xl font-black italic uppercase rounded-none group"
               >
-                Start Collecting Payments <ChevronRight className="ml-2 group-hover:translate-x-2 transition-transform" />
+                Unlock Access <ChevronRight className="ml-2 group-hover:translate-x-2 transition-transform" />
               </Button>
               <Button 
                 asChild
@@ -341,7 +341,7 @@ export default function SaaSLandingPage() {
                 >
                   {loadingPlan === p.name ? (
                     <span className="flex items-center gap-2"><Loader2 className="animate-spin" /> Redirecting...</span>
-                  ) : "Start Collecting Payments"}
+                  ) : "Unlock Access"}
                 </Button>
               </div>
             ))}
