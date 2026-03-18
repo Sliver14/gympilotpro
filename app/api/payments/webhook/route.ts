@@ -2,6 +2,9 @@ import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { prisma } from '@/lib/prisma';
 import axios from 'axios';
+import { Resend } from 'resend';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: Request) {
   try {
@@ -48,7 +51,7 @@ export async function POST(req: Request) {
         }
 
         // 2. Perform updates in a database transaction
-        await prisma.$transaction(async (tx) => {
+        const result = await prisma.$transaction(async (tx) => {
           // Check if payment already exists
           const existingPayment = await tx.saaSPayment.findUnique({
             where: { reference },
@@ -70,13 +73,13 @@ export async function POST(req: Request) {
           }
 
           // Activate Gym
-          await tx.gym.update({
+          const activatedGym = await tx.gym.update({
             where: { id: gymId },
             data: { status: 'active' },
           });
 
           // Activate User
-          await tx.user.update({
+          const activatedUser = await tx.user.update({
             where: { id: userId },
             data: { status: 'active' },
           });
@@ -95,7 +98,49 @@ export async function POST(req: Request) {
               endDate: endDate,
             },
           });
+
+          return { activatedGym, activatedUser };
         });
+
+        const { activatedGym, activatedUser } = result;
+
+        // Build the Gym Dashboard URL dynamically based on current environment
+        // The NEXT_PUBLIC_APP_URL is "https://gympilotpro.com" in prod.
+        // We replace '://' with '://<slug>.' to dynamically create "https://slug.gympilotpro.com/login"
+        const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://gympilotpro.com';
+        const dashboardLoginUrl = baseUrl.replace('://', `://${activatedGym.slug}.`) + '/login';
+
+        // 3. Send successful payment & login details email via Resend
+        await resend.emails.send({
+          from: 'GymPilotPro <noreply@klimarsspace.com>',
+          to: activatedUser.email,
+          subject: `Your GymPilotPro Account is Live! (${activatedGym.name})`,
+          html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+              <h2 style="color: #10b981;">Payment Successful - Account Activated</h2>
+              <p>Hi ${activatedUser.firstName},</p>
+              <p>Congratulations! Your payment of ₦${amount / 100} has been received and your GymPilotPro dashboard for <strong>${activatedGym.name}</strong> is now live.</p>
+              
+              <div style="background-color: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                <h3 style="margin-top: 0; color: #374151;">Your Login Credentials</h3>
+                <p><strong>Login URL:</strong> <a href="${dashboardLoginUrl}">${dashboardLoginUrl}</a></p>
+                <p><strong>Admin Email:</strong> ${activatedUser.email}</p>
+                <p><strong>Default Password:</strong> ChangeMe123!</p>
+              </div>
+
+              <p style="color: #ef4444; font-weight: bold;">Please log in immediately and change your default password for security purposes.</p>
+              
+              <div style="text-align: center; margin: 30px 0;">
+                <a href="${dashboardLoginUrl}" style="background-color: #f97316; color: white; padding: 14px 28px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">
+                  Go to My Dashboard
+                </a>
+              </div>
+              
+              <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+              <p style="color: #6b7280; font-size: 14px;">Welcome to the GymPilotPro family! We are thrilled to help you automate and grow your business.</p>
+            </div>
+          `,
+        }).catch(err => console.error('Failed to send activation email:', err));
 
         return NextResponse.json({ success: true, message: 'Webhook processed successfully' });
       } else {

@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
+import { Resend } from 'resend';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: Request) {
   try {
@@ -65,6 +68,24 @@ export async function POST(req: Request) {
 
       return { gym, user };
     });
+
+    // Send a welcome email (async so it doesn't block the response)
+    resend.emails.send({
+      from: 'GymPilotPro <noreply@klimarsspace.com>',
+      to: email,
+      subject: `Welcome to GymPilotPro, ${firstName}!`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <h2 style="color: #f97316;">Welcome to GymPilotPro!</h2>
+          <p>Hi ${firstName},</p>
+          <p>We've successfully received your registration for <strong>${gymName}</strong>.</p>
+          <p>To finalize your setup and activate your gym's dashboard, please complete your payment on the next screen.</p>
+          <p>If you have any questions, feel free to reply to this email.</p>
+          <br/>
+          <p>Best regards,<br/>The GymPilotPro Team</p>
+        </div>
+      `,
+    }).catch(err => console.error('Failed to send welcome email:', err));
 
     return NextResponse.json({ 
       success: true, 
