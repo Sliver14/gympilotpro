@@ -2,6 +2,69 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import dns from 'dns/promises';
 
+// Helper function to add domain to Vercel
+async function addDomainToVercel(domain: string) {
+  const projectId = process.env.VERCEL_PROJECT_ID;
+  const token = process.env.VERCEL_TOKEN;
+
+  // If credentials are not set, we bypass the Vercel API check. 
+  // This is useful for local development, but in production, they must be set.
+  if (!projectId || !token) {
+    console.warn('Vercel API credentials missing. Skipping Vercel domain registration.');
+    return { success: true, warning: 'Credentials missing' };
+  }
+
+  const url = `https://api.vercel.com/v10/projects/${projectId}/domains`;
+
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name: domain }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      return { success: true, data };
+    }
+
+    // If the domain already exists in the Vercel project, treat it as a success (idempotency)
+    if (data.error && data.error.code === 'domain_already_in_use') {
+       return { success: true, data };
+    }
+
+    return { success: false, error: data.error?.message || 'Failed to add domain to Vercel' };
+  } catch (error: any) {
+    console.error('Vercel API Error:', error);
+    return { success: false, error: error.message };
+  }
+}
+
+// Helper to remove old domain from Vercel
+async function removeDomainFromVercel(domain: string) {
+  const projectId = process.env.VERCEL_PROJECT_ID;
+  const token = process.env.VERCEL_TOKEN;
+
+  if (!projectId || !token) return;
+
+  const url = `https://api.vercel.com/v9/projects/${projectId}/domains/${domain}`;
+
+  try {
+    await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+  } catch (error) {
+    console.error('Failed to remove old domain from Vercel:', error);
+  }
+}
+
 export async function POST(req: Request) {
   try {
     const { gymId, domain } = await req.json();
@@ -20,8 +83,8 @@ export async function POST(req: Request) {
     normalizedDomain = normalizedDomain.split('/')[0];
 
     // Prevent verifying our root domain or subdomains natively
-    if (normalizedDomain.endsWith('gympilotpro.com')) {
-      return NextResponse.json({ error: 'Cannot verify internal domains' }, { status: 400 });
+    if (normalizedDomain.includes('gympilotpro.com')) {
+      return NextResponse.json({ error: 'Cannot connect internal gympilotpro.com domains' }, { status: 400 });
     }
 
     // Check if domain is already taken by another gym
@@ -33,7 +96,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Domain is already connected to another gym' }, { status: 400 });
     }
 
-    // Domain Verification Logic
+    // Domain Verification Logic (DNS)
     let isVerified = false;
 
     try {
@@ -60,23 +123,43 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Failed to lookup DNS records' }, { status: 400 });
     }
 
-    if (isVerified) {
-      // Update Gym with verified domain
-      await prisma.gym.update({
-        where: { id: gymId },
-        data: {
-          customDomain: normalizedDomain,
-          domainVerified: true,
-        },
-      });
-
-      return NextResponse.json({ success: true, message: 'Domain successfully verified and connected' });
-    } else {
+    if (!isVerified) {
       return NextResponse.json({ 
         success: false, 
         error: 'Domain verification failed. Please check your DNS settings and try again in a few minutes.' 
       }, { status: 400 });
     }
+
+    // ONLY IF DNS SUCCEEDS: Call Vercel API to automatically register the domain
+    const vercelResult = await addDomainToVercel(normalizedDomain);
+    
+    if (!vercelResult.success) {
+      return NextResponse.json({ 
+        success: false, 
+        error: `Failed to register domain with Vercel: ${vercelResult.error}` 
+      }, { status: 500 });
+    }
+
+    // Find current gym to check if there is an old domain to remove from Vercel
+    const currentGym = await prisma.gym.findUnique({
+      where: { id: gymId }
+    });
+
+    if (currentGym?.customDomain && currentGym.customDomain !== normalizedDomain) {
+      // Clean up old domain asynchronously
+      removeDomainFromVercel(currentGym.customDomain);
+    }
+
+    // Update Gym with verified domain
+    await prisma.gym.update({
+      where: { id: gymId },
+      data: {
+        customDomain: normalizedDomain,
+        domainVerified: true,
+      },
+    });
+
+    return NextResponse.json({ success: true, message: 'Domain verified and connected successfully' });
 
   } catch (error: any) {
     console.error('Domain Verification Error:', error);

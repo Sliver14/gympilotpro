@@ -174,7 +174,11 @@ export default function DomainDashboard() {
                 disabled={verifying || !domain}
                 className="w-full h-12 bg-orange-500 hover:bg-orange-600 text-white font-black italic uppercase tracking-widest rounded-lg transition-transform active:scale-[0.98]"
               >
-                {verifying ? <Loader2 className="animate-spin h-5 w-5 mx-auto" /> : 'Verify Connection'}
+                {verifying ? (
+                  <span className="flex items-center gap-2">
+                    <Loader2 className="animate-spin h-5 w-5" /> Connecting domain...
+                  </span>
+                ) : 'Verify Connection'}
               </Button>
             </form>
           </div>
