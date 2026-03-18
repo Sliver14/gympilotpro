@@ -5,42 +5,52 @@ import { GeistSans } from 'geist/font/sans'
 import { GeistMono } from 'geist/font/mono'
 import { Toaster } from '@/components/ui/toaster'
 
-// Metadata – optimized for Insight Gym SaaS
+// Metadata – optimized for GymPilotPro SaaS
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXTAUTH_URL || 'http://localhost:3000'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://gympilotpro.com'),
   title: {
-    default: 'Insight Gym – Automate Your Fitness Business',
-    template: '%s | Insight Gym',
+    default: 'GymPilotPro | Run Your Gym Like A Pro',
+    template: '%s | GymPilotPro',
   },
   description:
-    'Insight Gym is the ultimate management platform for modern fitness centers. Member tracking, automated billing, and powerful analytics.',
+    'GymPilotPro is the ultimate management platform for modern fitness centers. Automate your gym with WhatsApp reminders, QR check-ins, member tracking, and instant billing.',
   keywords: [
     'gym management software',
     'fitness SaaS',
     'gym automation',
-    'member tracking',
+    'gym member tracking',
     'gym analytics',
-    'fitness business',
+    'fitness business software',
+    'gym billing software',
+    'whatsapp gym reminders',
+    'GymPilotPro',
   ],
-  authors: [{ name: 'Insight Gym Team', url: 'https://insightgym.com' }],
-  creator: 'Insight Gym',
-  publisher: 'Insight Automated Gym Enterprises',
+  authors: [{ name: 'GymPilotPro Team', url: 'https://gympilotpro.com' }],
+  creator: 'GymPilotPro',
+  publisher: 'GymPilotPro Systems',
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
   openGraph: {
-    title: 'Insight Gym – Power Your Fitness Business',
+    title: 'GymPilotPro | Run Your Gym Like A Pro',
     description:
-      'Premium infrastructure for gym owners. State-of-the-art management tools, analytics, and member engagement.',
-    url: 'https://insightgym.com',
-    siteName: 'Insight Gym',
+      'Premium infrastructure for gym owners. Automate billing, track attendance, and eliminate revenue loss with GymPilotPro.',
+    url: 'https://gympilotpro.com',
+    siteName: 'GymPilotPro',
     images: [
       {
-        url: '/og-image.jpg',
+        url: '/og-image.jpg', // Ensure you eventually add this image to your public folder
         width: 1200,
         height: 630,
-        alt: 'Insight Gym Dashboard',
+        alt: 'GymPilotPro Dashboard',
       },
     ],
     locale: 'en_US',
@@ -48,9 +58,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Insight Gym – The Future of Gym Management',
+    title: 'GymPilotPro | Run Your Gym Like A Pro',
     description:
-      'Modern SaaS for fitness centers. Memberships, classes, personal training, and more.',
+      'Stop losing money on expired memberships. Automate your fitness business today.',
     images: ['/og-image.jpg'],
   },
   icons: {
