@@ -195,7 +195,7 @@ function MemberDashboardContent() {
                   <AlertCircle className="h-8 w-8 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-black uppercase italic tracking-tight text-white mb-1">Access Revoked</h3>
+                  <h3 className="text-xl font-black uppercase italic tracking-tight text-white mb-1">Access Expired</h3>
                   <p className="text-sm font-medium text-gray-400 max-w-xl">
                     Your membership expired on <span className="text-red-400 font-bold">{expiryDate.toLocaleDateString()}</span>. The terminal is locked until renewal is processed.
                   </p>
@@ -219,7 +219,7 @@ function MemberDashboardContent() {
                 <div>
                   <h3 className="text-xl font-black uppercase italic tracking-tight text-white mb-1">Subscription Warning</h3>
                   <p className="text-sm font-medium text-gray-400 max-w-xl">
-                    Vault access expires in <span className="text-[#daa857] font-bold">{daysUntilExpiry} days</span> ({expiryDate.toLocaleDateString()}). Extend plan now to maintain uninterrupted access.
+                    Gym access expires in <span className="text-[#daa857] font-bold">{daysUntilExpiry} days</span> ({expiryDate.toLocaleDateString()}). Extend plan now to maintain uninterrupted access.
                   </p>
                   <Link href="/member/renew-membership">
                     <Button className="mt-6 h-12 px-8 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black uppercase tracking-widest rounded-xl transition-all hover:scale-[1.02]">

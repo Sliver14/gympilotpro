@@ -600,7 +600,7 @@ export default function SignupPage() {
                <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-1">
-                      <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 ml-2">Secure Key</Label>
+                      <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 ml-2">Secure Password</Label>
                       <Input 
                         type="password"
                         placeholder="Min 8 Characters" 
@@ -610,7 +610,7 @@ export default function SignupPage() {
                       />
                     </div>
                     <div className="space-y-1">
-                      <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 ml-2">Verify Key</Label>
+                      <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 ml-2">Verify Password</Label>
                       <Input 
                         type="password"
                         placeholder="Repeat Password" 

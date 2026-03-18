@@ -105,7 +105,7 @@ export default function ForgotPasswordPage() {
                   <h2 className="text-3xl font-black uppercase italic tracking-tighter">Check Your <span style={{ color: accent }}>Inbox</span></h2>
                   <p className="text-gray-500 text-sm font-medium leading-relaxed">
                     We've sent a recovery link to <span className="text-white font-bold">{email}</span>. 
-                    Follow the link to reset your vault access.
+                    Follow the link to reset your account access.
                   </p>
                 </div>
                 <Button 
@@ -119,7 +119,7 @@ export default function ForgotPasswordPage() {
             ) : (
               <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                 <div className="mb-10">
-                  <h2 className="text-4xl font-black uppercase italic tracking-tighter leading-none">Lost Your <span style={{ color: accent }}>Key?</span></h2>
+                  <h2 className="text-4xl font-black uppercase italic tracking-tighter leading-none">Lost Your <span style={{ color: accent }}>Password?</span></h2>
                   <p className="text-gray-500 text-sm mt-3 font-medium">Enter your registered email to receive a recovery link.</p>
                 </div>
 

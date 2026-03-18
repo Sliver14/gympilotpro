@@ -192,12 +192,12 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
     e.preventDefault()
     
     if (passwords.newPassword !== passwords.confirmPassword) {
-      toast({ title: 'Mismatch', description: 'New security keys do not match.', variant: 'destructive' })
+      toast({ title: 'Mismatch', description: 'New passwords do not match.', variant: 'destructive' })
       return
     }
 
     if (passwords.newPassword.length < 8) {
-      toast({ title: 'Weak Key', description: 'Security key must be at least 8 characters.', variant: 'destructive' })
+      toast({ title: 'Weak Password', description: 'Password must be at least 8 characters.', variant: 'destructive' })
       return
     }
 
@@ -214,7 +214,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
 
       const data = await res.json()
 
-      if (!res.ok) throw new Error(data.error || 'Failed to change security key')
+      if (!res.ok) throw new Error(data.error || 'Failed to change password')
 
       toast({ title: 'Access Secured', description: 'Account password updated successfully.' })
       setIsPasswordModalOpen(false)
@@ -365,7 +365,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
                       />
                     </div>
                     <div className="space-y-3">
-                      <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Gender Protocol</Label>
+                      <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Gender</Label>
                       <Select 
                         value={detailsForm.gender} 
                         onValueChange={(v) => setDetailsForm({...detailsForm, gender: v})}
@@ -426,8 +426,8 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
                     <Lock className="h-7 w-7" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-black uppercase italic tracking-tighter text-white mb-1">Security Key</h3>
-                    <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Update Entry Credentials</p>
+                    <h3 className="text-xl font-black uppercase italic tracking-tighter text-white mb-1">Account Password</h3>
+                    <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Update Login Credentials</p>
                   </div>
                 </div>
                 <ChevronRight className="h-6 w-6 text-gray-700 group-hover:text-[#daa857] transition-colors" />
@@ -456,7 +456,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
                 />
               </div>
               <div className="space-y-3 pt-2">
-                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">New Security Key</Label>
+                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">New Password</Label>
                 <Input 
                   type="password"
                   value={passwords.newPassword}
@@ -467,7 +467,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
                 />
               </div>
               <div className="space-y-3">
-                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Verify New Key</Label>
+                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Verify New Password</Label>
                 <Input 
                   type="password"
                   value={passwords.confirmPassword}
@@ -491,7 +491,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
                   disabled={passwordLoading}
                   className="flex-1 h-14 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black uppercase tracking-widest rounded-xl transition-all shadow-xl shadow-[#daa857]/10"
                 >
-                  {passwordLoading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : 'Update Key'}
+                  {passwordLoading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : 'Update Password'}
                 </Button>
               </DialogFooter>
             </form>

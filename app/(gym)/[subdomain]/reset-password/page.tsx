@@ -66,7 +66,7 @@ function ResetPasswordContent() {
         setIsSuccess(true)
         toast({
           title: 'Success',
-          description: 'Your vault key has been reset successfully.',
+          description: 'Your password has been reset successfully.',
         })
         setTimeout(() => {
           router.push('/login')
@@ -121,7 +121,7 @@ function ResetPasswordContent() {
             <div className="space-y-3">
               <h2 className="text-3xl font-black uppercase italic tracking-tighter">Reset <span className="text-green-500">Success</span></h2>
               <p className="text-gray-500 text-sm font-medium leading-relaxed">
-                Your vault key has been updated. Redirecting to login terminal...
+                Your password has been updated. Redirecting to login terminal...
               </p>
             </div>
             <Link href="/login">
@@ -133,7 +133,7 @@ function ResetPasswordContent() {
         ) : (
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="mb-10">
-              <h2 className="text-4xl font-black uppercase italic tracking-tighter leading-none">Reset <span style={{ color: accent }}>Key</span></h2>
+              <h2 className="text-4xl font-black uppercase italic tracking-tighter leading-none">Reset <span style={{ color: accent }}>Password</span></h2>
               <p className="text-gray-500 text-sm mt-3 font-medium">Define your new secure entry credentials.</p>
             </div>
 
@@ -143,7 +143,7 @@ function ResetPasswordContent() {
                   <Lock className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 transition-colors group-focus-within:text-[#daa857]" style={{ color: `${accent}66` }} />
                   <Input
                     type="password"
-                    placeholder="New Vault Key"
+                    placeholder="New Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
@@ -157,7 +157,7 @@ function ResetPasswordContent() {
                   <Lock className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 transition-colors group-focus-within:text-[#daa857]" style={{ color: `${accent}66` }} />
                   <Input
                     type="password"
-                    placeholder="Confirm New Key"
+                    placeholder="Confirm New Password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     required
@@ -176,7 +176,7 @@ function ResetPasswordContent() {
                   <Loader2 className="h-6 w-6 animate-spin" />
                 ) : (
                   <span className="flex items-center gap-2">
-                    Update Vault Key <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                    Update Password <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
                   </span>
                 )}
               </Button>

@@ -95,7 +95,7 @@ export default function ExpiredMembersList({ onMemberRenewed }: { onMemberRenewe
             <CardTitle className="flex items-center gap-3 text-red-500">
               <CalendarX className="h-5 w-5 stroke-[3px]" /> Deactivated <span className="text-white">Members</span>
             </CardTitle>
-            <CardDescription>Members with revoked gym access requiring membership renewal</CardDescription>
+            <CardDescription>Members with expired gym access requiring membership renewal</CardDescription>
           </div>
           <Button 
             onClick={fetchExpiredMembers} 
@@ -122,7 +122,7 @@ export default function ExpiredMembersList({ onMemberRenewed }: { onMemberRenewe
         {filteredMembers.length === 0 ? (
           <div className="py-20 text-center bg-black/40 rounded-[2rem] border border-dashed border-white/5">
             <AlertTriangle className="mx-auto h-12 w-12 text-gray-800 mb-4 opacity-20" />
-            <p className="text-sm font-bold text-gray-600 uppercase tracking-widest italic">No revoked members detected at the check-in.</p>
+            <p className="text-sm font-bold text-gray-600 uppercase tracking-widest italic">No expired members detected at the check-in.</p>
           </div>
         ) : (
           <div className="grid gap-4">
@@ -149,7 +149,7 @@ export default function ExpiredMembersList({ onMemberRenewed }: { onMemberRenewe
                 <div className="flex items-center justify-between md:justify-end gap-10 mt-6 md:mt-0 relative z-10">
                   <div className="text-left md:text-right">
                     <p className="text-[10px] font-black text-red-500 uppercase italic tracking-tight">
-                      REVOKED {getDaysExpired(member.memberProfile.expiryDate)} DAYS AGO
+                      EXPIRED {getDaysExpired(member.memberProfile.expiryDate)} DAYS AGO
                     </p>
                     <p className="text-[8px] font-bold text-gray-600 uppercase tracking-widest mt-1">
                       LAST TIER: {member.memberProfile.membership.name.toUpperCase()}
