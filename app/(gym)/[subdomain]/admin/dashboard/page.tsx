@@ -19,6 +19,7 @@ import ExpiredMembersList from '@/components/admin/expired-members-list'
 import RevenueAnalytics from '@/components/admin/revenue-analytics'
 import AttendanceOverview from '@/components/admin/attendance-overview'
 import CheckInPanel from '@/components/admin/check-in-panel'
+import { GymQRCode } from '@/components/gym-qr-code'
 import { Spinner } from '@/components/ui/spinner'
 
 function AdminDashboardContent() {
@@ -117,7 +118,20 @@ function AdminDashboardContent() {
               <div className="space-y-10">
                 {/* Stats Overview */}
                 <AdminStats refreshTrigger={refreshTrigger} />
-                <RevenueAnalytics />
+                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                  <div className="md:col-span-1">
+                    {adminData?.gym && (
+                      <GymQRCode
+                        qrCodeUrl={adminData.gym.qrCodeUrl}
+                        gymUrl={`https://${adminData.gym.customDomain && adminData.gym.domainVerified ? adminData.gym.customDomain : `${adminData.gym.slug}.gympilotpro.com`}`}
+                        gymName={adminData.gym.name}
+                      />
+                    )}
+                  </div>
+                  <div className="md:col-span-1 lg:col-span-2 space-y-10">
+                    <RevenueAnalytics />
+                  </div>
+                </div>
                 <AttendanceOverview />
               </div>
             </div>

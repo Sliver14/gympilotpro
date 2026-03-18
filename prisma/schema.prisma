@@ -25,6 +25,7 @@ model Gym {
   heroTitle      String?
   primaryColor   String?             @default("#daa857")
   secondaryColor String?             @default("#000000")
+  qrCodeUrl      String?
   attendances    Attendance[]
   devices        Device[]
   subscriptions  GymSubscription[]

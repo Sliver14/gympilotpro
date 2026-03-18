@@ -35,6 +35,13 @@ export async function GET(request: NextRequest) {
       profileImage: user.profileImage || null,
       memberProfile: user.memberProfile || null,
       staffProfile: user.staffProfile || null,
+      gym: {
+        name: gym.name,
+        slug: gym.slug,
+        customDomain: gym.customDomain,
+        domainVerified: gym.domainVerified,
+        qrCodeUrl: gym.qrCodeUrl,
+      }
     })
   } catch (error) {
     console.error('Get user error:', error)

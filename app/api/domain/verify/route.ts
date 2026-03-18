@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import dns from 'dns/promises';
+import QRCode from 'qrcode';
 
 // Helper function to add domain to Vercel
 async function addDomainToVercel(domain: string) {
@@ -150,12 +151,22 @@ export async function POST(req: Request) {
       removeDomainFromVercel(currentGym.customDomain);
     }
 
+    // Generate new QR Code for custom domain
+    const protocol = 'https://';
+    const gymUrl = `${protocol}${normalizedDomain}`;
+    const qrCodeUrl = await QRCode.toDataURL(gymUrl, {
+      color: { dark: '#000000', light: '#ffffff' },
+      margin: 1,
+      width: 400,
+    });
+
     // Update Gym with verified domain
     await prisma.gym.update({
       where: { id: gymId },
       data: {
         customDomain: normalizedDomain,
         domainVerified: true,
+        qrCodeUrl: qrCodeUrl,
       },
     });
 

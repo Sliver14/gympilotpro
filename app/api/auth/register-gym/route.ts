@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
 import { Resend } from 'resend';
+import QRCode from 'qrcode';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -31,6 +32,17 @@ export async function POST(req: Request) {
       slugCounter++;
     }
 
+    // Generate Gym QR Code
+    const gymUrl = `https://${slug}.gympilotpro.com`;
+    const qrCodeUrl = await QRCode.toDataURL(gymUrl, {
+      color: {
+        dark: '#000000',
+        light: '#ffffff',
+      },
+      margin: 1,
+      width: 400,
+    });
+
     // Split fullName into first and last name
     const nameParts = fullName.trim().split(' ');
     const firstName = nameParts[0];
@@ -49,6 +61,7 @@ export async function POST(req: Request) {
           email: email,
           phone: phone,
           status: 'pending',
+          qrCodeUrl: qrCodeUrl,
         },
       });
 
