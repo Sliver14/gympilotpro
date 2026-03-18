@@ -125,23 +125,22 @@ export default function ManualRenewalDialog({ memberId, memberName, onRenewed }:
       <DialogContent className="bg-[#111] border-white/10 text-white rounded-[2.5rem] p-10 max-w-lg">
         <DialogHeader className="space-y-4">
           <DialogTitle className="text-3xl font-black uppercase italic tracking-tighter">
-            Protocol <span className="text-[#daa857]">Renewal</span>
+            Manual <span className="text-[#daa857]">Renewal</span>
           </DialogTitle>
           <DialogDescription className="text-gray-500 font-medium uppercase text-[10px] tracking-widest leading-relaxed">
-            Re-establishing vault access for operative <span className="text-white font-black">{memberName}</span>. 
-            Confirm deployment tier and authorization timestamp.
-          </DialogDescription>
+            Renewing membership for <span className="text-white font-black">{memberName}</span>.
+            Confirm membership plan and start date.          </DialogDescription>
         </DialogHeader>
         
         <form onSubmit={handleSubmit} className="space-y-8 py-6">
           <div className="space-y-3">
-            <Label htmlFor="membership" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Deployment Tier *</Label>
+            <Label htmlFor="membership" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Membership Plan *</Label>
             <Select
               value={formData.membershipId}
               onValueChange={(value) => setFormData({ ...formData, membershipId: value })}
             >
               <SelectTrigger id="membership" className="h-16 bg-black border-white/5 rounded-2xl focus:border-[#daa857] px-6 font-black uppercase tracking-widest text-xs">
-                <SelectValue placeholder="SELECT MISSION TIER" />
+                <SelectValue placeholder="SELECT PLAN" />
               </SelectTrigger>
               <SelectContent className="bg-[#111] border-white/10 text-white">
                 {memberships.map((m) => (
@@ -155,7 +154,7 @@ export default function ManualRenewalDialog({ memberId, memberName, onRenewed }:
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-3">
-              <Label htmlFor="startDate" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Sync Date *</Label>
+              <Label htmlFor="startDate" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Start Date *</Label>
               <Input
                 id="startDate"
                 type="date"

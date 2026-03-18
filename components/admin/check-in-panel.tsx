@@ -266,7 +266,7 @@ export default function CheckInPanel() {
               ) : result.message.includes('Already checked in') ? (
                 <div className="flex items-center justify-center gap-3 text-[#daa857]">
                   <Clock className="h-8 w-8 stroke-[3px]" />
-                  <span className="text-3xl font-black uppercase italic tracking-tighter">Duplicate Sync</span>
+                  <span className="text-3xl font-black uppercase italic tracking-tighter">Duplicate Check-in</span>
                 </div>
               ) : (
                 <div className="flex items-center justify-center gap-3 text-red-500">
@@ -286,7 +286,7 @@ export default function CheckInPanel() {
               <div className="space-y-2">
                 <p className="text-3xl font-black text-white uppercase italic tracking-tighter">{result.member.fullName}</p>
                 <div className="flex flex-col items-center gap-1">
-                  <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500">Vault Security Protocol</p>
+                  <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500">Access Control System</p>
                   <p className="text-xs font-bold text-gray-400">
                     VALID UNTIL: <span className={cn("font-black italic", result.isValid ? "text-white" : "text-red-500")}>{new Date(result.member.expiryDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).toUpperCase()}</span>
                   </p>
@@ -343,7 +343,7 @@ export default function CheckInPanel() {
                       <Camera className="h-10 w-10 text-[#daa857]" />
                     </div>
                     <div className="space-y-2">
-                      <h3 className="text-xl font-black text-white uppercase italic tracking-tighter">Perimeter Control</h3>
+                      <h3 className="text-xl font-black text-white uppercase italic tracking-tighter">Manual Check-in</h3>
                       <p className="text-[10px] font-black text-gray-600 uppercase tracking-[0.3em]">Scanner Ready for Uplink</p>
                     </div>
                     <Button 
@@ -445,7 +445,7 @@ export default function CheckInPanel() {
                   ))
                 ) : (
                   <div className="p-10 text-center rounded-2xl bg-black/20 border border-dashed border-white/5">
-                    <p className="text-xs font-black text-gray-700 uppercase tracking-widest italic italic">No active signatures match "{searchQuery}"</p>
+                    <p className="text-xs font-black text-gray-700 uppercase tracking-widest italic italic">No active members match "{searchQuery}"</p>
                   </div>
                 )}
               </div>

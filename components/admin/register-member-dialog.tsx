@@ -150,10 +150,10 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
       <DialogContent className="bg-[#111] border-white/10 text-white rounded-[2.5rem] p-10 max-w-2xl max-h-[90vh] overflow-y-auto custom-scrollbar">
         <DialogHeader className="space-y-4">
           <DialogTitle className="text-3xl font-black uppercase italic tracking-tighter">
-            New Signature <span className="text-[#daa857]">Enrollment</span>
+            New Member <span className="text-[#daa857]">Enrollment</span>
           </DialogTitle>
           <DialogDescription className="text-gray-500 font-medium uppercase text-[10px] tracking-widest leading-relaxed">
-            Establishing a new elite profile in the vault. Default security key: <span className="text-[#daa857] font-black">12345678</span>
+            Establishing a new profile in the gym. Default security key: <span className="text-[#daa857] font-black">12345678</span>
           </DialogDescription>
         </DialogHeader>
         
@@ -212,7 +212,7 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-3">
-              <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Cycle of Origin</Label>
+              <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Date of Birth</Label>
               <div className="flex gap-2">
                 <Select
                   value={formData.birthday?.split('-')[0] || ''}
@@ -292,7 +292,7 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-3">
-              <Label htmlFor="membership" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Mission Tier *</Label>
+              <Label htmlFor="membership" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Membership Plan *</Label>
               <Select
                 value={formData.membershipId}
                 onValueChange={(value) => setFormData({ ...formData, membershipId: value })}
@@ -359,7 +359,7 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
           </div>
 
           <div className="space-y-3">
-            <Label htmlFor="fitnessGoals" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Mission Intelligence</Label>
+            <Label htmlFor="fitnessGoals" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Fitness Goals</Label>
             <Textarea
               id="fitnessGoals"
               value={formData.fitnessGoalsDetails}

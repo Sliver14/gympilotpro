@@ -93,9 +93,9 @@ export default function ExpiredMembersList({ onMemberRenewed }: { onMemberRenewe
         <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <CardTitle className="flex items-center gap-3 text-red-500">
-              <CalendarX className="h-5 w-5 stroke-[3px]" /> Deactivated <span className="text-white">Operatives</span>
+              <CalendarX className="h-5 w-5 stroke-[3px]" /> Deactivated <span className="text-white">Members</span>
             </CardTitle>
-            <CardDescription>Signatures with revoked vault access requiring protocol renewal</CardDescription>
+            <CardDescription>Members with revoked gym access requiring membership renewal</CardDescription>
           </div>
           <Button 
             onClick={fetchExpiredMembers} 
@@ -104,7 +104,7 @@ export default function ExpiredMembersList({ onMemberRenewed }: { onMemberRenewe
             className="h-10 px-4 border-red-500/10 bg-black hover:bg-red-500/10 text-red-500 font-black uppercase text-[10px] tracking-widest gap-2 rounded-xl"
           >
             <RefreshCw className={cn("h-3.5 w-3.5", isLoading && "animate-spin")} />
-            Sync Deactivated
+            Update Deactivated
           </Button>
         </div>
       </CardHeader>
@@ -112,7 +112,7 @@ export default function ExpiredMembersList({ onMemberRenewed }: { onMemberRenewe
         <div className="relative group">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-600 transition-colors group-focus-within:text-red-500" />
           <Input
-            placeholder="Search deactivated vault signatures..."
+            placeholder="Search deactivated gym members..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="h-14 pl-12 bg-black border-white/5 rounded-2xl focus:border-red-500 font-bold text-sm"
@@ -122,7 +122,7 @@ export default function ExpiredMembersList({ onMemberRenewed }: { onMemberRenewe
         {filteredMembers.length === 0 ? (
           <div className="py-20 text-center bg-black/40 rounded-[2rem] border border-dashed border-white/5">
             <AlertTriangle className="mx-auto h-12 w-12 text-gray-800 mb-4 opacity-20" />
-            <p className="text-sm font-bold text-gray-600 uppercase tracking-widest italic">No revoked signatures detected in the perimeter.</p>
+            <p className="text-sm font-bold text-gray-600 uppercase tracking-widest italic">No revoked members detected at the check-in.</p>
           </div>
         ) : (
           <div className="grid gap-4">
@@ -149,7 +149,7 @@ export default function ExpiredMembersList({ onMemberRenewed }: { onMemberRenewe
                 <div className="flex items-center justify-between md:justify-end gap-10 mt-6 md:mt-0 relative z-10">
                   <div className="text-left md:text-right">
                     <p className="text-[10px] font-black text-red-500 uppercase italic tracking-tight">
-                      REVOKED {getDaysExpired(member.memberProfile.expiryDate)} CYCLES AGO
+                      REVOKED {getDaysExpired(member.memberProfile.expiryDate)} DAYS AGO
                     </p>
                     <p className="text-[8px] font-bold text-gray-600 uppercase tracking-widest mt-1">
                       LAST TIER: {member.memberProfile.membership.name.toUpperCase()}

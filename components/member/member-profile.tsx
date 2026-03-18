@@ -220,7 +220,7 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
             </div>
 
             <div className="flex justify-between items-center">
-              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">Vault Validity</p>
+              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">Membership Validity</p>
               <div className="text-right">
                 <p className="text-sm font-black text-white">
                   {profile.expiryDate
@@ -244,7 +244,7 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
               <div className="h-10 w-10 rounded-xl bg-[#daa857]/10 flex items-center justify-center text-[#daa857]">
                 <TrendingUp className="h-5 w-5" />
               </div>
-              <h3 className="text-xl font-black uppercase italic tracking-tighter text-white">Mission <span className="text-[#daa857]">Intelligence</span></h3>
+              <h3 className="text-xl font-black uppercase italic tracking-tighter text-white">Fitness <span className="text-[#daa857]">Goals</span></h3>
             </div>
 
             <div className="space-y-6 flex-1">
@@ -270,7 +270,7 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
 
               {profile.emergencyContact && (
                 <div className="mt-auto pt-8 border-t border-white/5">
-                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 mb-4 text-center">Emergency Extraction Protocol</p>
+                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 mb-4 text-center">Emergency Check-out Protocol</p>
                   <div className="flex items-center justify-center gap-8">
                     <div className="text-center">
                       <p className="text-[8px] font-black uppercase tracking-widest text-gray-700 mb-1">Liaison</p>
@@ -293,7 +293,7 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
       <Dialog open={isCropperModalOpen} onOpenChange={setIsCropperModalOpen}>
         <DialogContent className="bg-[#111] border-white/10 text-white rounded-[1.5rem] md:rounded-[2.5rem] p-0 overflow-hidden w-[95vw] md:max-w-2xl shadow-2xl">
           <DialogHeader className="sr-only">
-            <DialogTitle>Adjust Profile Signature</DialogTitle>
+            <DialogTitle>Adjust Member Profile</DialogTitle>
           </DialogHeader>
 
           <div className="p-5 md:p-8 border-b border-white/5 flex items-center justify-between">
@@ -301,7 +301,7 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
               <div className="h-10 w-10 rounded-xl bg-[#daa857]/10 flex items-center justify-center text-[#daa857]">
                 <CropIcon className="h-5 w-5" />
               </div>
-              <h3 className="text-lg md:text-xl font-black uppercase italic tracking-tighter">Adjust <span className="text-[#daa857]">Signature</span></h3>
+              <h3 className="text-lg md:text-xl font-black uppercase italic tracking-tighter">Adjust <span className="text-[#daa857]">Member</span></h3>
             </div>
             <Button variant="ghost" size="icon" onClick={() => setIsCropperModalOpen(false)} className="rounded-full hover:bg-white/5">
               <X className="h-5 w-5" />
@@ -352,7 +352,7 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
                 onClick={handleCropConfirm}
                 className="flex-1 h-12 md:h-14 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black uppercase tracking-widest rounded-xl transition-all shadow-xl shadow-[#daa857]/10"
               >
-                Sync Optimized Signature
+                Update Profile
               </Button>
             </div>
           </div>

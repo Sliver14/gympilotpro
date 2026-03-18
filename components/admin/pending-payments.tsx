@@ -120,7 +120,7 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
         <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <CardTitle className="flex items-center gap-3">
-              <CreditCard className="h-5 w-5 text-[#daa857]" /> Sync <span className="text-[#daa857]">Queue</span>
+              <CreditCard className="h-5 w-5 text-[#daa857]" /> Update <span className="text-[#daa857]">Queue</span>
             </CardTitle>
             <CardDescription>{payments.length} inbound transmissions awaiting verification</CardDescription>
           </div>
@@ -131,7 +131,7 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
             className="h-10 px-4 border-white/5 bg-black hover:bg-white/5 text-gray-400 font-black uppercase text-[10px] tracking-widest gap-2 rounded-xl"
           >
             <RefreshCw className={cn("h-3.5 w-3.5", isLoading && "animate-spin")} />
-            Sync
+            Update
           </Button>
         </div>
       </CardHeader>
@@ -139,7 +139,7 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
         {payments.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 text-center bg-black/20 rounded-[2rem] border border-dashed border-white/5">
             <CheckCircle className="h-12 w-12 text-gray-800 mb-4 opacity-20" />
-            <p className="text-sm font-bold text-gray-600 uppercase tracking-widest italic">All systems synchronized. No pending payloads.</p>
+            <p className="text-sm font-bold text-gray-600 uppercase tracking-widest italic">All systems updated. No pending transactions.</p>
           </div>
         ) : (
           <div className="grid gap-4">
@@ -232,7 +232,7 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
                 />
                 <div className="p-4 rounded-xl bg-[#daa857]/5 border border-[#daa857]/10">
                   <p className="text-[9px] font-bold text-[#daa857]/70 uppercase tracking-widest leading-relaxed">
-                    Neural sync will automatically calculate expiry based on the operative's selected tier from this timestamp.
+                    The system will automatically calculate expiry based on the member's selected plan from this timestamp.
                   </p>
                 </div>
               </div>
@@ -254,7 +254,7 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
                 {processingId ? (
                   <>
                     <RefreshCw className="h-4 w-4 animate-spin mr-2" />
-                    Syncing...
+                    Updating...
                   </>
                 ) : (
                   'Commit Authorization'

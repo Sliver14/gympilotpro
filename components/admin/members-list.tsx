@@ -120,9 +120,9 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
         <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <CardTitle className="flex items-center gap-3">
-              <Users className="h-5 w-5 text-[#daa857]" /> Operative <span className="text-[#daa857]">Directory</span>
+              <Users className="h-5 w-5 text-[#daa857]" /> Member <span className="text-[#daa857]">Directory</span>
             </CardTitle>
-            <CardDescription>{members.length} verified signatures in the vault</CardDescription>
+            <CardDescription>{members.length} verified members in the gym</CardDescription>
           </div>
           <div className="flex flex-wrap items-center gap-3">
             <RegisterMemberDialog onMemberAdded={() => {
@@ -136,7 +136,7 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
               className="h-10 px-4 border-white/5 bg-black hover:bg-white/5 text-gray-400 font-black uppercase text-[10px] tracking-widest gap-2 rounded-xl"
             >
               <RefreshCw className={cn("h-3.5 w-3.5", isLoading && "animate-spin")} />
-              Sync
+              Update
             </Button>
             <Button 
               onClick={handleExport} 
@@ -154,7 +154,7 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
         <div className="relative group">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-600 transition-colors group-focus-within:text-[#daa857]" />
           <Input
-            placeholder="Filter signatures by identity or channel..."
+            placeholder="Filter members by name or email..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="h-14 pl-12 bg-black border-white/5 rounded-2xl focus:border-[#daa857] font-bold text-sm"
@@ -164,7 +164,7 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
         {filteredMembers.length === 0 ? (
           <div className="py-20 text-center bg-black/20 rounded-[2rem] border border-dashed border-white/5">
             <Users className="mx-auto h-12 w-12 text-gray-800 mb-4" />
-            <p className="text-sm font-bold text-gray-600 uppercase tracking-widest italic">No matching operatives found in the database.</p>
+            <p className="text-sm font-bold text-gray-600 uppercase tracking-widest italic">No matching members found in the database.</p>
           </div>
         ) : (
           <div className="grid gap-4">
@@ -197,7 +197,7 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
 
                   <div className="flex items-center justify-between md:justify-end gap-8 mt-6 md:mt-0 pt-6 md:pt-0 border-t md:border-none border-white/5 relative z-10">
                     <div className="text-left md:text-right">
-                      <p className="text-[8px] font-black uppercase tracking-widest text-gray-600 mb-1">Vault Tier</p>
+                      <p className="text-[8px] font-black uppercase tracking-widest text-gray-600 mb-1">Membership Plan</p>
                       <p className="text-xs font-black text-white uppercase italic">{member.memberProfile.membership.name}</p>
                     </div>
                     

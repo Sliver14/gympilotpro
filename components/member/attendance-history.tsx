@@ -53,7 +53,7 @@ export default function AttendanceHistory({ attendance }: AttendanceHistoryProps
 
         {sortedAttendance.length === 0 ? (
           <div className="py-20 text-center">
-            <p className="text-sm font-bold text-gray-600 uppercase tracking-widest italic">No mission records found in the vault.</p>
+            <p className="text-sm font-bold text-gray-600 uppercase tracking-widest italic">No attendance records found in the gym.</p>
           </div>
         ) : (
           <div className="space-y-4">
@@ -68,7 +68,7 @@ export default function AttendanceHistory({ attendance }: AttendanceHistoryProps
                 <div className="flex items-center gap-4">
                   <div className="text-right hidden md:block">
                     <p className="text-[8px] font-black uppercase tracking-widest text-gray-600 mb-0.5">AUTH METHOD</p>
-                    <p className="text-[10px] font-black text-white uppercase">{record.method === 'qr' ? 'Neural Link (QR)' : 'Manual Override'}</p>
+                    <p className="text-[10px] font-black text-white uppercase">{record.method === 'qr' ? 'QR Code' : 'Manual Override'}</p>
                   </div>
                   <Badge className={cn(
                     "px-4 py-1 rounded-full text-[10px] font-black uppercase italic tracking-tighter transition-all",
@@ -87,7 +87,7 @@ export default function AttendanceHistory({ attendance }: AttendanceHistoryProps
           <div className="mt-12 grid gap-4 grid-cols-1 md:grid-cols-3 border-t border-white/5 pt-10">
             {[
               { label: 'Total Checkins', value: sortedAttendance.length },
-              { label: 'Current Cycle', value: sortedAttendance.filter((a) => {
+              { label: 'Current Month', value: sortedAttendance.filter((a) => {
                 const date = new Date(a.checkInTime)
                 const now = new Date()
                 return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear()

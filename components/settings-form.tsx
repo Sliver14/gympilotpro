@@ -155,7 +155,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
       router.refresh()
     } catch (error) {
       console.error('Crop/Upload error:', error)
-      toast({ title: 'Sync Error', description: 'Failed to upload neural signature.', variant: 'destructive' })
+      toast({ title: 'Update Error', description: 'Failed to upload profile picture.', variant: 'destructive' })
       setPreviewUrl(null)
     } finally {
       setUploading(false)
@@ -178,7 +178,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
 
       if (!res.ok) throw new Error(data.error || 'Failed to update details')
 
-      toast({ title: 'Intel Updated', description: 'Command personnel data synchronized successfully.' })
+      toast({ title: 'Profile Updated', description: 'Staff profile data updated successfully.' })
       setIsDetailsModalOpen(false)
       if (onUpdate) onUpdate()
     } catch (error: any) {
@@ -216,7 +216,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
 
       if (!res.ok) throw new Error(data.error || 'Failed to change security key')
 
-      toast({ title: 'Vault Secured', description: 'Entry credentials updated successfully.' })
+      toast({ title: 'Access Secured', description: 'Account password updated successfully.' })
       setIsPasswordModalOpen(false)
       setPasswords({ currentPassword: '', newPassword: '', confirmPassword: '' })
     } catch (error: any) {
@@ -285,7 +285,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
                     <UserIcon className="h-7 w-7" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-black uppercase italic tracking-tighter text-white mb-1">Command Intel</h3>
+                    <h3 className="text-xl font-black uppercase italic tracking-tighter text-white mb-1">Staff Profile</h3>
                     <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Update Personal Metrics</p>
                   </div>
                 </div>

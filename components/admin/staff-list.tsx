@@ -88,9 +88,9 @@ export default function StaffList() {
         <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <CardTitle className="flex items-center gap-3">
-              <UserCheck className="h-5 w-5 text-[#daa857]" /> Command <span className="text-[#daa857]">Personnel</span>
+              <UserCheck className="h-5 w-5 text-[#daa857]" /> Staff <span className="text-[#daa857]">Members</span>
             </CardTitle>
-            <CardDescription>{staff.length} authorized signatures managing the vault</CardDescription>
+            <CardDescription>{staff.length} authorized staff managing the gym</CardDescription>
           </div>
           <div className="flex items-center gap-3">
             <RegisterStaffDialog onStaffAdded={fetchStaff} />
@@ -101,7 +101,7 @@ export default function StaffList() {
               className="h-10 px-4 border-white/5 bg-black hover:bg-white/5 text-gray-400 font-black uppercase text-[10px] tracking-widest gap-2 rounded-xl"
             >
               <RefreshCw className={cn("h-3.5 w-3.5", isLoading && "animate-spin")} />
-              Sync
+              Update
             </Button>
           </div>
         </div>
@@ -110,7 +110,7 @@ export default function StaffList() {
         <div className="relative group">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-600 transition-colors group-focus-within:text-[#daa857]" />
           <Input
-            placeholder="Search personnel by identity, channel or designation..."
+            placeholder="Search personnel by name, email or role..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="h-14 pl-12 bg-black border-white/5 rounded-2xl focus:border-[#daa857] font-bold text-sm"

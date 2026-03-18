@@ -65,7 +65,7 @@ export default function ProgressNotes({ memberId }: ProgressNotesProps) {
           <h3 className="text-xl font-black uppercase italic tracking-tighter text-white flex items-center gap-3">
             <TrendingUp className="h-5 w-5 text-[#daa857]" /> Performance <span className="text-[#daa857]">Metrics</span>
           </h3>
-          <p className="text-[10px] font-black uppercase tracking-widest text-gray-500">Trainer Intel</p>
+          <p className="text-[10px] font-black uppercase tracking-widest text-gray-500">Trainer Notes</p>
         </div>
 
         {notes.length === 0 ? (

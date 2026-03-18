@@ -63,13 +63,13 @@ export default function AdminHeader({ adminData, onLogout, title, description }:
               <DropdownMenuItem disabled className="opacity-100">
                 <div className="flex flex-col space-y-1">
                   <p className="text-sm font-black uppercase italic">{adminData.firstName} {adminData.lastName}</p>
-                  <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest capitalize">{adminData.role} COMMAND</p>
+                  <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest capitalize">{adminData.role} DASHBOARD</p>
                 </div>
               </DropdownMenuItem>
               <DropdownMenuItem asChild className="focus:bg-white/5 cursor-pointer">
                 <Link href="/admin/settings" className="flex items-center gap-2 font-bold uppercase text-[10px] tracking-widest">
                   <Settings className="h-3.5 w-3.5" style={{ color: accent }} />
-                  Command Settings
+                  Admin Settings
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={onLogout} className="focus:bg-red-500/10 focus:text-red-500 cursor-pointer text-red-500/80 font-bold uppercase text-[10px] tracking-widest">

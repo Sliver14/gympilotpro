@@ -83,7 +83,7 @@ export default function QRCodeDisplay({ memberId }: QRCodeDisplayProps) {
               
               <div className="text-center max-w-sm">
                 <p className="mb-8 text-xs font-bold text-gray-400 uppercase tracking-widest leading-relaxed">
-                  Present this <span className="text-[#daa857]">Neural Link</span> at the perimeter terminal for instant vault decryption.
+                  Present this <span className="text-[#daa857]">QR Code</span> at the check-in terminal for instant gym access.
                 </p>
                 <Button 
                   onClick={handleDownload} 
