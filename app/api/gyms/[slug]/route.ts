@@ -8,8 +8,13 @@ export async function GET(
   try {
     const { slug } = await params
 
-    const gym = await prisma.gym.findUnique({
-      where: { slug },
+    const gym = await prisma.gym.findFirst({
+      where: {
+        OR: [
+          { slug },
+          { customDomain: slug }
+        ]
+      },
       select: {
         id: true,
         name: true,

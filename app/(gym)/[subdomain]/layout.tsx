@@ -13,8 +13,13 @@ export default async function GymSubdomainLayout({
   const { subdomain } = await params
 
   if (subdomain !== 'www' && subdomain !== 'localhost') {
-    const gym = await prisma.gym.findUnique({
-      where: { slug: subdomain }
+    const gym = await prisma.gym.findFirst({
+      where: {
+        OR: [
+          { slug: subdomain },
+          { customDomain: subdomain }
+        ]
+      }
     })
 
     if (!gym) {

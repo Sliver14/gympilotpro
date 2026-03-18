@@ -12,6 +12,8 @@ model Gym {
   id             String              @id @default(cuid())
   name           String
   slug           String              @unique
+  customDomain   String?             @unique
+  domainVerified Boolean             @default(false)
   email          String?
   phone          String?
   address        String?

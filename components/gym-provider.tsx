@@ -24,20 +24,16 @@ export function GymProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     // 1. Try to get from params (for internal routing / Rewrites)
-    let slug = params.subdomain as string;
+    let slug = (params.subdomain || params.domain) as string;
     
     // 2. If not in params, try to derive from hostname
     if (!slug && typeof window !== 'undefined') {
       const hostname = window.location.hostname;
-      if (hostname.includes('lvh.me')) {
-        slug = hostname.replace('.lvh.me', '');
-        if (slug === 'lvh.me' || slug === 'www') slug = '';
+      if (hostname.includes('gympilotpro.com')) {
+        slug = hostname.replace('.gympilotpro.com', '');
+        if (slug === 'gympilotpro.com' || slug === 'www') slug = '';
       } else if (!hostname.includes('localhost')) {
-        const parts = hostname.split('.');
-        if (parts.length > 2) {
-          slug = parts[0];
-          if (slug === 'www') slug = '';
-        }
+        slug = hostname.startsWith('www.') ? hostname.replace('www.', '') : hostname;
       }
     }
 
@@ -68,7 +64,7 @@ export function GymProvider({ children }: { children: ReactNode }) {
     } else {
       setIsLoading(false);
     }
-  }, [params.subdomain]);
+  }, [params.subdomain, params.domain]);
 
   return (
     <GymContext.Provider value={{ gymSlug, gymData, isLoading }}>

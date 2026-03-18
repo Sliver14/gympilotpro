@@ -19,7 +19,7 @@ import {
 } from '@/components/ui/sidebar'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
-import { QrCode, TrendingUp, Users, Calendar, CreditCard, LogOut, Settings, UserCheck, Wallet } from 'lucide-react'
+import { QrCode, TrendingUp, Users, Calendar, CreditCard, LogOut, Settings, UserCheck, Wallet, Globe } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import {
   DropdownMenu,
@@ -192,6 +192,12 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
                   <Link href="/admin/settings" className="flex items-center gap-3 font-black uppercase text-[10px] tracking-widest">
                     <Settings className="size-4" style={{ color: accent }} />
                     Protocol Settings
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild className="rounded-xl focus:bg-white/5 cursor-pointer py-3 px-4">
+                  <Link href="/admin/domain" className="flex items-center gap-3 font-black uppercase text-[10px] tracking-widest">
+                    <Globe className="size-4" style={{ color: accent }} />
+                    Domain Setup
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={onLogout} className="rounded-xl focus:bg-red-500/10 focus:text-red-500 cursor-pointer py-3 px-4 mt-1 text-red-500/80">
