@@ -65,14 +65,14 @@ export default function AttendanceOverview() {
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
-          <Calendar className="h-5 w-5 text-[#daa857]" /> Perimeter <span className="text-[#daa857]">Telemetry</span>
+          <Calendar className="h-5 w-5 text-[#daa857]" /> Attendance <span className="text-[#daa857]">Overview</span>
         </CardTitle>
-        <CardDescription>Daily deployment velocity and access trends</CardDescription>
+        <CardDescription>Daily member check-ins and check-outs</CardDescription>
       </CardHeader>
       <CardContent className="space-y-10">
         <div className="grid gap-6 md:grid-cols-3">
           {[
-            { label: 'Total Checkins', value: totalCheckins, sub: 'LAST 30 CYCLES' },
+            { label: 'Total Checkins', value: totalCheckins, sub: 'LAST 30 DAYS' },
             { label: 'Average Checkins', value: avgDaily, sub: 'DAILY FREQUENCY', accent: true },
             { label: 'Max Checkin', value: Math.max(...data.map((d) => d.checkins), 0), sub: 'MAX DAILY' }
           ].map((stat, i) => (
@@ -126,23 +126,22 @@ export default function AttendanceOverview() {
                   activeDot={{ r: 6, stroke: '#daa857', strokeWidth: 2, fill: '#000' }}
                   name="ACCESS" 
                 />
-                <Line 
-                  type="monotone" 
-                  dataKey="checkouts" 
-                  stroke="#ffffff10" 
+                <Line
+                  type="monotone"
+                  dataKey="checkouts"
+                  stroke="#ffffff10"
                   strokeWidth={2}
                   strokeDasharray="5 5"
                   dot={false}
-                  name="EXTRACTION" 
+                  name="CHECK-OUT"
                 />
-              </LineChart>
-            </ResponsiveContainer>
-          ) : (
-            <div className="h-80 flex flex-col items-center justify-center text-gray-700 italic">
-              <Calendar className="h-12 w-12 mb-4 opacity-10" />
-              <p className="text-xs font-black uppercase tracking-widest">No telemetry feed available</p>
-            </div>
-          )}
+                </LineChart>
+                </ResponsiveContainer>
+                ) : (
+                <div className="h-80 flex flex-col items-center justify-center text-gray-700 italic">
+                <Calendar className="h-12 w-12 mb-4 opacity-10" />
+                <p className="text-xs font-black uppercase tracking-widest">No attendance data available</p>
+                </div>          )}
         </div>
       </CardContent>
     </Card>

@@ -77,15 +77,15 @@ export default function RevenueAnalytics() {
         <CardTitle className="flex items-center gap-3">
           <CreditCard className="h-5 w-5 text-[#daa857]" /> Financial <span className="text-[#daa857]">Intelligence</span>
         </CardTitle>
-        <CardDescription>Fiscal cycles and revenue stream telemetry</CardDescription>
+        <CardDescription>Monthly revenue trends and payment history</CardDescription>
       </CardHeader>
       <CardContent className="space-y-10">
         {/* Stats Cards */}
         <div className="grid gap-6 md:grid-cols-3">
           {[
-            { label: 'Cumulative Intake', value: formatCurrency(totalRevenue), sub: 'LAST 12 CYCLES' },
-            { label: 'Mean Monthly', value: formatCurrency(avgMonthly), sub: 'OPERATIONAL AVERAGE', accent: true },
-            { label: 'Total Syncs', value: totalPayments.toLocaleString('en-NG'), sub: 'TRANSACTION COUNT' }
+            { label: 'Total Revenue', value: formatCurrency(totalRevenue), sub: 'ALL-TIME' },
+            { label: 'Avg. Monthly', value: formatCurrency(avgMonthly), sub: 'MONTHLY AVERAGE', accent: true },
+            { label: 'Total Transactions', value: totalPayments.toLocaleString('en-NG'), sub: 'PAYMENT COUNT' }
           ].map((stat, i) => (
             <div key={i} className="rounded-2xl bg-black/40 border border-white/5 p-6 hover:border-[#daa857]/20 transition-all group">
               <p className="text-[8px] font-black uppercase tracking-[0.2em] text-gray-600 mb-2">{stat.label}</p>
@@ -134,14 +134,14 @@ export default function RevenueAnalytics() {
                 <Bar 
                   dataKey="revenue" 
                   fill="#daa857" 
-                  name="INTAKE (₦)" 
+                  name="REVENUE (₦)" 
                   radius={[4, 4, 0, 0]}
                   barSize={30}
                 />
                 <Bar 
                   dataKey="payments" 
                   fill="#ffffff10" 
-                  name="SYNCS" 
+                  name="TRANSACTIONS" 
                   radius={[4, 4, 0, 0]}
                   barSize={30}
                 />

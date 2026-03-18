@@ -229,7 +229,7 @@ export default function SaaSLandingPage() {
               onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
               className="h-16 px-12 bg-orange-500 hover:bg-orange-600 text-white font-black italic uppercase text-lg rounded-none shadow-lg shadow-orange-500/20"
             >
-              Get Your Own Live Demo Access <ChevronRight className="ml-2" />
+              Get Your Live Access <ChevronRight className="ml-2" />
             </Button>
           </div>
         </div>

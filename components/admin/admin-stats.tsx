@@ -96,9 +96,9 @@ export default function AdminStats({
           warning: stats.pendingPayments > 0 
         },
         ...(!hideRevenue ? [{ 
-          label: 'Global Revenue', 
+          label: 'Monthly Revenue', 
           value: formatNaira(stats.monthlyRevenue), 
-          sub: 'This cycle', 
+          sub: 'This month', 
           icon: Wallet,
           accent: true 
         }] : [])
