@@ -79,7 +79,7 @@ export default function ForgotPasswordPage() {
           </div>
           <div className="text-center">
             <h1 className="text-3xl font-black tracking-tighter uppercase italic">Klimarx<span style={{ color: accent }}>Space</span></h1>
-            <p className="text-[10px] uppercase tracking-[0.3em] text-gray-500 font-bold mt-1">Recovery Protocol</p>
+            <p className="text-[10px] uppercase tracking-[0.3em] text-gray-500 font-bold mt-1">Account Recovery</p>
           </div>
         </Link>
 
@@ -167,7 +167,7 @@ export default function ForgotPasswordPage() {
 
         {/* Footer info */}
         <p className="mt-12 text-center text-[10px] text-gray-700 font-black uppercase tracking-[0.5em]">
-          Klimarx Space © 2026 • Security Protocol Active
+          Klimarx Space © 2026 • Security Active
         </p>
       </div>
     </div>

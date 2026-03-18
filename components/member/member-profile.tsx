@@ -165,7 +165,7 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
                 <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500">{memberData.email}</p>
                 {memberData.role && (
                   <div className="mt-4 inline-flex items-center rounded-full bg-[#daa857]/10 border border-[#daa857]/20 px-4 py-1 text-[10px] font-black uppercase tracking-widest text-[#daa857]">
-                    {memberData.role} Protocol
+                    {memberData.role} Role
                   </div>
                 )}
               </div>
@@ -234,7 +234,7 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
         </div>
       </div>
 
-      {/* Fitness Goals & Protocol */}
+      {/* Fitness Goals & Plan */}
       <div className="space-y-8">
         <div className="bg-[#111] border border-white/5 rounded-[2rem] p-8 shadow-2xl h-full relative overflow-hidden">
           <div className="absolute -bottom-24 -left-24 h-48 w-48 rounded-full bg-[#daa857]/5 blur-[80px]" />
@@ -252,7 +252,7 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
                 <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 mb-3">Primary Objectives</p>
                 <div className="p-6 rounded-2xl bg-black/40 border border-white/5 min-h-[100px]">
                   <p className="text-sm font-bold text-gray-300 leading-relaxed italic">
-                    {profile.fitnessGoals || 'No primary objectives defined in the protocol.'}
+                    {profile.fitnessGoals || 'No primary objectives defined in the plan.'}
                   </p>
                 </div>
               </div>
@@ -270,7 +270,7 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
 
               {profile.emergencyContact && (
                 <div className="mt-auto pt-8 border-t border-white/5">
-                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 mb-4 text-center">Emergency Check-out Protocol</p>
+                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 mb-4 text-center">Emergency Check-out Process</p>
                   <div className="flex items-center justify-center gap-8">
                     <div className="text-center">
                       <p className="text-[8px] font-black uppercase tracking-widest text-gray-700 mb-1">Liaison</p>
@@ -327,7 +327,7 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
           <div className="p-5 md:p-8 space-y-6 md:space-y-8 bg-[#111]">
             <div className="space-y-4">
               <div className="flex justify-between items-center">
-                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">Neural Zoom</Label>
+                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">Image Zoom</Label>
                 <span className="text-[10px] font-black text-[#daa857]">{Math.round(zoom * 100)}%</span>
               </div>
               <Slider

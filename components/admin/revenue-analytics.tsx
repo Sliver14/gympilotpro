@@ -75,7 +75,7 @@ export default function RevenueAnalytics() {
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
-          <CreditCard className="h-5 w-5 text-[#daa857]" /> Financial <span className="text-[#daa857]">Intelligence</span>
+          <CreditCard className="h-5 w-5 text-[#daa857]" /> Financial <span className="text-[#daa857]">Overview</span>
         </CardTitle>
         <CardDescription>Monthly revenue trends and payment history</CardDescription>
       </CardHeader>

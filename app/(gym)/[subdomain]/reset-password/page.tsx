@@ -119,7 +119,7 @@ function ResetPasswordContent() {
               <CheckCircle className="h-10 w-10 text-green-500" />
             </div>
             <div className="space-y-3">
-              <h2 className="text-3xl font-black uppercase italic tracking-tighter">Protocol <span className="text-green-500">Success</span></h2>
+              <h2 className="text-3xl font-black uppercase italic tracking-tighter">Reset <span className="text-green-500">Success</span></h2>
               <p className="text-gray-500 text-sm font-medium leading-relaxed">
                 Your vault key has been updated. Redirecting to login terminal...
               </p>
@@ -220,7 +220,7 @@ export default function ResetPasswordPage() {
 
         {/* Footer info */}
         <p className="mt-12 text-center text-[10px] text-gray-700 font-black uppercase tracking-[0.5em]">
-          Klimarx Space © 2026 • Security Protocol Active
+          Klimarx Space © 2026 • Security Active
         </p>
       </div>
     </div>

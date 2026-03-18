@@ -334,7 +334,7 @@ export default function CheckInPanel() {
                       onClick={startScanner}
                       className="h-14 px-8 border-white/10 hover:bg-white/5 rounded-xl text-[10px] font-black uppercase tracking-widest"
                     >
-                      Retry Neural Link
+                      Retry Scan
                     </Button>
                   </div>
                 ) : (
@@ -350,7 +350,7 @@ export default function CheckInPanel() {
                       onClick={startScanner} 
                       className="h-16 px-10 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black uppercase tracking-widest rounded-2xl transition-all hover:scale-105 shadow-xl shadow-[#daa857]/10"
                     >
-                      Start Neural Scan
+                      Start QR Scan
                     </Button>
                   </div>
                 )}
@@ -362,7 +362,7 @@ export default function CheckInPanel() {
                 {isValidating ? (
                   <div className="flex flex-col items-center gap-6">
                     <Loader2 className="h-16 w-16 animate-spin text-[#daa857]" />
-                    <p className="text-[10px] font-black text-[#daa857] uppercase tracking-[0.5em] animate-pulse">Decrypting Identity</p>
+                    <p className="text-[10px] font-black text-[#daa857] uppercase tracking-[0.5em] animate-pulse">Processing QR Code</p>
                   </div>
                 ) : (
                   <div className="text-white text-center space-y-4">
@@ -373,7 +373,7 @@ export default function CheckInPanel() {
                       <div className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-[#daa857]" />
                       <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-[#daa857]/30 animate-scan" />
                     </div>
-                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#daa857]">Align Neural Code</p>
+                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#daa857]">Align QR Code</p>
                   </div>
                 )}
               </div>
@@ -383,7 +383,7 @@ export default function CheckInPanel() {
           {/* Manual Search & Check-in */}
           <div className="bg-[#111] border border-white/5 rounded-[2.5rem] p-8 shadow-2xl space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="search" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 ml-2">Manual Override Protocol</Label>
+              <Label htmlFor="search" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 ml-2">Manual Search</Label>
               <div className="flex gap-3">
                 <div className="relative flex-1">
                   <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-600" />

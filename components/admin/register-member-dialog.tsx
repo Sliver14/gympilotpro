@@ -153,14 +153,14 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
             New Member <span className="text-[#daa857]">Enrollment</span>
           </DialogTitle>
           <DialogDescription className="text-gray-500 font-medium uppercase text-[10px] tracking-widest leading-relaxed">
-            Establishing a new profile in the gym. Default security key: <span className="text-[#daa857] font-black">12345678</span>
+            Establishing a new profile in the gym. Default password: <span className="text-[#daa857] font-black">12345678</span>
           </DialogDescription>
         </DialogHeader>
         
         <form onSubmit={handleSubmit} className="space-y-8 py-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-3">
-              <Label htmlFor="firstName" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">First Identity *</Label>
+              <Label htmlFor="firstName" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">First Name *</Label>
               <Input
                 id="firstName"
                 value={formData.firstName}
@@ -171,7 +171,7 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
               />
             </div>
             <div className="space-y-3">
-              <Label htmlFor="lastName" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Last Identity *</Label>
+              <Label htmlFor="lastName" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Last Name *</Label>
               <Input
                 id="lastName"
                 value={formData.lastName}
@@ -191,7 +191,7 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
                 type="email"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                placeholder="EMAIL@PROTOCOL.COM"
+                placeholder="EMAIL@EXAMPLE.COM"
                 className="h-14 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-6 font-bold uppercase tracking-widest text-[10px]"
                 required
               />
@@ -271,7 +271,7 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
             </div>
 
             <div className="space-y-3">
-              <Label htmlFor="gender" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Gender Protocol</Label>
+              <Label htmlFor="gender" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Gender</Label>
               <Select
                 value={formData.gender}
                 onValueChange={(value) => setFormData({ ...formData, gender: value })}
@@ -353,7 +353,7 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
                 htmlFor="payment-completed"
                 className="text-[9px] font-black uppercase tracking-widest text-gray-500 cursor-pointer"
               >
-                Instant Neural Verification & Activation
+                Instant Verification & Activation
               </Label>
             </div>
           </div>

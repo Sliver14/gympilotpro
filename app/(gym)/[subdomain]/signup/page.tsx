@@ -164,10 +164,10 @@ export default function SignupPage() {
       
       updateFormData({ profileImage: data.imageUrl })
       setPreviewUrl(URL.createObjectURL(croppedImageBlob))
-      toast({ title: 'Neural Scan Complete', description: 'Identity signature synchronized.' })
+      toast({ title: 'Upload Complete', description: 'Profile picture uploaded.' })
     } catch (error) {
       console.error('Crop/Upload error:', error)
-      toast({ title: 'Sync Error', description: 'Failed to upload identity signature.', variant: 'destructive' })
+      toast({ title: 'Upload Error', description: 'Failed to upload profile picture.', variant: 'destructive' })
       setPreviewUrl(null)
     } finally {
       setUploading(false)
@@ -349,7 +349,7 @@ export default function SignupPage() {
                     <div className="flex-1 space-y-6 w-full">
                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div className="space-y-1">
-                            <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 ml-2">First Identity</Label>
+                            <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 ml-2">First Name</Label>
                             <Input 
                               placeholder="First Name" 
                               value={formData.firstName}
@@ -358,7 +358,7 @@ export default function SignupPage() {
                             />
                           </div>
                           <div className="space-y-1">
-                            <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 ml-2">Last Identity</Label>
+                            <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 ml-2">Last Name</Label>
                             <Input 
                               placeholder="Last Name" 
                               value={formData.lastName}
@@ -525,7 +525,7 @@ export default function SignupPage() {
                       <div className="p-6 rounded-2xl bg-black border border-[#daa857]/30 border-dashed">
                         <div className="flex items-center gap-3 text-[#daa857] mb-2">
                            <AlertTriangle className="h-5 w-5" />
-                           <span className="text-xs font-black uppercase tracking-widest">Protocol Instructions</span>
+                           <span className="text-xs font-black uppercase tracking-widest">Instructions</span>
                         </div>
                         <p className="text-[10px] text-gray-400 font-bold whitespace-pre-line leading-relaxed">
                           {BANK_TRANSFER_DETAILS}
@@ -564,8 +564,7 @@ export default function SignupPage() {
                   </div>
 
                   <div className="space-y-1">
-                    <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 ml-2">Mission Intelligence</Label>
-                    <Textarea 
+                    <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 ml-2">Fitness Goals</Label>                    <Textarea 
                       placeholder="Specify your targets, existing injuries, or specialized requirements..."
                       value={formData.fitnessGoalsDetails}
                       onChange={(e) => updateFormData({ fitnessGoalsDetails: e.target.value })}
@@ -584,7 +583,7 @@ export default function SignupPage() {
                       />
                     </div>
                     <div className="space-y-1">
-                      <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 ml-2">Emergency Protocol</Label>
+                      <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 ml-2">Emergency Phone</Label>
                       <Input 
                         placeholder="Contact Phone" 
                         value={formData.emergencyPhone}
@@ -639,7 +638,7 @@ export default function SignupPage() {
                        <div className="space-y-2">
                           <h3 className="font-black uppercase italic tracking-wider text-sm">Deployment Confirmation</h3>
                           <p className="text-[10px] text-gray-500 font-bold leading-relaxed uppercase tracking-widest">
-                            I verify that all provided data is accurate and I acknowledge the payment protocol for the selected membership tier.
+                            I verify that all provided data is accurate and I acknowledge the payment policy for the selected membership tier.
                           </p>
                        </div>
                     </div>
@@ -656,7 +655,7 @@ export default function SignupPage() {
                           { l: 'Elite', v: `${formData.firstName} ${formData.lastName}` },
                           { l: 'Channel', v: formData.email },
                           { l: 'Tier', v: memberships.find(m => m.id === formData.membershipId)?.name || 'None' },
-                          { l: 'Protocol', v: formData.paymentMethod || 'None' }
+                          { l: 'Method', v: formData.paymentMethod || 'None' }
                         ].map((item, i) => (
                           <div key={i} className="space-y-1">
                              <p className="text-[8px] font-black uppercase tracking-widest text-gray-700">{item.l}</p>
@@ -707,7 +706,7 @@ export default function SignupPage() {
                         toast({ title: 'Application Transmitted', description: 'Redirecting to secure login...', duration: 5000 })
                         setTimeout(() => window.location.href = '/login', 3000)
                       } catch (err: any) {
-                        toast({ title: 'Transmission Error', description: err.message, variant: 'destructive' })
+                        toast({ title: 'Application Error', description: err.message, variant: 'destructive' })
                         setIsSubmitting(false)
                       }
                    }}
@@ -740,7 +739,7 @@ export default function SignupPage() {
       <Dialog open={isCropperModalOpen} onOpenChange={setIsCropperModalOpen}>
         <DialogContent className="bg-[#111] border-white/10 text-white rounded-[1.5rem] md:rounded-[2.5rem] p-0 overflow-hidden w-[95vw] md:max-w-2xl shadow-2xl">
           <DialogHeader className="sr-only">
-            <DialogTitle>Adjust Identity Signature</DialogTitle>
+            <DialogTitle>Adjust Profile Picture</DialogTitle>
           </DialogHeader>
           
           <div className="p-5 md:p-8 border-b border-white/5 flex items-center justify-between">
@@ -748,7 +747,7 @@ export default function SignupPage() {
               <div className="h-10 w-10 rounded-xl bg-[#daa857]/10 flex items-center justify-center text-[#daa857]">
                 <CropIcon className="h-5 w-5" />
               </div>
-              <h3 className="text-lg md:text-xl font-black uppercase italic tracking-tighter">Adjust <span className="text-[#daa857]">Identity</span></h3>
+              <h3 className="text-lg md:text-xl font-black uppercase italic tracking-tighter">Adjust <span className="text-[#daa857]">Profile Picture</span></h3>
             </div>
             <Button variant="ghost" size="icon" onClick={() => setIsCropperModalOpen(false)} className="rounded-full hover:bg-white/5">
               <X className="h-5 w-5" />
@@ -774,7 +773,7 @@ export default function SignupPage() {
           <div className="p-5 md:p-8 space-y-6 md:space-y-8 bg-[#111]">
             <div className="space-y-4">
               <div className="flex justify-between items-center">
-                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">Neural Zoom</Label>
+                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">Image Zoom</Label>
                 <span className="text-[10px] font-black text-[#daa857]">{Math.round(zoom * 100)}%</span>
               </div>
               <Slider
@@ -799,7 +798,7 @@ export default function SignupPage() {
                 onClick={handleCropConfirm}
                 className="flex-1 h-12 md:h-14 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black uppercase tracking-widest rounded-xl transition-all shadow-xl shadow-[#daa857]/10"
               >
-                Sync Optimized Identity
+                Save Profile Picture
               </Button>
             </div>
           </div>

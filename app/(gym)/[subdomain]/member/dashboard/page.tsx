@@ -201,7 +201,7 @@ function MemberDashboardContent() {
                   </p>
                   <Link href="/member/renew-membership">
                     <Button className="mt-6 h-12 px-8 bg-red-500 hover:bg-red-600 text-white font-black uppercase tracking-widest rounded-xl transition-all hover:scale-[1.02]">
-                      Initiate Renewal Protocol
+                      Initiate Renewal
                     </Button>
                   </Link>
                 </div>
@@ -219,11 +219,11 @@ function MemberDashboardContent() {
                 <div>
                   <h3 className="text-xl font-black uppercase italic tracking-tight text-white mb-1">Subscription Warning</h3>
                   <p className="text-sm font-medium text-gray-400 max-w-xl">
-                    Vault access expires in <span className="text-[#daa857] font-bold">{daysUntilExpiry} days</span> ({expiryDate.toLocaleDateString()}). Extend protocol now to maintain uninterrupted access.
+                    Vault access expires in <span className="text-[#daa857] font-bold">{daysUntilExpiry} days</span> ({expiryDate.toLocaleDateString()}). Extend plan now to maintain uninterrupted access.
                   </p>
                   <Link href="/member/renew-membership">
                     <Button className="mt-6 h-12 px-8 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black uppercase tracking-widest rounded-xl transition-all hover:scale-[1.02]">
-                      Extend Protocol
+                      Extend Plan
                     </Button>
                   </Link>
                 </div>

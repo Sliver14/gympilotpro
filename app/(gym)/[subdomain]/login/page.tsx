@@ -220,7 +220,7 @@ export default function LoginPage() {
                   className="text-xs text-gray-500 hover:text-white transition-colors font-bold uppercase tracking-widest"
                   style={{ color: `${accent}cc` }}
                 >
-                  Forgot Key?
+                  Forgot Password?
                 </Link>
               </div>
 
@@ -253,7 +253,7 @@ export default function LoginPage() {
 
         {/* Footer info */}
         <p className="mt-12 text-center text-[10px] text-gray-700 font-black uppercase tracking-[0.5em]">
-          {gymName} © 2026 • Security Protocol Active
+          {gymName} © 2026 • Security Active
         </p>
       </div>
     </div>

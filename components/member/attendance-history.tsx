@@ -48,7 +48,7 @@ export default function AttendanceHistory({ attendance }: AttendanceHistoryProps
           <h3 className="text-xl font-black uppercase italic tracking-tighter text-white flex items-center gap-3">
             <Calendar className="h-5 w-5 text-[#daa857]" /> Deployment <span className="text-[#daa857]">Log</span>
           </h3>
-          <p className="text-[10px] font-black uppercase tracking-widest text-gray-500">Live Mission Data</p>
+          <p className="text-[10px] font-black uppercase tracking-widest text-gray-500">Live Attendance Data</p>
         </div>
 
         {sortedAttendance.length === 0 ? (
@@ -62,7 +62,7 @@ export default function AttendanceHistory({ attendance }: AttendanceHistoryProps
                 <div className="space-y-1 mb-4 md:mb-0">
                   <p className="text-sm font-black text-white uppercase italic tracking-tight">{formatTime(record.checkInTime)}</p>
                   <p className="text-[10px] font-bold text-[#daa857] uppercase tracking-widest">
-                    Mission Duration: <span className="text-gray-400">{getDuration(record.checkInTime, record.checkOutTime)}</span>
+                    Duration: <span className="text-gray-400">{getDuration(record.checkInTime, record.checkOutTime)}</span>
                   </p>
                 </div>
                 <div className="flex items-center gap-4">

@@ -150,7 +150,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
 
       if (!res.ok) throw new Error('Upload failed')
 
-      toast({ title: 'Protocol Updated', description: 'Neural signature image synchronized.' })
+      toast({ title: 'Profile Updated', description: 'Profile image updated.' })
       if (onUpdate) onUpdate()
       router.refresh()
     } catch (error) {
@@ -264,7 +264,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
                 {userData.role} Core
               </div>
               <div className="inline-flex items-center rounded-full bg-white/5 border border-white/10 px-4 py-1 text-[10px] font-black uppercase tracking-widest text-gray-400">
-                Authorized Signature
+                Authorized Profile
               </div>
             </div>
           </div>
@@ -296,17 +296,17 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
           <DialogContent className="bg-[#111] border-white/10 text-white rounded-[2.5rem] p-10 max-w-2xl max-h-[90vh] overflow-y-auto custom-scrollbar">
             <DialogHeader className="space-y-4">
               <DialogTitle className="text-3xl font-black uppercase italic tracking-tighter">
-                Synchronize <span className="text-[#daa857]">Intel</span>
+                Update <span className="text-[#daa857]">Profile</span>
               </DialogTitle>
               <DialogDescription className="text-gray-500 font-medium uppercase text-[10px] tracking-widest leading-relaxed">
-                Update core biometric and identification data for the <span className="text-white font-black">{userData.role}</span> vault profile.
+                Update core profile data for the <span className="text-white font-black">{userData.role}</span> account.
               </DialogDescription>
             </DialogHeader>
             
             <form onSubmit={handleUpdateDetails} className="space-y-8 py-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-3">
-                  <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">First Identity</Label>
+                  <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">First Name</Label>
                   <Input 
                     value={detailsForm.firstName}
                     onChange={(e) => setDetailsForm({...detailsForm, firstName: e.target.value})}
@@ -315,7 +315,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
                   />
                 </div>
                 <div className="space-y-3">
-                  <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Last Identity</Label>
+                  <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Last Name</Label>
                   <Input 
                     value={detailsForm.lastName}
                     onChange={(e) => setDetailsForm({...detailsForm, lastName: e.target.value})}
@@ -383,7 +383,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
                   </div>
 
                   <div className="space-y-3">
-                    <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Mission Intelligence (Fitness Goals)</Label>
+                    <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Fitness Goals</Label>
                     <Textarea 
                       value={detailsForm.fitnessGoalsDetails}
                       onChange={(e) => setDetailsForm({...detailsForm, fitnessGoalsDetails: e.target.value})}
@@ -408,7 +408,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
                   disabled={detailsLoading}
                   className="flex-1 h-14 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black uppercase tracking-widest rounded-xl transition-all shadow-xl shadow-[#daa857]/10"
                 >
-                  {detailsLoading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : 'Synchronize Intel'}
+                  {detailsLoading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : 'Update Profile'}
                 </Button>
               </DialogFooter>
             </form>
@@ -440,13 +440,13 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
                 Entry <span className="text-[#daa857]">Security</span>
               </DialogTitle>
               <DialogDescription className="text-gray-500 font-medium uppercase text-[10px] tracking-widest leading-relaxed">
-                Define a new secure hash for vault authentication.
+                Define a new secure password for your account.
               </DialogDescription>
             </DialogHeader>
             
             <form onSubmit={handleChangePassword} className="space-y-6 py-6">
               <div className="space-y-3">
-                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Current Vault Key</Label>
+                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Current Password</Label>
                 <Input 
                   type="password"
                   value={passwords.currentPassword}
@@ -503,7 +503,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
       <Dialog open={isCropperModalOpen} onOpenChange={setIsCropperModalOpen}>
         <DialogContent className="bg-[#111] border-white/10 text-white rounded-[1.5rem] md:rounded-[2.5rem] p-0 overflow-hidden w-[95vw] md:max-w-2xl shadow-2xl">
           <DialogHeader className="sr-only">
-            <DialogTitle>Adjust Profile Signature</DialogTitle>
+            <DialogTitle>Adjust Profile Picture</DialogTitle>
           </DialogHeader>
 
           <div className="p-5 md:p-8 border-b border-white/5 flex items-center justify-between">
@@ -511,7 +511,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
               <div className="h-10 w-10 rounded-xl bg-[#daa857]/10 flex items-center justify-center text-[#daa857]">
                 <CropIcon className="h-5 w-5" />
               </div>
-              <h3 className="text-lg md:text-xl font-black uppercase italic tracking-tighter">Adjust <span className="text-[#daa857]">Signature</span></h3>
+              <h3 className="text-lg md:text-xl font-black uppercase italic tracking-tighter">Adjust <span className="text-[#daa857]">Profile Picture</span></h3>
             </div>
             <Button variant="ghost" size="icon" onClick={() => setIsCropperModalOpen(false)} className="rounded-full hover:bg-white/5">
               <X className="h-5 w-5" />
@@ -537,7 +537,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
           <div className="p-5 md:p-8 space-y-6 md:space-y-8 bg-[#111]">
             <div className="space-y-4">
               <div className="flex justify-between items-center">
-                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">Neural Zoom</Label>
+                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">Image Zoom</Label>
                 <span className="text-[10px] font-black text-[#daa857]">{Math.round(zoom * 100)}%</span>
               </div>
               <Slider
@@ -562,7 +562,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
                 onClick={handleCropConfirm}
                 className="flex-1 h-12 md:h-14 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black uppercase tracking-widest rounded-xl transition-all shadow-xl shadow-[#daa857]/10"
               >
-                Sync Optimized Signature
+                Save Profile Picture
               </Button>
             </div>
           </div>
@@ -575,10 +575,10 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
           <Info className="h-6 w-6" />
         </div>
         <div>
-          <h4 className="text-sm font-black uppercase italic tracking-widest text-white mb-2">Protocol Note</h4>
+          <h4 className="text-sm font-black uppercase italic tracking-widest text-white mb-2">Important Note</h4>
           <p className="text-xs font-medium text-gray-500 leading-relaxed uppercase tracking-tighter">
-            Changes to core identification metrics may require re-verification by Command Personnel. 
-            Maintain accurate data to ensure uninterrupted vault access.
+            Changes to core profile information may require re-verification by Gym Staff. 
+            Maintain accurate data to ensure uninterrupted access.
           </p>
         </div>
       </div>

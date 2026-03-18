@@ -191,7 +191,7 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
                 <DropdownMenuItem asChild className="rounded-xl focus:bg-white/5 cursor-pointer py-3 px-4">
                   <Link href="/admin/settings" className="flex items-center gap-3 font-black uppercase text-[10px] tracking-widest">
                     <Settings className="size-4" style={{ color: accent }} />
-                    Protocol Settings
+                    Gym Settings
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild className="rounded-xl focus:bg-white/5 cursor-pointer py-3 px-4">

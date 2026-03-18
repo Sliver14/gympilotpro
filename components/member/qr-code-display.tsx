@@ -68,7 +68,7 @@ export default function QRCodeDisplay({ memberId }: QRCodeDisplayProps) {
       <div className="relative z-10">
         <div className="flex items-center justify-between mb-12 pb-4 border-b border-white/5">
           <h3 className="text-xl font-black uppercase italic tracking-tighter text-white flex items-center gap-3">
-            <QrCode className="h-5 w-5 text-[#daa857]" /> Neural <span className="text-[#daa857]">Link</span>
+            <QrCode className="h-5 w-5 text-[#daa857]" /> Access <span className="text-[#daa857]">Pass</span>
           </h3>
           <p className="text-[10px] font-black uppercase tracking-widest text-gray-500">Access Authenticator</p>
         </div>
@@ -90,7 +90,7 @@ export default function QRCodeDisplay({ memberId }: QRCodeDisplayProps) {
                   className="w-full h-14 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black uppercase tracking-widest rounded-xl transition-all shadow-xl shadow-[#daa857]/10 flex items-center justify-center gap-3"
                 >
                   <Download className="h-5 w-5" />
-                  Extract Identity
+                  Download QR Code
                 </Button>
               </div>
             </>

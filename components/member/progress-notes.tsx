@@ -71,7 +71,7 @@ export default function ProgressNotes({ memberId }: ProgressNotesProps) {
         {notes.length === 0 ? (
           <div className="text-center py-20 bg-black/40 rounded-3xl border border-dashed border-white/5">
             <TrendingUp className="mx-auto h-12 w-12 text-gray-800" />
-            <p className="mt-4 text-sm font-bold text-gray-600 uppercase tracking-widest italic">Protocol notes pending trainer briefing.</p>
+            <p className="mt-4 text-sm font-bold text-gray-600 uppercase tracking-widest italic">Progress notes pending trainer briefing.</p>
           </div>
         ) : (
           <div className="space-y-6">

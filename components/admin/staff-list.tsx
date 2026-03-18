@@ -153,7 +153,7 @@ export default function StaffList() {
                   <div className="flex items-center justify-between md:justify-end gap-8 mt-6 md:mt-0 pt-6 md:pt-0 border-t md:border-none border-white/5 relative z-10">
                     <div className="text-left md:text-right">
                       <p className="text-[8px] font-black uppercase tracking-widest text-gray-600 mb-1">Specialization</p>
-                      <p className="text-xs font-black text-white uppercase italic">{s.staffProfile?.specialization || 'General Protocol'}</p>
+                      <p className="text-xs font-black text-white uppercase italic">{s.staffProfile?.specialization || 'General Role'}</p>
                     </div>
                     
                     <div className="text-left md:text-right">

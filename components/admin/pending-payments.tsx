@@ -122,7 +122,7 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
             <CardTitle className="flex items-center gap-3">
               <CreditCard className="h-5 w-5 text-[#daa857]" /> Update <span className="text-[#daa857]">Queue</span>
             </CardTitle>
-            <CardDescription>{payments.length} inbound transmissions awaiting verification</CardDescription>
+            <CardDescription>{payments.length} inbound payments awaiting verification</CardDescription>
           </div>
           <Button 
             onClick={fetchPayments} 
@@ -220,7 +220,7 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
               <div className="space-y-3">
                 <Label htmlFor="startDate" className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">
                   <CalendarIcon className="h-3.5 w-3.5 text-[#daa857]" />
-                  Protocol Start Date
+                  Plan Start Date
                 </Label>
                 <Input
                   id="startDate"
@@ -257,7 +257,7 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
                     Updating...
                   </>
                 ) : (
-                  'Commit Authorization'
+                  'Confirm Payment'
                 )}
               </Button>
             </DialogFooter>
