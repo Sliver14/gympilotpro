@@ -14,11 +14,16 @@ export default async function GymSubdomainLayout({
   const { subdomain } = await params
 
   if (subdomain !== 'www' && subdomain !== 'localhost') {
+    const cleanDomain = subdomain.replace(/^www\./, '')
+
     const gym = await prisma.gym.findFirst({
       where: {
         OR: [
           { slug: subdomain },
-          { customDomain: subdomain }
+          { slug: cleanDomain },
+          { customDomain: subdomain },
+          { customDomain: cleanDomain },
+          { customDomain: `www.${cleanDomain}` }
         ]
       },
       include: {
@@ -30,6 +35,23 @@ export default async function GymSubdomainLayout({
     })
 
     if (!gym) {
+      // If it's a custom domain (contains a dot), show the Domain Not Connected UI
+      if (subdomain.includes('.')) {
+        return (
+          <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white p-6 text-center font-sans">
+            <div className="h-20 w-20 bg-orange-500/10 rounded-full flex items-center justify-center mb-6 border border-orange-500/20">
+              <span className="text-orange-500 text-3xl font-black">!</span>
+            </div>
+            <h1 className="text-4xl font-black uppercase italic mb-4 tracking-tighter">Domain Not Connected</h1>
+            <p className="text-gray-400 max-w-md font-medium uppercase text-[10px] tracking-widest leading-relaxed">
+              This domain is currently pointing to our servers but hasn't been verified or linked to any active gym yet.
+            </p>
+            <div className="mt-10 pt-10 border-t border-white/5 w-full max-w-xs">
+               <p className="text-[8px] text-gray-700 font-black uppercase tracking-[0.5em]">GYMPILOTPRO SYSTEMS • 2026</p>
+            </div>
+          </div>
+        )
+      }
       return notFound()
     }
 

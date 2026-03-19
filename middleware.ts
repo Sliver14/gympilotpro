@@ -51,7 +51,7 @@ export default function middleware(req: NextRequest) {
   const normalizedDomain = hostname;
   const requestHeaders = new Headers(req.headers);
   requestHeaders.set('x-pathname', url.pathname);
-  return NextResponse.rewrite(new URL(`/custom/${normalizedDomain}${url.pathname}`, req.url), {
+  return NextResponse.rewrite(new URL(`/${normalizedDomain}${url.pathname}`, req.url), {
     request: { headers: requestHeaders }
   });
 }
