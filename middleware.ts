@@ -47,8 +47,15 @@ export default function middleware(req: NextRequest) {
     });
   }
 
-  // 3. Custom Domains (e.g., www.klimarxgym.com)
-  const normalizedDomain = hostname.startsWith('www.') ? hostname.replace('www.', '') : hostname;
+  // Auto redirect www -> root for custom domains
+  if (hostname.startsWith('www.')) {
+    const rootDomain = hostname.replace(/^www\./, '');
+    const protocol = req.headers.get('x-forwarded-proto') || 'https';
+    return NextResponse.redirect(new URL(url.pathname + url.search, `${protocol}://${rootDomain}`));
+  }
+
+  // 3. Custom Domains (e.g., klimarxgym.com)
+  const normalizedDomain = hostname;
   const requestHeaders = new Headers(req.headers);
   requestHeaders.set('x-pathname', url.pathname);
   return NextResponse.rewrite(new URL(`/custom/${normalizedDomain}${url.pathname}`, req.url), {

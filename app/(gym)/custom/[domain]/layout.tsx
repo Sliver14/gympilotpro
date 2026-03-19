@@ -18,6 +18,7 @@ export default async function CustomDomainLayout({
       where: {
         OR: [
           { customDomain: domain },
+          { customDomain: `www.${domain}` },
           { slug: domain }
         ],
         domainVerified: true
