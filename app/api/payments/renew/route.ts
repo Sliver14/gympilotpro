@@ -36,11 +36,6 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // Check for Paystack - Coming Soon
-    if (paymentMethod.toLowerCase() === 'paystack') {
-      return NextResponse.json({ error: 'Paystack payment is coming soon. Please use another method for now.', success: false }, { status: 400 })
-    }
-
     // Get membership details
     const membership = await prisma.membershipPackage.findFirst({
       where: { 
@@ -80,9 +75,58 @@ export async function POST(req: NextRequest) {
         status: 'pending',
         paymentMethod: paymentMethod,
         description: `Renewal: ${membership.name} (${membership.id})`,
-        reference: `RENEW-${Date.now()}`,
+        reference: `RENEW-${Date.now()}-${Math.random().toString(36).substring(7)}`,
       },
     })
+
+    if (paymentMethod.toLowerCase() === 'paystack') {
+      try {
+        const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://gympilotpro.com';
+        
+        const response = await fetch('https://api.paystack.co/transaction/initialize', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: user.email,
+            amount: membership.price * 100, // Paystack expects kobo
+            reference: payment.reference,
+            metadata: {
+              type: 'member_payment',
+              gymId: gym.id,
+              userId: user.id,
+              membershipId: membership.id,
+              paymentId: payment.id,
+              months: membership.duration
+            },
+            callback_url: `${baseUrl.replace('://', `://${gym.slug}.`)}/payment/success`
+          })
+        });
+
+        const paystackData = await response.json();
+        
+        if (paystackData.status) {
+          return NextResponse.json({
+            success: true,
+            authorization_url: paystackData.data.authorization_url,
+            reference: payment.reference,
+            payment: {
+              id: payment.id,
+              amount: payment.amount,
+              reference: payment.reference,
+              status: payment.status,
+            }
+          })
+        } else {
+          throw new Error(paystackData.message);
+        }
+      } catch (err: any) {
+        console.error('Paystack initialization error:', err);
+        return NextResponse.json({ error: err.message || 'Payment initialization failed', success: false }, { status: 500 });
+      }
+    }
 
     return NextResponse.json({
       success: true,

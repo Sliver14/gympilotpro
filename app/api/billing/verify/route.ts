@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getCurrentUser } from '@/lib/auth'
+import { sendRenewalEmail } from '@/lib/email'
 
 export async function POST(req: NextRequest) {
   try {
@@ -68,6 +69,21 @@ export async function POST(req: NextRequest) {
           startDate: now,
           endDate: newEndDate
         }
+      })
+    }
+
+    const gym = await prisma.gym.findUnique({ where: { id: gymId } })
+    
+    if (gym) {
+      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://gympilotpro.com'
+      const dashboardLoginUrl = baseUrl.replace('://', `://${gym.slug}.`) + '/login'
+
+      await sendRenewalEmail({
+        email: user.email,
+        gymName: gym.name,
+        amount: payment.amount,
+        nextBillingDate: newEndDate.toLocaleDateString(),
+        dashboardUrl: dashboardLoginUrl
       })
     }
 

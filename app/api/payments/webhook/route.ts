@@ -2,9 +2,7 @@ import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { prisma } from '@/lib/prisma';
 import axios from 'axios';
-import { Resend } from 'resend';
-
-const resend = new Resend(process.env.RESEND_API_KEY);
+import { sendSignupEmail, sendRenewalEmail, sendUpgradeEmail, sendMemberPaymentEmail } from '@/lib/email';
 
 export async function POST(req: Request) {
   try {
@@ -43,7 +41,10 @@ export async function POST(req: Request) {
       const verificationData = verifyRes.data;
 
       if (verificationData.status && verificationData.data.status === 'success') {
-        const { gymId, userId, plan, months } = metadata;
+        const { gymId, userId, plan, months, isNewUser } = metadata || {};
+        const paymentType = metadata?.type || 'signup';
+
+        console.log(`Processing Webhook: type=${paymentType}, gymId=${gymId}`);
 
         if (!gymId || !userId) {
           console.error('Webhook Error: Missing metadata (gymId or userId)', metadata);
@@ -51,20 +52,19 @@ export async function POST(req: Request) {
         }
 
         const durationMonths = parseInt(months) || 1;
+        const actualAmount = amount / 100; // Convert from Kobo
 
-        // 2. Perform updates in a database transaction
-        const result = await prisma.$transaction(async (tx) => {
-          // Check if payment already exists
-          const existingPayment = await tx.saaSPayment.findUnique({
+        // Store payment for SaaS billing (signup, renewal, upgrade)
+        if (['signup', 'renewal', 'upgrade'].includes(paymentType)) {
+          const existingPayment = await prisma.saaSPayment.findUnique({
             where: { reference },
           });
 
           if (!existingPayment) {
-            // Store payment
-            await tx.saaSPayment.create({
+            await prisma.saaSPayment.create({
               data: {
                 email: customer.email,
-                amount: amount / 100, // Convert from Kobo
+                amount: actualAmount,
                 plan: plan || 'Unknown',
                 reference: reference,
                 status: 'success',
@@ -72,77 +72,216 @@ export async function POST(req: Request) {
                 userId: userId,
               },
             });
+          } else {
+            await prisma.saaSPayment.update({
+              where: { reference },
+              data: { status: 'success' },
+            });
+          }
+        }
+
+        const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://gympilotpro.com';
+
+        switch (paymentType) {
+          case 'signup': {
+            const result = await prisma.$transaction(async (tx) => {
+              const activatedGym = await tx.gym.update({
+                where: { id: gymId },
+                data: { status: 'active' },
+              });
+              const activatedUser = await tx.user.update({
+                where: { id: userId },
+                data: { status: 'active' },
+              });
+              const startDate = new Date();
+              const endDate = new Date();
+              endDate.setMonth(endDate.getMonth() + durationMonths);
+
+              await tx.gymSubscription.create({
+                data: {
+                  gymId: gymId,
+                  plan: plan || 'pro',
+                  status: 'active',
+                  startDate: startDate,
+                  endDate: endDate,
+                },
+              });
+              return { activatedGym, activatedUser };
+            });
+
+            const dashboardLoginUrl = baseUrl.replace('://', `://${result.activatedGym.slug}.`) + '/login';
+            
+            await sendSignupEmail({
+              email: result.activatedUser.email,
+              firstName: result.activatedUser.firstName,
+              gymName: result.activatedGym.name,
+              loginUrl: dashboardLoginUrl,
+              isNewUser: isNewUser === true || isNewUser === 'true'
+            });
+            break;
           }
 
-          // Activate Gym
-          const activatedGym = await tx.gym.update({
-            where: { id: gymId },
-            data: { status: 'active' },
-          });
-
-          // Activate User
-          const activatedUser = await tx.user.update({
-            where: { id: userId },
-            data: { status: 'active' },
-          });
-
-          // Create or update subscription
-          const startDate = new Date();
-          const endDate = new Date();
-          endDate.setMonth(endDate.getMonth() + durationMonths);
-
-          await tx.gymSubscription.create({
-            data: {
-              gymId: gymId,
-              plan: plan || 'pro',
-              status: 'active',
-              startDate: startDate,
-              endDate: endDate,
-            },
-          });
-
-          return { activatedGym, activatedUser };
-        });
-
-        const { activatedGym, activatedUser } = result;
-
-        // Build the Gym Dashboard URL dynamically based on current environment
-        // The NEXT_PUBLIC_APP_URL is "https://gympilotpro.com" in prod.
-        // We replace '://' with '://<slug>.' to dynamically create "https://slug.gympilotpro.com/login"
-        const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://gympilotpro.com';
-        const dashboardLoginUrl = baseUrl.replace('://', `://${activatedGym.slug}.`) + '/login';
-
-        // 3. Send successful payment & login details email via Resend
-        await resend.emails.send({
-          from: 'GymPilotPro <noreply@klimarsspace.com>',
-          to: activatedUser.email,
-          subject: `Your GymPilotPro Account is Live! (${activatedGym.name})`,
-          html: `
-            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-              <h2 style="color: #10b981;">Payment Successful - Account Activated</h2>
-              <p>Hi ${activatedUser.firstName},</p>
-              <p>Congratulations! Your payment of ₦${amount / 100} has been received and your GymPilotPro dashboard for <strong>${activatedGym.name}</strong> is now live.</p>
+          case 'renewal': {
+            const result = await prisma.$transaction(async (tx) => {
+              const gym = await tx.gym.findUnique({ where: { id: gymId } });
+              const user = await tx.user.findUnique({ where: { id: userId } });
               
-              <div style="background-color: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                <h3 style="margin-top: 0; color: #374151;">Your Login Credentials</h3>
-                <p><strong>Login URL:</strong> <a href="${dashboardLoginUrl}">${dashboardLoginUrl}</a></p>
-                <p><strong>Admin Email:</strong> ${activatedUser.email}</p>
-                <p><strong>Default Password:</strong> ChangeMe123!</p>
-              </div>
+              const latestSub = await tx.gymSubscription.findFirst({
+                where: { gymId },
+                orderBy: { endDate: 'desc' },
+              });
 
-              <p style="color: #ef4444; font-weight: bold;">Please log in immediately and change your default password for security purposes.</p>
+              const now = new Date();
+              let newEndDate = latestSub && latestSub.endDate > now ? new Date(latestSub.endDate) : now;
+              newEndDate.setMonth(newEndDate.getMonth() + durationMonths);
+
+              if (latestSub) {
+                await tx.gymSubscription.update({
+                  where: { id: latestSub.id },
+                  data: { status: 'active', endDate: newEndDate },
+                });
+              } else {
+                await tx.gymSubscription.create({
+                  data: {
+                    gymId,
+                    plan: plan || 'pro',
+                    status: 'active',
+                    startDate: now,
+                    endDate: newEndDate,
+                  },
+                });
+              }
               
-              <div style="text-align: center; margin: 30px 0;">
-                <a href="${dashboardLoginUrl}" style="background-color: #f97316; color: white; padding: 14px 28px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">
-                  Go to My Dashboard
-                </a>
-              </div>
+              return { gym, user, newEndDate };
+            });
+
+            if (result.gym && result.user) {
+              const dashboardLoginUrl = baseUrl.replace('://', `://${result.gym.slug}.`) + '/login';
+              await sendRenewalEmail({
+                email: result.user.email,
+                gymName: result.gym.name,
+                amount: actualAmount,
+                nextBillingDate: result.newEndDate.toLocaleDateString(),
+                dashboardUrl: dashboardLoginUrl,
+              });
+            }
+            break;
+          }
+
+          case 'upgrade': {
+            const result = await prisma.$transaction(async (tx) => {
+              const gym = await tx.gym.findUnique({ where: { id: gymId } });
+              const user = await tx.user.findUnique({ where: { id: userId } });
               
-              <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
-              <p style="color: #6b7280; font-size: 14px;">Welcome to the GymPilotPro family! We are thrilled to help you automate and grow your business.</p>
-            </div>
-          `,
-        }).catch(err => console.error('Failed to send activation email:', err));
+              const latestSub = await tx.gymSubscription.findFirst({
+                where: { gymId },
+                orderBy: { endDate: 'desc' },
+              });
+
+              if (latestSub) {
+                await tx.gymSubscription.update({
+                  where: { id: latestSub.id },
+                  data: { plan: plan || latestSub.plan },
+                });
+              } else {
+                const now = new Date();
+                const endDate = new Date();
+                endDate.setMonth(endDate.getMonth() + durationMonths);
+                await tx.gymSubscription.create({
+                  data: {
+                    gymId,
+                    plan: plan || 'pro',
+                    status: 'active',
+                    startDate: now,
+                    endDate: endDate,
+                  },
+                });
+              }
+              
+              return { gym, user };
+            });
+
+            if (result.gym && result.user) {
+              const dashboardLoginUrl = baseUrl.replace('://', `://${result.gym.slug}.`) + '/login';
+              await sendUpgradeEmail({
+                email: result.user.email,
+                gymName: result.gym.name,
+                planName: plan || 'New Plan',
+                dashboardUrl: dashboardLoginUrl,
+              });
+            }
+            break;
+          }
+
+          case 'member_payment': {
+            const { paymentId } = metadata;
+
+            const result = await prisma.$transaction(async (tx) => {
+              let paymentRecord;
+              if (paymentId) {
+                paymentRecord = await tx.payment.update({
+                  where: { id: paymentId },
+                  data: { status: 'approved', reference },
+                });
+              } else {
+                paymentRecord = await tx.payment.create({
+                  data: {
+                    gymId,
+                    userId,
+                    amount: actualAmount,
+                    status: 'approved',
+                    paymentMethod: 'Paystack',
+                    reference,
+                    description: 'Online membership renewal',
+                  },
+                });
+              }
+
+              const memberProfile = await tx.memberProfile.findUnique({
+                where: { userId },
+              });
+
+              let newExpiry = new Date();
+              if (memberProfile && memberProfile.expiryDate && new Date(memberProfile.expiryDate) > newExpiry) {
+                newExpiry = new Date(memberProfile.expiryDate);
+              }
+              newExpiry.setMonth(newExpiry.getMonth() + durationMonths);
+
+              if (memberProfile) {
+                await tx.memberProfile.update({
+                  where: { userId },
+                  data: { expiryDate: newExpiry },
+                });
+              }
+
+              const gym = await tx.gym.findUnique({ where: { id: gymId } });
+              const memberUser = await tx.user.findUnique({ where: { id: userId } });
+              
+              const adminUser = await tx.user.findFirst({
+                where: { gymId, role: { in: ['admin', 'owner'] } },
+              });
+
+              return { gym, memberUser, adminUser, newExpiry, paymentRecord };
+            });
+
+            if (result.gym && result.memberUser) {
+              await sendMemberPaymentEmail({
+                memberEmail: result.memberUser.email,
+                adminEmail: result.adminUser?.email || '',
+                memberName: result.memberUser.firstName + ' ' + result.memberUser.lastName,
+                gymName: result.gym.name,
+                amount: actualAmount,
+                expiryDate: result.newExpiry.toLocaleDateString(),
+                datePaid: new Date().toLocaleDateString(),
+              });
+            }
+            break;
+          }
+
+          default:
+            console.warn(`Unknown payment type: ${paymentType}`);
+            break;
+        }
 
         return NextResponse.json({ success: true, message: 'Webhook processed successfully' });
       } else {
