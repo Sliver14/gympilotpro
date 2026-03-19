@@ -6,13 +6,21 @@ const projectId = process.env.VERCEL_PROJECT_ID;
 const token = process.env.VERCEL_TOKEN;
 const teamId = process.env.VERCEL_TEAM_ID; // Optional, only if using a Vercel Team
 
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
 // Helper function to add domain to Vercel
-async function addDomainToVercel(domain: string) {
+async function addDomainToVercel(domain: string, redirectTarget?: string) {
   if (!projectId || !token) {
     return { success: false, error: 'Vercel API credentials missing' };
   }
 
   const url = `https://api.vercel.com/v10/projects/${projectId}/domains${teamId ? `?teamId=${teamId}` : ''}`;
+  
+  const body: any = { name: domain };
+  if (redirectTarget) {
+    body.redirect = redirectTarget;
+    body.redirectStatusCode = 308; // Permanent redirect
+  }
 
   try {
     const response = await fetch(url, {
@@ -21,18 +29,18 @@ async function addDomainToVercel(domain: string) {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ name: domain }),
+      body: JSON.stringify(body),
     });
 
     const data = await response.json();
 
-    if (response.ok || data.error?.code === 'domain_already_in_use') {
-      return { success: true, data };
+    if (response.ok || data.error?.code === 'domain_already_in_use' || data.error?.code === 'domain_already_in_use_by_another_project') {
+      return { success: true, data, alreadyExists: !!data.error };
     }
 
     return { success: false, error: data.error?.message || 'Failed to add domain to Vercel' };
   } catch (error: any) {
-    console.error('Vercel Add Domain Error:', error);
+    console.error(`Vercel Add Domain Error (${domain}):`, error);
     return { success: false, error: error.message };
   }
 }
@@ -60,7 +68,7 @@ async function getVercelDomainStatus(domain: string) {
       misconfigured: config.misconfigured || false
     };
   } catch (error) {
-    console.error('Vercel Status Check Error:', error);
+    console.error(`Vercel Status Check Error (${domain}):`, error);
     return null;
   }
 }
@@ -81,6 +89,29 @@ async function verifyDomainOnVercel(domain: string) {
   }
 }
 
+// Robust verifier with retry logic
+async function verifyWithRetry(domain: string, maxRetries = 2, delayMs = 5000) {
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    // 1. Force verification refresh
+    await verifyDomainOnVercel(domain);
+    
+    // 2. Fetch latest status
+    const status = await getVercelDomainStatus(domain);
+    
+    if (status && status.verified && !status.misconfigured) {
+      return status; // Success!
+    }
+    
+    if (attempt < maxRetries) {
+      console.log(`[Attempt ${attempt}/${maxRetries}] ${domain} verification pending/misconfigured. Retrying in ${delayMs}ms...`);
+      await sleep(delayMs);
+    } else {
+      return status; // Return final status even if failed
+    }
+  }
+  return null;
+}
+
 export async function POST(req: Request) {
   try {
     const { gymId, domain } = await req.json();
@@ -89,50 +120,77 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    // 1. Clean domain input (keep www if user provided it specifically)
-    let normalizedDomain = domain.toLowerCase().trim().replace(/^https?:\/\//, '').split('/')[0];
+    // 1. Normalize domains
+    let rawDomain = domain.toLowerCase().trim().replace(/^https?:\/\//, '').split('/')[0];
+    const rootDomain = rawDomain.replace(/^www\./, '');
+    const wwwDomain = `www.${rootDomain}`;
 
-    if (normalizedDomain.includes('gympilotpro.com')) {
+    if (rootDomain.includes('gympilotpro.com')) {
       return NextResponse.json({ error: 'Cannot connect internal domains' }, { status: 400 });
     }
 
-    // 2. Add to Vercel First
-    const addResult = await addDomainToVercel(normalizedDomain);
-    if (!addResult.success) {
-      return NextResponse.json({ error: addResult.error }, { status: 500 });
+    // 2. Add BOTH domains to Vercel
+    // Add www. first since it's our primary
+    const wwwAddResult = await addDomainToVercel(wwwDomain);
+    if (!wwwAddResult.success) {
+      return NextResponse.json({ error: `Failed to add ${wwwDomain}: ${wwwAddResult.error}` }, { status: 500 });
     }
 
-    // 3. Attempt verification
-    await verifyDomainOnVercel(normalizedDomain);
-
-    // 4. Check Status
-    const status = await getVercelDomainStatus(normalizedDomain);
-
-    if (!status) {
-      return NextResponse.json({ error: 'Failed to verify status with Vercel' }, { status: 500 });
+    // Add root domain and set it to redirect to the primary www. domain
+    const rootAddResult = await addDomainToVercel(rootDomain, wwwDomain);
+    if (!rootAddResult.success) {
+      return NextResponse.json({ error: `Failed to add ${rootDomain}: ${rootAddResult.error}` }, { status: 500 });
     }
 
-    // 5. If not verified, return required DNS records to the UI
-    if (!status.verified || status.misconfigured) {
-      // Vercel returns required records in config.misconfigured or domainData.verification
-      const verificationResponse = {
+    // 3. Attempt verification with retry mechanism for both domains (run in parallel)
+    const [wwwStatus, rootStatus] = await Promise.all([
+      verifyWithRetry(wwwDomain, 2, 5000), // e.g., max 2 retries with 5 sec delay
+      verifyWithRetry(rootDomain, 2, 5000)
+    ]);
+
+    if (!wwwStatus || !rootStatus) {
+      return NextResponse.json({ error: 'Failed to communicate with Vercel API for domain status' }, { status: 500 });
+    }
+
+    // 4. DNS Validation Awareness
+    const isWwwVerified = wwwStatus.verified && !wwwStatus.misconfigured;
+    const isRootVerified = rootStatus.verified && !rootStatus.misconfigured;
+
+    if (!isWwwVerified || !isRootVerified) {
+      // Determine what configuration to recommend to the user via the UI.
+      // We prioritize recommending the root A record if it's missing, otherwise the www CNAME.
+      let recommendedConfig = null;
+      let targetDomain = '';
+
+      if (!isRootVerified) {
+        targetDomain = rootDomain;
+        recommendedConfig = {
+          type: 'A',
+          name: '@',
+          value: '76.76.21.21'
+        };
+      } else {
+        targetDomain = wwwDomain;
+        recommendedConfig = {
+          type: 'CNAME',
+          name: 'www',
+          value: 'cname.vercel-dns.com'
+        };
+      }
+
+      return NextResponse.json({
         success: false,
         verified: false,
         requiresAction: true,
-        domain: normalizedDomain,
-        // Provide Vercel's recommended DNS configuration
-        recommendedConfig: {
-          type: normalizedDomain.includes('.') && normalizedDomain.split('.').length > 2 ? 'CNAME' : 'A',
-          name: normalizedDomain.includes('.') && normalizedDomain.split('.').length > 2 ? normalizedDomain.split('.')[0] : '@',
-          value: normalizedDomain.includes('.') && normalizedDomain.split('.').length > 2 ? 'cname.vercel-dns.com' : '76.76.21.21'
-        }
-      };
-      
-      return NextResponse.json(verificationResponse);
+        message: 'DNS configuration required. Please configure the records at your registrar.',
+        domain: targetDomain,
+        recommendedConfig: recommendedConfig
+      });
     }
 
-    // 6. Success: Update Database
-    const gymUrl = `https://${normalizedDomain}`;
+    // 5. Clean Success: Only triggers when both domains exist, are verified, and properly configured
+    // Store the primary domain in the database
+    const gymUrl = `https://${wwwDomain}`;
     const qrCodeUrl = await QRCode.toDataURL(gymUrl, {
       color: { dark: '#000000', light: '#ffffff' },
       margin: 1,
@@ -142,7 +200,7 @@ export async function POST(req: Request) {
     await prisma.gym.update({
       where: { id: gymId },
       data: {
-        customDomain: normalizedDomain,
+        customDomain: wwwDomain, // ALWAYS store the primary www variant
         domainVerified: true,
         qrCodeUrl: qrCodeUrl,
       },
@@ -151,11 +209,11 @@ export async function POST(req: Request) {
     return NextResponse.json({ 
       success: true, 
       verified: true,
-      message: 'Domain connected and verified successfully!' 
+      message: 'Both root and www domains connected and verified successfully! www is active as primary.' 
     });
 
   } catch (error: any) {
-    console.error('Domain Verification Error:', error);
+    console.error('Domain Verification API Error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
