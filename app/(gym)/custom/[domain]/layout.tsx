@@ -13,13 +13,17 @@ export default async function CustomDomainLayout({
 }) {
   const { domain } = await params
 
-  if (domain !== 'www' && domain !== 'localhost') {
+  if (domain !== 'localhost') {
+    const cleanDomain = domain.replace(/^www\./, '')
+
     const gym = await prisma.gym.findFirst({
       where: {
         OR: [
           { customDomain: domain },
-          { customDomain: `www.${domain}` },
-          { slug: domain }
+          { customDomain: cleanDomain },
+          { customDomain: `www.${cleanDomain}` },
+          { slug: domain },
+          { slug: cleanDomain }
         ],
         domainVerified: true
       },

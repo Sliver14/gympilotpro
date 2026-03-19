@@ -47,13 +47,6 @@ export default function middleware(req: NextRequest) {
     });
   }
 
-  // Auto redirect www -> root for custom domains
-  if (hostname.startsWith('www.')) {
-    const rootDomain = hostname.replace(/^www\./, '');
-    const protocol = req.headers.get('x-forwarded-proto') || 'https';
-    return NextResponse.redirect(new URL(url.pathname + url.search, `${protocol}://${rootDomain}`));
-  }
-
   // 3. Custom Domains (e.g., klimarxgym.com)
   const normalizedDomain = hostname;
   const requestHeaders = new Headers(req.headers);

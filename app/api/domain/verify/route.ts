@@ -89,9 +89,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    // 1. Clean domain input and remove www if present
+    // 1. Clean domain input (keep www if user provided it specifically)
     let normalizedDomain = domain.toLowerCase().trim().replace(/^https?:\/\//, '').split('/')[0];
-    normalizedDomain = normalizedDomain.replace(/^www\./, '');
 
     if (normalizedDomain.includes('gympilotpro.com')) {
       return NextResponse.json({ error: 'Cannot connect internal domains' }, { status: 400 });
