@@ -1,7 +1,8 @@
 'use client'
 
 import { createContext, useContext, ReactNode, useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, usePathname } from 'next/navigation';
+import { SubscriptionLockScreen } from './subscription-lock-screen';
 
 interface GymContextType {
   gymSlug: string | null;
@@ -15,18 +16,35 @@ const GymContext = createContext<GymContextType>({
   isLoading: true 
 });
 
-export function GymProvider({ children }: { children: ReactNode }) {
+interface GymProviderProps {
+  children: ReactNode;
+  initialIsExpired?: boolean;
+  initialGymStatus?: string;
+  initialCurrentPlan?: string;
+  userRole?: string;
+}
+
+const PUBLIC_ROUTES = ['/login', '/signup', '/forgot-password', '/reset-password', '/setup'];
+
+export function GymProvider({ 
+  children, 
+  initialIsExpired = false,
+  initialGymStatus = 'active',
+  initialCurrentPlan = 'starter',
+  userRole = 'guest'
+}: GymProviderProps) {
   const params = useParams();
-  // In the new architecture, gymSlug is either in params (internal) or derived from host
+  const pathname = usePathname();
   const [gymSlug, setGymSlug] = useState<string | null>(null);
   const [gymData, setGymData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isExpired, setIsExpired] = useState(initialIsExpired);
+
+  const isPublicRoute = PUBLIC_ROUTES.some(route => pathname?.includes(route));
 
   useEffect(() => {
-    // 1. Try to get from params (for internal routing / Rewrites)
     let slug = (params.subdomain || params.domain) as string;
     
-    // 2. If not in params, try to derive from hostname
     if (!slug && typeof window !== 'undefined') {
       const hostname = window.location.hostname;
       if (hostname.includes('gympilotpro.com')) {
@@ -46,7 +64,17 @@ export function GymProvider({ children }: { children: ReactNode }) {
             const data = await response.json();
             setGymData(data);
             
-            // Apply dynamic branding colors to CSS variables
+            // Re-verify expiration client-side
+            if (data.subscriptions && data.subscriptions.length > 0) {
+               const latestSub = data.subscriptions[0];
+               const now = new Date();
+               const endDate = new Date(latestSub.endDate);
+               const expired = endDate < now || latestSub.status === 'expired';
+               setIsExpired(expired);
+            } else {
+               setIsExpired(true);
+            }
+
             if (data.primaryColor) {
               document.documentElement.style.setProperty('--primary-gym', data.primaryColor);
             }
@@ -65,6 +93,19 @@ export function GymProvider({ children }: { children: ReactNode }) {
       setIsLoading(false);
     }
   }, [params.subdomain, params.domain]);
+
+  // Atomic check to prevent flashing
+  if (!isPublicRoute && isExpired) {
+    return (
+      <SubscriptionLockScreen 
+        role={userRole} 
+        gymId={gymData?.id || ''} 
+        gymStatus={gymData?.status || initialGymStatus}
+        currentPlan={gymData?.subscriptions?.[0]?.plan || initialCurrentPlan}
+        accent={gymData?.primaryColor || '#daa857'} 
+      />
+    );
+  }
 
   return (
     <GymContext.Provider value={{ gymSlug, gymData, isLoading }}>

@@ -23,10 +23,15 @@ export async function GET(
         address: true,
         phone: true,
         email: true,
+        status: true,
         primaryColor: true,
         secondaryColor: true,
         heroTitle: true,
         heroSubtitle: true,
+        subscriptions: {
+          orderBy: { endDate: 'desc' },
+          take: 1
+        }
       },
     })
 
