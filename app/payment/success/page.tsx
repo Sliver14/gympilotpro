@@ -34,7 +34,7 @@ function SuccessContent() {
 
         if (data.success) {
           setStatus('success');
-          setMessage('Payment verified successfully!');
+          setMessage('Check your email for details and next steps.');
         } else {
           setStatus('error');
           setMessage(data.message || 'Payment verification failed.');
@@ -47,6 +47,10 @@ function SuccessContent() {
 
     verifyPayment();
   }, [reference]);
+
+  const handleGoHome = () => {
+    router.push('/');
+  };
 
   return (
     <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
@@ -67,18 +71,18 @@ function SuccessContent() {
             <h2 className="text-4xl font-black italic uppercase tracking-tighter text-white mb-2">
               Payment Successful
             </h2>
-            <p className="text-gray-400 font-medium">
+            <p className="text-gray-400 font-medium text-lg leading-relaxed">
               {message}
             </p>
-            <p className="text-orange-500 font-bold uppercase text-sm mt-4 tracking-widest">
+            <p className="text-orange-500 font-bold uppercase text-sm mt-5 tracking-widest">
               Plan Activated
             </p>
           </div>
           <Button 
-            onClick={() => router.push('/')}
-            className="w-full h-16 mt-4 bg-orange-500 hover:bg-orange-600 text-black font-black italic uppercase text-lg rounded-none"
+            onClick={handleGoHome}
+            className="w-full h-16 mt-6 bg-orange-500 hover:bg-orange-600 text-black font-black italic uppercase text-lg rounded-none"
           >
-            Go to Dashboard
+            Go Back Home
           </Button>
         </div>
       )}
@@ -90,15 +94,15 @@ function SuccessContent() {
             <h2 className="text-4xl font-black italic uppercase tracking-tighter text-white mb-2">
               Verification Failed
             </h2>
-            <p className="text-gray-400 font-medium">
+            <p className="text-gray-400 font-medium text-lg">
               {message}
             </p>
           </div>
           <Button 
-            onClick={() => router.push('/')}
-            className="w-full h-16 mt-4 bg-white hover:bg-gray-200 text-black font-black italic uppercase text-lg rounded-none"
+            onClick={handleGoHome}
+            className="w-full h-16 mt-6 bg-white hover:bg-gray-200 text-black font-black italic uppercase text-lg rounded-none"
           >
-            Return Home
+            Go Back Home
           </Button>
         </div>
       )}
