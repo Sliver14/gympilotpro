@@ -1,19 +1,18 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import dns from 'dns/promises';
 import QRCode from 'qrcode';
+
+const projectId = process.env.VERCEL_PROJECT_ID;
+const token = process.env.VERCEL_TOKEN;
+const teamId = process.env.VERCEL_TEAM_ID; // Optional, only if using a Vercel Team
 
 // Helper function to add domain to Vercel
 async function addDomainToVercel(domain: string) {
-  const projectId = process.env.VERCEL_PROJECT_ID;
-  const token = process.env.VERCEL_TOKEN;
-
   if (!projectId || !token) {
-    console.error('Vercel API credentials missing.');
     return { success: false, error: 'Vercel API credentials missing' };
   }
 
-  const url = `https://api.vercel.com/v10/projects/${projectId}/domains`;
+  const url = `https://api.vercel.com/v10/projects/${projectId}/domains${teamId ? `?teamId=${teamId}` : ''}`;
 
   try {
     const response = await fetch(url, {
@@ -27,39 +26,58 @@ async function addDomainToVercel(domain: string) {
 
     const data = await response.json();
 
-    if (response.ok) {
+    if (response.ok || data.error?.code === 'domain_already_in_use') {
       return { success: true, data };
-    }
-
-    if (data.error?.code === 'domain_already_in_use') {
-      return { success: false, error: 'Domain is already registered to another Vercel project or team.' };
     }
 
     return { success: false, error: data.error?.message || 'Failed to add domain to Vercel' };
   } catch (error: any) {
-    console.error('Vercel API Error:', error);
+    console.error('Vercel Add Domain Error:', error);
     return { success: false, error: error.message };
   }
 }
 
-// Helper to remove old domain from Vercel
-async function removeDomainFromVercel(domain: string) {
-  const projectId = process.env.VERCEL_PROJECT_ID;
-  const token = process.env.VERCEL_TOKEN;
+// Helper to check domain verification status and get required records
+async function getVercelDomainStatus(domain: string) {
+  if (!projectId || !token) return null;
 
-  if (!projectId || !token) return;
-
-  const url = `https://api.vercel.com/v9/projects/${projectId}/domains/${domain}`;
+  const configUrl = `https://api.vercel.com/v6/domains/${domain}/config${teamId ? `?teamId=${teamId}` : ''}`;
+  const domainUrl = `https://api.vercel.com/v9/projects/${projectId}/domains/${domain}${teamId ? `?teamId=${teamId}` : ''}`;
 
   try {
-    await fetch(url, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-    });
+    const [configRes, domainRes] = await Promise.all([
+      fetch(configUrl, { headers: { Authorization: `Bearer ${token}` } }),
+      fetch(domainUrl, { headers: { Authorization: `Bearer ${token}` } })
+    ]);
+
+    const config = await configRes.json();
+    const domainData = await domainRes.json();
+
+    return {
+      config,
+      domainData,
+      verified: domainData.verified || false,
+      misconfigured: config.misconfigured || false
+    };
   } catch (error) {
-    console.error('Failed to remove old domain from Vercel:', error);
+    console.error('Vercel Status Check Error:', error);
+    return null;
+  }
+}
+
+// Helper to trigger Vercel verification
+async function verifyDomainOnVercel(domain: string) {
+  if (!projectId || !token) return null;
+  const url = `https://api.vercel.com/v9/projects/${projectId}/domains/${domain}/verify${teamId ? `?teamId=${teamId}` : ''}`;
+  
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    return await response.json();
+  } catch (error) {
+    return null;
   }
 }
 
@@ -71,93 +89,56 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    // Normalize domain
-    let normalizedDomain = domain.toLowerCase().trim();
-    normalizedDomain = normalizedDomain.replace(/^https?:\/\//, '');
-    if (normalizedDomain.startsWith('www.')) {
-      normalizedDomain = normalizedDomain.replace('www.', '');
-    }
-    // Remove trailing slashes or paths
-    normalizedDomain = normalizedDomain.split('/')[0];
+    // 1. Clean domain input (but keep www if user provided it specifically)
+    let normalizedDomain = domain.toLowerCase().trim().replace(/^https?:\/\//, '').split('/')[0];
 
-    // Prevent verifying our root domain or subdomains natively
     if (normalizedDomain.includes('gympilotpro.com')) {
-      return NextResponse.json({ error: 'Cannot connect internal gympilotpro.com domains' }, { status: 400 });
+      return NextResponse.json({ error: 'Cannot connect internal domains' }, { status: 400 });
     }
 
-    // Check if domain is already taken by another gym
-    const existingDomainGym = await prisma.gym.findUnique({
-      where: { customDomain: normalizedDomain },
-    });
-
-    if (existingDomainGym && existingDomainGym.id !== gymId) {
-      return NextResponse.json({ error: 'Domain is already connected to another gym' }, { status: 400 });
+    // 2. Add to Vercel First
+    const addResult = await addDomainToVercel(normalizedDomain);
+    if (!addResult.success) {
+      return NextResponse.json({ error: addResult.error }, { status: 500 });
     }
 
-    // Domain Verification Logic (DNS)
-    let isVerified = false;
+    // 3. Attempt verification
+    await verifyDomainOnVercel(normalizedDomain);
 
-    try {
-      // 1. Check A records
-      const aRecords = await dns.resolve4(normalizedDomain).catch(() => [] as string[]);
-      // Example Vercel IP: 76.76.21.21
-      if (aRecords.includes('76.76.21.21')) {
-        isVerified = true;
-      }
+    // 4. Check Status
+    const status = await getVercelDomainStatus(normalizedDomain);
 
-      // 2. Check CNAME records (if A records fail or aren't Vercel's)
-      if (!isVerified) {
-        const cnameRecords = await dns.resolveCname(normalizedDomain).catch(() => [] as string[]);
-        const wwwCnameRecords = await dns.resolveCname(`www.${normalizedDomain}`).catch(() => [] as string[]);
-
-        const validCnames = ['cname.vercel-dns.com'];
-        const allCnames = [...cnameRecords, ...wwwCnameRecords].map(c => c.toLowerCase());
-
-        isVerified = allCnames.some(cname => validCnames.includes(cname));
-      }
-
-    } catch (dnsError) {
-      console.error('DNS Lookup Error:', dnsError);
-      return NextResponse.json({ error: 'Failed to lookup DNS records' }, { status: 400 });
+    if (!status) {
+      return NextResponse.json({ error: 'Failed to verify status with Vercel' }, { status: 500 });
     }
 
-    if (!isVerified) {
-      return NextResponse.json({ 
-        success: false, 
-        error: 'Domain verification failed. Please check your DNS settings and try again in a few minutes.' 
-      }, { status: 400 });
+    // 5. If not verified, return required DNS records to the UI
+    if (!status.verified || status.misconfigured) {
+      // Vercel returns required records in config.misconfigured or domainData.verification
+      const verificationResponse = {
+        success: false,
+        verified: false,
+        requiresAction: true,
+        domain: normalizedDomain,
+        // Provide Vercel's recommended DNS configuration
+        recommendedConfig: {
+          type: normalizedDomain.includes('.') && normalizedDomain.split('.').length > 2 ? 'CNAME' : 'A',
+          name: normalizedDomain.includes('.') && normalizedDomain.split('.').length > 2 ? normalizedDomain.split('.')[0] : '@',
+          value: normalizedDomain.includes('.') && normalizedDomain.split('.').length > 2 ? 'cname.vercel-dns.com' : '76.76.21.21'
+        }
+      };
+      
+      return NextResponse.json(verificationResponse);
     }
 
-    // ONLY IF DNS SUCCEEDS: Call Vercel API to automatically register the domain
-    const vercelResult = await addDomainToVercel(normalizedDomain);
-    
-    if (!vercelResult.success) {
-      return NextResponse.json({ 
-        success: false, 
-        error: `Failed to register domain with Vercel: ${vercelResult.error}` 
-      }, { status: 500 });
-    }
-
-    // Find current gym to check if there is an old domain to remove from Vercel
-    const currentGym = await prisma.gym.findUnique({
-      where: { id: gymId }
-    });
-
-    if (currentGym?.customDomain && currentGym.customDomain !== normalizedDomain) {
-      // Clean up old domain asynchronously
-      removeDomainFromVercel(currentGym.customDomain);
-    }
-
-    // Generate new QR Code for custom domain
-    const protocol = 'https://';
-    const gymUrl = `${protocol}${normalizedDomain}`;
+    // 6. Success: Update Database
+    const gymUrl = `https://${normalizedDomain}`;
     const qrCodeUrl = await QRCode.toDataURL(gymUrl, {
       color: { dark: '#000000', light: '#ffffff' },
       margin: 1,
       width: 400,
     });
 
-    // Update Gym with verified domain
     await prisma.gym.update({
       where: { id: gymId },
       data: {
@@ -167,7 +148,11 @@ export async function POST(req: Request) {
       },
     });
 
-    return NextResponse.json({ success: true, message: 'Domain verified and connected successfully' });
+    return NextResponse.json({ 
+      success: true, 
+      verified: true,
+      message: 'Domain connected and verified successfully!' 
+    });
 
   } catch (error: any) {
     console.error('Domain Verification Error:', error);
