@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useToast } from '@/hooks/use-toast'
-import { AlertCircle, Lock, Mail, ArrowRight, Loader2 } from 'lucide-react'
+import { AlertCircle, Lock, Mail, ArrowRight, Loader2, Eye, EyeOff } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 import { useGym } from '@/components/gym-provider'
@@ -16,6 +16,7 @@ export default function LoginPage() {
   const { gymData, isLoading: gymLoading } = useGym()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [fieldErrors, setFieldErrors] = useState<{ email?: string; password?: string }>({})
@@ -191,7 +192,7 @@ export default function LoginPage() {
                 <div className="relative group">
                   <Lock className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 transition-colors group-focus-within:text-white" style={{ color: fieldErrors.password ? '#ef4444' : `${accent}66` }} />
                   <Input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     placeholder="Password"
                     value={password}
                     onChange={(e) => {
@@ -201,11 +202,19 @@ export default function LoginPage() {
                     }}
                     disabled={isLoading}
                     className={cn(
-                      "h-16 pl-14 bg-black border-white/5 rounded-2xl focus:ring-0 transition-all placeholder:text-gray-700 font-medium",
+                      "h-16 pl-14 pr-14 bg-black border-white/5 rounded-2xl focus:ring-0 transition-all placeholder:text-gray-700 font-medium",
                       fieldErrors.password && "border-red-500/50 focus:border-red-500"
                     )}
                     style={{ borderColor: fieldErrors.password ? undefined : `${accent}1a` }}
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition-colors focus:outline-none"
+                    disabled={isLoading}
+                  >
+                    {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                  </button>
                 </div>
                 {fieldErrors.password && (
                   <p className="text-[10px] text-red-500 font-bold uppercase tracking-widest ml-2 flex items-center gap-1">

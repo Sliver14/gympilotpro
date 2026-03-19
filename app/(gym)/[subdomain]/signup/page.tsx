@@ -28,7 +28,9 @@ import {
   Phone, 
   ArrowRight,
   Crop as CropIcon,
-  X
+  X,
+  Eye,
+  EyeOff
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Spinner } from '@/components/ui/spinner'
@@ -98,6 +100,8 @@ export default function SignupPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [uploading, setUploading] = useState(false)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const isLoading = hookIsLoading || isSubmitting
   
@@ -601,23 +605,41 @@ export default function SignupPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-1">
                       <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 ml-2">Secure Password</Label>
-                      <Input 
-                        type="password"
-                        placeholder="Min 8 Characters" 
-                        value={formData.password}
-                        onChange={(e) => updateFormData({ password: e.target.value })}
-                        className={cn("h-16 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-6 font-bold", fieldErrors.password && "border-red-500")}
-                      />
+                      <div className="relative">
+                        <Input 
+                          type={showPassword ? "text" : "password"}
+                          placeholder="Min 8 Characters" 
+                          value={formData.password}
+                          onChange={(e) => updateFormData({ password: e.target.value })}
+                          className={cn("h-16 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-6 pr-14 font-bold", fieldErrors.password && "border-red-500")}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition-colors focus:outline-none"
+                        >
+                          {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                        </button>
+                      </div>
                     </div>
                     <div className="space-y-1">
                       <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 ml-2">Verify Password</Label>
-                      <Input 
-                        type="password"
-                        placeholder="Repeat Password" 
-                        value={formData.confirmPassword}
-                        onChange={(e) => updateFormData({ confirmPassword: e.target.value })}
-                        className={cn("h-16 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-6 font-bold", fieldErrors.confirmPassword && "border-red-500")}
-                      />
+                      <div className="relative">
+                        <Input 
+                          type={showConfirmPassword ? "text" : "password"}
+                          placeholder="Repeat Password" 
+                          value={formData.confirmPassword}
+                          onChange={(e) => updateFormData({ confirmPassword: e.target.value })}
+                          className={cn("h-16 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-6 pr-14 font-bold", fieldErrors.confirmPassword && "border-red-500")}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                          className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition-colors focus:outline-none"
+                        >
+                          {showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                        </button>
+                      </div>
                     </div>
                   </div>
 
