@@ -92,12 +92,14 @@ export default function DomainDashboard() {
             </p>
           </div>
 
-          <div className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full">
-            <div className={cn("h-2 w-2 rounded-full", isConnected ? "bg-green-500" : "bg-orange-500")} />
-            <span className="text-[10px] font-black uppercase tracking-widest">
-              {isConnected ? "Verified" : "Pending Setup"}
-            </span>
-          </div>
+          {isConnected && (
+            <div className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full">
+              <div className="h-2 w-2 rounded-full bg-green-500" />
+              <span className="text-[10px] font-black uppercase tracking-widest">
+                Verified
+              </span>
+            </div>
+          )}
         </div>
 
         {/* STATUS CARD */}
