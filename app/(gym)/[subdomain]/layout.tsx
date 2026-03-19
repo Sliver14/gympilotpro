@@ -46,6 +46,8 @@ export default async function GymSubdomainLayout({
         initialIsExpired={isExpired} 
         initialGymStatus={gym.status}
         initialCurrentPlan={latestSub?.plan || 'starter'}
+        initialGymId={gym.id}
+        initialAccent={gym.primaryColor || '#daa857'}
         userRole={user?.role || 'guest'}
       >
         {children}

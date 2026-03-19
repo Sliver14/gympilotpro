@@ -21,6 +21,8 @@ interface GymProviderProps {
   initialIsExpired?: boolean;
   initialGymStatus?: string;
   initialCurrentPlan?: string;
+  initialGymId?: string;
+  initialAccent?: string;
   userRole?: string;
 }
 
@@ -31,6 +33,8 @@ export function GymProvider({
   initialIsExpired = false,
   initialGymStatus = 'active',
   initialCurrentPlan = 'starter',
+  initialGymId = '',
+  initialAccent = '#daa857',
   userRole = 'guest'
 }: GymProviderProps) {
   const params = useParams();
@@ -99,10 +103,10 @@ export function GymProvider({
     return (
       <SubscriptionLockScreen 
         role={userRole} 
-        gymId={gymData?.id || ''} 
+        gymId={gymData?.id || initialGymId} 
         gymStatus={gymData?.status || initialGymStatus}
         currentPlan={gymData?.subscriptions?.[0]?.plan || initialCurrentPlan}
-        accent={gymData?.primaryColor || '#daa857'} 
+        accent={gymData?.primaryColor || initialAccent} 
       />
     );
   }
