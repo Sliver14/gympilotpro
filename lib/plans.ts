@@ -2,8 +2,8 @@ export const PLANS = {
   starter: {
     id: 'starter',
     name: "Starter",
-    setupFee: 1500,
-    monthlyFee: 1200,
+    setupFee: 150000,
+    monthlyFee: 12000,
     features: ["Up to 200 Members", "WhatsApp Reminders", "Basic Gym Dashboard", "QR Check-in"],
   },
   pro: {
