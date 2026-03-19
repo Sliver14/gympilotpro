@@ -167,14 +167,14 @@ export async function POST(req: Request) {
         recommendedConfig = {
           type: 'A',
           name: '@',
-          value: '76.76.21.21'
+          value: '216.198.79.1'
         };
       } else {
         targetDomain = wwwDomain;
         recommendedConfig = {
           type: 'CNAME',
           name: 'www',
-          value: 'cname.vercel-dns.com'
+          value: '25f84edf9647823c.vercel-dns-017.com'
         };
       }
 

@@ -219,13 +219,13 @@ export default function DomainDashboard() {
                       <div className="p-4 bg-white/5 border border-white/10 rounded-xl space-y-2">
                         <div className="flex justify-between">
                           <span className="text-[10px] font-black uppercase text-gray-500 italic">Type A (Root)</span>
-                          <span className="text-[10px] font-black text-white">76.76.21.21</span>
+                          <span className="text-[10px] font-black text-white">216.198.79.1</span>
                         </div>
                       </div>
                       <div className="p-4 bg-white/5 border border-white/10 rounded-xl space-y-2">
                         <div className="flex justify-between">
                           <span className="text-[10px] font-black uppercase text-gray-500 italic">CNAME (Sub)</span>
-                          <span className="text-[10px] font-black text-white italic">cname.vercel-dns.com</span>
+                          <span className="text-[10px] font-black text-white italic">25f84edf9647823c.vercel-dns-017.com</span>
                         </div>
                       </div>
                     </>
