@@ -43,12 +43,14 @@ export async function POST(req: Request) {
       const verificationData = verifyRes.data;
 
       if (verificationData.status && verificationData.data.status === 'success') {
-        const { gymId, userId, plan } = metadata;
+        const { gymId, userId, plan, months } = metadata;
 
         if (!gymId || !userId) {
           console.error('Webhook Error: Missing metadata (gymId or userId)', metadata);
           return NextResponse.json({ error: 'Invalid metadata' }, { status: 400 });
         }
+
+        const durationMonths = parseInt(months) || 1;
 
         // 2. Perform updates in a database transaction
         const result = await prisma.$transaction(async (tx) => {
@@ -87,12 +89,12 @@ export async function POST(req: Request) {
           // Create or update subscription
           const startDate = new Date();
           const endDate = new Date();
-          endDate.setMonth(endDate.getMonth() + 1); // 1 month duration
+          endDate.setMonth(endDate.getMonth() + durationMonths);
 
           await tx.gymSubscription.create({
             data: {
               gymId: gymId,
-              plan: plan,
+              plan: plan || 'pro',
               status: 'active',
               startDate: startDate,
               endDate: endDate,

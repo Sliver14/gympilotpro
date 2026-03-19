@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export async function POST(req: Request) {
   try {
-    const { email, amount, plan, gymId, userId } = await req.json();
+    const { email, amount, plan, months, gymId, userId } = await req.json();
 
     if (!email || !amount || !plan || !gymId || !userId) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
@@ -28,6 +28,7 @@ export async function POST(req: Request) {
         amount: amountInKobo,
         metadata: {
           plan,
+          months,
           gymId,
           userId,
         },

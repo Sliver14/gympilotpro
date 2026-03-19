@@ -1,22 +1,44 @@
 'use client'
 
-import { useState } from 'react'
-import { AlertCircle, Loader2, LogOut, CreditCard } from 'lucide-react'
+import { useState, useMemo } from 'react'
+import { AlertCircle, Loader2, LogOut, CreditCard, Check, ChevronDown } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/hooks/use-toast'
+import { PLANS, DURATIONS, calculatePrice, PlanKey } from '@/lib/plans'
+import { cn } from '@/lib/utils'
 
 interface SubscriptionLockScreenProps {
   role: string
   gymId: string
+  gymStatus?: string
+  currentPlan?: string
   accent?: string
 }
 
-export function SubscriptionLockScreen({ role, gymId, accent = '#daa857' }: SubscriptionLockScreenProps) {
+export function SubscriptionLockScreen({ 
+  role, 
+  gymId, 
+  gymStatus = 'active', 
+  currentPlan = 'starter',
+  accent = '#daa857' 
+}: SubscriptionLockScreenProps) {
   const router = useRouter()
   const { toast } = useToast()
   const [loading, setLoading] = useState(false)
+  
+  // Normalized current plan key
+  const currentPlanKey = currentPlan.toLowerCase() as PlanKey
+  
+  const [selectedPlan, setSelectedPlan] = useState<PlanKey>(currentPlanKey)
+  const [selectedMonths, setSelectedMonths] = useState(1)
+  
   const isAdmin = role === 'admin' || role === 'owner'
+  const isPending = gymStatus === 'pending'
+
+  const pricing = useMemo(() => {
+    return calculatePrice(selectedPlan, selectedMonths, isPending, currentPlanKey)
+  }, [selectedPlan, selectedMonths, isPending, currentPlanKey])
 
   const handleLogout = async () => {
     try {
@@ -31,83 +53,193 @@ export function SubscriptionLockScreen({ role, gymId, accent = '#daa857' }: Subs
   const handleRenew = async () => {
     setLoading(true)
     try {
-      // 1. Call renew
       const resRenew = await fetch('/api/billing/renew', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ gymId })
+        body: JSON.stringify({ 
+          gymId,
+          planKey: selectedPlan,
+          months: selectedMonths
+        })
       })
       const dataRenew = await resRenew.json()
       if (!resRenew.ok) throw new Error(dataRenew.error || 'Failed to initiate renewal')
-      const { reference } = dataRenew
-
-      toast({ title: 'Payment Initiated', description: 'Simulating secure payment gateway...' })
-
-      // Simulate external payment redirect / flow here...
-      await new Promise(r => setTimeout(r, 2000))
-
-      // 2. Call verify
-      const resVerify = await fetch('/api/billing/verify', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ gymId, reference })
-      })
-      const dataVerify = await resVerify.json()
-      if (!resVerify.ok) throw new Error(dataVerify.error || 'Failed to verify payment')
       
-      toast({ title: 'Payment Successful', description: 'Subscription restored. Reloading...' })
-      
-      // Reload to lift the lock
-      window.location.reload()
+      const { authorization_url } = dataRenew
+
+      toast({ title: 'Redirecting', description: 'Taking you to Paystack secure checkout...' })
+
+      if (authorization_url) {
+        window.location.href = authorization_url
+      } else {
+        throw new Error('No payment URL received')
+      }
     } catch (err: any) {
       console.error(err)
-      toast({ title: 'Renewal Failed', description: err.message || 'Please try again.', variant: 'destructive' })
+      toast({ title: 'Payment Failed', description: err.message || 'Please try again.', variant: 'destructive' })
       setLoading(false)
     }
   }
 
   return (
-    <div className="fixed inset-0 z-[100] flex min-h-screen flex-col items-center justify-center bg-[#0a0a0a] text-white p-4 font-sans">
-      <div className="text-center space-y-6 max-w-lg w-full p-10 border border-white/5 bg-[#111] rounded-[2.5rem] shadow-2xl relative overflow-hidden">
-        <div className="absolute inset-0 bg-[#daa857]/5 opacity-20 pointer-events-none" style={{ backgroundColor: `${accent}0D` }} />
+    <div className="fixed inset-0 z-[100] flex min-h-screen flex-col items-center justify-center bg-[#0a0a0a] text-white p-4 font-sans overflow-y-auto">
+      <div className="max-w-4xl w-full grid md:grid-cols-5 gap-0 border border-white/5 bg-[#111] rounded-[2.5rem] shadow-2xl overflow-hidden my-8">
         
-        <div className="h-24 w-24 bg-black rounded-[2rem] flex items-center justify-center mx-auto mb-8 border border-white/10 shadow-2xl">
-          <AlertCircle className="h-10 w-10 text-red-500" />
-        </div>
-        
-        <h1 className="text-3xl md:text-4xl font-black text-gray-200 uppercase tracking-tighter italic">
-          Subscription <span className="text-red-500">Expired</span>
-        </h1>
-        
-        {isAdmin ? (
-          <p className="text-gray-400 font-medium leading-relaxed px-4">
-            Your subscription has expired. Renew now to restore access for you and your members.
-          </p>
-        ) : (
-          <p className="text-gray-400 font-medium leading-relaxed px-4">
-            This gym’s subscription has expired. Please contact the gym administrator for assistance.
-          </p>
-        )}
-
-        <div className="pt-8 flex flex-col gap-4 relative z-10">
-          {isAdmin && (
-            <Button 
-              onClick={handleRenew} 
-              disabled={loading}
-              className="w-full h-14 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black uppercase tracking-widest rounded-xl transition-all shadow-xl shadow-[#daa857]/10"
-              style={{ backgroundColor: accent }}
-            >
-              {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <><CreditCard className="h-5 w-5 mr-2" /> Renew Plan</>}
-            </Button>
-          )}
+        {/* Left Panel: Info & Selection */}
+        <div className="md:col-span-3 p-8 md:p-12 space-y-8 relative">
+          <div className="absolute inset-0 bg-[#daa857]/5 opacity-10 pointer-events-none" style={{ backgroundColor: `${accent}0D` }} />
           
-          <Button 
-            onClick={handleLogout} 
-            variant="outline"
-            className="w-full h-14 border-white/10 bg-transparent hover:bg-white/5 text-gray-500 font-black uppercase tracking-widest rounded-xl"
-          >
-            <LogOut className="h-5 w-5 mr-2" /> Logout
-          </Button>
+          <div className="relative z-10">
+            <div className="h-16 w-16 bg-black rounded-2xl flex items-center justify-center mb-6 border border-white/10 shadow-xl">
+              <AlertCircle className="h-8 w-8 text-red-500" />
+            </div>
+            
+            <h1 className="text-3xl md:text-5xl font-black text-gray-200 uppercase tracking-tighter italic leading-none mb-4">
+              {isPending ? "Complete Your" : "Subscription"} <span className="text-red-500">{isPending ? "Setup" : "Expired"}</span>
+            </h1>
+            
+            <p className="text-gray-400 font-medium leading-relaxed max-w-md">
+              {isPending 
+                ? "Your gym account is created but pending payment. Unlock your dashboard to start managing your members."
+                : isAdmin 
+                  ? "Your subscription has expired. Renew now to restore access for you and your members."
+                  : "This gym’s subscription has expired. Please contact the gym administrator for assistance."
+              }
+            </p>
+          </div>
+
+          {isAdmin && (
+            <div className="space-y-6 relative z-10">
+              {/* Plan Selection */}
+              <div>
+                <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-3 block">Choose Plan</label>
+                <div className="grid grid-cols-3 gap-3">
+                  {(Object.keys(PLANS) as PlanKey[]).map((key) => {
+                    const plan = PLANS[key];
+                    const isCurrent = key === currentPlanKey;
+                    const isSelected = key === selectedPlan;
+                    
+                    return (
+                      <button
+                        key={key}
+                        onClick={() => setSelectedPlan(key)}
+                        className={cn(
+                          "p-4 rounded-xl border-2 text-left transition-all relative overflow-hidden group",
+                          isSelected 
+                            ? "bg-white/5 border-orange-500 shadow-[0_0_20px_rgba(249,115,22,0.1)]" 
+                            : "bg-black/20 border-white/5 hover:border-white/20"
+                        )}
+                        style={isSelected ? { borderColor: accent } : {}}
+                      >
+                        <p className={cn("text-xs font-black uppercase mb-1", isSelected ? "text-orange-500" : "text-gray-500")}
+                           style={isSelected ? { color: accent } : {}}>
+                          {plan.name}
+                        </p>
+                        <p className="text-sm font-bold text-gray-300">₦{plan.monthlyFee.toLocaleString()}</p>
+                        {isCurrent && !isPending && (
+                          <span className="absolute top-1 right-1 bg-white/10 text-[8px] px-1 rounded uppercase">Current</span>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Duration Selection */}
+              <div>
+                <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-3 block">Duration</label>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  {DURATIONS.map((d) => (
+                    <button
+                      key={d.months}
+                      onClick={() => setSelectedMonths(d.months)}
+                      className={cn(
+                        "py-3 px-2 rounded-xl border-2 text-center transition-all",
+                        selectedMonths === d.months 
+                          ? "bg-white/5 border-orange-500" 
+                          : "bg-black/20 border-white/5 hover:border-white/20 text-gray-500"
+                      )}
+                      style={selectedMonths === d.months ? { borderColor: accent } : {}}
+                    >
+                      <p className="text-xs font-black uppercase">{d.label}</p>
+                      {d.discount > 0 && <p className="text-[8px] font-bold text-green-500">{(d.discount * 100)}% OFF</p>}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Right Panel: Checkout */}
+        <div className="md:col-span-2 bg-black/40 p-8 md:p-12 border-l border-white/5 flex flex-col justify-between">
+          <div className="space-y-6">
+            <h3 className="text-xl font-black italic uppercase tracking-tighter">Summary</h3>
+            
+            <div className="space-y-4">
+              <div className="flex justify-between items-center py-3 border-b border-white/5">
+                <span className="text-gray-500 text-xs font-bold uppercase">Plan</span>
+                <span className="text-sm font-black uppercase italic">{PLANS[selectedPlan].name}</span>
+              </div>
+              <div className="flex justify-between items-center py-3 border-b border-white/5">
+                <span className="text-gray-500 text-xs font-bold uppercase">Duration</span>
+                <span className="text-sm font-black uppercase italic">{selectedMonths} Month(s)</span>
+              </div>
+              
+              {pricing.setupFeeCharge > 0 && (
+                <div className="flex justify-between items-center py-3 border-b border-white/5">
+                  <span className="text-gray-500 text-xs font-bold uppercase">{isPending ? "Setup Fee" : "Upgrade Fee"}</span>
+                  <span className="text-sm font-black italic">₦{pricing.setupFeeCharge.toLocaleString()}</span>
+                </div>
+              )}
+
+              <div className="flex justify-between items-center py-3 border-b border-white/5">
+                <span className="text-gray-500 text-xs font-bold uppercase">Monthly Fee</span>
+                <span className="text-sm font-black italic">₦{pricing.monthlyTotal.toLocaleString()}</span>
+              </div>
+
+              {pricing.discountAmount > 0 && (
+                <div className="flex justify-between items-center py-3 border-b border-white/5">
+                  <span className="text-green-500 text-[10px] font-black uppercase">Discount Applied</span>
+                  <span className="text-green-500 text-sm font-black italic">-₦{pricing.discountAmount.toLocaleString()}</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="mt-12 space-y-6">
+            <div className="flex justify-between items-end">
+              <span className="text-[10px] font-black uppercase tracking-widest text-gray-500">Total Payable</span>
+              <span className="text-4xl font-black italic text-orange-500" style={{ color: accent }}>
+                ₦{pricing.total.toLocaleString()}
+              </span>
+            </div>
+
+            <div className="flex flex-col gap-4">
+              {isAdmin && (
+                <Button 
+                  onClick={handleRenew} 
+                  disabled={loading}
+                  className="w-full h-16 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black uppercase tracking-widest rounded-xl transition-all shadow-xl shadow-[#daa857]/10"
+                  style={{ backgroundColor: accent }}
+                >
+                  {loading ? <Loader2 className="h-6 w-6 animate-spin" /> : <><CreditCard className="h-5 w-5 mr-2" /> Pay with Paystack</>}
+                </Button>
+              )}
+              
+              <Button 
+                onClick={handleLogout} 
+                variant="outline"
+                className="w-full h-14 border-white/10 bg-transparent hover:bg-white/5 text-gray-500 font-black uppercase tracking-widest rounded-xl"
+              >
+                <LogOut className="h-5 w-5 mr-2" /> Logout
+              </Button>
+            </div>
+            
+            <div className="flex items-center justify-center gap-2 opacity-30 grayscale contrast-200">
+               <img src="https://paystack.com/assets/img/v3/common/paystack-logo.svg" alt="Paystack" className="h-4" />
+            </div>
+          </div>
         </div>
       </div>
     </div>

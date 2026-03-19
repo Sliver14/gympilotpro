@@ -1,0 +1,62 @@
+export const PLANS = {
+  starter: {
+    id: 'starter',
+    name: "Starter",
+    setupFee: 150000,
+    monthlyFee: 12000,
+    features: ["Up to 200 Members", "WhatsApp Reminders", "Basic Gym Dashboard", "QR Check-in"],
+  },
+  pro: {
+    id: 'pro',
+    name: "Pro",
+    setupFee: 210000,
+    monthlyFee: 18000,
+    features: ["Up to 500 Members", "Custom Subdomain", "Full Automation Features", "Detailed Analytics"],
+  },
+  elite: {
+    id: 'elite',
+    name: "Elite",
+    setupFee: 450000,
+    monthlyFee: 35000,
+    features: ["Unlimited Members", "Custom Domain", "Priority Support", "Multi-branch Support", "Advanced Analytics"],
+  }
+};
+
+export const DURATIONS = [
+  { months: 1, label: "1 Month", discount: 0 },
+  { months: 3, label: "3 Months", discount: 0.05 },
+  { months: 6, label: "6 Months", discount: 0.10 },
+  { months: 12, label: "12 Months", discount: 0.15 },
+];
+
+export type PlanKey = keyof typeof PLANS;
+
+export function calculatePrice(planKey: PlanKey, months: number, isNewGym: boolean, currentPlanKey?: PlanKey) {
+  const plan = PLANS[planKey];
+  const duration = DURATIONS.find(d => d.months === months) || DURATIONS[0];
+  
+  let total = 0;
+  let setupFeeCharge = 0;
+  
+  if (isNewGym) {
+    // New gym pays full setup fee
+    setupFeeCharge = plan.setupFee;
+  } else if (currentPlanKey && planKey !== currentPlanKey) {
+    // Check if it's an upgrade
+    const currentPlan = PLANS[currentPlanKey];
+    if (plan.setupFee > currentPlan.setupFee) {
+      // Pay the difference in setup fees for upgrades
+      setupFeeCharge = plan.setupFee - currentPlan.setupFee;
+    }
+  }
+
+  const monthlyTotal = plan.monthlyFee * months * (1 - duration.discount);
+  total = setupFeeCharge + monthlyTotal;
+
+  return {
+    total,
+    setupFeeCharge,
+    monthlyTotal,
+    discountAmount: plan.monthlyFee * months * duration.discount
+  };
+}

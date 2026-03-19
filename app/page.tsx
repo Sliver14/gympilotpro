@@ -19,6 +19,8 @@ import {
   Quote // ← added for testimonial icon
 } from 'lucide-react'
 
+import { PLANS, DURATIONS, PlanKey } from '@/lib/plans'
+
 // --- Reusable Styled Components ---
 
 const SectionTag = ({ children }: { children: React.ReactNode }) => (
@@ -45,35 +47,14 @@ const FeatureCard = ({ icon: Icon, title, desc }: { icon: any, title: string, de
 export default function SaaSLandingPage() {
   const router = useRouter();
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
+  const [selectedMonths, setSelectedMonths] = useState(1);
   
-  const handlePayNow = (plan: any) => {
-    setLoadingPlan(plan.name);
-    router.push(`/get-started?plan=${plan.name.toLowerCase()}`);
+  const handlePayNow = (planKey: string) => {
+    setLoadingPlan(planKey);
+    router.push(`/get-started?plan=${planKey}&months=${selectedMonths}`);
   };
 
-  const plans = [
-    { 
-      name: "Starter", 
-      setupFee: "150,000",
-      monthlyFee: "12,000",
-      features: ["Up to 200 Members", "WhatsApp Reminders", "Basic Gym Dashboard", "QR Check-in"],
-      popular: false
-    },
-    { 
-      name: "Pro", 
-      setupFee: "210,000",
-      monthlyFee: "18,000",
-      features: ["Up to 500 Members", "Custom Subdomain", "Full Automation Features", "Detailed Analytics"], 
-      popular: true 
-    },
-    { 
-      name: "Elite", 
-      setupFee: "450,000",
-      monthlyFee: "35,000",
-      features: ["Unlimited Members", "Custom Domain", "Priority Support", "Multi-branch Support", "Advanced Analytics"],
-      popular: false
-    }
-  ];
+  const currentDuration = DURATIONS.find(d => d.months === selectedMonths) || DURATIONS[0];
 
   return (
     <div className="min-h-screen bg-[#080808] text-white selection:bg-orange-500 selection:text-black font-sans relative">
@@ -290,61 +271,96 @@ export default function SaaSLandingPage() {
       {/* --- Pricing --- */}
       <section id="pricing" className="py-32 bg-[#0d0d0d] border-y border-white/5 relative overflow-hidden">
         <div className="container mx-auto px-6 relative z-10">
-          <div className="text-center mb-24">
+          <div className="text-center mb-16">
             <SectionTag>// Pricing Plans</SectionTag>
             <h2 className="text-5xl md:text-7xl font-black italic uppercase tracking-tighter mb-6">Scale Your Empire</h2>
-            <p className="text-gray-500 text-lg md:text-xl font-medium italic">
-              "One recovered member can cover your monthly fee. Everything else is profit."
-            </p>
-          </div>
-          <div className="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {plans.map((p, i) => (
-              <div key={i} className={cn(
-                "p-10 border-2 flex flex-col transition-all duration-500 relative group", 
-                p.popular ? "border-orange-500 bg-white/5 lg:scale-105 z-10 shadow-[0_0_50px_rgba(249,115,22,0.1)]" : "border-white/10 bg-[#0a0a0a]"
-              )}>
-                {p.popular && (
-                  <span className="absolute -top-5 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-[10px] font-black px-6 py-2 uppercase italic tracking-widest shadow-xl">
-                    Owner's Choice
-                  </span>
-                )}
-                <h3 className="text-3xl font-black italic uppercase mb-2">{p.name}</h3>
-                
-                <div className="my-8 space-y-4">
-                  <div className="p-4 bg-white/5 border border-white/5 group-hover:border-orange-500/30 transition-colors">
-                    <p className="text-[10px] font-black uppercase text-gray-500 mb-1 tracking-widest">Setup Fee</p>
-                    <p className="text-3xl font-black italic tracking-tighter">₦{p.setupFee}</p>
-                  </div>
-                  <div className="p-4 bg-orange-500/5 border border-orange-500/20">
-                    <p className="text-[10px] font-black uppercase text-orange-500/70 mb-1 tracking-widest">Monthly</p>
-                    <div className="flex items-baseline gap-1">
-                      <span className="text-4xl font-black italic tracking-tighter text-orange-500">₦{p.monthlyFee}</span>
-                      <span className="text-gray-500 font-bold uppercase text-xs tracking-widest">/MO</span>
-                    </div>
-                  </div>
-                </div>
-
-                <ul className="space-y-4 mb-10 flex-1">
-                  {p.features.map((f, j) => (
-                    <li key={j} className="flex items-start gap-3 text-sm font-bold uppercase text-gray-400 group-hover:text-gray-200 transition-colors">
-                      <Check size={18} className="text-orange-500 shrink-0" /> {f}
-                    </li>
-                  ))}
-                </ul>
-                <Button 
-                  disabled={loadingPlan !== null}
-                  onClick={() => handlePayNow(p)}
+            
+            {/* Duration Selector */}
+            <div className="flex flex-wrap justify-center gap-4 mt-12 mb-8">
+              {DURATIONS.map((d) => (
+                <button
+                  key={d.months}
+                  onClick={() => setSelectedMonths(d.months)}
                   className={cn(
-                    "w-full h-16 rounded-none font-black italic uppercase text-lg transition-all", 
-                    p.popular ? "bg-orange-500 hover:bg-orange-600 text-white" : "bg-white hover:bg-orange-500 hover:text-white text-black"
+                    "px-8 py-3 font-black italic uppercase text-xs tracking-widest border-2 transition-all",
+                    selectedMonths === d.months 
+                      ? "bg-orange-500 border-orange-500 text-white shadow-[0_0_20px_rgba(249,115,22,0.3)]" 
+                      : "bg-transparent border-white/10 text-gray-500 hover:border-white/30"
                   )}
                 >
-                  {loadingPlan === p.name ? (
-                    <span className="flex items-center gap-2"><Loader2 className="animate-spin" /> Redirecting...</span>
-                  ) : "Unlock Access"}
-                </Button>
-              </div>
-            ))}
+                  {d.label}
+                  {d.discount > 0 && <span className="ml-2 text-[10px] text-white/70">-{d.discount * 100}%</span>}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {(Object.keys(PLANS) as PlanKey[]).map((key) => {
+              const p = PLANS[key];
+              const isPopular = key === 'pro';
+              const discountedMonthly = p.monthlyFee * (1 - currentDuration.discount);
+              const totalSetupAndMonthly = p.setupFee + (discountedMonthly * selectedMonths);
+
+              return (
+                <div key={key} className={cn(
+                  "p-10 border-2 flex flex-col transition-all duration-500 relative group", 
+                  isPopular ? "border-orange-500 bg-white/5 lg:scale-105 z-10 shadow-[0_0_50px_rgba(249,115,22,0.1)]" : "border-white/10 bg-[#0a0a0a]"
+                )}>
+                  {isPopular && (
+                    <span className="absolute -top-5 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-[10px] font-black px-6 py-2 uppercase italic tracking-widest shadow-xl">
+                      Owner's Choice
+                    </span>
+                  )}
+                  <h3 className="text-3xl font-black italic uppercase mb-2">{p.name}</h3>
+                  
+                  <div className="my-8 space-y-4">
+                    <div className="p-4 bg-white/5 border border-white/5 group-hover:border-orange-500/30 transition-colors">
+                      <p className="text-[10px] font-black uppercase text-gray-500 mb-1 tracking-widest">Initial Access (Setup)</p>
+                      <p className="text-3xl font-black italic tracking-tighter">₦{p.setupFee.toLocaleString()}</p>
+                    </div>
+                    <div className="p-4 bg-orange-500/5 border border-orange-500/20">
+                      <p className="text-[10px] font-black uppercase text-orange-500/70 mb-1 tracking-widest">
+                        {selectedMonths} Month{selectedMonths > 1 ? 's' : ''} Access
+                      </p>
+                      <div className="flex items-baseline gap-1">
+                        <span className="text-4xl font-black italic tracking-tighter text-orange-500">₦{(discountedMonthly * selectedMonths).toLocaleString()}</span>
+                        <span className="text-gray-500 font-bold uppercase text-[10px] tracking-widest">/{selectedMonths}MO</span>
+                      </div>
+                      {currentDuration.discount > 0 && (
+                        <p className="text-[9px] font-bold text-green-500 uppercase mt-1">Includes {currentDuration.discount * 100}% multi-month discount</p>
+                      )}
+                    </div>
+                  </div>
+
+                  <ul className="space-y-4 mb-10 flex-1">
+                    {p.features.map((f, j) => (
+                      <li key={j} className="flex items-start gap-3 text-sm font-bold uppercase text-gray-400 group-hover:text-gray-200 transition-colors">
+                        <Check size={18} className="text-orange-500 shrink-0" /> {f}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="pt-6 border-t border-white/5 mb-8">
+                     <p className="text-[10px] font-black uppercase text-gray-500 mb-1 tracking-widest">Total to Unlock Access</p>
+                     <p className="text-2xl font-black italic tracking-tighter text-white">₦{totalSetupAndMonthly.toLocaleString()}</p>
+                  </div>
+
+                  <Button 
+                    disabled={loadingPlan !== null}
+                    onClick={() => handlePayNow(key)}
+                    className={cn(
+                      "w-full h-16 rounded-none font-black italic uppercase text-lg transition-all", 
+                      isPopular ? "bg-orange-500 hover:bg-orange-600 text-white" : "bg-white hover:bg-orange-500 hover:text-white text-black"
+                    )}
+                  >
+                    {loadingPlan === key ? (
+                      <span className="flex items-center gap-2"><Loader2 className="animate-spin" /> Redirecting...</span>
+                    ) : "Unlock Access"}
+                  </Button>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>

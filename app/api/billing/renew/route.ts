@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getCurrentUser } from '@/lib/auth'
+import axios from 'axios'
+import { PLANS, calculatePrice, PlanKey } from '@/lib/plans'
 
 export async function POST(req: NextRequest) {
   try {
@@ -9,9 +11,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized: Admins only' }, { status: 403 })
     }
 
-    const { gymId } = await req.json()
-    if (!gymId) {
-      return NextResponse.json({ error: 'Gym ID is required' }, { status: 400 })
+    const { gymId, planKey, months } = await req.json()
+    if (!gymId || !planKey || !months) {
+      return NextResponse.json({ error: 'Gym ID, plan, and duration are required' }, { status: 400 })
     }
 
     if (user.gymId !== gymId) {
@@ -27,27 +29,52 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Gym not found' }, { status: 404 })
     }
 
-    const plan = gym.subscriptions[0]?.plan || 'pro'
-    const reference = `SAAS-PAY-${Date.now()}-${Math.floor(Math.random() * 1000)}`
+    const currentPlanName = gym.subscriptions[0]?.plan?.toLowerCase() as PlanKey || 'starter';
+    const isNewGym = gym.status === 'pending';
+    
+    // Calculate price securely on server
+    const { total } = calculatePrice(planKey as PlanKey, months, isNewGym, currentPlanName);
 
-    // Create a pending SaaSPayment record
-    await prisma.saaSPayment.create({
-      data: {
+    const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET_KEY;
+    if (!PAYSTACK_SECRET_KEY) {
+      return NextResponse.json({ error: 'Paystack secret key not configured' }, { status: 500 });
+    }
+
+    const amountInKobo = Math.round(total * 100);
+
+    const host = req.headers.get('host') || 'localhost:3000';
+    const protocol = host.includes('localhost') ? 'http' : 'https';
+    const callbackUrl = `${protocol}://${host}/payment/success`;
+
+    const response = await axios.post(
+      'https://api.paystack.co/transaction/initialize',
+      {
         email: user.email,
-        amount: 50000, // Hardcoded for this demo, would be dynamically calculated
-        plan,
-        reference,
-        status: 'pending',
-        gymId: gym.id,
-        userId: user.id
+        amount: amountInKobo,
+        metadata: {
+          plan: planKey,
+          months: months,
+          gymId,
+          userId: user.id,
+          type: isNewGym ? 'initial' : (planKey !== currentPlanName ? 'upgrade' : 'renewal')
+        },
+        callback_url: callbackUrl,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`,
+          'Content-Type': 'application/json',
+        },
       }
-    })
+    );
 
-    // Here you would normally initialize Paystack or Stripe and return the authorization_url.
-    // We will return the reference to mock the flow for the lock screen.
-    return NextResponse.json({ reference, success: true })
+    return NextResponse.json({ 
+      success: true, 
+      authorization_url: response.data.data.authorization_url,
+      reference: response.data.data.reference
+    })
   } catch (error: any) {
-    console.error('Renew error:', error)
+    console.error('Renew error:', error.response?.data || error.message)
     return NextResponse.json({ error: error.message || 'Internal server error' }, { status: 500 })
   }
 }

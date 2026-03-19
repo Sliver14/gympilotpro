@@ -61,6 +61,8 @@ export default async function GymSubdomainLayout({
           <SubscriptionLockScreen 
             role={user?.role || 'guest'} 
             gymId={gym.id} 
+            gymStatus={gym.status}
+            currentPlan={latestSub?.plan || 'starter'}
             accent={gym.primaryColor || '#daa857'} 
           />
         </GymProvider>

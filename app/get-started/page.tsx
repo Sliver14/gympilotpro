@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button';
 import { AlertCircle, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 
+import { PLANS, DURATIONS, PlanKey, calculatePrice } from '@/lib/plans';
+
 function GetStartedContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -15,28 +17,29 @@ function GetStartedContent() {
     gymName: '',
     email: '',
     phone: '',
-    plan: 'starter'
+    plan: 'starter' as PlanKey,
+    months: 1
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const plans: Record<string, { name: string, price: number }> = {
-    starter: { name: 'Starter', price: 162000 },
-    pro: { name: 'Pro', price: 228000 },
-    elite: { name: 'Elite', price: 485000 }
-  };
-
   useEffect(() => {
-    const planParam = searchParams.get('plan')?.toLowerCase();
-    if (planParam && plans[planParam]) {
-      setFormData(prev => ({ ...prev, plan: planParam }));
+    const planParam = searchParams.get('plan')?.toLowerCase() as PlanKey;
+    const monthsParam = parseInt(searchParams.get('months') || '1');
+
+    if (planParam && PLANS[planParam]) {
+      setFormData(prev => ({ ...prev, plan: planParam, months: monthsParam || 1 }));
+    } else if (monthsParam) {
+      setFormData(prev => ({ ...prev, months: monthsParam }));
     }
   }, [searchParams]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData(prev => ({ ...prev, [name]: name === 'months' ? parseInt(value) : value }));
   };
+
+  const pricing = calculatePrice(formData.plan, formData.months, true);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,7 +51,13 @@ function GetStartedContent() {
       const registerRes = await fetch('/api/auth/register-gym', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          fullName: formData.fullName,
+          gymName: formData.gymName,
+          email: formData.email,
+          phone: formData.phone,
+          plan: formData.plan
+        }),
       });
 
       const registerData = await registerRes.json();
@@ -58,7 +67,6 @@ function GetStartedContent() {
       }
 
       const { gymId, userId } = registerData;
-      const selectedPlan = plans[formData.plan];
 
       // 2. Initialize Payment
       const paymentRes = await fetch('/api/payments/initialize', {
@@ -66,8 +74,9 @@ function GetStartedContent() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email: formData.email,
-          amount: selectedPlan.price,
-          plan: selectedPlan.name,
+          amount: pricing.total,
+          plan: formData.plan,
+          months: formData.months,
           gymId,
           userId
         }),
@@ -89,8 +98,6 @@ function GetStartedContent() {
       setLoading(false);
     }
   };
-
-  const currentPlanPrice = plans[formData.plan]?.price || plans.starter.price;
 
   return (
     <div className="flex-1 flex items-center justify-center p-6 py-24">
@@ -135,58 +142,92 @@ function GetStartedContent() {
             </div>
           </div>
 
-          <div>
-            <label className="block text-xs font-bold uppercase text-gray-500 mb-2">Email Address</label>
-            <input 
-              type="email" 
-              name="email"
-              required
-              disabled={loading}
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="HELLO@GYM.COM" 
-              className="w-full bg-transparent border-2 border-white/10 p-4 font-black italic uppercase focus:border-orange-500 outline-none transition-colors text-white"
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold uppercase text-gray-500 mb-2">Phone (WhatsApp)</label>
-            <input 
-              type="tel" 
-              name="phone"
-              required
-              disabled={loading}
-              value={formData.phone}
-              onChange={handleChange}
-              placeholder="+234 800 000 0000" 
-              className="w-full bg-transparent border-2 border-white/10 p-4 font-black italic uppercase focus:border-orange-500 outline-none transition-colors text-white"
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold uppercase text-gray-500 mb-2">Selected Plan</label>
-            <div className="relative">
-              <select 
-                name="plan"
+          <div className="grid md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-xs font-bold uppercase text-gray-500 mb-2">Email Address</label>
+              <input 
+                type="email" 
+                name="email"
+                required
                 disabled={loading}
-                value={formData.plan}
+                value={formData.email}
                 onChange={handleChange}
-                className="w-full bg-[#0a0a0a] border-2 border-white/10 p-4 font-black italic uppercase focus:border-orange-500 outline-none transition-colors text-white appearance-none cursor-pointer"
-              >
-                <option value="starter">Starter - ₦162,000</option>
-                <option value="pro">Pro - ₦228,000</option>
-                <option value="elite">Elite - ₦485,000</option>
-              </select>
-              <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-orange-500">
-                ▼
+                placeholder="HELLO@GYM.COM" 
+                className="w-full bg-transparent border-2 border-white/10 p-4 font-black italic uppercase focus:border-orange-500 outline-none transition-colors text-white"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold uppercase text-gray-500 mb-2">Phone (WhatsApp)</label>
+              <input 
+                type="tel" 
+                name="phone"
+                required
+                disabled={loading}
+                value={formData.phone}
+                onChange={handleChange}
+                placeholder="+234 800 000 0000" 
+                className="w-full bg-transparent border-2 border-white/10 p-4 font-black italic uppercase focus:border-orange-500 outline-none transition-colors text-white"
+              />
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-xs font-bold uppercase text-gray-500 mb-2">Selected Plan</label>
+              <div className="relative">
+                <select 
+                  name="plan"
+                  disabled={loading}
+                  value={formData.plan}
+                  onChange={handleChange}
+                  className="w-full bg-[#0a0a0a] border-2 border-white/10 p-4 font-black italic uppercase focus:border-orange-500 outline-none transition-colors text-white appearance-none cursor-pointer"
+                >
+                  {Object.values(PLANS).map(p => (
+                    <option key={p.id} value={p.id}>{p.name}</option>
+                  ))}
+                </select>
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-orange-500">▼</div>
+              </div>
+            </div>
+            <div>
+              <label className="block text-xs font-bold uppercase text-gray-500 mb-2">Duration</label>
+              <div className="relative">
+                <select 
+                  name="months"
+                  disabled={loading}
+                  value={formData.months}
+                  onChange={handleChange}
+                  className="w-full bg-[#0a0a0a] border-2 border-white/10 p-4 font-black italic uppercase focus:border-orange-500 outline-none transition-colors text-white appearance-none cursor-pointer"
+                >
+                  {DURATIONS.map(d => (
+                    <option key={d.months} value={d.months}>{d.label}</option>
+                  ))}
+                </select>
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-orange-500">▼</div>
               </div>
             </div>
           </div>
 
           <div className="pt-6 border-t border-white/10">
-            <div className="flex justify-between items-center text-xl font-black italic uppercase text-white mb-6">
-              <span>Total Due Today</span>
-              <span className="text-orange-500">₦{currentPlanPrice.toLocaleString()}</span>
+            <div className="space-y-2 mb-6">
+              <div className="flex justify-between text-xs font-bold uppercase text-gray-500">
+                <span>Setup Fee</span>
+                <span>₦{pricing.setupFeeCharge.toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between text-xs font-bold uppercase text-gray-500">
+                <span>{formData.months} Month(s) Access</span>
+                <span>₦{pricing.monthlyTotal.toLocaleString()}</span>
+              </div>
+              {pricing.discountAmount > 0 && (
+                <div className="flex justify-between text-xs font-bold uppercase text-green-500">
+                  <span>Discount Applied</span>
+                  <span>-₦{pricing.discountAmount.toLocaleString()}</span>
+                </div>
+              )}
+              <div className="flex justify-between items-center text-xl font-black italic uppercase text-white pt-2">
+                <span>Total Due Today</span>
+                <span className="text-orange-500">₦{pricing.total.toLocaleString()}</span>
+              </div>
             </div>
 
             {error && (
