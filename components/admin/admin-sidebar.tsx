@@ -101,6 +101,13 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
       active: pathname.includes('/packages'),
       adminOnly: true,
     },
+    {
+      title: 'Billing',
+      url: `/admin/billing`,
+      icon: CreditCard,
+      active: pathname.includes('/billing'),
+      adminOnly: true,
+    },
   ]
 
   const menuItems = allMenuItems.filter(item => !item.adminOnly || role === 'admin')

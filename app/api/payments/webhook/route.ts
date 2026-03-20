@@ -178,27 +178,33 @@ export async function POST(req: Request) {
                 orderBy: { endDate: 'desc' },
               });
 
+              const now = new Date();
+              const newEndDate = new Date();
+              newEndDate.setMonth(newEndDate.getMonth() + durationMonths);
+
               if (latestSub) {
                 await tx.gymSubscription.update({
                   where: { id: latestSub.id },
-                  data: { plan: plan || latestSub.plan },
+                  data: { 
+                    plan: plan || latestSub.plan,
+                    status: 'active',
+                    startDate: now,
+                    endDate: newEndDate
+                  },
                 });
               } else {
-                const now = new Date();
-                const endDate = new Date();
-                endDate.setMonth(endDate.getMonth() + durationMonths);
                 await tx.gymSubscription.create({
                   data: {
                     gymId,
                     plan: plan || 'pro',
                     status: 'active',
                     startDate: now,
-                    endDate: endDate,
+                    endDate: newEndDate,
                   },
                 });
               }
               
-              return { gym, user };
+              return { gym, user, newEndDate };
             });
 
             if (result.gym && result.user) {

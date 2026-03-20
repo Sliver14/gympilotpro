@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getCurrentUser } from '@/lib/auth'
 import axios from 'axios'
-import { PLANS, calculatePrice, PlanKey } from '@/lib/plans'
+import { PLANS, calculatePrice, calculateUpgradePrice, PlanKey, PLAN_WEIGHTS } from '@/lib/plans'
 
 export async function POST(req: NextRequest) {
   try {
@@ -29,18 +29,45 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Gym not found' }, { status: 404 })
     }
 
-    const currentPlanName = gym.subscriptions[0]?.plan?.toLowerCase() as PlanKey || 'starter';
+    const latestSub = gym.subscriptions[0];
+    const currentPlanName = latestSub?.plan?.toLowerCase() as PlanKey || 'starter';
     const isNewGym = gym.status === 'pending';
     
-    // Calculate price securely on server
-    const { total } = calculatePrice(planKey as PlanKey, months, isNewGym, currentPlanName);
+    let finalAmount = 0;
+    let paymentType = 'renewal';
+
+    if (isNewGym) {
+      const { total } = calculatePrice(planKey as PlanKey, months, true);
+      finalAmount = total;
+      paymentType = 'signup';
+    } else {
+      const currentWeight = PLAN_WEIGHTS[currentPlanName] || 0;
+      const newWeight = PLAN_WEIGHTS[planKey as PlanKey] || 0;
+
+      if (newWeight > currentWeight && latestSub && new Date(latestSub.endDate) > new Date()) {
+        // Upgrade with proration
+        const { total } = calculateUpgradePrice(
+          currentPlanName,
+          planKey as PlanKey,
+          new Date(latestSub.endDate),
+          months
+        );
+        finalAmount = total;
+        paymentType = 'upgrade';
+      } else {
+        // Simple renewal or plan change after expiry
+        const { total } = calculatePrice(planKey as PlanKey, months, false, currentPlanName);
+        finalAmount = total;
+        paymentType = planKey !== currentPlanName ? 'upgrade' : 'renewal';
+      }
+    }
 
     const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET_KEY;
     if (!PAYSTACK_SECRET_KEY) {
       return NextResponse.json({ error: 'Paystack secret key not configured' }, { status: 500 });
     }
 
-    const amountInKobo = Math.round(total * 100);
+    const amountInKobo = Math.round(finalAmount * 100);
 
     const host = req.headers.get('host') || 'localhost:3000';
     const protocol = host.includes('localhost') ? 'http' : 'https';
@@ -56,7 +83,7 @@ export async function POST(req: NextRequest) {
           months: months,
           gymId,
           userId: user.id,
-          type: isNewGym ? 'initial' : (planKey !== currentPlanName ? 'upgrade' : 'renewal')
+          type: paymentType
         },
         callback_url: callbackUrl,
       },

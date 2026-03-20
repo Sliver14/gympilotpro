@@ -5,8 +5,9 @@ import { AlertCircle, Loader2, LogOut, CreditCard, Check, ChevronDown } from 'lu
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/hooks/use-toast'
-import { PLANS, DURATIONS, calculatePrice, PlanKey } from '@/lib/plans'
+import { PLANS, DURATIONS, calculatePrice, calculateUpgradePrice, PlanKey, PLAN_WEIGHTS } from '@/lib/plans'
 import { cn } from '@/lib/utils'
+import { ChevronLeft } from 'lucide-react'
 
 interface SubscriptionLockScreenProps {
   role: string
@@ -14,6 +15,7 @@ interface SubscriptionLockScreenProps {
   gymStatus?: string
   currentPlan?: string
   accent?: string
+  isUpgradeMode?: boolean
 }
 
 export function SubscriptionLockScreen({ 
@@ -21,14 +23,15 @@ export function SubscriptionLockScreen({
   gymId, 
   gymStatus = 'active', 
   currentPlan = 'starter',
-  accent = '#daa857' 
+  accent = '#daa857',
+  isUpgradeMode = false
 }: SubscriptionLockScreenProps) {
   const router = useRouter()
   const { toast } = useToast()
   const [loading, setLoading] = useState(false)
   
   // Normalized current plan key
-  const currentPlanKey = currentPlan.toLowerCase() as PlanKey
+  const currentPlanKey = (currentPlan?.toLowerCase() || 'starter') as PlanKey
   
   const [selectedPlan, setSelectedPlan] = useState<PlanKey>(currentPlanKey)
   const [selectedMonths, setSelectedMonths] = useState(1)
@@ -37,8 +40,34 @@ export function SubscriptionLockScreen({
   const isPending = gymStatus === 'pending'
 
   const pricing = useMemo(() => {
-    return calculatePrice(selectedPlan, selectedMonths, isPending, currentPlanKey)
+    const currentWeight = PLAN_WEIGHTS[currentPlanKey] || 0;
+    const newWeight = PLAN_WEIGHTS[selectedPlan] || 0;
+
+    // Check if it's a real upgrade (higher tier and not just renewal)
+    if (newWeight > currentWeight && !isPending) {
+      const mockEndDate = new Date();
+      mockEndDate.setDate(mockEndDate.getDate() + 15); // Mocking 15 days left for UI preview
+
+      const upgrade = calculateUpgradePrice(currentPlanKey, selectedPlan, mockEndDate, selectedMonths);
+      return {
+        total: upgrade.total,
+        setupFeeCharge: upgrade.setupFeeDiff,
+        monthlyTotal: upgrade.newPlanTotal,
+        discountAmount: 0,
+        unusedCredit: upgrade.unusedCredit,
+        daysRemaining: upgrade.daysRemaining
+      };
+    }
+
+    const standard = calculatePrice(selectedPlan, selectedMonths, isPending, currentPlanKey);
+    return {
+      ...standard,
+      unusedCredit: 0,
+      daysRemaining: 0
+    };
   }, [selectedPlan, selectedMonths, isPending, currentPlanKey])
+
+  const isActuallyUpgrade = PLAN_WEIGHTS[selectedPlan] > (PLAN_WEIGHTS[currentPlanKey] || 0) && !isPending;
 
   const handleLogout = async () => {
     try {
@@ -82,7 +111,10 @@ export function SubscriptionLockScreen({
   }
 
   return (
-    <div className="fixed inset-0 z-[100] flex min-h-screen flex-col items-center justify-center bg-[#0a0a0a] text-white p-4 font-sans overflow-y-auto">
+    <div className={cn(
+      "z-[100] flex min-h-screen flex-col items-center justify-center bg-[#0a0a0a] text-white p-4 font-sans overflow-y-auto",
+      !isUpgradeMode && "fixed inset-0"
+    )}>
       <div className="max-w-4xl w-full grid md:grid-cols-5 gap-0 border border-white/5 bg-[#111] rounded-[2.5rem] shadow-2xl overflow-hidden my-8">
         
         {/* Left Panel: Info & Selection */}
@@ -90,20 +122,32 @@ export function SubscriptionLockScreen({
           <div className="absolute inset-0 bg-[#daa857]/5 opacity-10 pointer-events-none" style={{ backgroundColor: `${accent}0D` }} />
           
           <div className="relative z-10">
+            {isUpgradeMode && (
+              <Button 
+                variant="ghost" 
+                onClick={() => router.back()}
+                className="mb-4 text-gray-500 hover:text-white uppercase text-[10px] font-black tracking-widest gap-2 p-0 h-auto"
+              >
+                <ChevronLeft size={14} /> Back
+              </Button>
+            )}
             <div className="h-16 w-16 bg-black rounded-2xl flex items-center justify-center mb-6 border border-white/10 shadow-xl">
-              <AlertCircle className="h-8 w-8 text-red-500" />
+              {isUpgradeMode ? <CreditCard className="h-8 w-8" style={{ color: accent }} /> : <AlertCircle className="h-8 w-8 text-red-500" />}
             </div>
             
             <h1 className="text-3xl md:text-5xl font-black text-gray-200 uppercase tracking-tighter italic leading-none mb-4">
-              {isPending ? "Complete Your" : "Subscription"} <span className="text-red-500">{isPending ? "Setup" : "Expired"}</span>
+              {isUpgradeMode ? "Upgrade Your" : (isPending ? "Complete Your" : "Subscription")} <span className={cn(!isUpgradeMode && "text-red-500")} style={isUpgradeMode ? { color: accent } : {}}>{isUpgradeMode ? "Plan" : (isPending ? "Setup" : "Expired")}</span>
             </h1>
             
             <p className="text-gray-400 font-medium leading-relaxed max-w-md">
-              {isPending 
-                ? "Your gym account is created but pending payment. Unlock your dashboard to start managing your members."
-                : isAdmin 
-                  ? "Your subscription has expired. Renew now to restore access for you and your members."
-                  : "This gym’s subscription has expired. Please contact the gym administrator for assistance."
+              {isUpgradeMode 
+                ? "Scale your gym with more members and premium features. Your remaining current plan balance will be applied as credit."
+                : (isPending 
+                  ? "Your gym account is created but pending payment. Unlock your dashboard to start managing your members."
+                  : isAdmin 
+                    ? "Your subscription has expired. Renew now to restore access for you and your members."
+                    : "This gym’s subscription has expired. Please contact the gym administrator for assistance."
+                )
               }
             </p>
           </div>
@@ -204,6 +248,13 @@ export function SubscriptionLockScreen({
                   <span className="text-green-500 text-sm font-black italic">-₦{pricing.discountAmount.toLocaleString()}</span>
                 </div>
               )}
+
+              {isActuallyUpgrade && pricing.unusedCredit > 0 && (
+                <div className="flex justify-between items-center py-3 border-b border-white/5">
+                  <span className="text-green-500 text-[10px] font-black uppercase">Unused Credit Applied</span>
+                  <span className="text-green-500 text-sm font-black italic">-₦{pricing.unusedCredit.toLocaleString()}</span>
+                </div>
+              )}
             </div>
           </div>
 
@@ -227,13 +278,15 @@ export function SubscriptionLockScreen({
                 </Button>
               )}
               
-              <Button 
-                onClick={handleLogout} 
-                variant="outline"
-                className="w-full h-14 border-white/10 bg-transparent hover:bg-white/5 text-gray-500 font-black uppercase tracking-widest rounded-xl"
-              >
-                <LogOut className="h-5 w-5 mr-2" /> Logout
-              </Button>
+              {!isUpgradeMode && (
+                <Button 
+                  onClick={handleLogout} 
+                  variant="outline"
+                  className="w-full h-14 border-white/10 bg-transparent hover:bg-white/5 text-gray-500 font-black uppercase tracking-widest rounded-xl"
+                >
+                  <LogOut className="h-5 w-5 mr-2" /> Logout
+                </Button>
+              )}
             </div>
             
             <div className="flex items-center justify-center gap-2 opacity-30 grayscale contrast-200">

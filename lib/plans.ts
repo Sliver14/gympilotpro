@@ -73,3 +73,40 @@ export function calculatePrice(planKey: PlanKey, months: number, isNewGym: boole
     discountAmount: plan.monthlyFee * months * duration.discount
   };
 }
+
+export function calculateUpgradePrice(
+  currentPlanKey: PlanKey,
+  newPlanKey: PlanKey,
+  endDate: Date,
+  newMonths: number
+) {
+  const currentPlan = PLANS[currentPlanKey];
+  const newPlan = PLANS[newPlanKey];
+  const duration = DURATIONS.find(d => d.months === newMonths) || DURATIONS[0];
+
+  const now = new Date();
+  const timeRemaining = endDate.getTime() - now.getTime();
+  const daysRemaining = Math.max(0, Math.ceil(timeRemaining / (1000 * 60 * 60 * 24)));
+  
+  // Calculate value of remaining time on current plan (assuming 30-day month for simple math)
+  const currentDailyRate = currentPlan.monthlyFee / 30;
+  const unusedCredit = currentDailyRate * daysRemaining;
+
+  // New plan setup fee difference
+  const setupFeeDiff = Math.max(0, newPlan.setupFee - currentPlan.setupFee);
+
+  // New plan cost for the selected duration
+  const newPlanTotal = newPlan.monthlyFee * newMonths * (1 - duration.discount);
+
+  // Final total = (New Plan Cost + Setup Diff) - Unused Credit
+  // Minimum 1000 NGN to cover transaction costs
+  const total = Math.max(1000, (newPlanTotal + setupFeeDiff) - unusedCredit); 
+
+  return {
+    total: Math.round(total),
+    setupFeeDiff: Math.round(setupFeeDiff),
+    newPlanTotal: Math.round(newPlanTotal),
+    unusedCredit: Math.round(unusedCredit),
+    daysRemaining
+  };
+}
