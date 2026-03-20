@@ -16,7 +16,7 @@ import {
   LayoutDashboard,
   AlertCircle,
   Loader2,
-  Quote // ← added for testimonial icon
+  Quote
 } from 'lucide-react'
 
 import { PLANS, DURATIONS, PlanKey } from '@/lib/plans'
