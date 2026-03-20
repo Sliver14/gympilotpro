@@ -263,6 +263,14 @@ export default function SignupPage() {
 
   const isBankTransfer = formData.paymentMethod === 'Bank Transfer'
 
+  if (gymLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-[#0a0a0a]">
+        <Loader2 className="h-8 w-8 animate-spin text-[#daa857]" />
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white selection:bg-[#daa857]/30 px-4 py-12 md:py-20">
       <div className="mx-auto w-full max-w-4xl">
