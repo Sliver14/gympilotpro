@@ -24,8 +24,9 @@ export default function LoginPage() {
   const { toast } = useToast()
 
   const accent = gymData?.primaryColor || '#daa857'
-  const logoUrl = gymData?.logo || '/WhatsApp_Image_2026-02-25_at_9.54.33_AM-removebg-preview.png'
+  const logoUrl = gymData?.logo
   const gymName = gymData?.name || 'Klimarx Space'
+  const gymInitials = gymName.split(' ').map((n: string) => n[0]).join('').substring(0, 2).toUpperCase()
   const tagline = gymData?.heroSubtitle || 'Elite Performance Sanctuary'
 
   const validateForm = () => {
@@ -125,13 +126,17 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         {/* Logo */}
         <Link href="/" className="mb-12 flex flex-col items-center justify-center gap-4 group">
-          <div className="relative h-20 w-20 overflow-hidden rounded-full border-2 transition-transform group-hover:scale-110" style={{ borderColor: `${accent}80` }}>
-            <Image 
-              src={logoUrl} 
-              alt={`${gymName} Logo`} 
-              fill
-              className="object-contain p-2 bg-white"
-            />
+          <div className="relative h-20 w-20 overflow-hidden rounded-full border-2 flex items-center justify-center transition-transform group-hover:scale-110" style={{ borderColor: `${accent}80`, backgroundColor: logoUrl ? 'white' : '#111' }}>
+            {logoUrl ? (
+              <Image 
+                src={logoUrl} 
+                alt={`${gymName} Logo`} 
+                fill
+                className="object-contain p-2"
+              />
+            ) : (
+              <span className="font-black italic text-2xl" style={{ color: accent }}>{gymInitials}</span>
+            )}
           </div>
           <div className="text-center">
             <h1 className="text-3xl font-black tracking-tighter uppercase italic">

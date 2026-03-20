@@ -114,8 +114,9 @@ export default function SignupPage() {
 
   const accent = gymData?.primaryColor || '#daa857'
   const dark = gymData?.secondaryColor || '#000000'
-  const logoUrl = gymData?.logo || '/WhatsApp_Image_2026-02-25_at_9.54.33_AM-removebg-preview.png'
+  const logoUrl = gymData?.logo
   const gymName = gymData?.name || 'Klimarx Space'
+  const gymInitials = gymName.split(' ').map((n: string) => n[0]).join('').substring(0, 2).toUpperCase()
 
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -269,13 +270,17 @@ export default function SignupPage() {
         {/* Header */}
         <div className="mb-12 flex flex-col items-center justify-center gap-6">
           <Link href="/" className="group flex flex-col items-center gap-3">
-             <div className="relative h-16 w-16 overflow-hidden rounded-full border-2 border-[#daa857]/50 p-1 bg-white transition-transform group-hover:scale-110">
-              <Image 
-                src="/WhatsApp_Image_2026-02-25_at_9.54.33_AM-removebg-preview.png" 
-                alt="Logo" 
-                fill
-                className="object-contain p-1"
-              />
+             <div className="relative h-16 w-16 overflow-hidden rounded-full border-2 flex items-center justify-center p-1 transition-transform group-hover:scale-110" style={{ borderColor: `${accent}80`, backgroundColor: logoUrl ? 'white' : '#111' }}>
+              {logoUrl ? (
+                <Image 
+                  src={logoUrl} 
+                  alt="Logo" 
+                  fill
+                  className="object-contain p-1"
+                />
+              ) : (
+                <span className="font-black italic text-xl" style={{ color: accent }}>{gymInitials}</span>
+              )}
             </div>
             <h1 className="text-2xl font-black uppercase italic tracking-tighter">Apply for <span style={{ color: accent }}>Membership</span></h1>
           </Link>
