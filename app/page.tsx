@@ -61,15 +61,18 @@ export default function SaaSLandingPage() {
       {/* Navigation - Add hamburger menu for mobile when ready */}
       <nav className="absolute top-0 w-full z-[100] bg-gradient-to-b from-black/80 to-transparent">
         <div className="container mx-auto px-5 sm:px-6 md:px-8 lg:px-10 h-20 sm:h-24 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-3 group">
             <Image 
               src="/gympilotpro.png" 
               alt="GymPilotPro Logo" 
               width={160} 
               height={40} 
-              className="h-8 sm:h-10 w-auto object-contain"
+              className="h-8 sm:h-10 w-auto object-contain transition-transform group-hover:scale-105"
               priority
             />
+            <span className="text-2xl sm:text-3xl font-black italic uppercase tracking-tighter">
+              GymPilot<span className="text-orange-500">Pro</span>
+            </span>
           </Link>
 
           <div className="hidden md:flex items-center gap-8 lg:gap-10 text-xs sm:text-[11px] font-black uppercase tracking-[0.2em]">
@@ -397,7 +400,7 @@ export default function SaaSLandingPage() {
             Get GymPilotPro
           </Button>
           <div className="pt-10 md:pt-12 mt-16 md:mt-24 border-t border-white/5 w-full flex flex-col md:flex-row justify-between items-center gap-6 md:gap-8">
-            <Link href="/" className="flex items-center gap-2">
+            <Link href="/" className="flex items-center gap-3 group">
               <Image 
                 src="/gympilotpro.png" 
                 alt="GymPilotPro Logo" 
@@ -405,6 +408,9 @@ export default function SaaSLandingPage() {
                 height={30} 
                 className="h-6 sm:h-8 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity"
               />
+              <span className="text-xl sm:text-2xl font-black italic uppercase tracking-tighter">
+                GymPilot<span className="text-orange-500">Pro</span>
+              </span>
             </Link>
             <p className="text-xs sm:text-[10px] font-black uppercase tracking-[0.2em] text-gray-700">
               © 2026 GYMPILOTPRO SYSTEMS. RUN LIKE A PRO.
