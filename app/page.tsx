@@ -115,7 +115,7 @@ export default function SaaSLandingPage() {
               </Button>
               <Button
                 asChild
-                className="h-14 sm:h-16 md:h-20 px-8 sm:px-10 md:px-12 border-2 border-white/20 hover:border-orange-500/50 hover:bg-orange-500/5 hover:text-white text-base sm:text-xl font-black italic uppercase rounded-none bg-white/5 backdrop-blur-sm transition-all"
+                className="h-14 sm:h-16 md:h-20 px-8 sm:px-10 md:px-12 text-white border-2 border-white/20 hover:border-orange-500/50 hover:bg-orange-500/5 hover:text-white text-base sm:text-xl font-black italic uppercase rounded-none bg-white/5 backdrop-blur-sm transition-all"
               >
                 <Link href="#features">Explore Platform</Link>
               </Button>

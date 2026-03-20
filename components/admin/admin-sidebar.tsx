@@ -201,13 +201,13 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
                     <p className="text-[10px] font-bold text-gray-500 uppercase tracking-tighter">{adminData.email}</p>
                   </div>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild className="rounded-xl focus:bg-white/5 cursor-pointer py-3 px-4">
+                <DropdownMenuItem asChild className="rounded-xl focus:bg-white/5 cursor-pointer py-3 px-4 text-white hover:text-white data-[highlighted]:text-white focus:text-white">
                   <Link href="/admin/settings" className="flex items-center gap-3 font-black uppercase text-[10px] tracking-widest">
                     <Settings className="size-4" style={{ color: accent }} />
                     Gym Settings
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild className="rounded-xl focus:bg-white/5 cursor-pointer py-3 px-4">
+                <DropdownMenuItem asChild className="rounded-xl focus:bg-white/5 cursor-pointer py-3 px-4 text-white hover:text-white data-[highlighted]:text-white focus:text-white">
                   <Link href="/admin/domain" className="flex items-center gap-3 font-black uppercase text-[10px] tracking-widest w-full justify-between">
                     <div className="flex items-center gap-3">
                       <Globe className="size-4" style={{ color: accent }} />
@@ -218,7 +218,7 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
                     )}
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={onLogout} className="rounded-xl focus:bg-red-500/10 focus:text-red-500 cursor-pointer py-3 px-4 mt-1 text-red-500/80">
+                <DropdownMenuItem onClick={onLogout} className="rounded-xl focus:bg-white/5 cursor-pointer py-3 px-4 text-white hover:text-white data-[highlighted]:text-white focus:text-white">
                   <div className="flex items-center gap-3 font-black uppercase text-[10px] tracking-widest">
                     <LogOut className="size-4" />
                     Log Out

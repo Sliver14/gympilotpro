@@ -115,7 +115,7 @@ export function GymSettingsForm() {
             </div>
             <Button 
               onClick={() => window.location.href = '/admin/billing'}
-              className="h-10 px-6 bg-white/5 hover:bg-white/10 text-white font-black uppercase tracking-widest rounded-xl text-[10px] border border-white/10 transition-all shadow-lg hover:shadow-xl"
+              className="h-10 px-6 bg-white/5 hover:bg-white/10 text-white hover:text-white focus:text-white font-black uppercase tracking-widest rounded-xl text-[10px] border border-white/10 transition-all shadow-lg hover:shadow-xl"
             >
               Upgrade or Renew Plan
             </Button>

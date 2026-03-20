@@ -126,7 +126,7 @@ export function SubscriptionLockScreen({
               <Button 
                 variant="ghost" 
                 onClick={() => router.back()}
-                className="mb-4 text-gray-500 hover:text-white uppercase text-[10px] font-black tracking-widest gap-2 p-0 h-auto"
+                className="mb-4 text-gray-500 hover:text-white focus:text-white uppercase text-[10px] font-black tracking-widest gap-2 p-0 h-auto"
               >
                 <ChevronLeft size={14} /> Back
               </Button>

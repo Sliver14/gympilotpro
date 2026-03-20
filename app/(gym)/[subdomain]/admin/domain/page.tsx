@@ -45,7 +45,7 @@ export default function DomainDashboard() {
             <Button 
               variant="ghost" 
               onClick={() => router.back()}
-              className="mb-4 text-gray-500 hover:text-white uppercase text-[10px] font-black tracking-widest gap-2"
+              className="mb-4 text-gray-500 hover:text-white focus:text-white uppercase text-[10px] font-black tracking-widest gap-2"
             >
               <ChevronLeft size={14} /> Back
             </Button>
@@ -55,7 +55,7 @@ export default function DomainDashboard() {
             </p>
           </div>
           <Button 
-            className="w-full h-14 bg-orange-500 text-black font-black uppercase tracking-widest rounded-xl"
+            className="w-full h-14 bg-orange-500 text-black hover:text-black focus:text-black font-black uppercase tracking-widest rounded-xl"
             onClick={() => router.push('/admin/billing')}
           >
             Upgrade Plan
