@@ -2,9 +2,6 @@
 
 import { useEffect, useState, Suspense, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
-import { SidebarProvider, SidebarInset, SidebarTrigger } from '@/components/ui/sidebar'
-import { AdminSidebar } from '@/components/admin/admin-sidebar'
-import { AdminMobileNav } from '@/components/admin/admin-mobile-nav'
 import { Spinner } from '@/components/ui/spinner'
 import { toast } from 'sonner'
 import { SubscriptionLockScreen } from '@/components/subscription-lock-screen'
@@ -40,11 +37,6 @@ function AdminBillingContent() {
     fetchAdminData()
   }, [fetchAdminData])
 
-  const handleLogout = async () => {
-    await fetch('/api/auth/logout', { method: 'POST' })
-    router.push('/login')
-  }
-
   if (isLoading || !adminData || !gymData) {
     return <div className="flex min-h-screen items-center justify-center bg-[#0a0a0a]"><Spinner className="h-8 w-8 text-[#daa857]" /></div>
   }
@@ -52,32 +44,28 @@ function AdminBillingContent() {
   const currentPlan = gymData.subscriptions?.[0]?.plan || 'starter'
 
   return (
-    <SidebarProvider>
-      <AdminSidebar adminData={adminData} onLogout={handleLogout} />
-      <SidebarInset className="bg-[#0a0a0a]">
-        <header className="flex h-16 shrink-0 items-center gap-2 border-b border-white/5 px-6 sticky top-0 z-30 bg-black/50 backdrop-blur-md">
-          <SidebarTrigger className="-ml-1" />
-          <div className="flex items-center gap-2">
-            <h1 className="text-sm font-black uppercase italic tracking-[0.2em] text-gray-400">
-              Admin <span className="text-[#daa857]">Billing</span>
-            </h1>
-          </div>
-        </header>
+    <div className="min-h-screen bg-[#0a0a0a] relative">
+      <div className="p-6 md:p-8">
+        <Button 
+          variant="ghost" 
+          onClick={() => router.back()}
+          className="text-gray-500 hover:text-white uppercase text-[10px] font-black tracking-widest gap-2 p-0 h-auto mb-4"
+        >
+          <ChevronLeft size={14} /> Back to Dashboard
+        </Button>
+      </div>
 
-        <div className="relative flex-1 bg-[#0a0a0a]">
-          <SubscriptionLockScreen 
-            role={adminData.role}
-            gymId={gymData.id}
-            gymStatus={gymData.status}
-            currentPlan={currentPlan}
-            accent={gymData.primaryColor}
-            isUpgradeMode={true}
-          />
-        </div>
-        
-        <AdminMobileNav role={adminData.role} />
-      </SidebarInset>
-    </SidebarProvider>
+      <div className="relative flex-1">
+        <SubscriptionLockScreen 
+          role={adminData.role}
+          gymId={gymData.id}
+          gymStatus={gymData.status}
+          currentPlan={currentPlan}
+          accent={gymData.primaryColor}
+          isUpgradeMode={true}
+        />
+      </div>
+    </div>
   )
 }
 

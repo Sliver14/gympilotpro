@@ -56,7 +56,7 @@ export default function DomainDashboard() {
           </div>
           <Button 
             className="w-full h-14 bg-orange-500 text-black font-black uppercase tracking-widest rounded-xl"
-            onClick={() => router.push('/admin/settings')}
+            onClick={() => router.push('/admin/billing')}
           >
             Upgrade Plan
           </Button>

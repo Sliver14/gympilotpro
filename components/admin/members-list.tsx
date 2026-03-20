@@ -148,7 +148,7 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
           <div className="flex flex-wrap items-center gap-3">
             {isAtCapacity ? (
               <Button 
-                onClick={() => window.location.href = '/admin/settings'}
+                onClick={() => window.location.href = '/admin/billing'}
                 className="bg-orange-500 hover:bg-orange-600 text-black font-black uppercase tracking-widest rounded-xl shadow-[0_0_20px_rgba(249,115,22,0.3)]"
               >
                 Upgrade Plan to Add More

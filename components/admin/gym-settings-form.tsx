@@ -109,16 +109,16 @@ export function GymSettingsForm() {
             <CardTitle className="text-2xl font-black uppercase italic tracking-tighter text-white">Gym Branding</CardTitle>
             <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mt-1">Customize your gym's look and feel</p>
           </div>
-          <div className="flex flex-col items-end gap-2">
+          <div className="flex flex-col items-end gap-3">
             <div className="bg-[#daa857]/10 text-[#daa857] px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest border border-[#daa857]/20">
               Current Plan: {currentPlan.toUpperCase()}
             </div>
-            <button 
+            <Button 
               onClick={() => window.location.href = '/admin/billing'}
-              className="text-[10px] font-black uppercase tracking-widest text-[#daa857] hover:underline"
+              className="h-10 px-6 bg-white/5 hover:bg-white/10 text-white font-black uppercase tracking-widest rounded-xl text-[10px] border border-white/10 transition-all shadow-lg hover:shadow-xl"
             >
-              Change or Renew Plan
-            </button>
+              Upgrade or Renew Plan
+            </Button>
           </div>
         </div>
       </CardHeader>
