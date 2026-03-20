@@ -3,6 +3,50 @@ import { GymProvider } from '@/components/gym-provider'
 import { prisma } from '@/lib/prisma'
 import { notFound } from 'next/navigation'
 import { getCurrentUser } from '@/lib/auth'
+import { Metadata } from 'next'
+
+export async function generateMetadata({ 
+  params 
+}: { 
+  params: Promise<{ subdomain: string }> 
+}): Promise<Metadata> {
+  const { subdomain } = await params
+
+  if (subdomain !== 'www' && subdomain !== 'localhost') {
+    const cleanDomain = subdomain.replace(/^www\./, '')
+
+    const gym = await prisma.gym.findFirst({
+      where: {
+        OR: [
+          { slug: subdomain },
+          { slug: cleanDomain },
+          { customDomain: subdomain },
+          { customDomain: cleanDomain },
+          { customDomain: `www.${cleanDomain}` }
+        ]
+      },
+      select: { name: true, favicon: true, tagline: true }
+    })
+
+    if (gym) {
+      return {
+        title: {
+          template: `%s | ${gym.name}`,
+          default: gym.name,
+        },
+        description: gym.tagline || 'Welcome to our premium fitness facility.',
+        icons: gym.favicon ? {
+          icon: gym.favicon,
+          apple: gym.favicon,
+        } : undefined
+      }
+    }
+  }
+
+  return {
+    title: 'GymPilotPro',
+  }
+}
 
 export default async function GymSubdomainLayout({
   children,

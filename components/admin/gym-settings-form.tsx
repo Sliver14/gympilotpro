@@ -208,7 +208,7 @@ export function GymSettingsForm() {
         <div className="space-y-6">
           <h3 className="text-sm font-black uppercase italic tracking-widest text-white">Media Assets</h3>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
             {/* Logo Upload */}
             <div className="p-4 bg-black border border-white/5 rounded-2xl flex flex-col items-center justify-center gap-4 text-center">
               <div className="h-20 w-20 rounded-full border border-white/10 overflow-hidden flex items-center justify-center bg-[#111]">
@@ -217,6 +217,17 @@ export function GymSettingsForm() {
               <Label className="text-[10px] font-black uppercase tracking-widest cursor-pointer hover:text-[#daa857]">
                 {uploadingField === 'logo' ? 'Uploading...' : 'Upload Logo'}
                 <input type="file" className="hidden" accept="image/*" onChange={e => handleFileUpload(e, 'logo')} disabled={!!uploadingField} />
+              </Label>
+            </div>
+
+            {/* Favicon Upload */}
+            <div className="p-4 bg-black border border-white/5 rounded-2xl flex flex-col items-center justify-center gap-4 text-center">
+              <div className="h-20 w-20 rounded-xl border border-white/10 overflow-hidden flex items-center justify-center bg-[#111]">
+                {gymData?.favicon ? <img src={gymData.favicon} alt="Favicon" className="w-full h-full object-contain p-4" /> : <ImageIcon className="text-gray-600" />}
+              </div>
+              <Label className="text-[10px] font-black uppercase tracking-widest cursor-pointer hover:text-[#daa857]">
+                {uploadingField === 'favicon' ? 'Uploading...' : 'Upload Favicon'}
+                <input type="file" className="hidden" accept="image/x-icon,image/png,image/jpeg" onChange={e => handleFileUpload(e, 'favicon')} disabled={!!uploadingField} />
               </Label>
             </div>
 
