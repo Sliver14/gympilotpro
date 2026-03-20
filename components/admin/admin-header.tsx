@@ -21,21 +21,26 @@ export default function AdminHeader({ adminData, onLogout, title, description }:
   const profileImage = adminData.profileImage || adminData.memberProfile?.profileImage
 
   const accent = gymData?.primaryColor || '#daa857'
-  const logo = gymData?.logo || "/WhatsApp_Image_2026-02-25_at_9.54.33_AM-removebg-preview.png"
+  const logo = gymData?.logo
   const gymName = gymData?.name || 'Klimarx'
+  const gymInitials = gymName.split(' ').map((n: string) => n[0]).join('').substring(0, 2).toUpperCase()
 
   return (
     <header className="border-b border-white/5 bg-black/80 backdrop-blur-md sticky top-0 z-30">
       <div className="container mx-auto flex h-16 items-center justify-between px-6">
         <div className="flex items-center gap-4">
           <Link href={`/admin/dashboard`} className="flex items-center gap-2 group">
-            <div className="relative h-8 w-8 overflow-hidden rounded-full border bg-white p-0.5 transition-transform group-hover:scale-110" style={{ borderColor: `${accent}4d` }}>
-              <Image 
-                src={logo} 
-                alt="Logo" 
-                fill
-                className="object-contain"
-              />
+            <div className="relative h-8 w-8 overflow-hidden rounded-full border flex items-center justify-center transition-transform group-hover:scale-110" style={{ borderColor: `${accent}4d`, backgroundColor: logo ? 'white' : '#111' }}>
+              {logo ? (
+                <Image 
+                  src={logo} 
+                  alt="Logo" 
+                  fill
+                  className="object-contain p-0.5"
+                />
+              ) : (
+                <span className="font-black italic text-xs" style={{ color: accent }}>{gymInitials}</span>
+              )}
             </div>
             <span className="text-xl font-black uppercase italic tracking-tighter text-white">{gymName}<span style={{ color: accent }}>Space</span></span>
           </Link>

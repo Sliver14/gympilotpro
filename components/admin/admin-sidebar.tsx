@@ -45,8 +45,9 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
   const role = adminData.role || 'admin'
 
   const accent = gymData?.primaryColor || '#daa857'
-  const logo = gymData?.logo || "/WhatsApp_Image_2026-02-25_at_9.54.33_AM-removebg-preview.png"
+  const logo = gymData?.logo
   const gymName = gymData?.name || 'Klimarx'
+  const gymInitials = gymName.split(' ').map((n: string) => n[0]).join('').substring(0, 2).toUpperCase()
 
   const allMenuItems = [
     {
@@ -111,14 +112,18 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
           <SidebarMenuItem>
             <SidebarMenuButton asChild size="lg" className="hover:bg-transparent active:bg-transparent">
               <Link href={`/${role}/dashboard`}>
-                <div className="flex aspect-square size-10 items-center justify-center rounded-xl bg-white p-1.5 shadow-[0_0_20px_rgba(255,255,255,0.1)] border transition-transform group-hover:scale-110" style={{ borderColor: `${accent}4d` }}>
-                  <Image 
-                    src={logo} 
-                    alt="Logo" 
-                    width={28} 
-                    height={24} 
-                    className="object-contain"
-                  />
+                <div className="flex aspect-square size-10 items-center justify-center rounded-xl bg-white p-1.5 shadow-[0_0_20px_rgba(255,255,255,0.1)] border transition-transform group-hover:scale-110 overflow-hidden" style={{ borderColor: `${accent}4d`, backgroundColor: logo ? 'white' : '#111' }}>
+                  {logo ? (
+                    <Image 
+                      src={logo} 
+                      alt="Logo" 
+                      width={28} 
+                      height={24} 
+                      className="object-contain"
+                    />
+                  ) : (
+                    <span className="font-black italic text-lg" style={{ color: accent }}>{gymInitials}</span>
+                  )}
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight ml-2">
                   <span className="truncate font-black uppercase italic tracking-tighter text-lg">{gymName}<span style={{ color: accent }}>Space</span></span>
