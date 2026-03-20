@@ -19,7 +19,7 @@ import {
 } from '@/components/ui/sidebar'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
-import { QrCode, TrendingUp, Users, Calendar, CreditCard, LogOut, Settings, UserCheck, Wallet, Globe } from 'lucide-react'
+import { QrCode, TrendingUp, Users, Calendar, CreditCard, LogOut, Settings, UserCheck, Wallet, Globe, Package } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import {
   DropdownMenu,
@@ -90,6 +90,13 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
       url: `/${role}/dashboard?tab=revenue`,
       icon: CreditCard,
       active: currentTab === 'revenue',
+      adminOnly: true,
+    },
+    {
+      title: 'Packages',
+      url: `/admin/packages`,
+      icon: Package,
+      active: pathname.includes('/packages'),
       adminOnly: true,
     },
   ]

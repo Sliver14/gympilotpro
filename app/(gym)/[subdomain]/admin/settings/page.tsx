@@ -13,6 +13,8 @@ import SettingsForm from '@/components/settings-form'
 import { Spinner } from '@/components/ui/spinner'
 import { toast } from 'sonner'
 
+import { GymSettingsForm } from '@/components/admin/gym-settings-form'
+
 function AdminSettingsContent() {
   const [adminData, setAdminData] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -29,7 +31,7 @@ function AdminSettingsContent() {
 
       const userData = await userResponse.json()
       
-      if (!['admin', 'secretary', 'trainer'].includes(userData.role)) {
+      if (!['admin', 'owner', 'secretary', 'trainer'].includes(userData.role)) {
         router.push(userData.role === 'member' ? '/member/dashboard' : '/login')
         return
       }
@@ -83,8 +85,11 @@ function AdminSettingsContent() {
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-8 p-6 md:p-10 pb-24 md:pb-20">
-          <div className="max-w-4xl mx-auto w-full">
+          <div className="max-w-4xl mx-auto w-full space-y-10">
             <SettingsForm userData={adminData} onUpdate={refreshData} />
+            {(adminData.role === 'admin' || adminData.role === 'owner') && (
+              <GymSettingsForm />
+            )}
           </div>
         </div>
         <AdminMobileNav role={adminData.role} />

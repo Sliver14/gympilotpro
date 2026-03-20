@@ -22,6 +22,7 @@ const nextConfig = {
     remotePatterns: [
       { protocol: 'https', hostname: '**' },
     ],
+    domains: ["images.unsplash.com", "res.cloudinary.com"],
   },
 
   reactStrictMode: process.env.NODE_ENV === 'development',

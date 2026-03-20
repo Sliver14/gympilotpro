@@ -26,6 +26,14 @@ model Gym {
   primaryColor   String?             @default("#daa857")
   secondaryColor String?             @default("#000000")
   qrCodeUrl      String?
+
+  tagline          String?
+  coverImage       String?
+  heroVideo        String?
+  favicon          String?
+  showcaseImage1   String?
+  showcaseImage2   String?
+
   attendances    Attendance[]
   devices        Device[]
   subscriptions  GymSubscription[]

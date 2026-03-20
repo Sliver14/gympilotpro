@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { useGym } from '@/components/gym-provider'
+import { getGymBranding } from '@/lib/gym-branding'
 import {
   Users,
   TrendingUp,
@@ -40,13 +41,19 @@ export default function GymLandingPage() {
 
   const visiblePackages = showAll ? packages : packages.slice(0, 3)
 
-  // Use dynamic gym branding colors, fallback to Klimarx defaults
-  const accent = gymData?.primaryColor || '#daa857'
-  const dark = gymData?.secondaryColor || '#000000'
-  const logoUrl = gymData?.logo || '/WhatsApp_Image_2026-02-25_at_9.54.33_AM-removebg-preview.png'
-  const heroTitle = gymData?.heroTitle || 'Forge Your Legacy'
-  const heroSubtitle = gymData?.heroSubtitle || 'Luxury fitness meets raw performance. Elevate your standard.'
-  const gymName = gymData?.name || 'Klimarx Space'
+  // Use dynamic gym branding
+  const branding = getGymBranding(gymData)
+  const accent = branding?.primaryColor || '#daa857'
+  const dark = branding?.secondaryColor || '#000000'
+  const heroTitle = branding?.heroTitle || 'Forge Your Legacy'
+  const heroSubtitle = branding?.heroSubtitle || 'Luxury fitness meets raw performance. Elevate your standard.'
+  const gymName = branding?.name || 'Klimarx Space'
+  
+  const logoUrl = branding?.logo
+  const initials = branding?.initials || 'GP'
+  const videoUrl = branding?.heroVideo || '/istockphoto-2013957555-640_adpp_is.mp4'
+  const image1 = branding?.showcaseImage1 || 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1000'
+  const image2 = branding?.showcaseImage2 || 'https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=1000'
 
   // Fullscreen logic
   useEffect(() => {
@@ -99,13 +106,17 @@ export default function GymLandingPage() {
       <nav className="fixed top-0 z-50 w-full border-b border-white/5 bg-black/30 backdrop-blur-lg transition-all duration-300">
         <div className="container mx-auto flex h-20 items-center justify-between px-6">
           <div className="flex items-center gap-3">
-            <div className="relative h-12 w-12 overflow-hidden rounded-full border" style={{ borderColor: `${accent}80` }}>
-              <Image
-                src={logoUrl}
-                alt={`${gymName} Logo`}
-                fill
-                className="object-contain p-1 bg-white"
-              />
+            <div className="relative h-12 w-12 overflow-hidden rounded-full border flex items-center justify-center font-bold text-xl" style={{ borderColor: `${accent}80`, backgroundColor: dark, color: accent }}>
+              {logoUrl ? (
+                <Image
+                  src={logoUrl}
+                  alt={`${gymName} Logo`}
+                  fill
+                  className="object-cover p-0"
+                />
+              ) : (
+                initials
+              )}
             </div>
             <span className="text-2xl font-black tracking-tighter uppercase italic">
               {gymName.split(' ')[0]}
@@ -154,7 +165,7 @@ export default function GymLandingPage() {
           playsInline
           className="absolute inset-0 z-0 h-full w-full object-cover opacity-60"
         >
-          <source src="/istockphoto-2013957555-640_adpp_is.mp4" type="video/mp4" />
+          <source src={videoUrl} type="video/mp4" />
         </video>
 
         <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/60 via-transparent to-[#0a0a0a]" />
@@ -188,10 +199,10 @@ export default function GymLandingPage() {
           <div className="grid gap-12 lg:grid-cols-2 items-center">
             <div className="grid grid-cols-2 gap-4">
               <div className="relative h-64 overflow-hidden rounded-2xl border" style={{ borderColor: `${accent}33` }}>
-                <Image src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1000" alt="Gym" fill className="object-cover hover:scale-110 transition duration-700" />
+                <Image src={image1} alt="Gym" fill className="object-cover hover:scale-110 transition duration-700" />
               </div>
               <div className="relative h-64 mt-12 overflow-hidden rounded-2xl border" style={{ borderColor: `${accent}33` }}>
-                <Image src="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=1000" alt="Training" fill className="object-cover hover:scale-110 transition duration-700" />
+                <Image src={image2} alt="Training" fill className="object-cover hover:scale-110 transition duration-700" />
               </div>
             </div>
             <div className="space-y-8">
