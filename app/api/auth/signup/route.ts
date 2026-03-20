@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { hashPassword, getCurrentUser, requireActiveGymSubscription } from '@/lib/auth'
 import { getGymFromRequest } from '@/lib/gym-context'
+import { PLAN_LIMITS } from '@/lib/plans'
 
 export async function POST(req: NextRequest) {
   try {
@@ -16,6 +17,30 @@ export async function POST(req: NextRequest) {
       await requireActiveGymSubscription(gym.id);
     } catch (e: any) {
       return NextResponse.json({ error: 'Service Unavailable: Gym subscription expired' }, { status: 403 })
+    }
+
+    // Capacity check
+    const gymDetails = await prisma.gym.findUnique({
+      where: { id: gym.id },
+      include: {
+        subscriptions: {
+          orderBy: { endDate: 'desc' },
+          take: 1
+        }
+      }
+    });
+
+    const currentPlan = gymDetails?.subscriptions?.[0]?.plan || 'starter';
+    const maxMembers = PLAN_LIMITS[currentPlan] || 200;
+
+    const currentMemberCount = await prisma.user.count({
+      where: { gymId: gym.id, role: 'member', deletedAt: null }
+    });
+
+    if (currentMemberCount >= maxMembers) {
+      return NextResponse.json({ 
+        error: `Member limit reached (${maxMembers}). Please upgrade your plan to add more.` 
+      }, { status: 403 });
     }
 
     let {

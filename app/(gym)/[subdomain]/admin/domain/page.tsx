@@ -5,8 +5,9 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useGym } from '@/components/gym-provider'
-import { Globe, ShieldCheck, AlertTriangle, Loader2, ArrowRight, Copy, Check } from 'lucide-react'
+import { Globe, ShieldCheck, AlertTriangle, Loader2, ArrowRight, Copy, Check, Lock } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { hasPremiumAccess } from '@/lib/plans'
 
 export default function DomainDashboard() {
   const { gymData, isLoading } = useGym()
@@ -28,6 +29,31 @@ export default function DomainDashboard() {
     return (
       <div className="flex-1 flex items-center justify-center p-8 bg-[#0a0a0a]">
         <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
+      </div>
+    )
+  }
+
+  const currentPlan = gymData.subscriptions?.[0]?.plan || 'starter'
+  if (!hasPremiumAccess(currentPlan, 'pro')) {
+    return (
+      <div className="flex-1 p-8 bg-[#0a0a0a] text-white min-h-screen font-sans flex items-center justify-center">
+        <div className="max-w-md w-full text-center space-y-6 bg-[#111] p-10 rounded-[2rem] border border-white/5 shadow-2xl">
+          <div className="h-20 w-20 bg-orange-500/10 rounded-full flex items-center justify-center mx-auto border border-orange-500/20 text-orange-500">
+            <Lock size={32} />
+          </div>
+          <div>
+            <h2 className="text-2xl font-black italic uppercase tracking-tighter mb-2">Premium Feature</h2>
+            <p className="text-gray-400 font-medium text-xs tracking-widest uppercase leading-relaxed">
+              Custom Domain Setup is available on <span className="text-orange-500 font-black">Pro</span> and <span className="text-orange-500 font-black">Elite</span> plans. Upgrade your gym to connect your own brand identity.
+            </p>
+          </div>
+          <Button 
+            className="w-full h-14 bg-orange-500 text-black font-black uppercase tracking-widest rounded-xl"
+            onClick={() => router.push('/admin/settings')}
+          >
+            Upgrade Plan
+          </Button>
+        </div>
       </div>
     )
   }

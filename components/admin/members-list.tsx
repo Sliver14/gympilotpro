@@ -6,11 +6,13 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { useToast } from '@/hooks/use-toast'
-import { Users, Search, Download, RefreshCw, User } from 'lucide-react'
+import { Download, RefreshCw, User, Users, Search } from 'lucide-react'
 import RegisterMemberDialog from './register-member-dialog'
 import { Spinner } from '@/components/ui/spinner'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { cn } from '@/lib/utils'
+import { useGym } from '@/components/gym-provider'
+import { PLAN_LIMITS } from '@/lib/plans'
 
 interface Member {
   id: string
@@ -28,11 +30,16 @@ interface Member {
 }
 
 export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => void }) {
+  const { gymData } = useGym()
   const [members, setMembers] = useState<Member[]>([])
   const [filteredMembers, setFilteredMembers] = useState<Member[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
   const { toast } = useToast()
+
+  const currentPlan = gymData?.subscriptions?.[0]?.plan || 'starter'
+  const maxMembers = PLAN_LIMITS[currentPlan] || 200
+  const isAtCapacity = maxMembers !== Infinity && members.length >= maxMembers
 
   const fetchMembers = async () => {
     setIsLoading(true)
@@ -123,12 +130,35 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
               <Users className="h-5 w-5 text-[#daa857]" /> Member <span className="text-[#daa857]">Directory</span>
             </CardTitle>
             <CardDescription>{members.length} verified members in the gym</CardDescription>
+            {maxMembers !== Infinity && (
+              <div className="mt-3 max-w-[200px]">
+                <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-1">
+                  <span>Capacity</span>
+                  <span>{members.length} / {maxMembers}</span>
+                </div>
+                <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                  <div 
+                    className={cn("h-full transition-all duration-500", isAtCapacity ? "bg-red-500" : "bg-[#daa857]")} 
+                    style={{ width: `${Math.min((members.length / maxMembers) * 100, 100)}%` }}
+                  />
+                </div>
+              </div>
+            )}
           </div>
           <div className="flex flex-wrap items-center gap-3">
-            <RegisterMemberDialog onMemberAdded={() => {
-              fetchMembers()
-              if (onMemberAdded) onMemberAdded()
-            }} />
+            {isAtCapacity ? (
+              <Button 
+                onClick={() => window.location.href = '/admin/settings'}
+                className="bg-orange-500 hover:bg-orange-600 text-black font-black uppercase tracking-widest rounded-xl shadow-[0_0_20px_rgba(249,115,22,0.3)]"
+              >
+                Upgrade Plan to Add More
+              </Button>
+            ) : (
+              <RegisterMemberDialog onMemberAdded={() => {
+                fetchMembers()
+                if (onMemberAdded) onMemberAdded()
+              }} />
+            )}
             <Button 
               onClick={fetchMembers} 
               variant="outline" 

@@ -19,8 +19,9 @@ import {
 } from '@/components/ui/sidebar'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
-import { QrCode, TrendingUp, Users, Calendar, CreditCard, LogOut, Settings, UserCheck, Wallet, Globe, Package } from 'lucide-react'
+import { QrCode, TrendingUp, Users, Calendar, CreditCard, LogOut, Settings, UserCheck, Wallet, Globe, Package, Lock } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { hasPremiumAccess } from '@/lib/plans'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -202,9 +203,14 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild className="rounded-xl focus:bg-white/5 cursor-pointer py-3 px-4">
-                  <Link href="/admin/domain" className="flex items-center gap-3 font-black uppercase text-[10px] tracking-widest">
-                    <Globe className="size-4" style={{ color: accent }} />
-                    Domain Setup
+                  <Link href="/admin/domain" className="flex items-center gap-3 font-black uppercase text-[10px] tracking-widest w-full justify-between">
+                    <div className="flex items-center gap-3">
+                      <Globe className="size-4" style={{ color: accent }} />
+                      Domain Setup
+                    </div>
+                    {!hasPremiumAccess(gymData?.subscriptions?.[0]?.plan || 'starter', 'pro') && (
+                      <Lock className="size-3 text-gray-500" />
+                    )}
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={onLogout} className="rounded-xl focus:bg-red-500/10 focus:text-red-500 cursor-pointer py-3 px-4 mt-1 text-red-500/80">

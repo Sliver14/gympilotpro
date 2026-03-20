@@ -29,6 +29,19 @@ export const DURATIONS = [
   { months: 12, label: "12 Months", discount: 0.15 },
 ];
 
+export const PLAN_WEIGHTS = { starter: 1, pro: 2, elite: 3 };
+export const PLAN_LIMITS: Record<string, number> = {
+  starter: 200,
+  pro: 500,
+  elite: Infinity
+};
+
+export function hasPremiumAccess(currentPlan: string, requiredPlan: 'pro' | 'elite') {
+  const currentWeight = PLAN_WEIGHTS[currentPlan as keyof typeof PLAN_WEIGHTS] || 1;
+  const requiredWeight = PLAN_WEIGHTS[requiredPlan];
+  return currentWeight >= requiredWeight;
+}
+
 export type PlanKey = keyof typeof PLANS;
 
 export function calculatePrice(planKey: PlanKey, months: number, isNewGym: boolean, currentPlanKey?: PlanKey) {

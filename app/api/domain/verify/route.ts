@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import QRCode from 'qrcode';
+import { hasPremiumAccess } from '@/lib/plans';
 
 const projectId = process.env.VERCEL_PROJECT_ID;
 const token = process.env.VERCEL_TOKEN;
@@ -118,6 +119,25 @@ export async function POST(req: Request) {
 
     if (!gymId || !domain) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    }
+
+    const gym = await prisma.gym.findUnique({
+      where: { id: gymId },
+      include: {
+        subscriptions: {
+          orderBy: { endDate: 'desc' },
+          take: 1
+        }
+      }
+    });
+
+    if (!gym) {
+      return NextResponse.json({ error: 'Gym not found' }, { status: 404 });
+    }
+
+    const currentPlan = gym.subscriptions?.[0]?.plan || 'starter';
+    if (!hasPremiumAccess(currentPlan, 'pro')) {
+      return NextResponse.json({ error: 'Custom domains require a Pro or Elite plan. Please upgrade your subscription.' }, { status: 403 });
     }
 
     // 1. Normalize domains
