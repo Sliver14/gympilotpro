@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useGym } from '@/components/gym-provider'
-import { Globe, ShieldCheck, AlertTriangle, Loader2, ArrowRight, Copy, Check, Lock } from 'lucide-react'
+import { Globe, ShieldCheck, AlertTriangle, Loader2, ArrowRight, Copy, Check, Lock, ChevronLeft } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { hasPremiumAccess } from '@/lib/plans'
 
@@ -41,9 +41,16 @@ export default function DomainDashboard() {
           <div className="h-20 w-20 bg-orange-500/10 rounded-full flex items-center justify-center mx-auto border border-orange-500/20 text-orange-500">
             <Lock size={32} />
           </div>
-          <div>
+          <div className="flex flex-col items-center">
+            <Button 
+              variant="ghost" 
+              onClick={() => router.back()}
+              className="mb-4 text-gray-500 hover:text-white uppercase text-[10px] font-black tracking-widest gap-2"
+            >
+              <ChevronLeft size={14} /> Back
+            </Button>
             <h2 className="text-2xl font-black italic uppercase tracking-tighter mb-2">Premium Feature</h2>
-            <p className="text-gray-400 font-medium text-xs tracking-widest uppercase leading-relaxed">
+            <p className="text-gray-400 font-medium text-xs tracking-widest uppercase leading-relaxed text-center">
               Custom Domain Setup is available on <span className="text-orange-500 font-black">Pro</span> and <span className="text-orange-500 font-black">Elite</span> plans. Upgrade your gym to connect your own brand identity.
             </p>
           </div>
@@ -106,6 +113,14 @@ export default function DomainDashboard() {
   return (
     <div className="flex-1 p-8 bg-[#0a0a0a] text-white min-h-screen font-sans">
       <div className="max-w-4xl mx-auto space-y-8">
+
+        <Button 
+          variant="ghost" 
+          onClick={() => router.back()}
+          className="text-gray-500 hover:text-white uppercase text-[10px] font-black tracking-widest gap-2 p-0 h-auto"
+        >
+          <ChevronLeft size={14} /> Back to Dashboard
+        </Button>
 
         {/* HEADER */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
