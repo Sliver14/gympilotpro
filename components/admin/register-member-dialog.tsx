@@ -20,6 +20,7 @@ import { useToast } from '@/hooks/use-toast'
 import { UserPlus, Loader2 } from 'lucide-react'
 import { Spinner } from '@/components/ui/spinner'
 import { cn } from '@/lib/utils'
+import { useGym } from '@/components/gym-provider'
 
 interface Membership {
   id: string
@@ -34,13 +35,21 @@ const GENDER_OPTIONS = [
   { value: 'other', label: 'Other' },
 ]
 
-const PAYMENT_METHODS = ['Cash', 'Bank Transfer', 'POS / Card']
-
 export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?: () => void }) {
+  const { gymData } = useGym()
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [memberships, setMemberships] = useState<Membership[]>([])
   const { toast } = useToast()
+
+  const hasPaystack = gymData?.hasPaystack || false
+
+  const PAYMENT_METHODS = [
+    { id: 'Cash', name: 'Cash', disabled: false },
+    { id: 'Bank Transfer', name: 'Bank Transfer', disabled: false },
+    { id: 'POS / Card', name: 'POS / Card', disabled: false },
+    { id: 'Paystack', name: 'Paystack', disabled: !hasPaystack },
+  ]
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -102,6 +111,15 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
 
       if (!response.ok) {
         throw new Error(data.error || 'Failed to register member')
+      }
+
+      if (data.authorization_url) {
+        toast({
+          title: 'Redirecting to Paystack...',
+          description: 'Please complete the payment securely.',
+        })
+        window.location.href = data.authorization_url
+        return
       }
 
       toast({
@@ -320,8 +338,13 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
                 </SelectTrigger>
                 <SelectContent className="bg-[#111] border-white/10 text-white">
                   {PAYMENT_METHODS.map((method) => (
-                    <SelectItem key={method} value={method} className="focus:bg-[#daa857]/10 focus:text-[#daa857] font-bold uppercase text-[10px]">
-                      {method.toUpperCase()}
+                    <SelectItem 
+                      key={method.id} 
+                      value={method.id} 
+                      disabled={method.disabled}
+                      className="focus:bg-[#daa857]/10 focus:text-[#daa857] font-bold uppercase text-[10px]"
+                    >
+                      {method.name.toUpperCase()} {method.disabled ? '(NOT CONFIGURED)' : ''}
                     </SelectItem>
                   ))}
                 </SelectContent>

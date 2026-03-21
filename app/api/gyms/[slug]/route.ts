@@ -28,6 +28,7 @@ export async function GET(
         secondaryColor: true,
         heroTitle: true,
         heroSubtitle: true,
+        paystackSecretKey: true,
         subscriptions: {
           orderBy: { endDate: 'desc' },
           take: 1
@@ -42,7 +43,12 @@ export async function GET(
       )
     }
 
-    return NextResponse.json(gym)
+    const { paystackSecretKey, ...safeGymData } = gym;
+
+    return NextResponse.json({
+      ...safeGymData,
+      hasPaystack: !!paystackSecretKey
+    })
   } catch (error) {
     console.error('Fetch gym error:', error)
     return NextResponse.json(

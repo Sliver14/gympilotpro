@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge'
 import { useToast } from '@/hooks/use-toast'
 import { AlertCircle, CheckCircle, ArrowLeft } from 'lucide-react'
 import { Spinner } from '@/components/ui/spinner'
+import { useGym } from '@/components/gym-provider'
 
 interface Membership {
   id: string
@@ -19,6 +20,7 @@ interface Membership {
 }
 
 export default function RenewMembershipPage() {
+  const { gymData } = useGym()
   const [memberships, setMemberships] = useState<Membership[]>([])
   const [selectedId, setSelectedId] = useState<string>('')
   const [paymentMethod, setPaymentMethod] = useState<string>('Bank Transfer')
@@ -28,11 +30,13 @@ export default function RenewMembershipPage() {
   const router = useRouter()
   const { toast } = useToast()
 
+  const hasPaystack = gymData?.hasPaystack || false
+
   const PAYMENT_METHODS = [
     { id: 'Bank Transfer', name: 'Bank Transfer', comingSoon: false },
     { id: 'POS', name: 'POS / Card', comingSoon: false },
     { id: 'Cash', name: 'Cash', comingSoon: false },
-    { id: 'Paystack', name: 'Paystack', comingSoon: true },
+    { id: 'Paystack', name: 'Paystack', comingSoon: !hasPaystack, comingSoonLabel: 'Not Configured' },
   ]
 
   useEffect(() => {
@@ -71,10 +75,11 @@ export default function RenewMembershipPage() {
       return
     }
 
-    if (paymentMethod === 'Paystack') {
+    if (paymentMethod === 'Paystack' && !hasPaystack) {
       toast({
-        title: 'Coming Soon',
-        description: 'Paystack payment is not yet available.',
+        title: 'Not Configured',
+        description: 'This gym has not configured Paystack online payments.',
+        variant: 'destructive',
       })
       return
     }
@@ -83,7 +88,7 @@ export default function RenewMembershipPage() {
     setPaymentStatus('processing')
 
     try {
-      // Process payment (mock implementation)
+      // Process payment
       const response = await fetch('/api/payments/renew', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -93,6 +98,15 @@ export default function RenewMembershipPage() {
       const data = await response.json()
 
       if (data.success) {
+        if (data.authorization_url) {
+          toast({
+            title: 'Redirecting to Paystack...',
+            description: 'Please complete your payment securely.',
+          })
+          window.location.href = data.authorization_url;
+          return;
+        }
+
         setPaymentStatus('success')
         toast({
           title: 'Renewal Request Sent',

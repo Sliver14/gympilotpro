@@ -74,13 +74,6 @@ const HEAR_ABOUT_US_OPTIONS = [
   'Other',
 ]
 
-const PAYMENT_METHODS = [
-  { id: 'Cash', name: 'Cash', comingSoon: false },
-  { id: 'Bank Transfer', name: 'Bank Transfer', comingSoon: false },
-  { id: 'POS / Card', name: 'POS / Card', comingSoon: false },
-  { id: 'Paystack', name: 'Paystack', comingSoon: true },
-]
-
 const BANK_TRANSFER_DETAILS = `KLIMARX SPACE ENTERPRISES
 FIRST CITY MONUMENT BANK (FCMB)
 1042020132`
@@ -117,6 +110,14 @@ export default function SignupPage() {
   const logoUrl = gymData?.logo
   const gymName = gymData?.name || 'Klimarx Space'
   const gymInitials = gymName.split(' ').map((n: string) => n[0]).join('').substring(0, 2).toUpperCase()
+  const hasPaystack = gymData?.hasPaystack || false
+
+  const PAYMENT_METHODS = [
+    { id: 'Cash', name: 'Cash', comingSoon: false },
+    { id: 'Bank Transfer', name: 'Bank Transfer', comingSoon: false },
+    { id: 'POS / Card', name: 'POS / Card', comingSoon: false },
+    { id: 'Paystack', name: 'Paystack', comingSoon: !hasPaystack, comingSoonLabel: !hasPaystack ? 'Not Configured' : null },
+  ]
 
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -738,6 +739,12 @@ export default function SignupPage() {
                         const data = await res.json()
                         if (!res.ok) throw new Error(data.error || 'Failed to submit application')
                         
+                        if (data.authorization_url) {
+                          toast({ title: 'Redirecting to Paystack...', description: 'Please complete your payment securely.', duration: 5000 })
+                          window.location.href = data.authorization_url
+                          return
+                        }
+
                         toast({ title: 'Application Transmitted', description: 'Redirecting to secure login...', duration: 5000 })
                         setTimeout(() => window.location.href = '/login', 3000)
                       } catch (err: any) {
