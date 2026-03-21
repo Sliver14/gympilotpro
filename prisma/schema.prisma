@@ -9,47 +9,43 @@ datasource db {
 }
 
 model Gym {
-  id             String              @id @default(cuid())
-  name           String
-  slug           String              @unique
-  customDomain   String?             @unique
-  domainVerified Boolean             @default(false)
-  email          String?
-  phone          String?
-  address        String?
-  logo           String?
-  status         String              @default("pending")
-  createdAt      DateTime            @default(now())
-  updatedAt      DateTime            @updatedAt
-  heroSubtitle   String?
-  heroTitle      String?
-  primaryColor   String?             @default("#daa857")
-  secondaryColor String?             @default("#000000")
-  qrCodeUrl      String?
-
-  tagline          String?
-  coverImage       String?
-  heroVideo        String?
-  favicon          String?
-  showcaseImage1   String?
-  showcaseImage2   String?
-
-  paystackPublicKey  String?
-  paystackSecretKey  String?
-
+  id                String              @id @default(cuid())
+  name              String
+  slug              String              @unique
+  email             String?
+  phone             String?
+  address           String?
+  logo              String?
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  heroSubtitle      String?
+  heroTitle         String?
+  primaryColor      String?             @default("#daa857")
+  secondaryColor    String?             @default("#000000")
+  status            String              @default("pending")
+  customDomain      String?             @unique
+  domainVerified    Boolean             @default(false)
+  qrCodeUrl         String?
+  coverImage        String?
+  favicon           String?
+  heroVideo         String?
+  showcaseImage1    String?
+  showcaseImage2    String?
+  tagline           String?
+  paystackPublicKey String?
+  paystackSecretKey String?
   bankName           String?
   accountNumber      String?
   accountName        String?
-
-  attendances    Attendance[]
-  devices        Device[]
-  subscriptions  GymSubscription[]
-  memberProfiles MemberProfile[]
-  packages       MembershipPackage[]
-  payments       Payment[]
-  progressNotes  ProgressNote[]
-  staffProfiles  StaffProfile[]
-  users          User[]
+  attendances       Attendance[]
+  devices           Device[]
+  subscriptions     GymSubscription[]
+  memberProfiles    MemberProfile[]
+  packages          MembershipPackage[]
+  payments          Payment[]
+  progressNotes     ProgressNote[]
+  staffProfiles     StaffProfile[]
+  users             User[]
 }
 
 model Device {
@@ -86,12 +82,12 @@ model User {
   lastName         String
   phoneNumber      String?
   role             String         @default("member")
-  status           String         @default("inactive")
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
   deletedAt        DateTime?
   profileImage     String?
   gymId            String
+  status           String         @default("inactive")
   attendance       Attendance[]
   memberProfile    MemberProfile? @relation("MemberProfile")
   approvedPayments Payment[]      @relation("PaymentApprovals")
@@ -267,9 +263,9 @@ model SaaSPayment {
   plan      String
   reference String   @unique
   status    String   @default("pending")
+  createdAt DateTime @default(now())
   gymId     String?
   userId    String?
-  createdAt DateTime @default(now())
 
   @@index([email])
   @@index([reference])
