@@ -111,19 +111,19 @@ function AdminDashboardContent() {
   return (
     <SidebarProvider>
       <AdminSidebar adminData={adminData} onLogout={handleLogout} />
-      <SidebarInset className="bg-[#0a0a0a]">
-        <header className="flex h-16 shrink-0 items-center gap-2 border-b border-white/5 px-6 sticky top-0 z-30 bg-black/50 backdrop-blur-md">
+      <SidebarInset className="bg-background">
+        <header className="flex h-16 shrink-0 items-center gap-2 border-b border-border/50 px-6 sticky top-0 z-30 bg-background/50 backdrop-blur-md">
           <SidebarTrigger className="-ml-1" />
           <div className="flex items-center justify-between w-full">
             <div className="flex items-center gap-2">
-              <h1 className="text-sm font-black uppercase italic tracking-[0.2em] text-gray-400">
-                {adminData.role} <span className="text-[#daa857]">Dashboard</span>
+              <h1 className="text-sm font-black uppercase italic tracking-[0.2em] text-muted-foreground">
+                {adminData.role} <span className="text-primary">Dashboard</span>
               </h1>
             </div>
             {!isConfigComplete && adminData.role === 'admin' && (
-              <div className="hidden md:flex items-center gap-4 bg-[#daa857]/10 border border-[#daa857]/20 px-4 py-1.5 rounded-full animate-pulse">
-                <AlertTriangle className="h-4 w-4 text-[#daa857]" />
-                <span className="text-[10px] font-black uppercase tracking-widest text-[#daa857]">
+              <div className="hidden md:flex items-center gap-4 bg-primary/10 border border-primary/20 px-4 py-1.5 rounded-full animate-pulse">
+                <AlertTriangle className="h-4 w-4 text-primary" />
+                <span className="text-[10px] font-black uppercase tracking-widest text-primary">
                   Compulsory Configuration Pending: 
                   {!hasPackages && " [Create Packages]"}
                   {!hasBankDetails && " [Add Bank Details]"}
@@ -135,26 +135,26 @@ function AdminDashboardContent() {
 
         {!isConfigComplete && adminData.role === 'admin' && (
           <div className="p-6 md:p-10 pb-0">
-            <div className="bg-gradient-to-r from-[#daa857]/20 to-transparent border border-[#daa857]/30 rounded-[2rem] p-8 relative overflow-hidden group">
-              <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-[#daa857]/10 blur-[100px] group-hover:bg-[#daa857]/20 transition-all duration-1000" />
+            <div className="bg-gradient-to-r from-primary/20 to-transparent border border-primary/30 rounded-[2rem] p-8 relative overflow-hidden group">
+              <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-primary/10 blur-[100px] group-hover:bg-primary/20 transition-all duration-1000" />
               <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
                 <div className="space-y-4 text-center md:text-left">
-                  <div className="flex items-center justify-center md:justify-start gap-3 text-[#daa857]">
+                  <div className="flex items-center justify-center md:justify-start gap-3 text-primary">
                     <ShieldCheck className="h-6 w-6" />
                     <h2 className="text-2xl font-black uppercase italic tracking-tighter">Action Required</h2>
                   </div>
-                  <p className="text-xs font-bold text-gray-400 uppercase tracking-widest leading-relaxed max-w-xl">
+                  <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest leading-relaxed max-w-xl">
                     Your gym sanctuary is live, but members cannot register or renew without core configurations. 
                     Please complete these steps to ensure uninterrupted operations.
                   </p>
                   <div className="flex flex-wrap justify-center md:justify-start gap-4">
                     {!hasPackages && (
-                      <div className="flex items-center gap-2 px-3 py-1.5 bg-red-500/10 border border-red-500/20 rounded-lg text-[10px] font-black uppercase tracking-widest text-red-400">
+                      <div className="flex items-center gap-2 px-3 py-1.5 bg-destructive/10 border border-destructive/20 rounded-lg text-[10px] font-black uppercase tracking-widest text-destructive">
                         Missing Membership Packages
                       </div>
                     )}
                     {!hasBankDetails && (
-                      <div className="flex items-center gap-2 px-3 py-1.5 bg-red-500/10 border border-red-500/20 rounded-lg text-[10px] font-black uppercase tracking-widest text-red-400">
+                      <div className="flex items-center gap-2 px-3 py-1.5 bg-destructive/10 border border-destructive/20 rounded-lg text-[10px] font-black uppercase tracking-widest text-destructive">
                         Missing Bank Account Details
                       </div>
                     )}
@@ -162,7 +162,7 @@ function AdminDashboardContent() {
                 </div>
                 <Button 
                   onClick={() => router.push(hasPackages ? '/admin/settings' : '?tab=packages')}
-                  className="h-14 px-10 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black uppercase tracking-widest rounded-xl shadow-xl shadow-[#daa857]/10 transition-all hover:scale-105 active:scale-95"
+                  className="h-14 px-10 bg-primary hover:bg-primary/80 text-primary-foreground font-black uppercase tracking-widest rounded-xl shadow-xl shadow-primary/10 transition-all hover:scale-105 active:scale-95"
                 >
                   Configure Now
                 </Button>

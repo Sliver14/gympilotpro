@@ -180,30 +180,30 @@ function MemberDashboardContent() {
   return (
     <SidebarProvider>
       <MemberSidebar memberData={memberData} onLogout={handleLogout} />
-      <SidebarInset className="bg-[#0a0a0a]">
-        <header className="flex h-16 shrink-0 items-center gap-2 border-b border-white/5 px-6 sticky top-0 z-30 bg-black/50 backdrop-blur-md">
+      <SidebarInset className="bg-background">
+        <header className="flex h-16 shrink-0 items-center gap-2 border-b border-border/50 px-6 sticky top-0 z-30 bg-background/50 backdrop-blur-md">
           <SidebarTrigger className="-ml-1" />
           <div className="flex items-center gap-2">
-            <h1 className="text-sm font-black uppercase italic tracking-[0.2em] text-gray-400">
-              Member <span className="text-[#daa857]">Terminal</span>
+            <h1 className="text-sm font-black uppercase italic tracking-[0.2em] text-muted-foreground">
+              Member <span className="text-primary">Terminal</span>
             </h1>
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-6 p-6 md:p-10 pb-24 md:pb-20">
           {/* Membership Status Alert */}
           {membershipStatus === 'pending' && (
-            <div className="rounded-3xl p-8 border-2 border-[#daa857]/20 bg-[#daa857]/5 relative overflow-hidden group">
-              <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-[#daa857]/10 blur-[80px]" />
+            <div className="rounded-3xl p-8 border-2 border-primary/20 bg-primary/5 relative overflow-hidden group">
+              <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-primary/10 blur-[80px]" />
               <div className="flex items-start gap-6 relative z-10">
-                <div className="h-14 w-14 rounded-2xl bg-[#daa857] flex items-center justify-center shrink-0 shadow-lg shadow-[#daa857]/20">
-                  <Clock className="h-8 w-8 text-black" />
+                <div className="h-14 w-14 rounded-2xl bg-primary flex items-center justify-center shrink-0 shadow-lg shadow-primary/20">
+                  <Clock className="h-8 w-8 text-primary-foreground" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-black uppercase italic tracking-tight text-white mb-1">Payment Pending</h3>
-                  <p className="text-sm font-medium text-gray-400 max-w-xl">
-                    Your recent payment is currently <span className="text-[#daa857] font-bold">pending verification</span> by the gym management. Access will be restored once confirmed.
+                  <h3 className="text-xl font-black uppercase italic tracking-tight text-foreground mb-1">Payment Pending</h3>
+                  <p className="text-sm font-medium text-muted-foreground max-w-xl">
+                    Your recent payment is currently <span className="text-primary font-bold">pending verification</span> by the gym management. Access will be restored once confirmed.
                   </p>
-                  <Button disabled className="mt-6 h-12 px-8 bg-[#daa857]/50 text-black font-black uppercase tracking-widest rounded-xl cursor-not-allowed">
+                  <Button disabled className="mt-6 h-12 px-8 bg-primary/50 text-primary-foreground font-black uppercase tracking-widest rounded-xl cursor-not-allowed">
                     Awaiting Approval
                   </Button>
                 </div>
@@ -212,19 +212,19 @@ function MemberDashboardContent() {
           )}
 
           {membershipStatus === 'expired' && (
-            <div className="rounded-3xl p-8 border-2 border-red-500/20 bg-red-500/5 relative overflow-hidden group">
-              <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-red-500/10 blur-[80px]" />
+            <div className="rounded-3xl p-8 border-2 border-destructive/20 bg-destructive/5 relative overflow-hidden group">
+              <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-destructive/10 blur-[80px]" />
               <div className="flex items-start gap-6 relative z-10">
-                <div className="h-14 w-14 rounded-2xl bg-red-500 flex items-center justify-center shrink-0 shadow-lg shadow-red-500/20">
-                  <AlertCircle className="h-8 w-8 text-white" />
+                <div className="h-14 w-14 rounded-2xl bg-destructive flex items-center justify-center shrink-0 shadow-lg shadow-destructive/20">
+                  <AlertCircle className="h-8 w-8 text-destructive-foreground" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-black uppercase italic tracking-tight text-white mb-1">Access Expired</h3>
-                  <p className="text-sm font-medium text-gray-400 max-w-xl">
-                    Your membership expired on <span className="text-red-400 font-bold">{expiryDate.toLocaleDateString()}</span>. The terminal is locked until renewal is processed.
+                  <h3 className="text-xl font-black uppercase italic tracking-tight text-foreground mb-1">Access Expired</h3>
+                  <p className="text-sm font-medium text-muted-foreground max-w-xl">
+                    Your membership expired on <span className="text-destructive font-bold">{expiryDate.toLocaleDateString()}</span>. The terminal is locked until renewal is processed.
                   </p>
                   <Link href="/member/renew-membership">
-                    <Button className="mt-6 h-12 px-8 bg-red-500 hover:bg-red-600 text-white font-black uppercase tracking-widest rounded-xl transition-all hover:scale-[1.02]">
+                    <Button className="mt-6 h-12 px-8 bg-destructive hover:bg-destructive/80 text-destructive-foreground font-black uppercase tracking-widest rounded-xl transition-all hover:scale-[1.02]">
                       Initiate Renewal
                     </Button>
                   </Link>
@@ -234,19 +234,19 @@ function MemberDashboardContent() {
           )}
 
           {membershipStatus === 'expiring' && (
-            <div className="rounded-3xl p-8 border-2 border-[#daa857]/20 bg-[#daa857]/5 relative overflow-hidden group">
-              <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-[#daa857]/10 blur-[80px]" />
+            <div className="rounded-3xl p-8 border-2 border-primary/20 bg-primary/5 relative overflow-hidden group">
+              <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-primary/10 blur-[80px]" />
               <div className="flex items-start gap-6 relative z-10">
-                <div className="h-14 w-14 rounded-2xl bg-[#daa857] flex items-center justify-center shrink-0 shadow-lg shadow-[#daa857]/20">
-                  <AlertCircle className="h-8 w-8 text-black" />
+                <div className="h-14 w-14 rounded-2xl bg-primary flex items-center justify-center shrink-0 shadow-lg shadow-primary/20">
+                  <Clock className="h-8 w-8 text-black" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-black uppercase italic tracking-tight text-white mb-1">Subscription Warning</h3>
-                  <p className="text-sm font-medium text-gray-400 max-w-xl">
-                    Gym access expires in <span className="text-[#daa857] font-bold">{daysUntilExpiry} days</span> ({expiryDate.toLocaleDateString()}). Extend plan now to maintain uninterrupted access.
+                  <h3 className="text-xl font-black uppercase italic tracking-tight text-foreground mb-1">Subscription Warning</h3>
+                  <p className="text-sm font-medium text-muted-foreground max-w-xl">
+                    Gym access expires in <span className="text-primary font-bold">{daysUntilExpiry} days</span> ({expiryDate.toLocaleDateString()}). Extend plan now to maintain uninterrupted access.
                   </p>
                   <Link href="/member/renew-membership">
-                    <Button className="mt-6 h-12 px-8 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black uppercase tracking-widest rounded-xl transition-all hover:scale-[1.02]">
+                    <Button className="mt-6 h-12 px-8 bg-primary hover:bg-primary/80 text-primary-foreground font-black uppercase tracking-widest rounded-xl transition-all hover:scale-[1.02]">
                       Extend Plan
                     </Button>
                   </Link>
@@ -270,14 +270,14 @@ function MemberDashboardContent() {
                       return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear();
                     }).length, sub: 'TRAINING SESSIONS' }
                   ].map((stat, i) => (
-                    <div key={i} className="bg-[#111] border border-white/5 rounded-3xl p-8 shadow-xl relative overflow-hidden group hover:border-[#daa857]/30 transition-colors">
-                      <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 mb-4">{stat.label}</p>
+                    <div key={i} className="bg-card border border-border/50 rounded-3xl p-8 shadow-xl relative overflow-hidden group hover:border-primary/30 transition-colors">
+                      <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground mb-4">{stat.label}</p>
                       <div className="flex items-baseline gap-2">
-                        <p className={cn("text-4xl font-black italic tracking-tighter", stat.accent ? "text-[#daa857]" : "text-white")}>
+                        <p className={cn("text-4xl font-black italic tracking-tighter", stat.accent ? "text-primary" : "text-foreground")}>
                           {stat.value}
                         </p>
                       </div>
-                      <p className="text-[10px] font-black uppercase tracking-widest text-gray-600 mt-2">{stat.sub}</p>
+                      <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 mt-2">{stat.sub}</p>
                     </div>
                   ))}
                 </div>

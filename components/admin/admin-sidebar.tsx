@@ -22,6 +22,7 @@ import { Button } from '@/components/ui/button'
 import { QrCode, TrendingUp, Users, Calendar, CreditCard, LogOut, Settings, UserCheck, Wallet, Globe, Package, Lock } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { hasPremiumAccess } from '@/lib/plans'
+import { ModeToggle } from '@/components/mode-toggle'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -169,6 +170,12 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
+        <div className="px-4 py-2 border-t border-sidebar-border/50">
+          <div className="flex items-center justify-between">
+            <span className="text-[10px] font-black uppercase tracking-widest text-sidebar-foreground/50">Appearance</span>
+            <ModeToggle />
+          </div>
+        </div>
         <SidebarMenu>
           <SidebarMenuItem>
             <DropdownMenu>

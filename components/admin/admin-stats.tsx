@@ -106,29 +106,29 @@ export default function AdminStats({
         <div 
           key={i} 
           className={cn(
-            "bg-[#111] border border-white/5 rounded-3xl p-6 shadow-xl relative overflow-hidden group hover:border-[#daa857]/30 transition-all duration-500",
-            item.warning && "border-red-500/20 bg-red-500/5 hover:border-red-500/40"
+            "bg-card border border-border/50 rounded-3xl p-6 shadow-xl relative overflow-hidden group hover:border-primary/30 transition-all duration-500",
+            item.warning && "border-destructive/20 bg-destructive/5 hover:border-destructive/40"
           )}
         >
-          <div className="absolute -top-12 -right-12 h-24 w-24 rounded-full bg-white/5 blur-2xl group-hover:bg-[#daa857]/10 transition-colors" />
+          <div className="absolute -top-12 -right-12 h-24 w-24 rounded-full bg-primary/5 blur-2xl group-hover:bg-primary/10 transition-colors" />
           
           <div className="flex flex-col gap-4 relative z-10">
             <div className="flex items-center justify-between">
-              <p className="text-[8px] font-black uppercase tracking-[0.3em] text-gray-500">{item.label}</p>
+              <p className="text-[8px] font-black uppercase tracking-[0.3em] text-muted-foreground">{item.label}</p>
               <item.icon className={cn(
                 "h-4 w-4",
-                item.accent ? "text-[#daa857]" : item.warning ? "text-red-500 animate-pulse" : "text-gray-700"
+                item.accent ? "text-primary" : item.warning ? "text-destructive animate-pulse" : "text-muted-foreground/50"
               )} />
             </div>
             <div>
               <p className={cn(
                 "text-2xl md:text-3xl font-black italic tracking-tighter",
-                item.accent ? "text-[#daa857]" : "text-white",
-                item.warning && "text-red-500"
+                item.accent ? "text-primary" : "text-foreground",
+                item.warning && "text-destructive"
               )}>
                 {item.value}
               </p>
-              <p className="text-[8px] font-bold uppercase tracking-widest text-gray-600 mt-1">{item.sub}</p>
+              <p className="text-[8px] font-bold uppercase tracking-widest text-muted-foreground/60 mt-1">{item.sub}</p>
             </div>
           </div>
         </div>

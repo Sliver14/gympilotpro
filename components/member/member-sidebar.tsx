@@ -21,6 +21,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { User, QrCode, Calendar, TrendingUp, LogOut, Settings } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { ModeToggle } from '@/components/mode-toggle'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -137,6 +138,12 @@ function MemberSidebarContent({ memberData, onLogout }: MemberSidebarProps) {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
+        <div className="px-4 py-2 border-t border-sidebar-border/50">
+          <div className="flex items-center justify-between">
+            <span className="text-[10px] font-black uppercase tracking-widest text-sidebar-foreground/50">Appearance</span>
+            <ModeToggle />
+          </div>
+        </div>
         <SidebarMenu>
           <SidebarMenuItem>
             <DropdownMenu>
