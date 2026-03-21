@@ -48,6 +48,16 @@ export async function POST(req: NextRequest) {
       })
     }
 
+    // Check payment status
+    if (memberProfile.paymentStatus === 'pending') {
+      return NextResponse.json({
+        success: false,
+        message: 'Payment pending verification. Please contact admin.',
+        memberName: `${memberProfile.user.firstName} ${memberProfile.user.lastName}`,
+        membershipStatus: 'pending',
+      })
+    }
+
     // Check membership status
     const now = new Date()
     const expiryDate = new Date(memberProfile.expiryDate)

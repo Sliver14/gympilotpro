@@ -89,6 +89,19 @@ export async function POST(req: NextRequest) {
       }, { status: 404 })
     }
 
+    // 4. Check payment status
+    if (memberProfile.paymentStatus === 'pending') {
+      return NextResponse.json({
+        isValid: false,
+        message: 'Payment pending verification. Please contact admin.',
+        member: {
+          fullName: `${memberProfile.user.firstName} ${memberProfile.user.lastName}`,
+          profileImage: memberProfile.user.profileImage,
+          expiryDate: memberProfile.expiryDate.toISOString(),
+        },
+      })
+    }
+
     const now = new Date()
     const todayStart = new Date(now.toISOString().split('T')[0] + 'T00:00:00Z')
 

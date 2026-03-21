@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { useToast } from '@/hooks/use-toast'
-import { AlertCircle } from 'lucide-react'
+import { AlertCircle, Clock } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import {
   SidebarProvider,
@@ -31,6 +31,7 @@ interface MemberData {
   monthlyVisits?: number
   memberProfile: {
     expiryDate: string
+    paymentStatus: string
     membership: {
       name: string
       price: number
@@ -54,7 +55,7 @@ function MemberDashboardContent() {
   const [attendanceHistory, setAttendanceHistory] = useState<AttendanceData[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [membershipStatus, setMembershipStatus] = useState<'active' | 'expiring' | 'expired'>('active')
+  const [membershipStatus, setMembershipStatus] = useState<'active' | 'expiring' | 'expired' | 'pending'>('active')
   const router = useRouter()
   const searchParams = useSearchParams()
   const { toast } = useToast()
@@ -97,11 +98,14 @@ function MemberDashboardContent() {
       setAttendanceHistory(data.attendance)
 
       // Check membership status
+      const paymentStatus = data.member.memberProfile.paymentStatus
       const expiryDate = new Date(data.member.memberProfile.expiryDate)
       const today = new Date()
       const daysUntilExpiry = Math.floor((expiryDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24))
 
-      if (daysUntilExpiry < 0) {
+      if (paymentStatus === 'pending') {
+        setMembershipStatus('pending')
+      } else if (daysUntilExpiry < 0) {
         setMembershipStatus('expired')
       } else if (daysUntilExpiry <= 7) {
         setMembershipStatus('expiring')
@@ -187,6 +191,26 @@ function MemberDashboardContent() {
         </header>
         <div className="flex flex-1 flex-col gap-6 p-6 md:p-10 pb-24 md:pb-20">
           {/* Membership Status Alert */}
+          {membershipStatus === 'pending' && (
+            <div className="rounded-3xl p-8 border-2 border-[#daa857]/20 bg-[#daa857]/5 relative overflow-hidden group">
+              <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-[#daa857]/10 blur-[80px]" />
+              <div className="flex items-start gap-6 relative z-10">
+                <div className="h-14 w-14 rounded-2xl bg-[#daa857] flex items-center justify-center shrink-0 shadow-lg shadow-[#daa857]/20">
+                  <Clock className="h-8 w-8 text-black" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-black uppercase italic tracking-tight text-white mb-1">Payment Pending</h3>
+                  <p className="text-sm font-medium text-gray-400 max-w-xl">
+                    Your recent payment is currently <span className="text-[#daa857] font-bold">pending verification</span> by the gym management. Access will be restored once confirmed.
+                  </p>
+                  <Button disabled className="mt-6 h-12 px-8 bg-[#daa857]/50 text-black font-black uppercase tracking-widest rounded-xl cursor-not-allowed">
+                    Awaiting Approval
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
+
           {membershipStatus === 'expired' && (
             <div className="rounded-3xl p-8 border-2 border-red-500/20 bg-red-500/5 relative overflow-hidden group">
               <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-red-500/10 blur-[80px]" />
@@ -238,8 +262,8 @@ function MemberDashboardContent() {
                 {/* Stats Grid */}
                 <div className="grid gap-6 md:grid-cols-3">
                   {[
-                    { label: 'Current Tier', value: memberData.memberProfile.membership.name, sub: membershipStatus.toUpperCase(), accent: true },
-                    { label: 'Active Days', value: Math.max(0, daysUntilExpiry), sub: `Until ${expiryDate.toLocaleDateString()}` },
+                    { label: 'Current Tier', value: memberData.memberProfile.membership.name, sub: membershipStatus === 'pending' ? 'PENDING VERIFICATION' : membershipStatus.toUpperCase(), accent: true },
+                    { label: 'Active Days', value: membershipStatus === 'pending' ? '...' : Math.max(0, daysUntilExpiry), sub: membershipStatus === 'pending' ? 'VERIFICATION IN PROGRESS' : `Until ${expiryDate.toLocaleDateString()}` },
                     { label: 'Monthly Visits', value: memberData?.monthlyVisits ?? attendanceHistory.filter((a) => {
                       const date = new Date(a.checkInTime);
                       const now = new Date();

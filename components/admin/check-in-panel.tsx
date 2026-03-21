@@ -240,12 +240,14 @@ export default function CheckInPanel() {
             "w-full max-w-lg rounded-[2.5rem] border-2 p-10 shadow-2xl relative overflow-hidden transition-all duration-500 animate-in zoom-in-95",
             result.isValid
               ? 'border-green-500/30 bg-green-500/5'
+              : result.message.toLowerCase().includes('pending verification')
+              ? 'border-orange-500/30 bg-orange-500/5'
               : result.message.includes('Already checked in')
               ? 'border-[#daa857]/30 bg-[#daa857]/5'
               : 'border-red-500/30 bg-red-500/5'
           )}
         >
-          <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full opacity-20 blur-[80px]" style={{ backgroundColor: result.isValid ? '#22c55e' : result.message.includes('Already checked in') ? '#daa857' : '#ef4444' }} />
+          <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full opacity-20 blur-[80px]" style={{ backgroundColor: result.isValid ? '#22c55e' : result.message.toLowerCase().includes('pending verification') ? '#f97316' : result.message.includes('Already checked in') ? '#daa857' : '#ef4444' }} />
           
           <div className="flex flex-col items-center text-center gap-8 relative z-10">
             {result.member && (
@@ -263,6 +265,11 @@ export default function CheckInPanel() {
                   <CheckCircle className="h-8 w-8 stroke-[3px]" />
                   <span className="text-3xl font-black uppercase italic tracking-tighter">Access Granted</span>
                 </div>
+              ) : result.message.toLowerCase().includes('pending verification') ? (
+                <div className="flex items-center justify-center gap-3 text-orange-500">
+                  <Clock className="h-8 w-8 stroke-[3px]" />
+                  <span className="text-3xl font-black uppercase italic tracking-tighter">Pending Verification</span>
+                </div>
               ) : result.message.includes('Already checked in') ? (
                 <div className="flex items-center justify-center gap-3 text-[#daa857]">
                   <Clock className="h-8 w-8 stroke-[3px]" />
@@ -276,7 +283,7 @@ export default function CheckInPanel() {
               )}
               <p className={cn(
                 "text-sm font-bold uppercase tracking-widest",
-                result.isValid ? 'text-green-400/70' : result.message.includes('Already checked in') ? 'text-[#daa857]/70' : 'text-red-400/70'
+                result.isValid ? 'text-green-400/70' : result.message.toLowerCase().includes('pending verification') ? 'text-orange-400/70' : result.message.includes('Already checked in') ? 'text-[#daa857]/70' : 'text-red-400/70'
               )}>
                 {result.message}
               </p>
