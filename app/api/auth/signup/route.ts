@@ -119,10 +119,10 @@ export async function POST(req: NextRequest) {
       ? JSON.stringify(fitnessGoals)
       : null
 
-    // Paystack placeholder
-    if (paymentMethod.toLowerCase() === 'paystack') {
+    // Paystack validation
+    if (paymentMethod.toLowerCase() === 'paystack' && (!gymDetails || !gymDetails.paystackSecretKey)) {
       return NextResponse.json(
-        { error: 'Paystack payment is coming soon. Please use another method.' },
+        { error: 'This gym has not configured Paystack online payments. Please select Cash or Bank Transfer.' },
         { status: 400 }
       )
     }
@@ -175,7 +175,7 @@ export async function POST(req: NextRequest) {
     })
 
     // Create Payment record (always, status depends on approval)
-    await prisma.payment.create({
+    const payment = await prisma.payment.create({
       data: {
         gymId: gym.id,
         userId: user.id,
@@ -184,10 +184,55 @@ export async function POST(req: NextRequest) {
         paymentMethod: paymentMethod || 'Cash',
         reference: shouldApproveImmediately ? `ADMIN-${Date.now()}` : `REG-${Date.now()}`,
         description: `New Registration - ${membership.name}`,
-        approvedById: shouldApproveImmediately ? currentUser.id : null,
+        approvedById: shouldApproveImmediately ? currentUser?.id : null,
         approvedAt: shouldApproveImmediately ? new Date() : null,
       },
     })
+
+    if (paymentMethod.toLowerCase() === 'paystack' && gymDetails?.paystackSecretKey) {
+      try {
+        const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://gympilotpro.com';
+        const callbackUrl = `${baseUrl.replace('://', `://${gym.slug}.`)}/payment/success`;
+        
+        const response = await fetch('https://api.paystack.co/transaction/initialize', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${gymDetails.paystackSecretKey}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: user.email,
+            amount: membership.price * 100, // Paystack expects kobo
+            reference: payment.reference,
+            metadata: {
+              type: isStaff ? 'admin_registration' : 'member_signup',
+              gymId: gym.id,
+              userId: user.id,
+              membershipId: membership.id,
+              paymentId: payment.id,
+              months: membership.duration
+            },
+            callback_url: callbackUrl
+          })
+        });
+
+        const paystackData = await response.json();
+        
+        if (paystackData.status) {
+          return NextResponse.json({
+            success: true,
+            authorization_url: paystackData.data.authorization_url,
+            reference: payment.reference,
+            userId: user.id,
+          });
+        } else {
+          throw new Error(paystackData.message);
+        }
+      } catch (err: any) {
+        console.error('Paystack initialization error:', err);
+        return NextResponse.json({ error: err.message || 'Payment initialization failed' }, { status: 500 });
+      }
+    }
 
     // Response
     const responseData: any = {

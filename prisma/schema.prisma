@@ -34,6 +34,9 @@ model Gym {
   showcaseImage1   String?
   showcaseImage2   String?
 
+  paystackPublicKey  String?
+  paystackSecretKey  String?
+
   attendances    Attendance[]
   devices        Device[]
   subscriptions  GymSubscription[]

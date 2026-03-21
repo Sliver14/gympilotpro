@@ -80,13 +80,22 @@ export async function POST(req: NextRequest) {
     })
 
     if (paymentMethod.toLowerCase() === 'paystack') {
+      const gymDetails = await prisma.gym.findUnique({
+        where: { id: gym.id },
+        select: { paystackSecretKey: true }
+      });
+
+      if (!gymDetails || !gymDetails.paystackSecretKey) {
+        return NextResponse.json({ error: 'This gym has not configured Paystack online payments.', success: false }, { status: 400 });
+      }
+
       try {
         const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://gympilotpro.com';
         
         const response = await fetch('https://api.paystack.co/transaction/initialize', {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
+            Authorization: `Bearer ${gymDetails.paystackSecretKey}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({

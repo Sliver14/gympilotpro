@@ -24,6 +24,8 @@ export function GymSettingsForm() {
     heroSubtitle: '',
     primaryColor: '#daa857',
     secondaryColor: '#000000',
+    paystackPublicKey: '',
+    paystackSecretKey: '',
   })
 
   useEffect(() => {
@@ -44,6 +46,8 @@ export function GymSettingsForm() {
           heroSubtitle: data.gym.heroSubtitle || '',
           primaryColor: data.gym.primaryColor || '#daa857',
           secondaryColor: data.gym.secondaryColor || '#000000',
+          paystackPublicKey: data.gym.paystackPublicKey || '',
+          paystackSecretKey: data.gym.paystackSecretKey || '',
         })
       }
     } catch (error) {
@@ -202,6 +206,62 @@ export function GymSettingsForm() {
             {saving ? <Loader2 className="animate-spin mr-2" /> : 'Save Text & Colors'}
           </Button>
         </form>
+
+        <hr className="border-white/5" />
+
+        <div className="space-y-6">
+          <h3 className="text-sm font-black uppercase italic tracking-widest text-white">Payment Integration (Paystack)</h3>
+          <p className="text-xs text-gray-500 font-bold uppercase tracking-widest">Connect your Paystack account to receive payments directly.</p>
+          
+          <form onSubmit={handleSave} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-3">
+                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">Paystack Public Key</Label>
+                <Input 
+                  value={form.paystackPublicKey}
+                  onChange={e => setForm({...form, paystackPublicKey: e.target.value})}
+                  type="password"
+                  placeholder="pk_test_..."
+                  className="h-14 bg-black border-white/5 rounded-xl text-xs font-bold tracking-widest"
+                />
+              </div>
+              <div className="space-y-3">
+                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">Paystack Secret Key</Label>
+                <Input 
+                  value={form.paystackSecretKey}
+                  onChange={e => setForm({...form, paystackSecretKey: e.target.value})}
+                  type="password"
+                  placeholder="sk_test_..."
+                  className="h-14 bg-black border-white/5 rounded-xl text-xs font-bold tracking-widest"
+                />
+              </div>
+            </div>
+
+            <div className="bg-orange-500/10 border border-orange-500/20 p-6 rounded-xl space-y-4">
+              <p className="text-xs font-black uppercase tracking-widest text-orange-500">Required Webhook Configuration</p>
+              <p className="text-[10px] text-gray-400 uppercase font-bold tracking-widest">Copy these URLs into your Paystack Dashboard (Settings &gt; API Keys & Webhooks):</p>
+              
+              <div className="space-y-3">
+                <div>
+                  <Label className="text-[10px] font-black uppercase tracking-widest text-gray-500">Callback URL</Label>
+                  <code className="block mt-1 p-3 bg-black border border-white/10 rounded-lg text-xs font-mono text-gray-300 select-all">
+                    https://{gymData?.slug}.gympilotpro.com/payment/success
+                  </code>
+                </div>
+                <div>
+                  <Label className="text-[10px] font-black uppercase tracking-widest text-gray-500">Webhook URL</Label>
+                  <code className="block mt-1 p-3 bg-black border border-white/10 rounded-lg text-xs font-mono text-gray-300 select-all">
+                    https://{gymData?.slug}.gympilotpro.com/api/webhooks/paystack/{gymData?.id}
+                  </code>
+                </div>
+              </div>
+            </div>
+
+            <Button type="submit" disabled={saving} className="w-full h-14 bg-white/5 hover:bg-white/10 text-white font-black uppercase tracking-widest rounded-xl border border-white/10">
+              {saving ? <Loader2 className="animate-spin mr-2" /> : 'Save API Keys'}
+            </Button>
+          </form>
+        </div>
 
         <hr className="border-white/5" />
 

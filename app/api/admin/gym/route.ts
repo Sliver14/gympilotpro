@@ -41,8 +41,8 @@ export async function PUT(req: NextRequest) {
 
     const data = await req.json();
     
-    // Only allow updating specific branding fields
-    const { name, tagline, heroTitle, heroSubtitle, primaryColor, secondaryColor } = data;
+    // Only allow updating specific branding fields and payment integration keys
+    const { name, tagline, heroTitle, heroSubtitle, primaryColor, secondaryColor, paystackPublicKey, paystackSecretKey } = data;
 
     const gym = await prisma.gym.update({
       where: { id: user.gymId },
@@ -53,6 +53,8 @@ export async function PUT(req: NextRequest) {
         ...(heroSubtitle !== undefined && { heroSubtitle }),
         ...(primaryColor && { primaryColor }),
         ...(secondaryColor && { secondaryColor }),
+        ...(paystackPublicKey !== undefined && { paystackPublicKey }),
+        ...(paystackSecretKey !== undefined && { paystackSecretKey }),
       },
     });
 
