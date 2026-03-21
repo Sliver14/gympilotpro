@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma'
 import crypto from 'crypto'
 import { Resend } from 'resend'
 import { getGymFromRequest } from '@/lib/gym-context'
+import { rateLimit, getClientIP } from '@/lib/rate-limit'
 
 // Initialize Resend (do this once at module level)
 const resend = new Resend(process.env.RESEND_API_KEY)
@@ -22,8 +23,30 @@ export async function POST(req: NextRequest) {
 
     // Normalize email
     const normalizedEmail = email.toLowerCase().trim()
+    const ip = await getClientIP()
 
-    // 1. Check if user exists (scoped by gymId)
+    // 1. Rate Limiting
+    // Limit by IP: Max 10 requests per hour
+    const ipLimit = await rateLimit(`forgot-password:ip:${ip}`, 10, 3600)
+    if (!ipLimit.success) {
+      return NextResponse.json(
+        { error: 'Too many requests from this IP. Please try again in an hour.' },
+        { status: 429 }
+      )
+    }
+
+    // Limit by Email: Max 3 requests per hour
+    const emailLimit = await rateLimit(`forgot-password:email:${normalizedEmail}`, 3, 3600)
+    if (!emailLimit.success) {
+      // For security, we might want to return 200 but not send an email
+      // However, usually 429 is fine for forgot-password
+      return NextResponse.json(
+        { error: 'Too many reset requests for this email. Please check your inbox or try again later.' },
+        { status: 429 }
+      )
+    }
+
+    // 2. Check if user exists (scoped by gymId)
     const user = await prisma.user.findFirst({
       where: { 
         email: normalizedEmail,

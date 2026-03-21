@@ -256,6 +256,13 @@ model PasswordResetToken {
   @@index([email])
 }
 
+model RateLimit {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  count     Int      @default(0)
+  resetAt   DateTime
+}
+
 model SaaSPayment {
   id        String   @id @default(cuid())
   email     String

@@ -290,7 +290,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
                     <UserIcon className="h-7 w-7" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-black uppercase italic tracking-tighter text-white mb-1">Staff Profile</h3>
+                    <h3 className="text-xl font-black uppercase italic tracking-tighter text-white mb-1">Profile</h3>
                     <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Update Personal Metrics</p>
                   </div>
                 </div>

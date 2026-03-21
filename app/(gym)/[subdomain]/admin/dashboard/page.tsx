@@ -161,7 +161,7 @@ function AdminDashboardContent() {
                   </div>
                 </div>
                 <Button 
-                  onClick={() => router.push(hasPackages ? '?tab=settings' : '?tab=packages')}
+                  onClick={() => router.push(hasPackages ? '/admin/settings' : '?tab=packages')}
                   className="h-14 px-10 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black uppercase tracking-widest rounded-xl shadow-xl shadow-[#daa857]/10 transition-all hover:scale-105 active:scale-95"
                 >
                   Configure Now

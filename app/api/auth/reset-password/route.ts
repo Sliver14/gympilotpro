@@ -2,12 +2,22 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { hashPassword } from '@/lib/auth'
 import { getGymFromRequest } from '@/lib/gym-context'
+import { rateLimit, getClientIP } from '@/lib/rate-limit'
 
 export async function POST(req: NextRequest) {
   try {
     const gym = await getGymFromRequest(req)
     if (!gym) {
       return NextResponse.json({ error: 'Gym not found' }, { status: 404 })
+    }
+
+    const ip = await getClientIP()
+    const limit = await rateLimit(`reset-password:ip:${ip}`, 10, 3600)
+    if (!limit.success) {
+      return NextResponse.json(
+        { error: 'Too many attempts. Please try again in an hour.' },
+        { status: 429 }
+      )
     }
 
     const { token, password } = await req.json()
