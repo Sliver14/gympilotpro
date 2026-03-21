@@ -19,6 +19,7 @@ import ExpiredMembersList from '@/components/admin/expired-members-list'
 import RevenueAnalytics from '@/components/admin/revenue-analytics'
 import AttendanceOverview from '@/components/admin/attendance-overview'
 import CheckInPanel from '@/components/admin/check-in-panel'
+import PackagesList from '@/components/admin/packages-list'
 import { GymQRCode } from '@/components/gym-qr-code'
 import { Spinner } from '@/components/ui/spinner'
 import { AlertTriangle, ShieldCheck } from 'lucide-react'
@@ -26,7 +27,7 @@ import { Button } from '@/components/ui/button'
 
 function AdminDashboardContent() {
   const [adminData, setAdminData] = useState<any>(null)
-  const [packages, setPackages] = useState<any[]>([])
+  const [hasPackages, setHasPackages] = useState<boolean>(true)
   const [isLoading, setIsLoading] = useState(true)
   const [refreshTrigger, setRefreshTrigger] = useState(0)
   const router = useRouter()
@@ -36,10 +37,7 @@ function AdminDashboardContent() {
 
   const fetchAdminData = useCallback(async () => {
     try {
-      const [userResponse, packagesResponse] = await Promise.all([
-        fetch('/api/auth/user'),
-        fetch('/api/admin/packages')
-      ])
+      const userResponse = await fetch('/api/auth/user')
 
       if (!userResponse.ok) {
         router.push('/login')
@@ -47,7 +45,6 @@ function AdminDashboardContent() {
       }
 
       const userData = await userResponse.json()
-      const packagesData = await packagesResponse.json()
       
       // Ensure only authorized roles can access
       if (!['admin', 'secretary', 'trainer'].includes(userData.role)) {
@@ -57,7 +54,13 @@ function AdminDashboardContent() {
       }
 
       setAdminData(userData)
-      setPackages(packagesData)
+
+      // Initial check for packages for the banner
+      const pkgRes = await fetch('/api/admin/packages')
+      if (pkgRes.ok) {
+        const pkgData = await pkgRes.json()
+        setHasPackages(pkgData.packages.length > 0)
+      }
     } catch (error) {
       console.error('Error fetching admin data:', error)
     } finally {
@@ -103,7 +106,6 @@ function AdminDashboardContent() {
   }
 
   const hasBankDetails = !!(adminData.gym?.bankName && adminData.gym?.accountNumber && adminData.gym?.accountName)
-  const hasPackages = packages.length > 0
   const isConfigComplete = hasBankDetails && hasPackages
 
   return (
@@ -221,6 +223,10 @@ function AdminDashboardContent() {
 
             <div className={currentTab === 'revenue' ? 'block' : 'hidden'}>
               <RevenueAnalytics />
+            </div>
+
+            <div className={currentTab === 'packages' ? 'block' : 'hidden'}>
+              <PackagesList onPackageUpdate={refreshDashboard} />
             </div>
           </div>
         </div>
