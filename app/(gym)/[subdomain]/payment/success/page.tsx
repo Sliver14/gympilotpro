@@ -4,16 +4,25 @@ import React, { useEffect, useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
+import { useGym } from '@/components/gym-provider';
+import Image from 'next/image';
 
 function SuccessContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const reference = searchParams.get('reference');
+  const { gymData } = useGym();
 
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const [message, setMessage] = useState('Verifying your payment...');
+  const [userRole, setUserRole] = useState<string | null>(null);
 
   useEffect(() => {
+    // Fetch user role for routing
+    fetch('/api/auth/user').then(res => {
+      if (res.ok) res.json().then(data => setUserRole(data.role));
+    }).catch(console.error);
+
     if (!reference) {
       setStatus('error');
       setMessage('No payment reference found.');
@@ -48,16 +57,26 @@ function SuccessContent() {
     verifyPayment();
   }, [reference]);
 
-  const goToDashboard = () => router.push('/admin/dashboard');
+  const goToDashboard = () => {
+    if (userRole === 'admin' || userRole === 'owner') {
+      router.push('/admin/billing');
+    } else if (userRole === 'member') {
+      router.push('/member/dashboard');
+    } else {
+      router.push('/login');
+    }
+  };
 
   // Go back to the previous page (usually the payment / checkout page)
   const goBack = () => router.back();
+
+  const accent = gymData?.primaryColor || '#daa857';
 
   return (
     <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
       {status === 'loading' && (
         <div className="flex flex-col items-center gap-4">
-          <Loader2 className="h-16 w-16 text-orange-500 animate-spin" />
+          <Loader2 className="h-16 w-16 animate-spin" style={{ color: accent }} />
           <h2 className="text-2xl font-black italic uppercase tracking-tighter text-white">
             {message}
           </h2>
@@ -66,7 +85,7 @@ function SuccessContent() {
       )}
 
       {status === 'success' && (
-        <div className="flex flex-col items-center gap-6 max-w-md w-full bg-white/5 border border-white/10 p-10 rounded-lg">
+        <div className="flex flex-col items-center gap-6 max-w-md w-full bg-white/5 border border-white/10 p-10 rounded-[2rem] shadow-2xl">
           <CheckCircle className="h-20 w-20 text-green-500 mb-2" />
           <div>
             <h2 className="text-4xl font-black italic uppercase tracking-tighter text-white mb-3">
@@ -75,13 +94,14 @@ function SuccessContent() {
             <p className="text-gray-300 font-medium text-lg">
               {message}
             </p>
-            <p className="text-orange-500 font-bold uppercase text-sm mt-5 tracking-widest">
-              Plan Activated
+            <p className="font-bold uppercase text-[10px] mt-5 tracking-widest" style={{ color: accent }}>
+              Your access has been granted
             </p>
           </div>
           <Button
             onClick={goToDashboard}
-            className="w-full h-16 mt-6 bg-orange-500 hover:bg-orange-600 text-black font-black italic uppercase text-lg rounded-none"
+            className="w-full h-16 mt-6 text-black font-black italic uppercase text-lg rounded-xl transition-transform hover:scale-[1.02]"
+            style={{ backgroundColor: accent }}
           >
             Go to Dashboard
           </Button>
@@ -89,7 +109,7 @@ function SuccessContent() {
       )}
 
       {status === 'error' && (
-        <div className="flex flex-col items-center gap-6 max-w-md w-full bg-white/5 border border-red-500/30 p-10 rounded-lg">
+        <div className="flex flex-col items-center gap-6 max-w-md w-full bg-white/5 border border-red-500/30 p-10 rounded-[2rem] shadow-2xl">
           <AlertCircle className="h-20 w-20 text-red-500 mb-2" />
           <div>
             <h2 className="text-4xl font-black italic uppercase tracking-tighter text-white mb-3">
@@ -106,7 +126,8 @@ function SuccessContent() {
           <div className="w-full flex flex-col sm:flex-row gap-4 mt-6">
             <Button
               onClick={goBack}
-              className="flex-1 h-16 bg-orange-500 hover:bg-orange-600 text-black font-black italic uppercase text-lg rounded-none"
+              className="flex-1 h-16 text-black font-black italic uppercase text-lg rounded-xl transition-transform hover:scale-[1.02]"
+              style={{ backgroundColor: accent }}
             >
               Go Back
             </Button>
@@ -114,7 +135,7 @@ function SuccessContent() {
             <Button
               variant="outline"
               onClick={() => router.push('/')}
-              className="flex-1 h-16 border-white/30 hover:bg-white/10 text-white font-black italic uppercase text-lg rounded-none"
+              className="flex-1 h-16 border-white/30 bg-transparent hover:bg-white/10 text-white font-black italic uppercase text-lg rounded-xl transition-transform hover:scale-[1.02]"
             >
               Go Home
             </Button>
@@ -126,19 +147,52 @@ function SuccessContent() {
 }
 
 export default function PaymentSuccessPage() {
+  const { gymData, isLoading } = useGym();
+  const accent = gymData?.primaryColor || '#daa857';
+  const logo = gymData?.logo;
+  const gymName = gymData?.name || 'Klimarx Space';
+  const gymInitials = gymName.split(' ').map((n: string) => n[0]).join('').substring(0, 2).toUpperCase();
+
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white selection:bg-orange-500 selection:text-black font-sans flex flex-col">
-      <nav className="w-full bg-[#0a0a0a]/80 backdrop-blur-xl border-b border-white/10">
+    <div className="min-h-screen bg-[#0a0a0a] text-white selection:bg-[#daa857]/30 selection:text-black font-sans flex flex-col relative overflow-hidden">
+      {/* Background glow matching the gym's accent */}
+      <div 
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full blur-[120px] opacity-[0.03] pointer-events-none"
+        style={{ backgroundColor: accent }}
+      />
+      
+      <nav className="w-full bg-[#0a0a0a]/80 backdrop-blur-xl border-b border-white/5 relative z-10">
         <div className="container mx-auto px-6 h-24 flex items-center justify-center">
-          <span className="text-2xl font-black italic uppercase tracking-tighter">
-            Insight<span className="text-orange-500">Gym</span>
-          </span>
+          {isLoading ? (
+            <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
+          ) : (
+            <div className="flex items-center gap-3">
+              <div className="relative h-10 w-10 overflow-hidden rounded-full border flex items-center justify-center" style={{ borderColor: `${accent}4d`, backgroundColor: logo ? 'white' : '#111' }}>
+                {logo ? (
+                  <Image 
+                    src={logo} 
+                    alt="Logo" 
+                    fill
+                    className="object-contain p-1"
+                  />
+                ) : (
+                  <span className="font-black italic text-sm" style={{ color: accent }}>{gymInitials}</span>
+                )}
+              </div>
+              <span className="text-2xl font-black uppercase italic tracking-tighter">
+                {gymName.split(' ')[0]}
+                <span style={{ color: accent }}>{gymName.split(' ').slice(1).join(' ')}</span>
+              </span>
+            </div>
+          )}
         </div>
       </nav>
 
-      <Suspense fallback={<div className="flex-1 flex items-center justify-center"><Loader2 className="h-10 w-10 text-orange-500 animate-spin" /></div>}>
-        <SuccessContent />
-      </Suspense>
+      <div className="flex-1 flex flex-col relative z-10">
+        <Suspense fallback={<div className="flex-1 flex items-center justify-center"><Loader2 className="h-10 w-10 animate-spin" style={{ color: accent }} /></div>}>
+          <SuccessContent />
+        </Suspense>
+      </div>
     </div>
   );
 }

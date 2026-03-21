@@ -61,6 +61,21 @@ export async function POST(req: Request, { params }: { params: Promise<{ gymId: 
         const actualAmount = amount / 100; // Convert from Kobo
 
         if (type === 'member_signup' || type === 'admin_registration' || type === 'member_renewal' || type === 'member_payment') {
+          // Idempotency Check
+          if (paymentId) {
+            const existingPayment = await prisma.payment.findUnique({ where: { id: paymentId } });
+            if (existingPayment?.status === 'approved') {
+              console.log(`Webhook Idempotency Check: Payment ${paymentId} already approved.`);
+              return NextResponse.json({ success: true, message: 'Payment already processed' });
+            }
+          } else {
+            const existingPayment = await prisma.payment.findUnique({ where: { reference } });
+            if (existingPayment?.status === 'approved') {
+              console.log(`Webhook Idempotency Check: Payment ${reference} already approved.`);
+              return NextResponse.json({ success: true, message: 'Payment already processed' });
+            }
+          }
+
           const result = await prisma.$transaction(async (tx) => {
             let paymentRecord;
             if (paymentId) {

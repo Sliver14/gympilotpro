@@ -60,6 +60,11 @@ export async function POST(req: Request) {
             where: { reference },
           });
 
+          if (existingPayment && existingPayment.status === 'success') {
+            console.log(`Webhook Idempotency Check: SaaS Payment ${reference} already processed.`);
+            return NextResponse.json({ success: true, message: 'Already processed' });
+          }
+
           if (!existingPayment) {
             await prisma.saaSPayment.create({
               data: {
