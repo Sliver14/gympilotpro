@@ -33,10 +33,10 @@ export default function RenewMembershipPage() {
   const hasPaystack = gymData?.hasPaystack || false
 
   const PAYMENT_METHODS = [
-    { id: 'Bank Transfer', name: 'Bank Transfer', comingSoon: false },
-    { id: 'POS', name: 'POS / Card', comingSoon: false },
-    { id: 'Cash', name: 'Cash', comingSoon: false },
-    { id: 'Paystack', name: 'Paystack', comingSoon: !hasPaystack, comingSoonLabel: 'Not Configured' },
+    { id: 'Bank Transfer', name: 'Bank Transfer', isEnabled: true },
+    { id: 'POS', name: 'POS / Card', isEnabled: true },
+    { id: 'Cash', name: 'Cash', isEnabled: true },
+    { id: 'Paystack', name: 'Paystack', isEnabled: hasPaystack, errorLabel: 'Not Configured' },
   ]
 
   useEffect(() => {
@@ -233,13 +233,13 @@ export default function RenewMembershipPage() {
                     paymentMethod === method.id
                       ? 'border-primary bg-primary/5'
                       : 'border-border hover:border-primary/50'
-                  } ${method.comingSoon ? 'opacity-60 cursor-not-allowed' : ''}`}
-                  onClick={() => !method.comingSoon && setPaymentMethod(method.id)}
+                  } ${!method.isEnabled ? 'opacity-60 cursor-not-allowed' : ''}`}
+                  onClick={() => method.isEnabled && setPaymentMethod(method.id)}
                 >
                   <p className="font-medium text-sm">{method.name}</p>
-                  {method.comingSoon && (
+                  {!method.isEnabled && method.errorLabel && (
                     <Badge variant="secondary" className="absolute -top-2 -right-2 text-[8px] px-1 py-0 h-4">
-                      Coming Soon
+                      {method.errorLabel}
                     </Badge>
                   )}
                 </div>

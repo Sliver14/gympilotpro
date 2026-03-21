@@ -113,10 +113,10 @@ export default function SignupPage() {
   const hasPaystack = gymData?.hasPaystack || false
 
   const PAYMENT_METHODS = [
-    { id: 'Cash', name: 'Cash', comingSoon: false },
-    { id: 'Bank Transfer', name: 'Bank Transfer', comingSoon: false },
-    { id: 'POS / Card', name: 'POS / Card', comingSoon: false },
-    { id: 'Paystack', name: 'Paystack', comingSoon: !hasPaystack, comingSoonLabel: !hasPaystack ? 'Not Configured' : null },
+    { id: 'Cash', name: 'Cash', isEnabled: true },
+    { id: 'Bank Transfer', name: 'Bank Transfer', isEnabled: true },
+    { id: 'POS / Card', name: 'POS / Card', isEnabled: true },
+    { id: 'Paystack', name: 'Paystack', isEnabled: hasPaystack, errorLabel: 'Not Configured' },
   ]
 
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -524,17 +524,17 @@ export default function SignupPage() {
                       {PAYMENT_METHODS.map((method) => (
                         <div
                           key={method.id}
-                          onClick={() => !method.comingSoon && updateFormData({ paymentMethod: method.id })}
+                          onClick={() => method.isEnabled && updateFormData({ paymentMethod: method.id })}
                           className={cn(
                             "relative cursor-pointer rounded-xl py-4 border-2 text-center text-[10px] font-black uppercase tracking-widest transition-all",
                             formData.paymentMethod === method.id 
                               ? "bg-[#daa857] border-[#daa857] text-black" 
                               : "bg-black border-white/5 text-white hover:border-[#daa857]/50",
-                            method.comingSoon && "opacity-30 cursor-not-allowed"
+                            !method.isEnabled && "opacity-30 cursor-not-allowed"
                           )}
                         >
                           {method.name}
-                          {method.comingSoon && <Badge className="absolute -top-2 -right-2 scale-75 bg-zinc-800">Soon</Badge>}
+                          {!method.isEnabled && method.errorLabel && <Badge className="absolute -top-2 -right-2 scale-75 bg-zinc-800 text-white">{method.errorLabel}</Badge>}
                         </div>
                       ))}
                     </div>
