@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { hashPassword, getCurrentUser } from '@/lib/auth'
 import { getGymFromRequest } from '@/lib/gym-context'
+import { sendWelcomeEmail } from '@/lib/email'
 
 export async function GET(request: NextRequest) {
   try {
@@ -81,7 +82,6 @@ export async function POST(req: NextRequest) {
     const body = await req.json()
     let {
       email,
-      password,
       firstName,
       lastName,
       phoneNumber,
@@ -89,7 +89,7 @@ export async function POST(req: NextRequest) {
       specialization,
     } = body
 
-    if (!email || !password || !firstName || !lastName || !role) {
+    if (!email || !firstName || !lastName || !role) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
@@ -109,7 +109,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Email already registered' }, { status: 409 })
     }
 
-    const hashedPassword = await hashPassword(password)
+    const defaultPassword = "12345678"
+    const hashedPassword = await hashPassword(defaultPassword)
 
     const user = await prisma.user.create({
       data: {
@@ -120,6 +121,7 @@ export async function POST(req: NextRequest) {
         lastName,
         phoneNumber,
         role,
+        status: 'active', // Staff added by admin are active by default
         staffProfile: {
           create: {
             gymId: gym.id,
@@ -128,6 +130,22 @@ export async function POST(req: NextRequest) {
         },
       },
     })
+
+    // Generate login URL
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://gympilotpro.com';
+    const loginUrl = gym.customDomain && gym.domainVerified 
+      ? `https://${gym.customDomain}/login`
+      : `${baseUrl.replace('://', `://${gym.slug}.`)}/login`;
+
+    // Send Welcome Email
+    await sendWelcomeEmail({
+      email: user.email,
+      firstName: user.firstName,
+      role: user.role,
+      gymName: gym.name,
+      loginUrl,
+      password: defaultPassword
+    });
 
     return NextResponse.json({
       success: true,

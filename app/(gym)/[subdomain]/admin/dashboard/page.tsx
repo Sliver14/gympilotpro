@@ -21,9 +21,12 @@ import AttendanceOverview from '@/components/admin/attendance-overview'
 import CheckInPanel from '@/components/admin/check-in-panel'
 import { GymQRCode } from '@/components/gym-qr-code'
 import { Spinner } from '@/components/ui/spinner'
+import { AlertTriangle, ShieldCheck } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 
 function AdminDashboardContent() {
   const [adminData, setAdminData] = useState<any>(null)
+  const [packages, setPackages] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [refreshTrigger, setRefreshTrigger] = useState(0)
   const router = useRouter()
@@ -33,13 +36,18 @@ function AdminDashboardContent() {
 
   const fetchAdminData = useCallback(async () => {
     try {
-      const userResponse = await fetch('/api/auth/user')
+      const [userResponse, packagesResponse] = await Promise.all([
+        fetch('/api/auth/user'),
+        fetch('/api/admin/packages')
+      ])
+
       if (!userResponse.ok) {
         router.push('/login')
         return
       }
 
       const userData = await userResponse.json()
+      const packagesData = await packagesResponse.json()
       
       // Ensure only authorized roles can access
       if (!['admin', 'secretary', 'trainer'].includes(userData.role)) {
@@ -49,6 +57,7 @@ function AdminDashboardContent() {
       }
 
       setAdminData(userData)
+      setPackages(packagesData)
     } catch (error) {
       console.error('Error fetching admin data:', error)
     } finally {
@@ -58,7 +67,7 @@ function AdminDashboardContent() {
 
   useEffect(() => {
     fetchAdminData()
-  }, [fetchAdminData])
+  }, [fetchAdminData, refreshTrigger])
 
   const refreshDashboard = () => {
     setRefreshTrigger(prev => prev + 1)
@@ -93,18 +102,73 @@ function AdminDashboardContent() {
     )
   }
 
+  const hasBankDetails = !!(adminData.gym?.bankName && adminData.gym?.accountNumber && adminData.gym?.accountName)
+  const hasPackages = packages.length > 0
+  const isConfigComplete = hasBankDetails && hasPackages
+
   return (
     <SidebarProvider>
       <AdminSidebar adminData={adminData} onLogout={handleLogout} />
       <SidebarInset className="bg-[#0a0a0a]">
         <header className="flex h-16 shrink-0 items-center gap-2 border-b border-white/5 px-6 sticky top-0 z-30 bg-black/50 backdrop-blur-md">
           <SidebarTrigger className="-ml-1" />
-          <div className="flex items-center gap-2">
-            <h1 className="text-sm font-black uppercase italic tracking-[0.2em] text-gray-400">
-              {adminData.role} <span className="text-[#daa857]">Dashboard</span>
-            </h1>
+          <div className="flex items-center justify-between w-full">
+            <div className="flex items-center gap-2">
+              <h1 className="text-sm font-black uppercase italic tracking-[0.2em] text-gray-400">
+                {adminData.role} <span className="text-[#daa857]">Dashboard</span>
+              </h1>
+            </div>
+            {!isConfigComplete && adminData.role === 'admin' && (
+              <div className="hidden md:flex items-center gap-4 bg-[#daa857]/10 border border-[#daa857]/20 px-4 py-1.5 rounded-full animate-pulse">
+                <AlertTriangle className="h-4 w-4 text-[#daa857]" />
+                <span className="text-[10px] font-black uppercase tracking-widest text-[#daa857]">
+                  Compulsory Configuration Pending: 
+                  {!hasPackages && " [Create Packages]"}
+                  {!hasBankDetails && " [Add Bank Details]"}
+                </span>
+              </div>
+            )}
           </div>
         </header>
+
+        {!isConfigComplete && adminData.role === 'admin' && (
+          <div className="p-6 md:p-10 pb-0">
+            <div className="bg-gradient-to-r from-[#daa857]/20 to-transparent border border-[#daa857]/30 rounded-[2rem] p-8 relative overflow-hidden group">
+              <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-[#daa857]/10 blur-[100px] group-hover:bg-[#daa857]/20 transition-all duration-1000" />
+              <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+                <div className="space-y-4 text-center md:text-left">
+                  <div className="flex items-center justify-center md:justify-start gap-3 text-[#daa857]">
+                    <ShieldCheck className="h-6 w-6" />
+                    <h2 className="text-2xl font-black uppercase italic tracking-tighter">Action Required</h2>
+                  </div>
+                  <p className="text-xs font-bold text-gray-400 uppercase tracking-widest leading-relaxed max-w-xl">
+                    Your gym sanctuary is live, but members cannot register or renew without core configurations. 
+                    Please complete these steps to ensure uninterrupted operations.
+                  </p>
+                  <div className="flex flex-wrap justify-center md:justify-start gap-4">
+                    {!hasPackages && (
+                      <div className="flex items-center gap-2 px-3 py-1.5 bg-red-500/10 border border-red-500/20 rounded-lg text-[10px] font-black uppercase tracking-widest text-red-400">
+                        Missing Membership Packages
+                      </div>
+                    )}
+                    {!hasBankDetails && (
+                      <div className="flex items-center gap-2 px-3 py-1.5 bg-red-500/10 border border-red-500/20 rounded-lg text-[10px] font-black uppercase tracking-widest text-red-400">
+                        Missing Bank Account Details
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <Button 
+                  onClick={() => router.push(hasPackages ? '?tab=settings' : '?tab=packages')}
+                  className="h-14 px-10 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black uppercase tracking-widest rounded-xl shadow-xl shadow-[#daa857]/10 transition-all hover:scale-105 active:scale-95"
+                >
+                  Configure Now
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="flex flex-1 flex-col gap-8 p-6 md:p-10 pb-24 md:pb-20">
           {/* Tab Content */}
           <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">

@@ -265,6 +265,10 @@ export default function SignupPage() {
 
   const isBankTransfer = formData.paymentMethod === 'Bank Transfer'
 
+  const bankDetailsMessage = gymData?.bankName && gymData?.accountNumber && gymData?.accountName
+    ? `${gymData.accountName}\n${gymData.bankName}\n${gymData.accountNumber}`
+    : 'Bank details not configured. Please contact management.'
+
   if (gymLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[#0a0a0a]">
@@ -540,14 +544,14 @@ export default function SignupPage() {
                       ))}
                     </div>
 
-                    {isBankTransfer && (
+                          {isBankTransfer && (
                       <div className="p-6 rounded-2xl bg-black border border-[#daa857]/30 border-dashed">
                         <div className="flex items-center gap-3 text-[#daa857] mb-2">
                            <AlertTriangle className="h-5 w-5" />
                            <span className="text-xs font-black uppercase tracking-widest">Instructions</span>
                         </div>
                         <p className="text-[10px] text-gray-400 font-bold whitespace-pre-line leading-relaxed">
-                          {BANK_TRANSFER_DETAILS}
+                          {bankDetailsMessage}
                           {"\n\nConfirm identity and transfer proof via official WhatsApp after registration."}
                         </p>
                       </div>

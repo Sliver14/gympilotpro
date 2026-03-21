@@ -121,6 +121,121 @@ export async function sendUpgradeEmail(params: {
   }
 }
 
+export async function sendWelcomeEmail(params: {
+  email: string;
+  firstName: string;
+  role: string;
+  gymName: string;
+  loginUrl: string;
+  password?: string;
+}) {
+  const { email, firstName, role, gymName, loginUrl, password } = params;
+  
+  const passwordSection = password ? `
+    <div style="background-color: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;">
+      <h3 style="margin-top: 0; color: #374151;">Your Login Credentials</h3>
+      <p><strong>Login URL:</strong> <a href="${loginUrl}">${loginUrl}</a></p>
+      <p><strong>Email:</strong> ${email}</p>
+      <p><strong>Default Password:</strong> ${password}</p>
+    </div>
+    <p style="color: #ef4444; font-weight: bold;">Please log in immediately and change your default password for security purposes.</p>
+  ` : `
+    <div style="background-color: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;">
+      <h3 style="margin-top: 0; color: #374151;">Account Details</h3>
+      <p><strong>Login URL:</strong> <a href="${loginUrl}">${loginUrl}</a></p>
+      <p><strong>Email:</strong> ${email}</p>
+    </div>
+  `;
+
+  try {
+    await resend.emails.send({
+      from: fromEmail,
+      to: email,
+      subject: `Welcome to ${gymName}!`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <h2 style="color: #10b981;">Welcome to the Team!</h2>
+          <p>Hi ${firstName},</p>
+          <p>Your account as a <strong>${role.toUpperCase()}</strong> at <strong>${gymName}</strong> is now active.</p>
+          
+          ${passwordSection}
+          
+          <div style="text-align: center; margin: 30px 0;">
+            <a href="${loginUrl}" style="background-color: #f97316; color: white; padding: 14px 28px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">
+              Go to Dashboard
+            </a>
+          </div>
+          
+          <p style="color: #6b7280; font-size: 12px; margin-top: 40px; text-align: center;">
+            Sent via GymPilotPro Sanctuary
+          </p>
+        </div>
+      `,
+    });
+    console.log(`Welcome email sent to ${email}`);
+  } catch (err) {
+    console.error('Failed to send welcome email:', err);
+  }
+}
+
+export async function sendMemberWelcomeEmail(params: {
+  email: string;
+  firstName: string;
+  gymName: string;
+  loginUrl: string;
+  password?: string;
+}) {
+  const { email, firstName, gymName, loginUrl, password } = params;
+  
+  const passwordSection = password ? `
+    <div style="background-color: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;">
+      <h3 style="margin-top: 0; color: #374151;">Your Login Credentials</h3>
+      <p><strong>Login URL:</strong> <a href="${loginUrl}">${loginUrl}</a></p>
+      <p><strong>Email:</strong> ${email}</p>
+      <p><strong>Default Password:</strong> ${password}</p>
+    </div>
+    <p style="color: #ef4444; font-weight: bold;">Please change this password after your first login for security.</p>
+  ` : `
+    <div style="background-color: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;">
+      <h3 style="margin-top: 0; color: #374151;">Account Details</h3>
+      <p><strong>Login URL:</strong> <a href="${loginUrl}">${loginUrl}</a></p>
+      <p><strong>Email:</strong> ${email}</p>
+    </div>
+  `;
+
+  try {
+    await resend.emails.send({
+      from: fromEmail,
+      to: email,
+      subject: `Your Membership at ${gymName} is Ready!`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <h2 style="color: #10b981;">Welcome to ${gymName}</h2>
+          <p>Hi ${firstName},</p>
+          <p>We are excited to have you join us! Your membership account is now ready.</p>
+          
+          ${passwordSection}
+          
+          <div style="text-align: center; margin: 30px 0;">
+            <a href="${loginUrl}" style="background-color: #f97316; color: white; padding: 14px 28px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">
+              Access Member Dashboard
+            </a>
+          </div>
+
+          <p>If you have any questions, feel free to reach out to the gym management.</p>
+          
+          <p style="color: #6b7280; font-size: 12px; margin-top: 40px; text-align: center;">
+            Sent via GymPilotPro Sanctuary
+          </p>
+        </div>
+      `,
+    });
+    console.log(`Member welcome email sent to ${email}`);
+  } catch (err) {
+    console.error('Failed to send member welcome email:', err);
+  }
+}
+
 export async function sendMemberPaymentEmail(params: {
   memberEmail: string;
   adminEmail: string;

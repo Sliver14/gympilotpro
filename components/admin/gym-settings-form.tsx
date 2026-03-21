@@ -26,6 +26,9 @@ export function GymSettingsForm() {
     secondaryColor: '#000000',
     paystackPublicKey: '',
     paystackSecretKey: '',
+    bankName: '',
+    accountNumber: '',
+    accountName: '',
   })
 
   useEffect(() => {
@@ -48,6 +51,9 @@ export function GymSettingsForm() {
           secondaryColor: data.gym.secondaryColor || '#000000',
           paystackPublicKey: data.gym.paystackPublicKey || '',
           paystackSecretKey: data.gym.paystackSecretKey || '',
+          bankName: data.gym.bankName || '',
+          accountNumber: data.gym.accountNumber || '',
+          accountName: data.gym.accountName || '',
         })
       }
     } catch (error) {
@@ -266,8 +272,52 @@ export function GymSettingsForm() {
         <hr className="border-white/5" />
 
         <div className="space-y-6">
-          <h3 className="text-sm font-black uppercase italic tracking-widest text-white">Media Assets</h3>
+          <h3 className="text-sm font-black uppercase italic tracking-widest text-white">Bank Transfer Configuration</h3>
+          <p className="text-xs text-gray-500 font-bold uppercase tracking-widest">Provide your gym's bank details for manual member renewals and signups.</p>
           
+          <form onSubmit={handleSave} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="space-y-3">
+                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">Bank Name</Label>
+                <Input 
+                  value={form.bankName}
+                  onChange={e => setForm({...form, bankName: e.target.value})}
+                  placeholder="e.g. GTBank, Zenith, FCMB"
+                  className="h-14 bg-black border-white/5 rounded-xl text-xs font-bold uppercase tracking-widest"
+                />
+              </div>
+              <div className="space-y-3">
+                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">Account Number</Label>
+                <Input 
+                  value={form.accountNumber}
+                  onChange={e => setForm({...form, accountNumber: e.target.value})}
+                  placeholder="0000000000"
+                  className="h-14 bg-black border-white/5 rounded-xl text-xs font-bold tracking-widest"
+                />
+              </div>
+              <div className="space-y-3">
+                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">Account Name</Label>
+                <Input 
+                  value={form.accountName}
+                  onChange={e => setForm({...form, accountName: e.target.value})}
+                  placeholder="Legal Gym Name"
+                  className="h-14 bg-black border-white/5 rounded-xl text-xs font-bold uppercase tracking-widest"
+                />
+              </div>
+            </div>
+
+            <Button type="submit" disabled={saving} className="w-full h-14 bg-white/5 hover:bg-white/10 text-white font-black uppercase tracking-widest rounded-xl border border-white/10">
+              {saving ? <Loader2 className="animate-spin mr-2" /> : 'Save Bank Details'}
+            </Button>
+          </form>
+        </div>
+
+        <hr className="border-white/5" />
+          
+        <div className="space-y-6">
+          <h3 className="text-sm font-black uppercase italic tracking-widest text-white">Media Assets</h3>
+          <p className="text-xs text-gray-500 font-bold uppercase tracking-widest">Upload your gym's visual identity assets.</p>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
             {/* Logo Upload */}
             <div className="p-4 bg-black border border-white/5 rounded-2xl flex flex-col items-center justify-center gap-4 text-center">

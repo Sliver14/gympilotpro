@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { hashPassword, getCurrentUser, requireActiveGymSubscription } from '@/lib/auth'
 import { getGymFromRequest } from '@/lib/gym-context'
 import { PLAN_LIMITS } from '@/lib/plans'
+import { sendMemberWelcomeEmail } from '@/lib/email'
 
 export async function POST(req: NextRequest) {
   try {
@@ -61,10 +62,20 @@ export async function POST(req: NextRequest) {
       paymentCompleted = false,
     } = body
 
+    // Check if request is from staff + instant approval flag
+    const currentUser = await getCurrentUser()
+    const isStaff = currentUser && ['admin', 'secretary', 'trainer'].includes(currentUser.role)
+    const shouldApproveImmediately = isStaff && !!paymentCompleted // safe boolean coercion
+
+    // DEFAULT PASSWORD LOGIC:
+    // If admin/staff is registering, we use a default password.
+    const defaultPassword = "12345678"
+    const effectivePassword = isStaff ? defaultPassword : password
+
     // Required fields validation
     if (
       !email ||
-      !password ||
+      !effectivePassword ||
       !firstName ||
       !lastName ||
       !phoneNumber ||
@@ -113,7 +124,14 @@ export async function POST(req: NextRequest) {
     let expiryDate = new Date(joinDate)
     expiryDate.setDate(expiryDate.getDate() + membership.duration)
 
-    const hashedPassword = await hashPassword(password)
+    // For pending payments, set expired dates
+    if (!shouldApproveImmediately) {
+      const pastDate = new Date('2000-01-01')
+      joinDate = pastDate
+      expiryDate = pastDate
+    }
+
+    const hashedPassword = await hashPassword(effectivePassword)
     const qrCodeData = `${normalizedEmail}-${Date.now()}`
     const goalsJson = Array.isArray(fitnessGoals) && fitnessGoals.length > 0
       ? JSON.stringify(fitnessGoals)
@@ -125,18 +143,6 @@ export async function POST(req: NextRequest) {
         { error: 'This gym has not configured Paystack online payments. Please select Cash or Bank Transfer.' },
         { status: 400 }
       )
-    }
-
-    // Check if request is from staff + instant approval flag
-    const currentUser = await getCurrentUser()
-    const isStaff = currentUser && ['admin', 'secretary', 'trainer'].includes(currentUser.role)
-    const shouldApproveImmediately = isStaff && !!paymentCompleted // safe boolean coercion
-
-    // For pending payments, set expired dates
-    if (!shouldApproveImmediately) {
-      const pastDate = new Date('2000-01-01')
-      joinDate = pastDate
-      expiryDate = pastDate
     }
 
     // Create user + profile
@@ -244,8 +250,28 @@ export async function POST(req: NextRequest) {
     }
 
     if (paymentMethod === 'Bank Transfer' && !shouldApproveImmediately) {
-      responseData.bankInstructions = `KLIMARX SPACE ENTERPRISES\nFIRST CITY MONUMENT BANK (FCMB)\n1042020132\n\nPlease confirm account name before transfer.\nSend receipt to WhatsApp: 07048430667\n\nThank you!\nSigned: Management Klimarx Space Enterprises`
+      const bankDetails = gymDetails?.bankName && gymDetails?.accountNumber && gymDetails?.accountName
+        ? `${gymDetails.accountName}\n${gymDetails.bankName}\n${gymDetails.accountNumber}`
+        : 'Bank details not configured. Please contact management.'
+
+      responseData.bankInstructions = `${bankDetails}\n\nPlease confirm account name before transfer.\nSend receipt to WhatsApp: ${gymDetails?.phone || 'Management'}\n\nThank you!\nSigned: Management ${gymDetails?.name || 'Gym'}`
     }
+
+    // Generate login URL
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://gympilotpro.com';
+    const loginUrl = gymDetails?.customDomain && gymDetails?.domainVerified 
+      ? `https://${gymDetails.customDomain}/login`
+      : `${baseUrl.replace('://', `://${gym.slug}.`)}/login`;
+
+    // Send Welcome Email
+    await sendMemberWelcomeEmail({
+      email: user.email,
+      firstName: user.firstName,
+      gymName: gymDetails?.name || gym.slug,
+      loginUrl,
+      // Only include password if it was set as a default by staff
+      ...(isStaff && { password: defaultPassword })
+    });
 
     return NextResponse.json(responseData)
   } catch (error: any) {

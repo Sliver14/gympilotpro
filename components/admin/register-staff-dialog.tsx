@@ -36,14 +36,13 @@ export default function RegisterStaffDialog({ onStaffAdded }: { onStaffAdded?: (
     email: '',
     phoneNumber: '',
     role: '',
-    password: '',
     specialization: '',
   })
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (!formData.firstName || !formData.lastName || !formData.email || !formData.role || !formData.password) {
+    if (!formData.firstName || !formData.lastName || !formData.email || !formData.role) {
       toast({
         title: 'Error',
         description: 'Please fill in all required fields',
@@ -69,7 +68,7 @@ export default function RegisterStaffDialog({ onStaffAdded }: { onStaffAdded?: (
 
       toast({
         title: 'Success',
-        description: 'Staff member registered successfully',
+        description: 'Staff member registered successfully. A welcome email has been sent.',
       })
 
       setOpen(false)
@@ -79,7 +78,6 @@ export default function RegisterStaffDialog({ onStaffAdded }: { onStaffAdded?: (
         email: '',
         phoneNumber: '',
         role: '',
-        password: '',
         specialization: '',
       })
 
@@ -179,24 +177,9 @@ export default function RegisterStaffDialog({ onStaffAdded }: { onStaffAdded?: (
               </Select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password *</Label>
-              <div className="relative">
-                <Input
-                  id="password"
-                  type={showPassword ? "text" : "password"}
-                  value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  placeholder="********"
-                  required
-                  className="pr-10"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors focus:outline-none"
-                >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                </button>
+              <Label>Security</Label>
+              <div className="h-10 px-3 flex items-center bg-muted rounded-md text-[10px] font-medium text-muted-foreground uppercase tracking-widest leading-tight">
+                Default password (12345678) will be assigned.
               </div>
             </div>
           </div>
@@ -209,6 +192,12 @@ export default function RegisterStaffDialog({ onStaffAdded }: { onStaffAdded?: (
               onChange={(e) => setFormData({ ...formData, specialization: e.target.value })}
               placeholder="Yoga, HIIT, Bodybuilding, etc."
             />
+          </div>
+
+          <div className="bg-[#daa857]/5 border border-[#daa857]/20 p-4 rounded-xl">
+             <p className="text-[10px] font-bold text-[#daa857] uppercase tracking-widest leading-relaxed">
+               A welcome email will be sent to the staff member with their login credentials and the gym's access URL.
+             </p>
           </div>
 
           <DialogFooter>

@@ -37,6 +37,10 @@ model Gym {
   paystackPublicKey  String?
   paystackSecretKey  String?
 
+  bankName           String?
+  accountNumber      String?
+  accountName        String?
+
   attendances    Attendance[]
   devices        Device[]
   subscriptions  GymSubscription[]
