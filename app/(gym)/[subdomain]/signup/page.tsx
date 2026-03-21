@@ -159,6 +159,7 @@ export default function SignupPage() {
       
       const formDataUpload = new FormData()
       formDataUpload.append('file', croppedFile)
+      formDataUpload.append('isSignup', 'true')
 
       const res = await fetch('/api/upload', {
         method: 'POST',

@@ -39,6 +39,7 @@ export async function POST(req: NextRequest) {
 
     const formData = await req.formData();
     const file = formData.get('file');
+    const isSignup = formData.get('isSignup') === 'true';
 
     // Better type guard + existence check
     if (!file || !(file instanceof File)) {
@@ -65,8 +66,9 @@ export async function POST(req: NextRequest) {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    // Use a specific ID for logged-in users, or a unique temp ID for signups
-    const publicId = user?.id 
+    // Use a specific ID for logged-in users (UNLESS this is a signup), 
+    // or a unique temp ID for signups
+    const publicId = (user?.id && !isSignup)
       ? `profile_${user.id}` 
       : `signup_${Date.now()}_${Math.random().toString(36).substring(7)}`;
 
@@ -98,8 +100,8 @@ export async function POST(req: NextRequest) {
     // result.secure_url is usually what you want (https)
     const imageUrl = result.secure_url;
 
-    // ONLY update the database if we have a logged-in user context
-    if (user?.id) {
+    // ONLY update the database if we have a logged-in user context AND it's not a signup
+    if (user?.id && !isSignup) {
       await prisma.user.update({
         where: { 
           id: user.id,
