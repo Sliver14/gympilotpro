@@ -96,9 +96,9 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
     },
     {
       title: 'Packages',
-      url: `/admin/packages`,
+      url: `/${role}/dashboard?tab=packages`,
       icon: Package,
-      active: pathname.includes('/packages'),
+      active: currentTab === 'packages',
       adminOnly: true,
     },
   ]
