@@ -251,9 +251,9 @@ export default function CheckInPanel() {
           
           <div className="flex flex-col items-center text-center gap-8 relative z-10">
             {result.member && (
-              <Avatar className="h-40 w-40 border-4 border-white/10 shadow-2xl group transition-transform duration-500 hover:scale-105">
+              <Avatar className="h-40 w-40 border-4 border-border shadow-2xl group transition-transform duration-500 hover:scale-105">
                 <AvatarImage src={result.member.profileImage || undefined} className="object-cover" />
-                <AvatarFallback className="text-4xl bg-black font-black uppercase italic text-[#daa857]">
+                <AvatarFallback className="text-4xl bg-background font-black uppercase italic text-[#daa857]">
                   {result.member.fullName.split(' ').map(n => n[0]).join('')}
                 </AvatarFallback>
               </Avatar>
@@ -291,11 +291,11 @@ export default function CheckInPanel() {
 
             {result.member && (
               <div className="space-y-2">
-                <p className="text-3xl font-black text-white uppercase italic tracking-tighter">{result.member.fullName}</p>
+                <p className="text-3xl font-black text-foreground uppercase italic tracking-tighter">{result.member.fullName}</p>
                 <div className="flex flex-col items-center gap-1">
-                  <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500">Access Control System</p>
-                  <p className="text-xs font-bold text-gray-400">
-                    VALID UNTIL: <span className={cn("font-black italic", result.isValid ? "text-white" : "text-red-500")}>{new Date(result.member.expiryDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).toUpperCase()}</span>
+                  <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground">Access Control System</p>
+                  <p className="text-xs font-bold text-muted-foreground">
+                    VALID UNTIL: <span className={cn("font-black italic", result.isValid ? "text-foreground" : "text-red-500")}>{new Date(result.member.expiryDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).toUpperCase()}</span>
                   </p>
                 </div>
               </div>
@@ -318,17 +318,17 @@ export default function CheckInPanel() {
       {/* QR Scanner Card */}
       {!result && (
         <div className="w-full max-w-lg space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-          <div className="bg-[#111] border border-white/5 rounded-[2.5rem] overflow-hidden shadow-2xl relative">
+          <div className="bg-card border border-border rounded-[2.5rem] overflow-hidden shadow-2xl relative">
             <div
               id={videoContainerId}
               className={cn(
-                "w-full aspect-square bg-black transition-all",
+                "w-full aspect-square bg-background transition-all",
                 (isScanning || isValidating) ? 'block' : 'hidden'
               )}
             />
 
             {!isScanning && !isValidating && (
-              <div className="aspect-square flex flex-col items-center justify-center bg-black/40 relative group">
+              <div className="aspect-square flex flex-col items-center justify-center bg-card/50 relative group">
                 <div className="absolute inset-0 bg-[#daa857]/5 opacity-0 group-hover:opacity-100 transition-opacity blur-[100px]" />
                 {error ? (
                   <div className="text-center p-10 space-y-6 relative z-10">
@@ -339,7 +339,7 @@ export default function CheckInPanel() {
                     <Button 
                       variant="outline" 
                       onClick={startScanner}
-                      className="h-14 px-8 border-white/10 hover:bg-white/5 rounded-xl text-[10px] font-black uppercase tracking-widest"
+                      className="h-14 px-8 border-border hover:bg-accent rounded-xl text-[10px] font-black uppercase tracking-widest"
                     >
                       Retry Scan
                     </Button>
@@ -350,8 +350,8 @@ export default function CheckInPanel() {
                       <Camera className="h-10 w-10 text-[#daa857]" />
                     </div>
                     <div className="space-y-2">
-                      <h3 className="text-xl font-black text-white uppercase italic tracking-tighter">Manual Check-in</h3>
-                      <p className="text-[10px] font-black text-gray-600 uppercase tracking-[0.3em]">Scanner Ready for Uplink</p>
+                      <h3 className="text-xl font-black text-foreground uppercase italic tracking-tighter">Manual Check-in</h3>
+                      <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.3em]">Scanner Ready for Uplink</p>
                     </div>
                     <Button 
                       onClick={startScanner} 
@@ -365,14 +365,14 @@ export default function CheckInPanel() {
             )}
 
             {(isScanning || isValidating) && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm">
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-card/50 backdrop-blur-sm">
                 {isValidating ? (
                   <div className="flex flex-col items-center gap-6">
                     <Loader2 className="h-16 w-16 animate-spin text-[#daa857]" />
                     <p className="text-[10px] font-black text-[#daa857] uppercase tracking-[0.5em] animate-pulse">Processing QR Code</p>
                   </div>
                 ) : (
-                  <div className="text-white text-center space-y-4">
+                  <div className="text-foreground text-center space-y-4">
                     <div className="relative h-64 w-64 border-2 border-[#daa857]/50 rounded-3xl animate-pulse">
                       <div className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-[#daa857]" />
                       <div className="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-[#daa857]" />
@@ -388,24 +388,24 @@ export default function CheckInPanel() {
           </div>
 
           {/* Manual Search & Check-in */}
-          <div className="bg-[#111] border border-white/5 rounded-[2.5rem] p-8 shadow-2xl space-y-6">
+          <div className="bg-card border border-border rounded-[2.5rem] p-8 shadow-2xl space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="search" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 ml-2">Manual Search</Label>
+              <Label htmlFor="search" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-2">Manual Search</Label>
               <div className="flex gap-3">
                 <div className="relative flex-1">
-                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-600" />
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
                     id="search"
                     placeholder="Search by ID, Name or Comm..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="h-14 pl-12 bg-black border-white/5 rounded-xl focus:border-[#daa857] font-bold"
+                    className="h-14 pl-12 bg-background border-border rounded-xl focus:border-[#daa857] font-bold"
                   />
                 </div>
                 <Button
                   variant="outline"
                   size="icon"
-                  className="h-14 w-14 border-white/5 bg-black hover:bg-white/5 rounded-xl text-gray-500"
+                  className="h-14 w-14 border-border bg-background hover:bg-accent rounded-xl text-muted-foreground"
                   onClick={() => setSearchQuery('')}
                   disabled={!searchQuery}
                 >
@@ -424,18 +424,18 @@ export default function CheckInPanel() {
                   filteredMembers.map((member) => (
                     <div
                       key={member.id}
-                      className="flex items-center justify-between p-4 rounded-2xl bg-black/40 border border-white/5 hover:border-[#daa857]/30 transition-all group"
+                      className="flex items-center justify-between p-4 rounded-2xl bg-card/50 border border-border hover:border-[#daa857]/30 transition-all group"
                     >
                       <div className="flex items-center gap-4">
-                        <Avatar className="h-12 w-12 border border-white/10">
+                        <Avatar className="h-12 w-12 border border-border">
                           <AvatarImage src={member.profileImage || undefined} className="object-cover" />
-                          <AvatarFallback className="bg-black text-[#daa857] font-black italic text-xs">
+                          <AvatarFallback className="bg-background text-[#daa857] font-black italic text-xs">
                             {member.fullName.split(' ').map(n => n[0]).join('')}
                           </AvatarFallback>
                         </Avatar>
                         <div>
-                          <p className="text-sm font-black text-white uppercase italic tracking-tight">{member.fullName}</p>
-                          <p className="text-[8px] font-bold text-gray-600 uppercase tracking-widest">
+                          <p className="text-sm font-black text-foreground uppercase italic tracking-tight">{member.fullName}</p>
+                          <p className="text-[8px] font-bold text-muted-foreground uppercase tracking-widest">
                             EXP: {new Date(member.expiryDate).toLocaleDateString().toUpperCase()}
                           </p>
                         </div>
@@ -444,15 +444,15 @@ export default function CheckInPanel() {
                         size="sm"
                         onClick={() => manualCheckIn(member)}
                         disabled={isValidating}
-                        className="h-10 px-6 bg-white/5 hover:bg-[#daa857] hover:text-black text-gray-400 font-black uppercase text-[10px] tracking-widest rounded-xl transition-all"
+                        className="h-10 px-6 bg-accent hover:bg-[#daa857] hover:text-black text-muted-foreground font-black uppercase text-[10px] tracking-widest rounded-xl transition-all"
                       >
                         Override
                       </Button>
                     </div>
                   ))
                 ) : (
-                  <div className="p-10 text-center rounded-2xl bg-black/20 border border-dashed border-white/5">
-                    <p className="text-xs font-black text-gray-700 uppercase tracking-widest italic italic">No active members match "{searchQuery}"</p>
+                  <div className="p-10 text-center rounded-2xl bg-card/50 border border-dashed border-border">
+                    <p className="text-xs font-black text-muted-foreground uppercase tracking-widest italic italic">No active members match "{searchQuery}"</p>
                   </div>
                 )}
               </div>

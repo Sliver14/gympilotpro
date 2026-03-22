@@ -30,7 +30,7 @@ function MemberMobileNavContent({ className }: MemberMobileNavProps) {
   return (
     <nav
       className={cn(
-        'fixed bottom-0 left-0 right-0 z-50 border-t border-white/5 bg-black/80 backdrop-blur-xl md:hidden pb-safe',
+        'fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-card/50 backdrop-blur-xl md:hidden pb-safe',
         className
       )}
     >
@@ -46,7 +46,7 @@ function MemberMobileNavContent({ className }: MemberMobileNavProps) {
               <div
                 className={cn(
                   'h-10 w-14 rounded-xl flex items-center justify-center transition-all duration-300',
-                  isActive ? 'shadow-lg' : 'text-gray-500'
+                  isActive ? 'shadow-lg' : 'text-muted-foreground'
                 )}
                 style={isActive ? { backgroundColor: accent, color: '#000', boxShadow: `0 10px 15px -3px ${accent}33` } : {}}
               >
@@ -55,7 +55,7 @@ function MemberMobileNavContent({ className }: MemberMobileNavProps) {
               <span
                 className={cn(
                   'text-[8px] font-black uppercase tracking-[0.1em]',
-                  isActive ? '' : 'text-gray-600'
+                  isActive ? '' : 'text-muted-foreground'
                 )}
                 style={isActive ? { color: accent } : {}}
               >

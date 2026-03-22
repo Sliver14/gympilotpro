@@ -98,7 +98,7 @@ export default function StaffList() {
               onClick={fetchStaff} 
               variant="outline" 
               size="sm" 
-              className="h-10 px-4 border-white/5 bg-black hover:bg-white/5 text-gray-400 font-black uppercase text-[10px] tracking-widest gap-2 rounded-xl"
+              className="h-10 px-4 border-border bg-background hover:bg-accent text-muted-foreground font-black uppercase text-[10px] tracking-widest gap-2 rounded-xl"
             >
               <RefreshCw className={cn("h-3.5 w-3.5", isLoading && "animate-spin")} />
               Update
@@ -108,19 +108,19 @@ export default function StaffList() {
       </CardHeader>
       <CardContent className="space-y-8">
         <div className="relative group">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-600 transition-colors group-focus-within:text-[#daa857]" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground transition-colors group-focus-within:text-[#daa857]" />
           <Input
             placeholder="Search personnel by name, email or role..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="h-14 pl-12 bg-black border-white/5 rounded-2xl focus:border-[#daa857] font-bold text-sm"
+            className="h-14 pl-12 bg-background border-border rounded-2xl focus:border-[#daa857] font-bold text-sm"
           />
         </div>
 
         {filteredStaff.length === 0 ? (
-          <div className="py-20 text-center bg-black/20 rounded-[2rem] border border-dashed border-white/5">
+          <div className="py-20 text-center bg-card/50 rounded-[2rem] border border-dashed border-border">
             <UserCheck className="mx-auto h-12 w-12 text-gray-800 mb-4" />
-            <p className="text-sm font-bold text-gray-600 uppercase tracking-widest italic">No authorized personnel match the current query.</p>
+            <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest italic">No authorized personnel match the current query.</p>
           </div>
         ) : (
           <div className="grid gap-4">
@@ -128,21 +128,21 @@ export default function StaffList() {
               const initials = `${s.firstName?.[0] ?? ''}${s.lastName?.[0] ?? ''}`.toUpperCase()
 
               return (
-                <div key={s.id} className="flex flex-col md:flex-row md:items-center justify-between rounded-3xl bg-black/40 border border-white/5 p-6 hover:border-[#daa857]/30 transition-all group relative overflow-hidden">
-                  <div className="absolute -right-12 -top-12 h-24 w-24 rounded-full bg-white/5 blur-2xl group-hover:bg-[#daa857]/5 transition-colors" />
+                <div key={s.id} className="flex flex-col md:flex-row md:items-center justify-between rounded-3xl bg-card/50 border border-border p-6 hover:border-[#daa857]/30 transition-all group relative overflow-hidden">
+                  <div className="absolute -right-12 -top-12 h-24 w-24 rounded-full bg-accent blur-2xl group-hover:bg-[#daa857]/5 transition-colors" />
                   
                   <div className="flex items-center gap-5 flex-1 min-w-0 relative z-10">
-                    <Avatar className="h-14 w-14 border-2 border-white/5 group-hover:border-[#daa857]/30 transition-all duration-500 shadow-xl">
+                    <Avatar className="h-14 w-14 border-2 border-border group-hover:border-[#daa857]/30 transition-all duration-500 shadow-xl">
                       <AvatarImage src={s.profileImage || undefined} className="object-cover" />
-                      <AvatarFallback className="bg-black text-[#daa857] font-black italic">
+                      <AvatarFallback className="bg-background text-[#daa857] font-black italic">
                         {initials || <User className="h-6 w-6" />}
                       </AvatarFallback>
                     </Avatar>
                     <div className="min-w-0">
-                      <p className="font-black text-white uppercase italic tracking-tight text-lg leading-none mb-1">
+                      <p className="font-black text-foreground uppercase italic tracking-tight text-lg leading-none mb-1">
                         {s.firstName} <span className="text-[#daa857]">{s.lastName}</span>
                       </p>
-                      <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest flex items-center gap-2">
+                      <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest flex items-center gap-2">
                         <span>{s.email}</span>
                         <span className="h-1 w-1 rounded-full bg-gray-800" />
                         <span className="text-[#daa857]/50">{s.role.toUpperCase()} CORE</span>
@@ -150,15 +150,15 @@ export default function StaffList() {
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between md:justify-end gap-8 mt-6 md:mt-0 pt-6 md:pt-0 border-t md:border-none border-white/5 relative z-10">
+                  <div className="flex items-center justify-between md:justify-end gap-8 mt-6 md:mt-0 pt-6 md:pt-0 border-t md:border-none border-border relative z-10">
                     <div className="text-left md:text-right">
-                      <p className="text-[8px] font-black uppercase tracking-widest text-gray-600 mb-1">Specialization</p>
-                      <p className="text-xs font-black text-white uppercase italic">{s.staffProfile?.specialization || 'General Role'}</p>
+                      <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground mb-1">Specialization</p>
+                      <p className="text-xs font-black text-foreground uppercase italic">{s.staffProfile?.specialization || 'General Role'}</p>
                     </div>
                     
                     <div className="text-left md:text-right">
-                      <p className="text-[8px] font-black uppercase tracking-widest text-gray-600 mb-1">Personnel Since</p>
-                      <p className="text-xs font-bold text-gray-400">
+                      <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground mb-1">Personnel Since</p>
+                      <p className="text-xs font-bold text-muted-foreground">
                         {new Date(s.createdAt).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' }).toUpperCase()}
                       </p>
                     </div>

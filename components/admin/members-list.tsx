@@ -132,11 +132,11 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
             <CardDescription>{members.length} verified members in the gym</CardDescription>
             {maxMembers !== Infinity && (
               <div className="mt-3 max-w-[200px]">
-                <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-1">
+                <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1">
                   <span>Capacity</span>
                   <span>{members.length} / {maxMembers}</span>
                 </div>
-                <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                <div className="h-1.5 w-full bg-accent rounded-full overflow-hidden">
                   <div 
                     className={cn("h-full transition-all duration-500", isAtCapacity ? "bg-red-500" : "bg-[#daa857]")} 
                     style={{ width: `${Math.min((members.length / maxMembers) * 100, 100)}%` }}
@@ -163,7 +163,7 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
               onClick={fetchMembers} 
               variant="outline" 
               size="sm" 
-              className="h-10 px-4 border-white/5 bg-black hover:bg-white/5 text-gray-400 font-black uppercase text-[10px] tracking-widest gap-2 rounded-xl"
+              className="h-10 px-4 border-border bg-background hover:bg-accent text-muted-foreground font-black uppercase text-[10px] tracking-widest gap-2 rounded-xl"
             >
               <RefreshCw className={cn("h-3.5 w-3.5", isLoading && "animate-spin")} />
               Update
@@ -172,7 +172,7 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
               onClick={handleExport} 
               variant="outline" 
               size="sm" 
-              className="h-10 px-4 border-white/5 bg-black hover:bg-white/5 text-gray-400 font-black uppercase text-[10px] tracking-widest gap-2 rounded-xl"
+              className="h-10 px-4 border-border bg-background hover:bg-accent text-muted-foreground font-black uppercase text-[10px] tracking-widest gap-2 rounded-xl"
             >
               <Download className="h-3.5 w-3.5" />
               Extract
@@ -182,19 +182,19 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
       </CardHeader>
       <CardContent className="space-y-8">
         <div className="relative group">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-600 transition-colors group-focus-within:text-[#daa857]" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground transition-colors group-focus-within:text-[#daa857]" />
           <Input
             placeholder="Filter members by name or email..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="h-14 pl-12 bg-black border-white/5 rounded-2xl focus:border-[#daa857] font-bold text-sm"
+            className="h-14 pl-12 bg-background border-border rounded-2xl focus:border-[#daa857] font-bold text-sm"
           />
         </div>
 
         {filteredMembers.length === 0 ? (
-          <div className="py-20 text-center bg-black/20 rounded-[2rem] border border-dashed border-white/5">
+          <div className="py-20 text-center bg-card/50 rounded-[2rem] border border-dashed border-border">
             <Users className="mx-auto h-12 w-12 text-gray-800 mb-4" />
-            <p className="text-sm font-bold text-gray-600 uppercase tracking-widest italic">No matching members found in the database.</p>
+            <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest italic">No matching members found in the database.</p>
           </div>
         ) : (
           <div className="grid gap-4">
@@ -203,21 +203,21 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
               const initials = `${member.firstName?.[0] ?? ''}${member.lastName?.[0] ?? ''}`.toUpperCase()
 
               return (
-                <div key={member.id} className="flex flex-col md:flex-row md:items-center justify-between rounded-3xl bg-black/40 border border-white/5 p-6 hover:border-[#daa857]/30 transition-all group relative overflow-hidden">
-                  <div className="absolute -right-12 -top-12 h-24 w-24 rounded-full bg-white/5 blur-2xl group-hover:bg-[#daa857]/5 transition-colors" />
+                <div key={member.id} className="flex flex-col md:flex-row md:items-center justify-between rounded-3xl bg-card/50 border border-border p-6 hover:border-[#daa857]/30 transition-all group relative overflow-hidden">
+                  <div className="absolute -right-12 -top-12 h-24 w-24 rounded-full bg-accent blur-2xl group-hover:bg-[#daa857]/5 transition-colors" />
                   
                   <div className="flex items-center gap-5 flex-1 min-w-0 relative z-10">
-                    <Avatar className="h-14 w-14 border-2 border-white/5 group-hover:border-[#daa857]/30 transition-all duration-500 shadow-xl">
+                    <Avatar className="h-14 w-14 border-2 border-border group-hover:border-[#daa857]/30 transition-all duration-500 shadow-xl">
                       <AvatarImage src={member.profileImage || undefined} className="object-cover" />
-                      <AvatarFallback className="bg-black text-[#daa857] font-black italic">
+                      <AvatarFallback className="bg-background text-[#daa857] font-black italic">
                         {initials || <User className="h-6 w-6" />}
                       </AvatarFallback>
                     </Avatar>
                     <div className="min-w-0">
-                      <p className="font-black text-white uppercase italic tracking-tight text-lg leading-none mb-1">
+                      <p className="font-black text-foreground uppercase italic tracking-tight text-lg leading-none mb-1">
                         {member.firstName} <span className="text-[#daa857]">{member.lastName}</span>
                       </p>
-                      <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest flex items-center gap-2">
+                      <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest flex items-center gap-2">
                         <span className="truncate max-w-[150px]">{member.email}</span>
                         <span className="h-1 w-1 rounded-full bg-gray-800" />
                         <span className="text-[#daa857]/50">ID: {member.id.slice(-6).toUpperCase()}</span>
@@ -225,15 +225,15 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between md:justify-end gap-8 mt-6 md:mt-0 pt-6 md:pt-0 border-t md:border-none border-white/5 relative z-10">
+                  <div className="flex items-center justify-between md:justify-end gap-8 mt-6 md:mt-0 pt-6 md:pt-0 border-t md:border-none border-border relative z-10">
                     <div className="text-left md:text-right">
-                      <p className="text-[8px] font-black uppercase tracking-widest text-gray-600 mb-1">Membership Plan</p>
-                      <p className="text-xs font-black text-white uppercase italic">{member.memberProfile.membership.name}</p>
+                      <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground mb-1">Membership Plan</p>
+                      <p className="text-xs font-black text-foreground uppercase italic">{member.memberProfile.membership.name}</p>
                     </div>
                     
                     <div className="text-left md:text-right">
-                      <p className="text-[8px] font-black uppercase tracking-widest text-gray-600 mb-1">Expiry Date</p>
-                      <p className="text-xs font-bold text-gray-400 uppercase tracking-tighter">
+                      <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground mb-1">Expiry Date</p>
+                      <p className="text-xs font-bold text-muted-foreground uppercase tracking-tighter">
                         {new Date(member.memberProfile.expiryDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).toUpperCase()}
                       </p>
                     </div>

@@ -116,33 +116,33 @@ export default function ManualRenewalDialog({ memberId, memberName, onRenewed }:
         <Button 
           size="sm" 
           variant="outline" 
-          className="h-10 px-6 border-red-500/20 bg-black hover:bg-red-500 hover:text-white text-red-500 font-black uppercase text-[10px] tracking-widest gap-2 rounded-xl transition-all"
+          className="h-10 px-6 border-red-500/20 bg-background hover:bg-red-500 hover:text-foreground text-red-500 font-black uppercase text-[10px] tracking-widest gap-2 rounded-xl transition-all"
         >
           <RefreshCw className="h-3.5 w-3.5" />
           Renew
         </Button>
       </DialogTrigger>
-      <DialogContent className="bg-[#111] border-white/10 text-white rounded-[2.5rem] p-10 max-w-lg">
+      <DialogContent className="bg-card border-border text-foreground rounded-[2.5rem] p-10 max-w-lg">
         <DialogHeader className="space-y-4">
           <DialogTitle className="text-3xl font-black uppercase italic tracking-tighter">
             Manual <span className="text-[#daa857]">Renewal</span>
           </DialogTitle>
-          <DialogDescription className="text-gray-500 font-medium uppercase text-[10px] tracking-widest leading-relaxed">
-            Renewing membership for <span className="text-white font-black">{memberName}</span>.
+          <DialogDescription className="text-muted-foreground font-medium uppercase text-[10px] tracking-widest leading-relaxed">
+            Renewing membership for <span className="text-foreground font-black">{memberName}</span>.
             Confirm membership plan and start date.          </DialogDescription>
         </DialogHeader>
         
         <form onSubmit={handleSubmit} className="space-y-8 py-6">
           <div className="space-y-3">
-            <Label htmlFor="membership" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Membership Plan *</Label>
+            <Label htmlFor="membership" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Membership Plan *</Label>
             <Select
               value={formData.membershipId}
               onValueChange={(value) => setFormData({ ...formData, membershipId: value })}
             >
-              <SelectTrigger id="membership" className="h-16 bg-black border-white/5 rounded-2xl focus:border-[#daa857] px-6 font-black uppercase tracking-widest text-xs">
+              <SelectTrigger id="membership" className="h-16 bg-background border-border rounded-2xl focus:border-[#daa857] px-6 font-black uppercase tracking-widest text-xs">
                 <SelectValue placeholder="SELECT PLAN" />
               </SelectTrigger>
-              <SelectContent className="bg-[#111] border-white/10 text-white">
+              <SelectContent className="bg-card border-border text-foreground">
                 {memberships.map((m) => (
                   <SelectItem key={m.id} value={m.id} className="focus:bg-[#daa857]/10 focus:text-[#daa857] font-bold uppercase text-[10px] tracking-widest">
                     {m.name.toUpperCase()} - ₦{m.price.toLocaleString('en-NG')}
@@ -154,27 +154,27 @@ export default function ManualRenewalDialog({ memberId, memberName, onRenewed }:
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-3">
-              <Label htmlFor="startDate" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Start Date *</Label>
+              <Label htmlFor="startDate" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Start Date *</Label>
               <Input
                 id="startDate"
                 type="date"
                 value={formData.startDate}
                 onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
                 max={today}
-                className="h-14 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-4 font-black uppercase tracking-widest text-[10px]"
+                className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-4 font-black uppercase tracking-widest text-[10px]"
                 required
               />
             </div>
             <div className="space-y-3">
-              <Label htmlFor="paymentMethod" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Authorization *</Label>
+              <Label htmlFor="paymentMethod" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Authorization *</Label>
               <Select
                 value={formData.paymentMethod}
                 onValueChange={(value) => setFormData({ ...formData, paymentMethod: value })}
               >
-                <SelectTrigger id="paymentMethod" className="h-14 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-4 font-black uppercase tracking-widest text-[10px]">
+                <SelectTrigger id="paymentMethod" className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-4 font-black uppercase tracking-widest text-[10px]">
                   <SelectValue placeholder="METHOD" />
                 </SelectTrigger>
-                <SelectContent className="bg-[#111] border-white/10 text-white">
+                <SelectContent className="bg-card border-border text-foreground">
                   {PAYMENT_METHODS.map((method) => (
                     <SelectItem key={method} value={method} className="focus:bg-[#daa857]/10 focus:text-[#daa857] font-bold uppercase text-[10px] tracking-widest">
                       {method.toUpperCase()}
@@ -190,7 +190,7 @@ export default function ManualRenewalDialog({ memberId, memberName, onRenewed }:
               type="button" 
               variant="outline" 
               onClick={() => setOpen(false)}
-              className="h-14 px-8 border-white/10 hover:bg-white/5 rounded-xl text-[10px] font-black uppercase tracking-widest text-gray-500"
+              className="h-14 px-8 border-border hover:bg-accent rounded-xl text-[10px] font-black uppercase tracking-widest text-muted-foreground"
             >
               Cancel
             </Button>

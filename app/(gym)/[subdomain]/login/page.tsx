@@ -125,7 +125,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#0a0a0a] text-white px-4 py-20">
+    <div className="flex min-h-screen items-center justify-center bg-[#0a0a0a] text-foreground px-4 py-20">
       <style jsx global>{`
         ::selection {
           background-color: ${accent}4d;
@@ -150,12 +150,12 @@ export default function LoginPage() {
             <h1 className="text-3xl font-black tracking-tighter uppercase italic">
               {gymName.split(' ')[0]}<span style={{ color: accent }}>{gymName.split(' ').slice(1).join(' ')}</span>
             </h1>
-            <p className="text-[10px] uppercase tracking-[0.3em] text-gray-500 font-bold mt-1">{tagline}</p>
+            <p className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground font-bold mt-1">{tagline}</p>
           </div>
         </Link>
 
         {/* Login Form Container */}
-        <div className="p-8 bg-[#111] border rounded-[2.5rem] shadow-2xl relative overflow-hidden" style={{ borderColor: `${accent}33` }}>
+        <div className="p-8 bg-card border rounded-[2.5rem] shadow-2xl relative overflow-hidden" style={{ borderColor: `${accent}33` }}>
           {/* Subtle Glow Decor */}
           <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full blur-[80px]" style={{ backgroundColor: `${accent}1a` }} />
           <div className="absolute -bottom-24 -left-24 h-48 w-48 rounded-full blur-[80px]" style={{ backgroundColor: `${accent}0d` }} />
@@ -163,7 +163,7 @@ export default function LoginPage() {
           <div className="relative z-10">
             <div className="mb-10">
               <h2 className="text-4xl font-black uppercase italic tracking-tighter leading-none">Welcome <span style={{ color: accent }}>Back</span></h2>
-              <p className="text-gray-500 text-sm mt-3 font-medium">Enter your credentials to access the space.</p>
+              <p className="text-muted-foreground text-sm mt-3 font-medium">Enter your credentials to access the space.</p>
             </div>
 
             {error && (
@@ -176,7 +176,7 @@ export default function LoginPage() {
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="space-y-1">
                 <div className="relative group">
-                  <Mail className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 transition-colors group-focus-within:text-white" style={{ color: fieldErrors.email ? '#ef4444' : `${accent}66` }} />
+                  <Mail className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 transition-colors group-focus-within:text-foreground" style={{ color: fieldErrors.email ? '#ef4444' : `${accent}66` }} />
                   <Input
                     type="email"
                     placeholder="Email Address"
@@ -188,7 +188,7 @@ export default function LoginPage() {
                     }}
                     disabled={isLoading}
                     className={cn(
-                      "h-16 pl-14 bg-black border-white/5 rounded-2xl focus:ring-0 transition-all placeholder:text-gray-700 font-medium",
+                      "h-16 pl-14 bg-background border-border rounded-2xl focus:ring-0 transition-all placeholder:text-muted-foreground font-medium",
                       fieldErrors.email && "border-red-500/50 focus:border-red-500"
                     )}
                     style={{ borderColor: fieldErrors.email ? undefined : `${accent}1a` }}
@@ -203,7 +203,7 @@ export default function LoginPage() {
 
               <div className="space-y-1">
                 <div className="relative group">
-                  <Lock className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 transition-colors group-focus-within:text-white" style={{ color: fieldErrors.password ? '#ef4444' : `${accent}66` }} />
+                  <Lock className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 transition-colors group-focus-within:text-foreground" style={{ color: fieldErrors.password ? '#ef4444' : `${accent}66` }} />
                   <Input
                     type={showPassword ? "text" : "password"}
                     placeholder="Password"
@@ -215,7 +215,7 @@ export default function LoginPage() {
                     }}
                     disabled={isLoading}
                     className={cn(
-                      "h-16 pl-14 pr-14 bg-black border-white/5 rounded-2xl focus:ring-0 transition-all placeholder:text-gray-700 font-medium",
+                      "h-16 pl-14 pr-14 bg-background border-border rounded-2xl focus:ring-0 transition-all placeholder:text-muted-foreground font-medium",
                       fieldErrors.password && "border-red-500/50 focus:border-red-500"
                     )}
                     style={{ borderColor: fieldErrors.password ? undefined : `${accent}1a` }}
@@ -223,7 +223,7 @@ export default function LoginPage() {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition-colors focus:outline-none"
+                    className="absolute right-5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors focus:outline-none"
                     disabled={isLoading}
                   >
                     {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
@@ -239,7 +239,7 @@ export default function LoginPage() {
               <div className="flex justify-end pr-2">
                 <Link
                   href="/forgot-password"
-                  className="text-xs text-gray-500 hover:text-white transition-colors font-bold uppercase tracking-widest"
+                  className="text-xs text-muted-foreground hover:text-foreground transition-colors font-bold uppercase tracking-widest"
                   style={{ color: `${accent}cc` }}
                 >
                   Forgot Password?
@@ -263,7 +263,7 @@ export default function LoginPage() {
             </form>
 
             <div className="mt-10 text-center">
-              <p className="text-sm text-gray-500 font-medium">
+              <p className="text-sm text-muted-foreground font-medium">
                 New to the space?{' '}
                 <Link href="/signup" className="font-black hover:underline uppercase tracking-tight ml-1" style={{ color: accent }}>
                   Apply for Membership
@@ -274,7 +274,7 @@ export default function LoginPage() {
         </div>
 
         {/* Footer info */}
-        <p className="mt-12 text-center text-[10px] text-gray-700 font-black uppercase tracking-[0.5em]">
+        <p className="mt-12 text-center text-[10px] text-muted-foreground font-black uppercase tracking-[0.5em]">
           {gymName} © 2026 • Security Active
         </p>
       </div>

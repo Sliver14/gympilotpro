@@ -76,17 +76,17 @@ export default function AttendanceOverview() {
             { label: 'Average Checkins', value: avgDaily, sub: 'DAILY FREQUENCY', accent: true },
             { label: 'Max Checkin', value: Math.max(...data.map((d) => d.checkins), 0), sub: 'MAX DAILY' }
           ].map((stat, i) => (
-            <div key={i} className="rounded-2xl bg-black/40 border border-white/5 p-6 hover:border-[#daa857]/20 transition-all group">
-              <p className="text-[8px] font-black uppercase tracking-[0.2em] text-gray-600 mb-2">{stat.label}</p>
-              <p className={cn("text-2xl font-black italic tracking-tighter group-hover:scale-105 transition-transform origin-left", stat.accent ? "text-[#daa857]" : "text-white")}>
+            <div key={i} className="rounded-2xl bg-card/50 border border-border p-6 hover:border-[#daa857]/20 transition-all group">
+              <p className="text-[8px] font-black uppercase tracking-[0.2em] text-muted-foreground mb-2">{stat.label}</p>
+              <p className={cn("text-2xl font-black italic tracking-tighter group-hover:scale-105 transition-transform origin-left", stat.accent ? "text-[#daa857]" : "text-foreground")}>
                 {stat.value}
               </p>
-              <p className="text-[8px] font-black uppercase tracking-widest text-gray-700 mt-1">{stat.sub}</p>
+              <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground mt-1">{stat.sub}</p>
             </div>
           ))}
         </div>
 
-        <div className="p-6 rounded-[2rem] bg-black/20 border border-white/5">
+        <div className="p-6 rounded-[2rem] bg-card/50 border border-border">
           {data.length > 0 ? (
             <ResponsiveContainer width="100%" height={350}>
               <LineChart data={data}>
@@ -138,7 +138,7 @@ export default function AttendanceOverview() {
                 </LineChart>
                 </ResponsiveContainer>
                 ) : (
-                <div className="h-80 flex flex-col items-center justify-center text-gray-700 italic">
+                <div className="h-80 flex flex-col items-center justify-center text-muted-foreground italic">
                 <Calendar className="h-12 w-12 mb-4 opacity-10" />
                 <p className="text-xs font-black uppercase tracking-widest">No attendance data available</p>
                 </div>          )}

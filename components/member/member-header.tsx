@@ -23,7 +23,7 @@ export default function MemberHeader({ memberData, onLogout }: MemberHeaderProps
   const gymInitials = gymName.split(' ').map((n: string) => n[0]).join('').substring(0, 2).toUpperCase()
 
   return (
-    <header className="border-b border-white/5 bg-black/80 backdrop-blur-md sticky top-0 z-30">
+    <header className="border-b border-border bg-card/50 backdrop-blur-md sticky top-0 z-30">
       <div className="flex h-16 items-center justify-between px-6">
         <Link href={`/member/dashboard`} className="flex items-center gap-2 group">
           <div className="relative h-8 w-8 overflow-hidden rounded-full border flex items-center justify-center transition-transform group-hover:scale-110" style={{ borderColor: `${accent}4d`, backgroundColor: logo ? 'white' : '#111' }}>
@@ -45,20 +45,20 @@ export default function MemberHeader({ memberData, onLogout }: MemberHeaderProps
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="relative h-10 w-10 rounded-full p-0" style={{ hover: { backgroundColor: `${accent}1a` } } as any}>
-                <Avatar className="h-8 w-8 border border-white/10">
+                <Avatar className="h-8 w-8 border border-border">
                   <AvatarImage src={memberData.profileImage || memberData.memberProfile?.profileImage || undefined} className="object-cover" />
                   <AvatarFallback className="text-[10px] font-black" style={{ backgroundColor: `${accent}1a`, color: accent }}>{initials}</AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56 bg-[#111] border-white/10 text-white rounded-xl">
+            <DropdownMenuContent align="end" className="w-56 bg-card border-border text-foreground rounded-xl">
               <DropdownMenuItem disabled className="opacity-100">
                 <div className="flex flex-col space-y-1">
                   <p className="text-sm font-black uppercase italic">{memberData.firstName} {memberData.lastName}</p>
-                  <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{memberData.email}</p>
+                  <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">{memberData.email}</p>
                 </div>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild className="focus:bg-white/5 cursor-pointer">
+              <DropdownMenuItem asChild className="focus:bg-accent cursor-pointer">
                 <Link href="/member/profile" className="flex items-center gap-2 font-bold uppercase text-[10px] tracking-widest">
                   <Settings className="h-3.5 w-3.5" style={{ color: accent }} />
                   Profile Settings

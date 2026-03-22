@@ -131,10 +131,10 @@ function AdminPackagesContent() {
     <SidebarProvider>
       <AdminSidebar adminData={adminData} onLogout={handleLogout} />
       <SidebarInset className="bg-[#0a0a0a]">
-        <header className="flex h-16 shrink-0 items-center gap-2 border-b border-white/5 px-6 sticky top-0 z-30 bg-black/50 backdrop-blur-md">
+        <header className="flex h-16 shrink-0 items-center gap-2 border-b border-border px-6 sticky top-0 z-30 bg-card/50 backdrop-blur-md">
           <SidebarTrigger className="-ml-1" />
           <div className="flex items-center gap-2">
-            <h1 className="text-sm font-black uppercase italic tracking-[0.2em] text-gray-400">
+            <h1 className="text-sm font-black uppercase italic tracking-[0.2em] text-muted-foreground">
               Admin <span className="text-[#daa857]">Packages</span>
             </h1>
           </div>
@@ -143,7 +143,7 @@ function AdminPackagesContent() {
         <div className="flex flex-1 flex-col gap-8 p-6 md:p-10 pb-24 md:pb-20">
           <div className="max-w-6xl mx-auto w-full space-y-8">
             <div className="flex justify-between items-center">
-              <h2 className="text-3xl font-black uppercase italic tracking-tighter text-white">Membership Plans</h2>
+              <h2 className="text-3xl font-black uppercase italic tracking-tighter text-foreground">Membership Plans</h2>
               <Button onClick={() => openModal()} className="bg-[#daa857] hover:bg-[#cdb48b] text-black font-black uppercase tracking-widest rounded-xl">
                 <Plus className="mr-2 h-4 w-4" /> New Package
               </Button>
@@ -151,9 +151,9 @@ function AdminPackagesContent() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {packages.map((pkg) => (
-                <Card key={pkg.id} className="bg-[#111] border-white/5 shadow-xl rounded-[2rem] overflow-hidden">
-                  <CardHeader className="bg-black/20 border-b border-white/5 p-6">
-                    <CardTitle className="text-xl font-black uppercase italic tracking-tighter text-white">
+                <Card key={pkg.id} className="bg-card border-border shadow-xl rounded-[2rem] overflow-hidden">
+                  <CardHeader className="bg-card/50 border-b border-border p-6">
+                    <CardTitle className="text-xl font-black uppercase italic tracking-tighter text-foreground">
                       {pkg.name.split(' - ')[0]}
                     </CardTitle>
                   </CardHeader>
@@ -161,11 +161,11 @@ function AdminPackagesContent() {
                     <div>
                       <span className="text-3xl font-black italic text-[#daa857]">₦{pkg.price.toLocaleString()}</span>
                     </div>
-                    <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Duration: {pkg.duration} Days</p>
-                    <p className="text-sm text-gray-400 mt-4">{pkg.description}</p>
+                    <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Duration: {pkg.duration} Days</p>
+                    <p className="text-sm text-muted-foreground mt-4">{pkg.description}</p>
                     
-                    <div className="flex gap-3 pt-4 border-t border-white/5 mt-4">
-                      <Button onClick={() => openModal(pkg)} variant="outline" className="flex-1 bg-transparent border-white/10 hover:bg-white/5 text-gray-300">
+                    <div className="flex gap-3 pt-4 border-t border-border mt-4">
+                      <Button onClick={() => openModal(pkg)} variant="outline" className="flex-1 bg-transparent border-border hover:bg-accent text-muted-foreground">
                         <Edit2 className="h-4 w-4 mr-2" /> Edit
                       </Button>
                       <Button onClick={() => handleDelete(pkg.id)} variant="destructive" className="flex-1 bg-red-900/20 text-red-500 hover:bg-red-900/40 hover:text-red-400">
@@ -177,7 +177,7 @@ function AdminPackagesContent() {
               ))}
               
               {packages.length === 0 && (
-                <div className="col-span-full text-center p-12 text-gray-500 uppercase tracking-widest font-bold">
+                <div className="col-span-full text-center p-12 text-muted-foreground uppercase tracking-widest font-bold">
                   No packages found. Create one to get started.
                 </div>
               )}
@@ -188,61 +188,61 @@ function AdminPackagesContent() {
       </SidebarInset>
 
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="bg-[#111] border-white/10 text-white rounded-[2.5rem] p-8 max-w-md">
+        <DialogContent className="bg-card border-border text-foreground rounded-[2.5rem] p-8 max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-2xl font-black uppercase italic tracking-tighter text-white">
+            <DialogTitle className="text-2xl font-black uppercase italic tracking-tighter text-foreground">
               {editingId ? 'Edit' : 'Create'} <span className="text-[#daa857]">Package</span>
             </DialogTitle>
           </DialogHeader>
           
           <form onSubmit={handleSave} className="space-y-6 mt-4">
             <div className="space-y-3">
-              <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">Plan Name</Label>
+              <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Plan Name</Label>
               <Input 
                 value={form.name}
                 onChange={e => setForm({...form, name: e.target.value})}
                 required
-                className="h-14 bg-black border-white/5 rounded-xl font-bold uppercase tracking-widest text-xs"
+                className="h-14 bg-background border-border rounded-xl font-bold uppercase tracking-widest text-xs"
               />
             </div>
             
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-3">
-                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">Duration (Days)</Label>
+                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Duration (Days)</Label>
                 <Input 
                   type="number"
                   value={form.duration}
                   onChange={e => setForm({...form, duration: e.target.value})}
                   required
                   min="1"
-                  className="h-14 bg-black border-white/5 rounded-xl font-bold tracking-widest text-xs"
+                  className="h-14 bg-background border-border rounded-xl font-bold tracking-widest text-xs"
                 />
               </div>
               <div className="space-y-3">
-                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">Price (₦)</Label>
+                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Price (₦)</Label>
                 <Input 
                   type="number"
                   value={form.price}
                   onChange={e => setForm({...form, price: e.target.value})}
                   required
                   min="0"
-                  className="h-14 bg-black border-white/5 rounded-xl font-bold tracking-widest text-xs"
+                  className="h-14 bg-background border-border rounded-xl font-bold tracking-widest text-xs"
                 />
               </div>
             </div>
 
             <div className="space-y-3">
-              <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">Description</Label>
+              <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Description</Label>
               <Textarea 
                 value={form.description}
                 onChange={e => setForm({...form, description: e.target.value})}
                 required
-                className="bg-black border-white/5 rounded-xl font-bold tracking-widest text-xs min-h-[100px]"
+                className="bg-background border-border rounded-xl font-bold tracking-widest text-xs min-h-[100px]"
               />
             </div>
 
             <DialogFooter>
-              <Button type="button" variant="ghost" onClick={() => setIsModalOpen(false)} className="hover:bg-white/5 hover:text-white text-gray-400">
+              <Button type="button" variant="ghost" onClick={() => setIsModalOpen(false)} className="hover:bg-accent hover:text-foreground text-muted-foreground">
                 Cancel
               </Button>
               <Button type="submit" disabled={isSaving} className="bg-[#daa857] hover:bg-[#cdb48b] text-black font-black uppercase tracking-widest rounded-xl px-8">

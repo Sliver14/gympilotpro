@@ -18,7 +18,6 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Button } from '@/components/ui/button'
 import { User, QrCode, Calendar, TrendingUp, LogOut, Settings } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { ModeToggle } from '@/components/mode-toggle'
@@ -81,7 +80,13 @@ function MemberSidebarContent({ memberData, onLogout }: MemberSidebarProps) {
           <SidebarMenuItem>
             <SidebarMenuButton asChild size="lg" className="hover:bg-transparent active:bg-transparent">
               <Link href={`/member/dashboard`}>
-                <div className="flex aspect-square size-10 items-center justify-center rounded-xl p-1.5 shadow-[0_0_20px_rgba(255,255,255,0.1)] border transition-transform group-hover:scale-110 overflow-hidden" style={{ borderColor: `${accent}4d`, backgroundColor: logo ? 'white' : '#111' }}>
+                <div 
+                  className={cn(
+                    "flex aspect-square size-10 items-center justify-center rounded-xl p-1.5 shadow-sm dark:shadow-[0_0_20px_rgba(255,255,255,0.1)] border transition-transform group-hover:scale-110 overflow-hidden",
+                    logo ? "bg-white" : "bg-white dark:bg-[#111]"
+                  )} 
+                  style={{ borderColor: `${accent}4d` }}
+                >
                   {logo ? (
                     <Image 
                       src={logo} 
@@ -96,7 +101,7 @@ function MemberSidebarContent({ memberData, onLogout }: MemberSidebarProps) {
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight ml-2">
                   <span className="truncate font-black uppercase italic tracking-tighter text-lg">{gymName}<span style={{ color: accent }}>Space</span></span>
-                  <span className="truncate text-[8px] font-bold uppercase tracking-[0.4em] text-gray-600 mt-0.5">Member Portal</span>
+                  <span className="truncate text-[8px] font-bold uppercase tracking-[0.4em] text-muted-foreground mt-0.5">Member Portal</span>
                 </div>
               </Link>
             </SidebarMenuButton>
@@ -117,8 +122,8 @@ function MemberSidebarContent({ memberData, onLogout }: MemberSidebarProps) {
                     className={cn(
                       "transition-all duration-300 h-10 px-4",
                       item.active 
-                        ? "font-black italic uppercase tracking-widest border-r-2" 
-                        : "text-gray-400 font-bold uppercase tracking-widest hover:bg-white/5"
+                        ? "font-black italic uppercase tracking-widest border-r-2 bg-accent/50" 
+                        : "text-muted-foreground font-bold uppercase tracking-widest hover:bg-accent hover:text-accent-foreground"
                     )}
                     style={item.active ? { 
                       backgroundColor: `${accent}1a`, 
@@ -150,33 +155,33 @@ function MemberSidebarContent({ memberData, onLogout }: MemberSidebarProps) {
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton
                   size="lg"
-                  className="data-[state=open]:bg-white/5 hover:bg-white/5 transition-all duration-300 h-14 rounded-xl border border-transparent hover:border-white/5"
+                  className="data-[state=open]:bg-accent hover:bg-accent transition-all duration-300 h-14 rounded-xl border border-transparent hover:border-border"
                 >
-                  <Avatar className="size-8 rounded-lg border border-white/10">
+                  <Avatar className="size-8 rounded-lg border border-border">
                     <AvatarImage src={profileImage || undefined} className="object-cover" />
                     <AvatarFallback className="rounded-lg font-black" style={{ backgroundColor: `${accent}1a`, color: accent }}>{initials || '??'}</AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-black uppercase italic tracking-tight">
+                    <span className="truncate font-black uppercase italic tracking-tight text-foreground">
                       {memberData.firstName} {memberData.lastName}
                     </span>
-                    <span className="truncate text-[10px] font-bold text-gray-500 uppercase tracking-tighter">{memberData.email}</span>
+                    <span className="truncate text-[10px] font-bold text-muted-foreground uppercase tracking-tighter">{memberData.email}</span>
                   </div>
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent
-                className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-2xl bg-[#111] border-white/10 text-white p-2 shadow-2xl"
+                className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-2xl bg-popover border-border text-popover-foreground p-2 shadow-2xl"
                 side="bottom"
                 align="end"
                 sideOffset={8}
               >
-                <DropdownMenuItem disabled className="opacity-100 p-4 border-b border-white/5 mb-2">
+                <DropdownMenuItem disabled className="opacity-100 p-4 border-b border-border mb-2">
                   <div className="flex flex-col space-y-1">
-                    <p className="text-xs font-black uppercase italic tracking-widest">{memberData.firstName} {memberData.lastName}</p>
-                    <p className="text-[10px] font-bold text-gray-500 uppercase tracking-tighter">{memberData.email}</p>
+                    <p className="text-xs font-black uppercase italic tracking-widest text-foreground">{memberData.firstName} {memberData.lastName}</p>
+                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-tighter">{memberData.email}</p>
                   </div>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild className="rounded-xl focus:bg-white/5 cursor-pointer py-3 px-4">
+                <DropdownMenuItem asChild className="rounded-xl focus:bg-accent cursor-pointer py-3 px-4 text-foreground focus:text-accent-foreground">
                   <Link href="/member/profile" className="flex items-center gap-3 font-black uppercase text-[10px] tracking-widest">
                     <Settings className="size-4" style={{ color: accent }} />
                     Profile Settings

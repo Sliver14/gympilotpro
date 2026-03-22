@@ -278,7 +278,7 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white selection:bg-[#daa857]/30 px-4 py-12 md:py-20">
+    <div className="min-h-screen bg-[#0a0a0a] text-foreground selection:bg-[#daa857]/30 px-4 py-12 md:py-20">
       <div className="mx-auto w-full max-w-4xl">
         
         {/* Header */}
@@ -302,7 +302,7 @@ export default function SignupPage() {
           {/* Progress Steps */}
           <div className="relative flex w-full max-w-2xl justify-between px-4 mt-4">
              {/* Progress Line */}
-            <div className="absolute top-5 left-8 right-8 h-[2px] bg-white/5 z-0" />
+            <div className="absolute top-5 left-8 right-8 h-[2px] bg-accent z-0" />
             <div 
               className="absolute top-5 left-8 h-[2px] bg-[#daa857] z-0 transition-all duration-500" 
               style={{ width: `${(step - 1) * 33.33}%` }}
@@ -318,14 +318,14 @@ export default function SignupPage() {
                 <div
                   className={cn(
                     "flex h-10 w-10 items-center justify-center rounded-full border-2 transition-all duration-500",
-                    step >= item.s ? "border-[#daa857] bg-[#daa857] text-black" : "border-white/10 bg-[#111] text-gray-500"
+                    step >= item.s ? "border-[#daa857] bg-[#daa857] text-black" : "border-border bg-card text-muted-foreground"
                   )}
                 >
                   <item.icon className="h-4 w-4" />
                 </div>
                 <span className={cn(
                   "text-[10px] font-black uppercase tracking-widest",
-                  step >= item.s ? "text-[#daa857]" : "text-gray-600"
+                  step >= item.s ? "text-[#daa857]" : "text-muted-foreground"
                 )}>{item.label}</span>
               </div>
             ))}
@@ -333,7 +333,7 @@ export default function SignupPage() {
         </div>
 
         {/* Form Container */}
-        <div className="bg-[#111] border border-white/5 rounded-[2.5rem] p-6 md:p-12 shadow-2xl relative overflow-hidden min-h-[500px]">
+        <div className="bg-card border border-border rounded-[2.5rem] p-6 md:p-12 shadow-2xl relative overflow-hidden min-h-[500px]">
            <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-[#daa857]/5 blur-[100px]" />
            
            <div className="relative z-10">
@@ -354,7 +354,7 @@ export default function SignupPage() {
                         fieldErrors.profileImage ? "border-red-500" : "border-[#daa857]/30 group-hover:border-[#daa857]"
                       )}>
                         <AvatarImage src={previewUrl || formData.profileImage} className="object-cover" />
-                        <AvatarFallback className="text-4xl bg-black font-black uppercase italic">
+                        <AvatarFallback className="text-4xl bg-background font-black uppercase italic">
                           {formData.firstName?.[0] || '?'}
                         </AvatarFallback>
                       </Avatar>
@@ -372,33 +372,33 @@ export default function SignupPage() {
                     <div className="flex-1 space-y-6 w-full">
                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div className="space-y-1">
-                            <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 ml-2">First Name</Label>
+                            <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-2">First Name</Label>
                             <Input 
                               placeholder="First Name" 
                               value={formData.firstName}
                               onChange={(e) => updateFormData({ firstName: e.target.value })}
-                              className={cn("h-14 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-6 font-bold", fieldErrors.firstName && "border-red-500")}
+                              className={cn("h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-6 font-bold", fieldErrors.firstName && "border-red-500")}
                             />
                           </div>
                           <div className="space-y-1">
-                            <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 ml-2">Last Name</Label>
+                            <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-2">Last Name</Label>
                             <Input 
                               placeholder="Last Name" 
                               value={formData.lastName}
                               onChange={(e) => updateFormData({ lastName: e.target.value })}
-                              className={cn("h-14 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-6 font-bold", fieldErrors.lastName && "border-red-500")}
+                              className={cn("h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-6 font-bold", fieldErrors.lastName && "border-red-500")}
                             />
                           </div>
                        </div>
                        
                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div className="space-y-1">
-                            <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 ml-2">Gender</Label>
+                            <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-2">Gender</Label>
                             <Select value={formData.gender} onValueChange={(v) => updateFormData({ gender: v })}>
-                              <SelectTrigger className={cn("h-14 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-6 font-bold", fieldErrors.gender && "border-red-500")}>
+                              <SelectTrigger className={cn("h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-6 font-bold", fieldErrors.gender && "border-red-500")}>
                                 <SelectValue placeholder="Select" />
                               </SelectTrigger>
-                              <SelectContent className="bg-[#111] border-white/10 text-white">
+                              <SelectContent className="bg-card border-border text-foreground">
                                 <SelectItem value="male">Male</SelectItem>
                                 <SelectItem value="female">Female</SelectItem>
                                 <SelectItem value="other">Private</SelectItem>
@@ -406,14 +406,14 @@ export default function SignupPage() {
                             </Select>
                           </div>
                           <div className="space-y-1">
-                            <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 ml-2">Phone</Label>
+                            <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-2">Phone</Label>
                             <div className="relative">
-                              <Phone className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-600" />
+                              <Phone className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                               <Input 
                                 placeholder="Contact Number" 
                                 value={formData.phoneNumber}
                                 onChange={(e) => updateFormData({ phoneNumber: e.target.value })}
-                                className={cn("h-14 bg-black border-white/5 rounded-xl focus:border-[#daa857] pl-12 font-bold", fieldErrors.phoneNumber && "border-red-500")}
+                                className={cn("h-14 bg-background border-border rounded-xl focus:border-[#daa857] pl-12 font-bold", fieldErrors.phoneNumber && "border-red-500")}
                               />
                             </div>
                           </div>
@@ -423,33 +423,33 @@ export default function SignupPage() {
 
                  <div className="space-y-6">
                     <div className="space-y-1">
-                      <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 ml-2">Email Address</Label>
+                      <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-2">Email Address</Label>
                       <div className="relative">
-                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-600" />
+                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                         <Input 
                           placeholder="your@email.com" 
                           value={formData.email}
                           onChange={(e) => updateFormData({ email: e.target.value })}
-                          className={cn("h-14 bg-black border-white/5 rounded-xl focus:border-[#daa857] pl-12 font-bold", fieldErrors.email && "border-red-500")}
+                          className={cn("h-14 bg-background border-border rounded-xl focus:border-[#daa857] pl-12 font-bold", fieldErrors.email && "border-red-500")}
                         />
                       </div>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                        <div className="space-y-1">
-                         <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 ml-2">How did you find us?</Label>
+                         <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-2">How did you find us?</Label>
                          <Select value={formData.hearAboutUs} onValueChange={(v) => updateFormData({ hearAboutUs: v })}>
-                           <SelectTrigger className="h-14 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-6 font-bold">
+                           <SelectTrigger className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-6 font-bold">
                              <SelectValue placeholder="Select Source" />
                            </SelectTrigger>
-                           <SelectContent className="bg-[#111] border-white/10 text-white">
+                           <SelectContent className="bg-card border-border text-foreground">
                              {HEAR_ABOUT_US_OPTIONS.map(opt => <SelectItem key={opt} value={opt}>{opt}</SelectItem>)}
                            </SelectContent>
                          </Select>
                        </div>
                        
                        <div className="space-y-1">
-                         <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 ml-2">Birthday (Optional)</Label>
+                         <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-2">Birthday (Optional)</Label>
                          <div className="flex gap-2">
                             <Select 
                               value={formData.birthday?.split('-')[0]} 
@@ -458,10 +458,10 @@ export default function SignupPage() {
                                 updateFormData({ birthday: `${m}-${d}` })
                               }}
                             >
-                              <SelectTrigger className="h-14 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-4 font-bold flex-1">
+                              <SelectTrigger className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-4 font-bold flex-1">
                                 <SelectValue placeholder="MM" />
                               </SelectTrigger>
-                              <SelectContent className="bg-[#111] border-white/10 text-white">
+                              <SelectContent className="bg-card border-border text-foreground">
                                 {Array.from({length: 12}, (_, i) => {
                                   const m = (i+1).toString().padStart(2, '0')
                                   return <SelectItem key={m} value={m}>{new Date(2000, i).toLocaleString('default', {month: 'short'})}</SelectItem>
@@ -475,10 +475,10 @@ export default function SignupPage() {
                                 updateFormData({ birthday: `${m}-${d}` })
                               }}
                             >
-                              <SelectTrigger className="h-14 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-4 font-bold w-24">
+                              <SelectTrigger className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-4 font-bold w-24">
                                 <SelectValue placeholder="DD" />
                               </SelectTrigger>
-                              <SelectContent className="bg-[#111] border-white/10 text-white">
+                              <SelectContent className="bg-card border-border text-foreground">
                                 {Array.from({length: 31}, (_, i) => {
                                   const d = (i+1).toString().padStart(2, '0')
                                   return <SelectItem key={d} value={d}>{d}</SelectItem>
@@ -504,7 +504,7 @@ export default function SignupPage() {
                           "group cursor-pointer rounded-2xl p-6 border-2 transition-all duration-300",
                           formData.membershipId === m.id 
                             ? "bg-[#daa857] border-[#daa857] text-black" 
-                            : "bg-black border-white/5 text-white hover:border-[#daa857]/50"
+                            : "bg-background border-border text-foreground hover:border-[#daa857]/50"
                         )}
                       >
                         <div className="flex justify-between items-start mb-4">
@@ -515,7 +515,7 @@ export default function SignupPage() {
                           <span className="text-3xl font-black italic">₦{m.price.toLocaleString()}</span>
                           <span className={cn("text-[10px] font-black ml-2 uppercase opacity-60")}>/ {m.duration} Days</span>
                         </div>
-                        <p className={cn("text-xs font-bold leading-relaxed", formData.membershipId === m.id ? "text-black/70" : "text-gray-500 group-hover:text-gray-400")}>
+                        <p className={cn("text-xs font-bold leading-relaxed", formData.membershipId === m.id ? "text-black/70" : "text-muted-foreground group-hover:text-muted-foreground")}>
                           {m.description}
                         </p>
                       </div>
@@ -524,7 +524,7 @@ export default function SignupPage() {
                  </div>
 
                  <div className="space-y-4">
-                    <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 ml-2">Verification Method</Label>
+                    <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-2">Verification Method</Label>
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                       {PAYMENT_METHODS.map((method) => (
                         <div
@@ -534,7 +534,7 @@ export default function SignupPage() {
                             "relative cursor-pointer rounded-xl py-4 border-2 text-center text-[10px] font-black uppercase tracking-widest transition-all",
                             formData.paymentMethod === method.id 
                               ? "bg-[#daa857] border-[#daa857] text-black" 
-                              : "bg-black border-white/5 text-white hover:border-[#daa857]/50",
+                              : "bg-background border-border text-foreground hover:border-[#daa857]/50",
                             !method.isEnabled && "opacity-30 cursor-not-allowed"
                           )}
                         >
@@ -545,12 +545,12 @@ export default function SignupPage() {
                     </div>
 
                           {isBankTransfer && (
-                      <div className="p-6 rounded-2xl bg-black border border-[#daa857]/30 border-dashed">
+                      <div className="p-6 rounded-2xl bg-background border border-[#daa857]/30 border-dashed">
                         <div className="flex items-center gap-3 text-[#daa857] mb-2">
                            <AlertTriangle className="h-5 w-5" />
                            <span className="text-xs font-black uppercase tracking-widest">Instructions</span>
                         </div>
-                        <p className="text-[10px] text-gray-400 font-bold whitespace-pre-line leading-relaxed">
+                        <p className="text-[10px] text-muted-foreground font-bold whitespace-pre-line leading-relaxed">
                           {bankDetailsMessage}
                           {"\n\nConfirm identity and transfer proof via official WhatsApp after registration."}
                         </p>
@@ -571,8 +571,8 @@ export default function SignupPage() {
                         className={cn(
                           "cursor-pointer flex items-center gap-4 p-5 rounded-xl border-2 transition-all",
                           (formData.fitnessGoals as string[])?.includes(goal.id)
-                            ? "bg-[#daa857]/10 border-[#daa857] text-white"
-                            : "bg-black border-white/5 text-gray-400 hover:border-white/20"
+                            ? "bg-[#daa857]/10 border-[#daa857] text-foreground"
+                            : "bg-background border-border text-muted-foreground hover:border-border"
                         )}
                       >
                         <div className={cn(
@@ -587,31 +587,31 @@ export default function SignupPage() {
                   </div>
 
                   <div className="space-y-1">
-                    <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 ml-2">Fitness Goals</Label>                    <Textarea 
+                    <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-2">Fitness Goals</Label>                    <Textarea 
                       placeholder="Specify your targets, existing injuries, or specialized requirements..."
                       value={formData.fitnessGoalsDetails}
                       onChange={(e) => updateFormData({ fitnessGoalsDetails: e.target.value })}
-                      className="min-h-[150px] bg-black border-white/5 rounded-2xl focus:border-[#daa857] p-6 font-bold text-sm"
+                      className="min-h-[150px] bg-background border-border rounded-2xl focus:border-[#daa857] p-6 font-bold text-sm"
                     />
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-1">
-                      <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 ml-2">Emergency Liaison</Label>
+                      <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-2">Emergency Liaison</Label>
                       <Input 
                         placeholder="Contact Name" 
                         value={formData.emergencyContact}
                         onChange={(e) => updateFormData({ emergencyContact: e.target.value })}
-                        className="h-14 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-6 font-bold"
+                        className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-6 font-bold"
                       />
                     </div>
                     <div className="space-y-1">
-                      <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 ml-2">Emergency Phone</Label>
+                      <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-2">Emergency Phone</Label>
                       <Input 
                         placeholder="Contact Phone" 
                         value={formData.emergencyPhone}
                         onChange={(e) => updateFormData({ emergencyPhone: e.target.value })}
-                        className="h-14 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-6 font-bold"
+                        className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-6 font-bold"
                       />
                     </div>
                   </div>
@@ -623,38 +623,38 @@ export default function SignupPage() {
                <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-1">
-                      <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 ml-2">Secure Password</Label>
+                      <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-2">Secure Password</Label>
                       <div className="relative">
                         <Input 
                           type={showPassword ? "text" : "password"}
                           placeholder="Min 8 Characters" 
                           value={formData.password}
                           onChange={(e) => updateFormData({ password: e.target.value })}
-                          className={cn("h-16 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-6 pr-14 font-bold", fieldErrors.password && "border-red-500")}
+                          className={cn("h-16 bg-background border-border rounded-xl focus:border-[#daa857] px-6 pr-14 font-bold", fieldErrors.password && "border-red-500")}
                         />
                         <button
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
-                          className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition-colors focus:outline-none"
+                          className="absolute right-5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors focus:outline-none"
                         >
                           {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                         </button>
                       </div>
                     </div>
                     <div className="space-y-1">
-                      <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 ml-2">Verify Password</Label>
+                      <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-2">Verify Password</Label>
                       <div className="relative">
                         <Input 
                           type={showConfirmPassword ? "text" : "password"}
                           placeholder="Repeat Password" 
                           value={formData.confirmPassword}
                           onChange={(e) => updateFormData({ confirmPassword: e.target.value })}
-                          className={cn("h-16 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-6 pr-14 font-bold", fieldErrors.confirmPassword && "border-red-500")}
+                          className={cn("h-16 bg-background border-border rounded-xl focus:border-[#daa857] px-6 pr-14 font-bold", fieldErrors.confirmPassword && "border-red-500")}
                         />
                         <button
                           type="button"
                           onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                          className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition-colors focus:outline-none"
+                          className="absolute right-5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors focus:outline-none"
                         >
                           {showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                         </button>
@@ -666,7 +666,7 @@ export default function SignupPage() {
                     onClick={() => setPaymentConfirmed(!paymentConfirmed)}
                     className={cn(
                       "p-8 rounded-[2rem] border-2 cursor-pointer transition-all",
-                      paymentConfirmed ? "bg-[#daa857]/10 border-[#daa857]" : "bg-black border-white/5 border-dashed"
+                      paymentConfirmed ? "bg-[#daa857]/10 border-[#daa857]" : "bg-background border-border border-dashed"
                     )}
                   >
                     <div className="flex gap-6 items-start">
@@ -678,7 +678,7 @@ export default function SignupPage() {
                        </div>
                        <div className="space-y-2">
                           <h3 className="font-black uppercase italic tracking-wider text-sm">Deployment Confirmation</h3>
-                          <p className="text-[10px] text-gray-500 font-bold leading-relaxed uppercase tracking-widest">
+                          <p className="text-[10px] text-muted-foreground font-bold leading-relaxed uppercase tracking-widest">
                             I verify that all provided data is accurate and I acknowledge the payment policy for the selected membership tier.
                           </p>
                        </div>
@@ -686,9 +686,9 @@ export default function SignupPage() {
                   </div>
 
                   {/* Summary Card */}
-                  <div className="p-8 rounded-[2rem] bg-black/50 border border-white/5 space-y-4">
-                     <div className="flex justify-between items-center border-b border-white/5 pb-4">
-                        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-600">Review Application</span>
+                  <div className="p-8 rounded-[2rem] bg-card/50 border border-border space-y-4">
+                     <div className="flex justify-between items-center border-b border-border pb-4">
+                        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground">Review Application</span>
                         <Badge className="bg-[#daa857] text-black font-black uppercase tracking-tighter italic">Pending Approval</Badge>
                      </div>
                      <div className="grid grid-cols-2 gap-y-4 gap-x-8">
@@ -699,7 +699,7 @@ export default function SignupPage() {
                           { l: 'Method', v: formData.paymentMethod || 'None' }
                         ].map((item, i) => (
                           <div key={i} className="space-y-1">
-                             <p className="text-[8px] font-black uppercase tracking-widest text-gray-700">{item.l}</p>
+                             <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground">{item.l}</p>
                              <p className="text-xs font-black truncate">{item.v}</p>
                           </div>
                         ))}
@@ -715,7 +715,7 @@ export default function SignupPage() {
                    variant="outline" 
                    onClick={prevStep} 
                    disabled={isLoading}
-                   className="h-16 px-8 rounded-xl border-white/10 bg-transparent hover:bg-white/5 text-gray-500 font-black uppercase tracking-widest"
+                   className="h-16 px-8 rounded-xl border-border bg-transparent hover:bg-accent text-muted-foreground font-black uppercase tracking-widest"
                  >
                    Back
                  </Button>
@@ -770,7 +770,7 @@ export default function SignupPage() {
 
         {/* Existing Member */}
         <div className="mt-10 text-center">
-          <p className="text-sm text-gray-600 font-medium tracking-tight">
+          <p className="text-sm text-muted-foreground font-medium tracking-tight">
             Already authenticated?{' '}
             <Link href="/login" className="font-black text-[#daa857] hover:underline uppercase tracking-tight ml-1">
               Login
@@ -784,24 +784,24 @@ export default function SignupPage() {
       </div>
 
       <Dialog open={isCropperModalOpen} onOpenChange={setIsCropperModalOpen}>
-        <DialogContent className="bg-[#111] border-white/10 text-white rounded-[1.5rem] md:rounded-[2.5rem] p-0 overflow-hidden w-[95vw] md:max-w-2xl shadow-2xl">
+        <DialogContent className="bg-card border-border text-foreground rounded-[1.5rem] md:rounded-[2.5rem] p-0 overflow-hidden w-[95vw] md:max-w-2xl shadow-2xl">
           <DialogHeader className="sr-only">
             <DialogTitle>Adjust Profile Picture</DialogTitle>
           </DialogHeader>
           
-          <div className="p-5 md:p-8 border-b border-white/5 flex items-center justify-between">
+          <div className="p-5 md:p-8 border-b border-border flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="h-10 w-10 rounded-xl bg-[#daa857]/10 flex items-center justify-center text-[#daa857]">
                 <CropIcon className="h-5 w-5" />
               </div>
               <h3 className="text-lg md:text-xl font-black uppercase italic tracking-tighter">Adjust <span className="text-[#daa857]">Profile Picture</span></h3>
             </div>
-            <Button variant="ghost" size="icon" onClick={() => setIsCropperModalOpen(false)} className="rounded-full hover:bg-white/5">
+            <Button variant="ghost" size="icon" onClick={() => setIsCropperModalOpen(false)} className="rounded-full hover:bg-accent">
               <X className="h-5 w-5" />
             </Button>
           </div>
 
-          <div className="relative h-[300px] md:h-[400px] w-full bg-black">
+          <div className="relative h-[300px] md:h-[400px] w-full bg-background">
             {imageToCrop && (
               <Cropper
                 image={imageToCrop}
@@ -817,10 +817,10 @@ export default function SignupPage() {
             )}
           </div>
 
-          <div className="p-5 md:p-8 space-y-6 md:space-y-8 bg-[#111]">
+          <div className="p-5 md:p-8 space-y-6 md:space-y-8 bg-card">
             <div className="space-y-4">
               <div className="flex justify-between items-center">
-                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">Image Zoom</Label>
+                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Image Zoom</Label>
                 <span className="text-[10px] font-black text-[#daa857]">{Math.round(zoom * 100)}%</span>
               </div>
               <Slider
@@ -837,7 +837,7 @@ export default function SignupPage() {
               <Button 
                 variant="outline" 
                 onClick={() => setIsCropperModalOpen(false)}
-                className="h-12 md:h-14 px-8 border-white/10 hover:bg-white/5 rounded-xl text-[10px] font-black uppercase tracking-widest text-gray-500"
+                className="h-12 md:h-14 px-8 border-border hover:bg-accent rounded-xl text-[10px] font-black uppercase tracking-widest text-muted-foreground"
               >
                 Cancel
               </Button>

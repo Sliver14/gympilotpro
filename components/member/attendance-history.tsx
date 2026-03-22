@@ -40,39 +40,39 @@ export default function AttendanceHistory({ attendance }: AttendanceHistoryProps
   }
 
   return (
-    <div className="bg-[#111] border border-white/5 rounded-[2rem] p-8 shadow-2xl relative overflow-hidden">
+    <div className="bg-card border border-border rounded-[2rem] p-8 shadow-2xl relative overflow-hidden">
       <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-[#daa857]/5 blur-[80px]" />
       
       <div className="relative z-10">
-        <div className="flex items-center justify-between mb-8 pb-4 border-b border-white/5">
-          <h3 className="text-xl font-black uppercase italic tracking-tighter text-white flex items-center gap-3">
+        <div className="flex items-center justify-between mb-8 pb-4 border-b border-border">
+          <h3 className="text-xl font-black uppercase italic tracking-tighter text-foreground flex items-center gap-3">
             <Calendar className="h-5 w-5 text-[#daa857]" /> Deployment <span className="text-[#daa857]">Log</span>
           </h3>
-          <p className="text-[10px] font-black uppercase tracking-widest text-gray-500">Live Attendance Data</p>
+          <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Live Attendance Data</p>
         </div>
 
         {sortedAttendance.length === 0 ? (
           <div className="py-20 text-center">
-            <p className="text-sm font-bold text-gray-600 uppercase tracking-widest italic">No attendance records found in the gym.</p>
+            <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest italic">No attendance records found in the gym.</p>
           </div>
         ) : (
           <div className="space-y-4">
             {sortedAttendance.map((record) => (
-              <div key={record.id} className="flex flex-col md:flex-row md:items-center justify-between rounded-2xl bg-black/40 border border-white/5 p-6 hover:border-[#daa857]/30 transition-colors group">
+              <div key={record.id} className="flex flex-col md:flex-row md:items-center justify-between rounded-2xl bg-card/50 border border-border p-6 hover:border-[#daa857]/30 transition-colors group">
                 <div className="space-y-1 mb-4 md:mb-0">
-                  <p className="text-sm font-black text-white uppercase italic tracking-tight">{formatTime(record.checkInTime)}</p>
+                  <p className="text-sm font-black text-foreground uppercase italic tracking-tight">{formatTime(record.checkInTime)}</p>
                   <p className="text-[10px] font-bold text-[#daa857] uppercase tracking-widest">
-                    Duration: <span className="text-gray-400">{getDuration(record.checkInTime, record.checkOutTime)}</span>
+                    Duration: <span className="text-muted-foreground">{getDuration(record.checkInTime, record.checkOutTime)}</span>
                   </p>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="text-right hidden md:block">
-                    <p className="text-[8px] font-black uppercase tracking-widest text-gray-600 mb-0.5">AUTH METHOD</p>
-                    <p className="text-[10px] font-black text-white uppercase">{record.method === 'qr' ? 'QR Code' : 'Manual Override'}</p>
+                    <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground mb-0.5">AUTH METHOD</p>
+                    <p className="text-[10px] font-black text-foreground uppercase">{record.method === 'qr' ? 'QR Code' : 'Manual Override'}</p>
                   </div>
                   <Badge className={cn(
                     "px-4 py-1 rounded-full text-[10px] font-black uppercase italic tracking-tighter transition-all",
-                    record.method === 'qr' ? "bg-[#daa857] text-black" : "bg-white/10 text-white"
+                    record.method === 'qr' ? "bg-[#daa857] text-black" : "bg-accent text-foreground"
                   )}>
                     {record.method === 'qr' ? 'Verified' : 'Manual'}
                   </Badge>
@@ -84,7 +84,7 @@ export default function AttendanceHistory({ attendance }: AttendanceHistoryProps
 
         {/* Statistics */}
         {sortedAttendance.length > 0 && (
-          <div className="mt-12 grid gap-4 grid-cols-1 md:grid-cols-3 border-t border-white/5 pt-10">
+          <div className="mt-12 grid gap-4 grid-cols-1 md:grid-cols-3 border-t border-border pt-10">
             {[
               { label: 'Total Checkins', value: sortedAttendance.length },
               { label: 'Current Month', value: sortedAttendance.filter((a) => {
@@ -101,10 +101,10 @@ export default function AttendanceHistory({ attendance }: AttendanceHistoryProps
                 )
               }).length, sub: 'LAST 7 DAYS' }
             ].map((stat, i) => (
-              <div key={i} className="bg-black/60 border border-white/5 rounded-2xl p-6 text-center group hover:border-[#daa857]/20 transition-all">
-                <p className="text-[8px] font-black uppercase tracking-[0.2em] text-gray-600 mb-2">{stat.label}</p>
-                <p className="text-3xl font-black text-white italic tracking-tighter group-hover:text-[#daa857] transition-colors">{stat.value}</p>
-                {stat.sub && <p className="text-[8px] font-black uppercase tracking-widest text-gray-700 mt-1">{stat.sub}</p>}
+              <div key={i} className="bg-card/50 border border-border rounded-2xl p-6 text-center group hover:border-[#daa857]/20 transition-all">
+                <p className="text-[8px] font-black uppercase tracking-[0.2em] text-muted-foreground mb-2">{stat.label}</p>
+                <p className="text-3xl font-black text-foreground italic tracking-tighter group-hover:text-[#daa857] transition-colors">{stat.value}</p>
+                {stat.sub && <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground mt-1">{stat.sub}</p>}
               </div>
             ))}
           </div>

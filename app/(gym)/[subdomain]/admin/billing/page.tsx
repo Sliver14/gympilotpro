@@ -49,7 +49,7 @@ function AdminBillingContent() {
         <Button 
           variant="ghost" 
           onClick={() => router.back()}
-          className="text-gray-500 hover:text-white focus:text-white uppercase text-[10px] font-black tracking-widest gap-2 p-0 h-auto mb-4"
+          className="text-muted-foreground hover:text-foreground focus:text-foreground uppercase text-[10px] font-black tracking-widest gap-2 p-0 h-auto mb-4"
         >
           <ChevronLeft size={14} /> Back to Dashboard
         </Button>

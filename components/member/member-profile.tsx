@@ -127,7 +127,7 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
     <div className="grid gap-8 lg:grid-cols-2">
       {/* Profile & Info */}
       <div className="space-y-8">
-        <div className="bg-[#111] border border-white/5 rounded-[2rem] p-8 shadow-2xl relative overflow-hidden">
+        <div className="bg-card border border-border rounded-[2rem] p-8 shadow-2xl relative overflow-hidden">
           <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-[#daa857]/5 blur-[80px]" />
           
           <div className="relative z-10 space-y-8">
@@ -135,7 +135,7 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
               <div className="relative group">
                 <Avatar className="h-32 w-32 border-4 border-[#daa857]/20 group-hover:border-[#daa857]/50 transition-all duration-500">
                   <AvatarImage src={previewUrl || profileImage || undefined} alt="Profile" className="object-cover" />
-                  <AvatarFallback className="text-4xl bg-black font-black uppercase italic text-[#daa857]">{initials || '??'}</AvatarFallback>
+                  <AvatarFallback className="text-4xl bg-background font-black uppercase italic text-[#daa857]">{initials || '??'}</AvatarFallback>
                 </Avatar>
                 <Button
                   variant="secondary"
@@ -159,10 +159,10 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
                 />
               </div>
               <div className="text-center sm:text-left space-y-1">
-                <h3 className="text-3xl font-black uppercase italic tracking-tighter text-white">
+                <h3 className="text-3xl font-black uppercase italic tracking-tighter text-foreground">
                   {memberData.firstName} <span className="text-[#daa857]">{memberData.lastName}</span>
                 </h3>
-                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500">{memberData.email}</p>
+                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground">{memberData.email}</p>
                 {memberData.role && (
                   <div className="mt-4 inline-flex items-center rounded-full bg-[#daa857]/10 border border-[#daa857]/20 px-4 py-1 text-[10px] font-black uppercase tracking-widest text-[#daa857]">
                     {memberData.role} Role
@@ -172,24 +172,24 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
             </div>
 
             <div className="grid gap-6 sm:grid-cols-2 pt-4">
-              <div className="flex items-center gap-4 p-4 rounded-2xl bg-black/40 border border-white/5">
-                <div className="h-10 w-10 rounded-xl bg-white/5 flex items-center justify-center text-[#daa857]">
+              <div className="flex items-center gap-4 p-4 rounded-2xl bg-card/50 border border-border">
+                <div className="h-10 w-10 rounded-xl bg-accent flex items-center justify-center text-[#daa857]">
                   <Mail className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="text-[8px] font-black uppercase tracking-widest text-gray-600 mb-0.5">Comm Channel</p>
-                  <p className="text-xs font-bold text-white truncate max-w-[150px]">{memberData.email}</p>
+                  <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground mb-0.5">Comm Channel</p>
+                  <p className="text-xs font-bold text-foreground truncate max-w-[150px]">{memberData.email}</p>
                 </div>
               </div>
 
               {memberData.phoneNumber && (
-                <div className="flex items-center gap-4 p-4 rounded-2xl bg-black/40 border border-white/5">
-                  <div className="h-10 w-10 rounded-xl bg-white/5 flex items-center justify-center text-[#daa857]">
+                <div className="flex items-center gap-4 p-4 rounded-2xl bg-card/50 border border-border">
+                  <div className="h-10 w-10 rounded-xl bg-accent flex items-center justify-center text-[#daa857]">
                     <Phone className="h-5 w-5" />
                   </div>
                   <div>
-                    <p className="text-[8px] font-black uppercase tracking-widest text-gray-600 mb-0.5">Secure Line</p>
-                    <p className="text-xs font-bold text-white">{memberData.phoneNumber}</p>
+                    <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground mb-0.5">Secure Line</p>
+                    <p className="text-xs font-bold text-foreground">{memberData.phoneNumber}</p>
                   </div>
                 </div>
               )}
@@ -198,9 +198,9 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
         </div>
 
         {/* Membership Details */}
-        <div className="bg-[#111] border border-white/5 rounded-[2rem] p-8 shadow-2xl relative overflow-hidden">
-          <div className="flex items-center justify-between mb-8 pb-4 border-b border-white/5">
-            <h3 className="text-xl font-black uppercase italic tracking-tighter text-white flex items-center gap-3">
+        <div className="bg-card border border-border rounded-[2rem] p-8 shadow-2xl relative overflow-hidden">
+          <div className="flex items-center justify-between mb-8 pb-4 border-b border-border">
+            <h3 className="text-xl font-black uppercase italic tracking-tighter text-foreground flex items-center gap-3">
               <Zap className="h-5 w-5 text-[#daa857]" /> Membership <span className="text-[#daa857]">Status</span>
             </h3>
             <Badge className="bg-[#daa857] text-black font-black uppercase italic text-[10px] tracking-tighter">Elite Active</Badge>
@@ -208,26 +208,26 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
           
           <div className="space-y-6">
             <div className="flex justify-between items-center">
-              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">Selected Tier</p>
-              <p className="text-sm font-black text-white italic">{membership.name || '—'}</p>
+              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Selected Tier</p>
+              <p className="text-sm font-black text-foreground italic">{membership.name || '—'}</p>
             </div>
 
             <div className="flex justify-between items-center">
-              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">Investment</p>
+              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Investment</p>
               <p className="text-xl font-black text-[#daa857] italic">
                 {membership.price ? formatCurrency(membership.price) : '—'}
               </p>
             </div>
 
             <div className="flex justify-between items-center">
-              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">Membership Validity</p>
+              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Membership Validity</p>
               <div className="text-right">
-                <p className="text-sm font-black text-white">
+                <p className="text-sm font-black text-foreground">
                   {profile.expiryDate
                     ? new Date(profile.expiryDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
                     : '—'}
                 </p>
-                <p className="text-[8px] font-black uppercase tracking-widest text-gray-600">Standard Zulu Time</p>
+                <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground">Standard Zulu Time</p>
               </div>
             </div>
           </div>
@@ -236,7 +236,7 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
 
       {/* Fitness Goals & Plan */}
       <div className="space-y-8">
-        <div className="bg-[#111] border border-white/5 rounded-[2rem] p-8 shadow-2xl h-full relative overflow-hidden">
+        <div className="bg-card border border-border rounded-[2rem] p-8 shadow-2xl h-full relative overflow-hidden">
           <div className="absolute -bottom-24 -left-24 h-48 w-48 rounded-full bg-[#daa857]/5 blur-[80px]" />
           
           <div className="relative z-10 space-y-8 h-full flex flex-col">
@@ -244,14 +244,14 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
               <div className="h-10 w-10 rounded-xl bg-[#daa857]/10 flex items-center justify-center text-[#daa857]">
                 <TrendingUp className="h-5 w-5" />
               </div>
-              <h3 className="text-xl font-black uppercase italic tracking-tighter text-white">Fitness <span className="text-[#daa857]">Goals</span></h3>
+              <h3 className="text-xl font-black uppercase italic tracking-tighter text-foreground">Fitness <span className="text-[#daa857]">Goals</span></h3>
             </div>
 
             <div className="space-y-6 flex-1">
               <div>
-                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 mb-3">Primary Objectives</p>
-                <div className="p-6 rounded-2xl bg-black/40 border border-white/5 min-h-[100px]">
-                  <p className="text-sm font-bold text-gray-300 leading-relaxed italic">
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground mb-3">Primary Objectives</p>
+                <div className="p-6 rounded-2xl bg-card/50 border border-border min-h-[100px]">
+                  <p className="text-sm font-bold text-muted-foreground leading-relaxed italic">
                     {profile.fitnessGoals || 'No primary objectives defined in the plan.'}
                   </p>
                 </div>
@@ -259,9 +259,9 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
 
               {profile.fitnessGoalsDetails && (
                 <div>
-                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 mb-3">Tactical Details</p>
-                  <div className="p-6 rounded-2xl bg-black/40 border border-white/5">
-                    <p className="text-xs font-medium text-gray-400 leading-relaxed">
+                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground mb-3">Tactical Details</p>
+                  <div className="p-6 rounded-2xl bg-card/50 border border-border">
+                    <p className="text-xs font-medium text-muted-foreground leading-relaxed">
                       {profile.fitnessGoalsDetails}
                     </p>
                   </div>
@@ -269,16 +269,16 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
               )}
 
               {profile.emergencyContact && (
-                <div className="mt-auto pt-8 border-t border-white/5">
-                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 mb-4 text-center">Emergency Check-out Process</p>
+                <div className="mt-auto pt-8 border-t border-border">
+                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground mb-4 text-center">Emergency Check-out Process</p>
                   <div className="flex items-center justify-center gap-8">
                     <div className="text-center">
-                      <p className="text-[8px] font-black uppercase tracking-widest text-gray-700 mb-1">Liaison</p>
-                      <p className="text-sm font-black text-white italic">{profile.emergencyContact}</p>
+                      <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground mb-1">Liaison</p>
+                      <p className="text-sm font-black text-foreground italic">{profile.emergencyContact}</p>
                     </div>
                     {profile.emergencyPhone && (
                       <div className="text-center">
-                        <p className="text-[8px] font-black uppercase tracking-widest text-gray-700 mb-1">Comm Line</p>
+                        <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground mb-1">Comm Line</p>
                         <p className="text-sm font-black text-[#daa857]">{profile.emergencyPhone}</p>
                       </div>
                     )}
@@ -291,24 +291,24 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
       </div>
 
       <Dialog open={isCropperModalOpen} onOpenChange={setIsCropperModalOpen}>
-        <DialogContent className="bg-[#111] border-white/10 text-white rounded-[1.5rem] md:rounded-[2.5rem] p-0 overflow-hidden w-[95vw] md:max-w-2xl shadow-2xl">
+        <DialogContent className="bg-card border-border text-foreground rounded-[1.5rem] md:rounded-[2.5rem] p-0 overflow-hidden w-[95vw] md:max-w-2xl shadow-2xl">
           <DialogHeader className="sr-only">
             <DialogTitle>Adjust Member Profile</DialogTitle>
           </DialogHeader>
 
-          <div className="p-5 md:p-8 border-b border-white/5 flex items-center justify-between">
+          <div className="p-5 md:p-8 border-b border-border flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="h-10 w-10 rounded-xl bg-[#daa857]/10 flex items-center justify-center text-[#daa857]">
                 <CropIcon className="h-5 w-5" />
               </div>
               <h3 className="text-lg md:text-xl font-black uppercase italic tracking-tighter">Adjust <span className="text-[#daa857]">Member</span></h3>
             </div>
-            <Button variant="ghost" size="icon" onClick={() => setIsCropperModalOpen(false)} className="rounded-full hover:bg-white/5">
+            <Button variant="ghost" size="icon" onClick={() => setIsCropperModalOpen(false)} className="rounded-full hover:bg-accent">
               <X className="h-5 w-5" />
             </Button>
           </div>
 
-          <div className="relative h-[300px] md:h-[400px] w-full bg-black">
+          <div className="relative h-[300px] md:h-[400px] w-full bg-background">
             {imageToCrop && (
               <Cropper
                 image={imageToCrop}
@@ -324,10 +324,10 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
             )}
           </div>
 
-          <div className="p-5 md:p-8 space-y-6 md:space-y-8 bg-[#111]">
+          <div className="p-5 md:p-8 space-y-6 md:space-y-8 bg-card">
             <div className="space-y-4">
               <div className="flex justify-between items-center">
-                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">Image Zoom</Label>
+                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Image Zoom</Label>
                 <span className="text-[10px] font-black text-[#daa857]">{Math.round(zoom * 100)}%</span>
               </div>
               <Slider
@@ -344,7 +344,7 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
               <Button 
                 variant="outline" 
                 onClick={() => setIsCropperModalOpen(false)}
-                className="h-12 md:h-14 px-8 border-white/10 hover:bg-white/5 rounded-xl text-[10px] font-black uppercase tracking-widest text-gray-500"
+                className="h-12 md:h-14 px-8 border-border hover:bg-accent rounded-xl text-[10px] font-black uppercase tracking-widest text-muted-foreground"
               >
                 Cancel
               </Button>

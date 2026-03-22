@@ -26,7 +26,7 @@ export default function AdminHeader({ adminData, onLogout, title, description }:
   const gymInitials = gymName.split(' ').map((n: string) => n[0]).join('').substring(0, 2).toUpperCase()
 
   return (
-    <header className="border-b border-white/5 bg-black/80 backdrop-blur-md sticky top-0 z-30">
+    <header className="border-b border-border bg-card/50 backdrop-blur-md sticky top-0 z-30">
       <div className="container mx-auto flex h-16 items-center justify-between px-6">
         <div className="flex items-center gap-4">
           <Link href={`/admin/dashboard`} className="flex items-center gap-2 group">
@@ -42,14 +42,14 @@ export default function AdminHeader({ adminData, onLogout, title, description }:
                 <span className="font-black italic text-xs" style={{ color: accent }}>{gymInitials}</span>
               )}
             </div>
-            <span className="text-xl font-black uppercase italic tracking-tighter text-white">{gymName}<span style={{ color: accent }}>Space</span></span>
+            <span className="text-xl font-black uppercase italic tracking-tighter text-foreground">{gymName}<span style={{ color: accent }}>Space</span></span>
           </Link>
           
           {(title || description) && (
-            <div className="hidden md:flex items-center gap-3 border-l border-white/10 pl-4">
+            <div className="hidden md:flex items-center gap-3 border-l border-border pl-4">
               {title && <h1 className="text-[10px] font-black uppercase tracking-[0.3em]" style={{ color: accent }}>{title}</h1>}
               {description && <span className="h-1 w-1 rounded-full bg-gray-800" />}
-              {description && <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{description}</p>}
+              {description && <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">{description}</p>}
             </div>
           )}
         </div>
@@ -58,20 +58,20 @@ export default function AdminHeader({ adminData, onLogout, title, description }:
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="relative h-10 w-10 rounded-full p-0" style={{ hover: { backgroundColor: `${accent}1a` } } as any}>
-                <Avatar className="h-8 w-8 border border-white/10">
+                <Avatar className="h-8 w-8 border border-border">
                   <AvatarImage src={profileImage || undefined} className="object-cover" />
                   <AvatarFallback className="text-[10px] font-black" style={{ backgroundColor: `${accent}1a`, color: accent }}>{initials}</AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56 bg-[#111] border-white/10 text-white rounded-xl">
+            <DropdownMenuContent align="end" className="w-56 bg-card border-border text-foreground rounded-xl">
               <DropdownMenuItem disabled className="opacity-100">
                 <div className="flex flex-col space-y-1">
                   <p className="text-sm font-black uppercase italic">{adminData.firstName} {adminData.lastName}</p>
-                  <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest capitalize">{adminData.role} DASHBOARD</p>
+                  <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest capitalize">{adminData.role} DASHBOARD</p>
                 </div>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild className="focus:bg-white/5 cursor-pointer">
+              <DropdownMenuItem asChild className="focus:bg-accent cursor-pointer">
                 <Link href="/admin/settings" className="flex items-center gap-2 font-bold uppercase text-[10px] tracking-widest">
                   <Settings className="h-3.5 w-3.5" style={{ color: accent }} />
                   Admin Settings

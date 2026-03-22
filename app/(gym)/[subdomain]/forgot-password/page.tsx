@@ -65,7 +65,7 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#0a0a0a] text-white selection:bg-[#daa857]/30 px-4">
+    <div className="flex min-h-screen items-center justify-center bg-[#0a0a0a] text-foreground selection:bg-[#daa857]/30 px-4">
       <div className="w-full max-w-md">
         {/* Logo */}
         <Link href="/" className="mb-12 flex flex-col items-center justify-center gap-4 group">
@@ -79,38 +79,38 @@ export default function ForgotPasswordPage() {
           </div>
           <div className="text-center">
             <h1 className="text-3xl font-black tracking-tighter uppercase italic">Klimarx<span style={{ color: accent }}>Space</span></h1>
-            <p className="text-[10px] uppercase tracking-[0.3em] text-gray-500 font-bold mt-1">Account Recovery</p>
+            <p className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground font-bold mt-1">Account Recovery</p>
           </div>
         </Link>
 
         {/* Content Container */}
-        <div className="p-8 bg-[#111] border border-[#daa857]/20 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
+        <div className="p-8 bg-card border border-[#daa857]/20 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
           {/* Subtle Glow Decor */}
           <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-[#daa857]/10 blur-[80px]" />
           <div className="absolute -bottom-24 -left-24 h-48 w-48 rounded-full bg-[#daa857]/5 blur-[80px]" />
 
           <div className="relative z-10">
             <div className="mb-2">
-              <Link href="/login" className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 hover:text-[#daa857] transition-colors">
+              <Link href="/login" className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground hover:text-[#daa857] transition-colors">
                 <ArrowLeft className="h-3 w-3" /> Back to Login
               </Link>
             </div>
 
             {isSubmitted ? (
               <div className="text-center py-6 space-y-6 animate-in fade-in zoom-in duration-500">
-                <div className="h-20 w-20 rounded-full flex items-center justify-center mx-auto border-2 border-[#daa857]/20 bg-black shadow-xl shadow-[#daa857]/5">
+                <div className="h-20 w-20 rounded-full flex items-center justify-center mx-auto border-2 border-[#daa857]/20 bg-background shadow-xl shadow-[#daa857]/5">
                   <Mail className="h-10 w-10 text-[#daa857]" />
                 </div>
                 <div className="space-y-3">
                   <h2 className="text-3xl font-black uppercase italic tracking-tighter">Check Your <span style={{ color: accent }}>Inbox</span></h2>
-                  <p className="text-gray-500 text-sm font-medium leading-relaxed">
-                    We've sent a recovery link to <span className="text-white font-bold">{email}</span>. 
+                  <p className="text-muted-foreground text-sm font-medium leading-relaxed">
+                    We've sent a recovery link to <span className="text-foreground font-bold">{email}</span>. 
                     Follow the link to reset your account access.
                   </p>
                 </div>
                 <Button 
                   variant="outline" 
-                  className="w-full h-14 border-white/10 bg-transparent hover:bg-white/5 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] mt-4" 
+                  className="w-full h-14 border-border bg-transparent hover:bg-accent rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] mt-4" 
                   onClick={() => setIsSubmitted(false)}
                 >
                   Resend Link
@@ -120,7 +120,7 @@ export default function ForgotPasswordPage() {
               <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                 <div className="mb-10">
                   <h2 className="text-4xl font-black uppercase italic tracking-tighter leading-none">Lost Your <span style={{ color: accent }}>Password?</span></h2>
-                  <p className="text-gray-500 text-sm mt-3 font-medium">Enter your registered email to receive a recovery link.</p>
+                  <p className="text-muted-foreground text-sm mt-3 font-medium">Enter your registered email to receive a recovery link.</p>
                 </div>
 
                 {error && (
@@ -140,7 +140,7 @@ export default function ForgotPasswordPage() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
-                        className="h-16 pl-14 bg-black border-white/5 rounded-2xl focus:border-[#daa857] focus:ring-0 transition-all placeholder:text-gray-700 font-medium"
+                        className="h-16 pl-14 bg-background border-border rounded-2xl focus:border-[#daa857] focus:ring-0 transition-all placeholder:text-muted-foreground font-medium"
                       />
                     </div>
                   </div>
@@ -166,7 +166,7 @@ export default function ForgotPasswordPage() {
         </div>
 
         {/* Footer info */}
-        <p className="mt-12 text-center text-[10px] text-gray-700 font-black uppercase tracking-[0.5em]">
+        <p className="mt-12 text-center text-[10px] text-muted-foreground font-black uppercase tracking-[0.5em]">
           Klimarx Space © 2026 • Security Active
         </p>
       </div>

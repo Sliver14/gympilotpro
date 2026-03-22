@@ -95,7 +95,7 @@ export default function GymLandingPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
+    <main className="min-h-screen bg-[#0a0a0a] text-foreground overflow-x-hidden">
       <style jsx global>{`
         ::selection {
           background-color: ${accent}4d; /* 30% opacity */
@@ -103,7 +103,7 @@ export default function GymLandingPage() {
       `}</style>
 
       {/* Navigation */}
-      <nav className="fixed top-0 z-50 w-full border-b border-white/5 bg-black/30 backdrop-blur-lg transition-all duration-300">
+      <nav className="fixed top-0 z-50 w-full border-b border-border bg-card/50 backdrop-blur-lg transition-all duration-300">
         <div className="container mx-auto flex h-20 items-center justify-between px-6">
           <div className="flex items-center gap-3">
             <div className="relative h-12 w-12 overflow-hidden rounded-full border flex items-center justify-center font-bold text-xl" style={{ borderColor: `${accent}80`, backgroundColor: dark, color: accent }}>
@@ -124,11 +124,11 @@ export default function GymLandingPage() {
             </span>     
           </div>
           <div className="hidden md:flex items-center gap-8 text-sm font-medium uppercase tracking-widest">
-            <Link href="#features" className="hover:text-white transition-colors" style={{ color: accent }}>Experience</Link>
-            <Link href="#membership" className="hover:text-white transition-colors" style={{ color: accent }}>Memberships</Link>
+            <Link href="#features" className="hover:text-foreground transition-colors" style={{ color: accent }}>Experience</Link>
+            <Link href="#membership" className="hover:text-foreground transition-colors" style={{ color: accent }}>Memberships</Link>
             <Link
               href="/login"
-              className="hover:text-white transition-colors uppercase font-bold tracking-widest"
+              className="hover:text-foreground transition-colors uppercase font-bold tracking-widest"
               style={{ color: accent }}
             >
               Login
@@ -147,7 +147,7 @@ export default function GymLandingPage() {
           <div className="flex md:hidden items-center gap-4">
             <Link
               href="/login"
-              className="text-[10px] font-black uppercase tracking-[0.2em] border px-4 py-2 rounded-full backdrop-blur-sm bg-black/20"
+              className="text-[10px] font-black uppercase tracking-[0.2em] border px-4 py-2 rounded-full backdrop-blur-sm bg-card/50"
               style={{ color: accent, borderColor: `${accent}4d` }}
             >
               Login
@@ -157,7 +157,7 @@ export default function GymLandingPage() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative flex h-screen items-center justify-center overflow-hidden bg-black">
+      <section className="relative flex h-screen items-center justify-center overflow-hidden bg-background">
         <video
           autoPlay
           muted
@@ -169,13 +169,13 @@ export default function GymLandingPage() {
         </video>
 
         <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/60 via-transparent to-[#0a0a0a]" />
-        <div className="absolute inset-0 z-10 bg-black/20" />
+        <div className="absolute inset-0 z-10 bg-card/50" />
 
         <div className="container relative z-20 mx-auto px-6 text-center">
           <h1 className="mb-6 text-6xl font-black uppercase italic tracking-tighter md:text-8xl lg:text-9xl animate-in slide-in-from-bottom-8 duration-700">
             {heroTitle.split(' ')[0]} <span style={{ color: accent }}>{heroTitle.split(' ').slice(1).join(' ')}</span>
           </h1>
-          <p className="mx-auto mb-10 max-w-2xl text-lg text-gray-300 md:text-xl font-light">
+          <p className="mx-auto mb-10 max-w-2xl text-lg text-muted-foreground md:text-xl font-light">
             {heroSubtitle}
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
@@ -185,8 +185,8 @@ export default function GymLandingPage() {
               </Button>
             </Link>
             <Link href="#tour">
-              <Button variant="outline" size="lg" className="h-16 px-10 text-lg font-bold uppercase backdrop-blur-sm text-white hover:text-white border-white bg-transparent">
-                <Play className="mr-2 h-5 w-5 fill-current text-white" /> Watch Tour
+              <Button variant="outline" size="lg" className="h-16 px-10 text-lg font-bold uppercase backdrop-blur-sm text-foreground hover:text-foreground border-border bg-transparent">
+                <Play className="mr-2 h-5 w-5 fill-current text-foreground" /> Watch Tour
               </Button>
             </Link>
           </div>
@@ -194,7 +194,7 @@ export default function GymLandingPage() {
       </section>
 
       {/* Stats/Showcase Section */}
-      <section id="features" className="py-24 bg-black">
+      <section id="features" className="py-24 bg-background">
         <div className="container mx-auto px-6">
           <div className="grid gap-12 lg:grid-cols-2 items-center">
             <div className="grid grid-cols-2 gap-4">
@@ -214,13 +214,13 @@ export default function GymLandingPage() {
                   { icon: <Dumbbell />, title: "Prime Equipment", desc: "Custom-engineered machines and Olympic-grade free weights." },
                   { icon: <Users />, title: "Elite Coaching", desc: "Direct access to championship-winning personal trainers." }
                 ].map((item, i) => (
-                  <div key={i} className="flex gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/10">
+                  <div key={i} className="flex gap-4 p-4 rounded-xl hover:bg-accent transition-colors border border-transparent hover:border-border">
                     <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full" style={{ backgroundColor: `${accent}1a`, color: accent }}>
                       {item.icon}
                     </div>
                     <div>
                       <h3 className="text-xl font-bold italic uppercase">{item.title}</h3>
-                      <p className="text-gray-400">{item.desc}</p>
+                      <p className="text-muted-foreground">{item.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -231,7 +231,7 @@ export default function GymLandingPage() {
       </section>
 
       {/* Membership Plans Section */}
-      <section id="membership" className="py-24 bg-black">
+      <section id="membership" className="py-24 bg-background">
         <div className="container mx-auto px-6">
           <div className="mb-16 text-center">
             <h2 className="text-4xl md:text-7xl font-black uppercase italic tracking-tighter leading-none">
@@ -246,15 +246,15 @@ export default function GymLandingPage() {
                 className={`relative rounded-3xl p-8 transition-all duration-500 hover:-translate-y-2 ${
                   pkg.popular
                   ? 'bg-gradient-to-br scale-105 z-10 shadow-2xl'
-                  : 'bg-[#111] border border-white/10'
+                  : 'bg-card border border-border'
                 }`}
                 style={pkg.popular ? { background: `linear-gradient(to bottom right, ${accent}, #b89778)`, color: dark } : { color: 'white' }}
               >
-                {pkg.popular && <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-black text-[10px] font-black px-6 py-1 rounded-full uppercase" style={{ color: accent }}>Top Choice</span>}
-                <h3 className={`text-2xl font-black uppercase italic ${pkg.popular ? '' : 'text-white'}`}>{pkg.name}</h3>
+                {pkg.popular && <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-background text-[10px] font-black px-6 py-1 rounded-full uppercase" style={{ color: accent }}>Top Choice</span>}
+                <h3 className={`text-2xl font-black uppercase italic ${pkg.popular ? '' : 'text-foreground'}`}>{pkg.name}</h3>
                 <div className="my-8">
                   <span className="text-5xl font-black italic">₦{pkg.price}</span>
-                  <span className={`text-sm ml-2 font-bold ${pkg.popular ? 'opacity-70' : 'text-gray-500'}`}>/ {pkg.duration}</span>
+                  <span className={`text-sm ml-2 font-bold ${pkg.popular ? 'opacity-70' : 'text-muted-foreground'}`}>/ {pkg.duration}</span>
                 </div>
                 <ul className="space-y-4 mb-10">
                   {pkg.features.map((feat, i) => (
@@ -264,7 +264,7 @@ export default function GymLandingPage() {
                   ))}
                 </ul>
                 <Link href="/signup">
-                  <Button className={`w-full py-8 font-black uppercase tracking-widest rounded-xl ${pkg.popular ? 'bg-black text-white hover:bg-zinc-900' : 'text-black'}`} style={!pkg.popular ? { backgroundColor: accent, color: dark } : {}}>
+                  <Button className={`w-full py-8 font-black uppercase tracking-widest rounded-xl ${pkg.popular ? 'bg-background text-foreground hover:bg-zinc-900' : 'text-black'}`} style={!pkg.popular ? { backgroundColor: accent, color: dark } : {}}>
                     Join Now
                   </Button>
                 </Link>
@@ -286,12 +286,12 @@ export default function GymLandingPage() {
           <div className="text-4xl font-black uppercase italic tracking-tighter">
             {gymName.split(' ')[0]}<span style={{ color: accent }}>{gymName.split(' ').slice(1).join(' ')}</span>
           </div>
-          <div className="flex gap-12 font-bold uppercase text-xs tracking-widest text-gray-500">
-            <span className="hover:text-white transition-colors cursor-pointer" style={{ ':hover': { color: accent } } as any}>Instagram</span>
-            <span className="hover:text-white transition-colors cursor-pointer" style={{ ':hover': { color: accent } } as any}>Twitter</span>
-            <span className="hover:text-white transition-colors cursor-pointer" style={{ ':hover': { color: accent } } as any}>Facebook</span>
+          <div className="flex gap-12 font-bold uppercase text-xs tracking-widest text-muted-foreground">
+            <span className="hover:text-foreground transition-colors cursor-pointer" style={{ ':hover': { color: accent } } as any}>Instagram</span>
+            <span className="hover:text-foreground transition-colors cursor-pointer" style={{ ':hover': { color: accent } } as any}>Twitter</span>
+            <span className="hover:text-foreground transition-colors cursor-pointer" style={{ ':hover': { color: accent } } as any}>Facebook</span>
           </div>
-          <p className="text-xs text-gray-600 font-bold tracking-widest uppercase italic">© 2026 {gymName.toUpperCase()}. ELITE ONLY.</p>
+          <p className="text-xs text-muted-foreground font-bold tracking-widest uppercase italic">© 2026 {gymName.toUpperCase()}. ELITE ONLY.</p>
         </div>
       </footer>
     </main>

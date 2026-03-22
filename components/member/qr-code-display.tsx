@@ -55,22 +55,22 @@ export default function QRCodeDisplay({ memberId }: QRCodeDisplayProps) {
 
   if (isLoading) {
     return (
-      <div className="bg-[#111] border border-white/5 rounded-[2rem] p-20 flex justify-center shadow-2xl">
+      <div className="bg-card border border-border rounded-[2rem] p-20 flex justify-center shadow-2xl">
         <Loader2 className="h-8 w-8 animate-spin text-[#daa857]" />
       </div>
     )
   }
 
   return (
-    <div className="bg-[#111] border border-white/5 rounded-[2rem] p-8 shadow-2xl relative overflow-hidden">
+    <div className="bg-card border border-border rounded-[2rem] p-8 shadow-2xl relative overflow-hidden">
       <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-[#daa857]/5 blur-[80px]" />
       
       <div className="relative z-10">
-        <div className="flex items-center justify-between mb-12 pb-4 border-b border-white/5">
-          <h3 className="text-xl font-black uppercase italic tracking-tighter text-white flex items-center gap-3">
+        <div className="flex items-center justify-between mb-12 pb-4 border-b border-border">
+          <h3 className="text-xl font-black uppercase italic tracking-tighter text-foreground flex items-center gap-3">
             <QrCode className="h-5 w-5 text-[#daa857]" /> Access <span className="text-[#daa857]">Pass</span>
           </h3>
-          <p className="text-[10px] font-black uppercase tracking-widest text-gray-500">Access Authenticator</p>
+          <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Access Authenticator</p>
         </div>
 
         <div className="flex flex-col items-center gap-10">
@@ -82,7 +82,7 @@ export default function QRCodeDisplay({ memberId }: QRCodeDisplayProps) {
               </div>
               
               <div className="text-center max-w-sm">
-                <p className="mb-8 text-xs font-bold text-gray-400 uppercase tracking-widest leading-relaxed">
+                <p className="mb-8 text-xs font-bold text-muted-foreground uppercase tracking-widest leading-relaxed">
                   Present this <span className="text-[#daa857]">QR Code</span> at the check-in terminal for instant gym access.
                 </p>
                 <Button 

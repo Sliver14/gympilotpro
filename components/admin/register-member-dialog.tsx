@@ -165,12 +165,12 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
           Enroll Member
         </Button>
       </DialogTrigger>
-      <DialogContent className="bg-[#111] border-white/10 text-white rounded-[2.5rem] p-10 max-w-2xl max-h-[90vh] overflow-y-auto custom-scrollbar">
+      <DialogContent className="bg-card border-border text-foreground rounded-[2.5rem] p-10 max-w-2xl max-h-[90vh] overflow-y-auto custom-scrollbar">
         <DialogHeader className="space-y-4">
           <DialogTitle className="text-3xl font-black uppercase italic tracking-tighter">
             New Member <span className="text-[#daa857]">Enrollment</span>
           </DialogTitle>
-          <DialogDescription className="text-gray-500 font-medium uppercase text-[10px] tracking-widest leading-relaxed">
+          <DialogDescription className="text-muted-foreground font-medium uppercase text-[10px] tracking-widest leading-relaxed">
             Establishing a new profile in the gym. Default password: <span className="text-[#daa857] font-black">12345678</span>
           </DialogDescription>
         </DialogHeader>
@@ -178,24 +178,24 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
         <form onSubmit={handleSubmit} className="space-y-8 py-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-3">
-              <Label htmlFor="firstName" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">First Name *</Label>
+              <Label htmlFor="firstName" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">First Name *</Label>
               <Input
                 id="firstName"
                 value={formData.firstName}
                 onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
                 placeholder="FIRST NAME"
-                className="h-14 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-6 font-bold uppercase tracking-widest text-[10px]"
+                className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-6 font-bold uppercase tracking-widest text-[10px]"
                 required
               />
             </div>
             <div className="space-y-3">
-              <Label htmlFor="lastName" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Last Name *</Label>
+              <Label htmlFor="lastName" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Last Name *</Label>
               <Input
                 id="lastName"
                 value={formData.lastName}
                 onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
                 placeholder="LAST NAME"
-                className="h-14 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-6 font-bold uppercase tracking-widest text-[10px]"
+                className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-6 font-bold uppercase tracking-widest text-[10px]"
                 required
               />
             </div>
@@ -203,26 +203,26 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-3">
-              <Label htmlFor="email" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Comm Channel *</Label>
+              <Label htmlFor="email" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Comm Channel *</Label>
               <Input
                 id="email"
                 type="email"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 placeholder="EMAIL@EXAMPLE.COM"
-                className="h-14 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-6 font-bold uppercase tracking-widest text-[10px]"
+                className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-6 font-bold uppercase tracking-widest text-[10px]"
                 required
               />
             </div>
             <div className="space-y-3">
-              <Label htmlFor="phoneNumber" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Secure Line *</Label>
+              <Label htmlFor="phoneNumber" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Secure Line *</Label>
               <Input
                 id="phoneNumber"
                 type="tel"
                 value={formData.phoneNumber}
                 onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
                 placeholder="CONTACT NUMBER"
-                className="h-14 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-6 font-bold uppercase tracking-widest text-[10px]"
+                className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-6 font-bold uppercase tracking-widest text-[10px]"
                 required
               />
             </div>
@@ -230,7 +230,7 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-3">
-              <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Date of Birth</Label>
+              <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Date of Birth</Label>
               <div className="flex gap-2">
                 <Select
                   value={formData.birthday?.split('-')[0] || ''}
@@ -240,10 +240,10 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
                     setFormData({ ...formData, birthday: `${month}-${newDay.padStart(2, '0')}` })
                   }}
                 >
-                  <SelectTrigger className="h-14 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-4 font-black uppercase tracking-widest text-[10px] flex-1">
+                  <SelectTrigger className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-4 font-black uppercase tracking-widest text-[10px] flex-1">
                     <SelectValue placeholder="MONTH" />
                   </SelectTrigger>
-                  <SelectContent className="bg-[#111] border-white/10 text-white">
+                  <SelectContent className="bg-card border-border text-foreground">
                     {[
                       { value: '01', label: 'JAN' }, { value: '02', label: 'FEB' }, { value: '03', label: 'MAR' },
                       { value: '04', label: 'APR' }, { value: '05', label: 'MAY' }, { value: '06', label: 'JUN' },
@@ -265,10 +265,10 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
                   }}
                   disabled={!formData.birthday?.split('-')[0]}
                 >
-                  <SelectTrigger className="h-14 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-4 font-black uppercase tracking-widest text-[10px] w-24">
+                  <SelectTrigger className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-4 font-black uppercase tracking-widest text-[10px] w-24">
                     <SelectValue placeholder="DAY" />
                   </SelectTrigger>
-                  <SelectContent className="bg-[#111] border-white/10 text-white">
+                  <SelectContent className="bg-card border-border text-foreground">
                     {(() => {
                       const month = formData.birthday?.split('-')[0] || '01'
                       const year = new Date().getFullYear()
@@ -289,15 +289,15 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
             </div>
 
             <div className="space-y-3">
-              <Label htmlFor="gender" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Gender</Label>
+              <Label htmlFor="gender" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Gender</Label>
               <Select
                 value={formData.gender}
                 onValueChange={(value) => setFormData({ ...formData, gender: value })}
               >
-                <SelectTrigger id="gender" className="h-14 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-4 font-black uppercase tracking-widest text-[10px]">
+                <SelectTrigger id="gender" className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-4 font-black uppercase tracking-widest text-[10px]">
                   <SelectValue placeholder="SELECT GENDER" />
                 </SelectTrigger>
-                <SelectContent className="bg-[#111] border-white/10 text-white">
+                <SelectContent className="bg-card border-border text-foreground">
                   {GENDER_OPTIONS.map((opt) => (
                     <SelectItem key={opt.value} value={opt.value} className="focus:bg-[#daa857]/10 focus:text-[#daa857] font-bold uppercase text-[10px]">
                       {opt.label.toUpperCase()}
@@ -310,15 +310,15 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-3">
-              <Label htmlFor="membership" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Membership Plan *</Label>
+              <Label htmlFor="membership" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Membership Plan *</Label>
               <Select
                 value={formData.membershipId}
                 onValueChange={(value) => setFormData({ ...formData, membershipId: value })}
               >
-                <SelectTrigger id="membership" className="h-14 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-4 font-black uppercase tracking-widest text-[10px]">
+                <SelectTrigger id="membership" className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-4 font-black uppercase tracking-widest text-[10px]">
                   <SelectValue placeholder="SELECT TIER" />
                 </SelectTrigger>
-                <SelectContent className="bg-[#111] border-white/10 text-white">
+                <SelectContent className="bg-card border-border text-foreground">
                   {memberships.map((m) => (
                     <SelectItem key={m.id} value={m.id} className="focus:bg-[#daa857]/10 focus:text-[#daa857] font-bold uppercase text-[10px]">
                       {m.name.toUpperCase()} - ₦{m.price.toLocaleString('en-NG')}
@@ -328,15 +328,15 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
               </Select>
             </div>
             <div className="space-y-3">
-              <Label htmlFor="paymentMethod" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Authorization *</Label>
+              <Label htmlFor="paymentMethod" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Authorization *</Label>
               <Select
                 value={formData.paymentMethod}
                 onValueChange={(value) => setFormData({ ...formData, paymentMethod: value })}
               >
-                <SelectTrigger id="paymentMethod" className="h-14 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-4 font-black uppercase tracking-widest text-[10px]">
+                <SelectTrigger id="paymentMethod" className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-4 font-black uppercase tracking-widest text-[10px]">
                   <SelectValue placeholder="METHOD" />
                 </SelectTrigger>
-                <SelectContent className="bg-[#111] border-white/10 text-white">
+                <SelectContent className="bg-card border-border text-foreground">
                   {PAYMENT_METHODS.map((method) => (
                     <SelectItem 
                       key={method.id} 
@@ -354,27 +354,27 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
             <div className="space-y-3">
-              <Label htmlFor="startDate" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Deployment Start *</Label>
+              <Label htmlFor="startDate" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Deployment Start *</Label>
               <Input
                 id="startDate"
                 type="date"
                 value={formData.startDate}
                 onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
                 max={new Date().toISOString().split('T')[0]}
-                className="h-14 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-4 font-black uppercase tracking-widest text-[10px]"
+                className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-4 font-black uppercase tracking-widest text-[10px]"
                 required
               />
             </div>
-            <div className="flex items-center space-x-3 h-14 px-4 rounded-xl bg-black border border-white/5">
+            <div className="flex items-center space-x-3 h-14 px-4 rounded-xl bg-background border border-border">
               <Checkbox
                 id="payment-completed"
                 checked={formData.paymentCompleted}
                 onCheckedChange={(checked) => setFormData((prev) => ({ ...prev, paymentCompleted: !!checked }))}
-                className="border-white/20 data-[state=checked]:bg-[#daa857] data-[state=checked]:text-black"
+                className="border-border data-[state=checked]:bg-[#daa857] data-[state=checked]:text-primary-foreground"
               />
               <Label
                 htmlFor="payment-completed"
-                className="text-[9px] font-black uppercase tracking-widest text-gray-500 cursor-pointer"
+                className="text-[9px] font-black uppercase tracking-widest text-muted-foreground cursor-pointer"
               >
                 Instant Verification & Activation
               </Label>
@@ -382,14 +382,14 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
           </div>
 
           <div className="space-y-3">
-            <Label htmlFor="fitnessGoals" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Fitness Goals</Label>
+            <Label htmlFor="fitnessGoals" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Fitness Goals</Label>
             <Textarea
               id="fitnessGoals"
               value={formData.fitnessGoalsDetails}
               onChange={(e) => setFormData({ ...formData, fitnessGoalsDetails: e.target.value })}
               placeholder="SPECIFY TARGETS OR MEDICAL CONTRAINDICATIONS..."
               rows={3}
-              className="bg-black border-white/5 rounded-2xl focus:border-[#daa857] p-6 font-bold text-xs uppercase tracking-widest"
+              className="bg-background border-border rounded-2xl focus:border-[#daa857] p-6 font-bold text-xs uppercase tracking-widest"
             />
           </div>
 
@@ -398,7 +398,7 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
               type="button" 
               variant="outline" 
               onClick={() => setOpen(false)}
-              className="h-14 px-8 border-white/10 hover:bg-white/5 rounded-xl text-[10px] font-black uppercase tracking-widest text-gray-500"
+              className="h-14 px-8 border-border hover:bg-accent rounded-xl text-[10px] font-black uppercase tracking-widest text-muted-foreground"
             >
               Abort
             </Button>

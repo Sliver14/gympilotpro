@@ -36,8 +36,8 @@ export default function DomainDashboard() {
   const currentPlan = gymData.subscriptions?.[0]?.plan || 'starter'
   if (!hasPremiumAccess(currentPlan, 'pro')) {
     return (
-      <div className="flex-1 p-8 bg-[#0a0a0a] text-white min-h-screen font-sans flex items-center justify-center">
-        <div className="max-w-md w-full text-center space-y-6 bg-[#111] p-10 rounded-[2rem] border border-white/5 shadow-2xl">
+      <div className="flex-1 p-8 bg-[#0a0a0a] text-foreground min-h-screen font-sans flex items-center justify-center">
+        <div className="max-w-md w-full text-center space-y-6 bg-card p-10 rounded-[2rem] border border-border shadow-2xl">
           <div className="h-20 w-20 bg-orange-500/10 rounded-full flex items-center justify-center mx-auto border border-orange-500/20 text-orange-500">
             <Lock size={32} />
           </div>
@@ -45,12 +45,12 @@ export default function DomainDashboard() {
             <Button 
               variant="ghost" 
               onClick={() => router.back()}
-              className="mb-4 text-gray-500 hover:text-white focus:text-white uppercase text-[10px] font-black tracking-widest gap-2"
+              className="mb-4 text-muted-foreground hover:text-foreground focus:text-foreground uppercase text-[10px] font-black tracking-widest gap-2"
             >
               <ChevronLeft size={14} /> Back
             </Button>
             <h2 className="text-2xl font-black italic uppercase tracking-tighter mb-2">Premium Feature</h2>
-            <p className="text-gray-400 font-medium text-xs tracking-widest uppercase leading-relaxed text-center">
+            <p className="text-muted-foreground font-medium text-xs tracking-widest uppercase leading-relaxed text-center">
               Custom Domain Setup is available on <span className="text-orange-500 font-black">Pro</span> and <span className="text-orange-500 font-black">Elite</span> plans. Upgrade your gym to connect your own brand identity.
             </p>
           </div>
@@ -111,13 +111,13 @@ export default function DomainDashboard() {
   const isConnected = gymData.domainVerified && gymData.customDomain
 
   return (
-    <div className="flex-1 p-8 bg-[#0a0a0a] text-white min-h-screen font-sans">
+    <div className="flex-1 p-8 bg-[#0a0a0a] text-foreground min-h-screen font-sans">
       <div className="max-w-4xl mx-auto space-y-8">
 
         <Button 
           variant="ghost" 
           onClick={() => router.back()}
-          className="text-gray-500 hover:text-white uppercase text-[10px] font-black tracking-widest gap-2 p-0 h-auto"
+          className="text-muted-foreground hover:text-foreground uppercase text-[10px] font-black tracking-widest gap-2 p-0 h-auto"
         >
           <ChevronLeft size={14} /> Back to Dashboard
         </Button>
@@ -128,13 +128,13 @@ export default function DomainDashboard() {
             <h1 className="text-4xl font-black italic uppercase tracking-tighter mb-2">
               Domain Settings
             </h1>
-            <p className="text-gray-400 font-medium uppercase text-[10px] tracking-widest">
+            <p className="text-muted-foreground font-medium uppercase text-[10px] tracking-widest">
               Connect your custom brand identity to your dashboard.
             </p>
           </div>
 
           {isConnected && (
-            <div className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full">
+            <div className="flex items-center gap-2 px-4 py-2 bg-accent border border-border rounded-full">
               <div className="h-2 w-2 rounded-full bg-green-500" />
               <span className="text-[10px] font-black uppercase tracking-widest">
                 Verified
@@ -144,8 +144,8 @@ export default function DomainDashboard() {
         </div>
 
         {/* STATUS CARD */}
-        <div className="p-8 bg-[#111] border border-white/5 rounded-[2rem] shadow-2xl relative overflow-hidden">
-          <h2 className="text-sm font-black uppercase tracking-[0.2em] text-gray-500 mb-6">
+        <div className="p-8 bg-card border border-border rounded-[2rem] shadow-2xl relative overflow-hidden">
+          <h2 className="text-sm font-black uppercase tracking-[0.2em] text-muted-foreground mb-6">
             Live Configuration
           </h2>
 
@@ -155,7 +155,7 @@ export default function DomainDashboard() {
                 <ShieldCheck size={28} />
               </div>
               <div>
-                <p className="text-[10px] font-black uppercase text-gray-500 mb-1">
+                <p className="text-[10px] font-black uppercase text-muted-foreground mb-1">
                   Active Destination
                 </p>
                 <a
@@ -171,7 +171,7 @@ export default function DomainDashboard() {
             <div className="flex items-center gap-6 p-6 bg-orange-500/5 border border-orange-500/20 rounded-2xl">
               <AlertTriangle size={28} className="text-orange-500" />
               <div>
-                <p className="text-[10px] font-black uppercase text-gray-500 mb-1">
+                <p className="text-[10px] font-black uppercase text-muted-foreground mb-1">
                   Current Access Point
                 </p>
                 <p className="text-xl font-black italic uppercase">
@@ -187,19 +187,19 @@ export default function DomainDashboard() {
 
           {/* FORM */}
           <div className="md:col-span-3">
-            <div className="p-8 bg-[#111] border border-white/5 rounded-[2rem]">
+            <div className="p-8 bg-card border border-border rounded-[2rem]">
               <h2 className="text-xl font-black italic uppercase mb-6">
                 1. Connect Your Domain
               </h2>
 
               <form onSubmit={handleVerify} className="space-y-6">
                 <div className="relative">
-                  <Globe className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-700" />
+                  <Globe className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
                   <Input
                     placeholder="www.yourgym.com"
                     value={domain}
                     onChange={(e) => setDomain(e.target.value)}
-                    className="h-16 pl-12 bg-black border-white/5 text-lg font-black italic uppercase"
+                    className="h-16 pl-12 bg-background border-border text-lg font-black italic uppercase"
                   />
                 </div>
 
@@ -215,20 +215,20 @@ export default function DomainDashboard() {
 
           {/* DNS SECTION */}
           <div className="md:col-span-2">
-            <div className="p-8 bg-black border border-white/5 rounded-[2rem]">
+            <div className="p-8 bg-background border border-border rounded-[2rem]">
 
               <h2 className="text-xl font-black italic uppercase mb-4">
                 2. DNS Setup
               </h2>
 
-              <p className="text-gray-500 text-xs mb-6 uppercase">
+              <p className="text-muted-foreground text-xs mb-6 uppercase">
                 Add BOTH records below in your domain provider.
               </p>
 
               <div className="space-y-6">
 
                 {/* A RECORD */}
-                <div className="p-5 bg-white/5 border rounded-xl">
+                <div className="p-5 bg-accent border rounded-xl">
                   <div className="flex justify-between">
                     <span className="text-xs">A Record</span>
                     <button onClick={() => copyToClipboard('A @ 76.76.21.21', 'a')}>
@@ -239,7 +239,7 @@ export default function DomainDashboard() {
                 </div>
 
                 {/* CNAME */}
-                <div className="p-5 bg-white/5 border rounded-xl">
+                <div className="p-5 bg-accent border rounded-xl">
                   <div className="flex justify-between">
                     <span className="text-xs">CNAME</span>
                     <button onClick={() => copyToClipboard('CNAME www cname.vercel-dns.com', 'cname')}>

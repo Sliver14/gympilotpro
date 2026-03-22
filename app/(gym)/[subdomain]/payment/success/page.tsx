@@ -77,21 +77,21 @@ function SuccessContent() {
       {status === 'loading' && (
         <div className="flex flex-col items-center gap-4">
           <Loader2 className="h-16 w-16 animate-spin" style={{ color: accent }} />
-          <h2 className="text-2xl font-black italic uppercase tracking-tighter text-white">
+          <h2 className="text-2xl font-black italic uppercase tracking-tighter text-foreground">
             {message}
           </h2>
-          <p className="text-gray-400 font-medium">Please do not close this page.</p>
+          <p className="text-muted-foreground font-medium">Please do not close this page.</p>
         </div>
       )}
 
       {status === 'success' && (
-        <div className="flex flex-col items-center gap-6 max-w-md w-full bg-white/5 border border-white/10 p-10 rounded-[2rem] shadow-2xl">
+        <div className="flex flex-col items-center gap-6 max-w-md w-full bg-accent border border-border p-10 rounded-[2rem] shadow-2xl">
           <CheckCircle className="h-20 w-20 text-green-500 mb-2" />
           <div>
-            <h2 className="text-4xl font-black italic uppercase tracking-tighter text-white mb-3">
+            <h2 className="text-4xl font-black italic uppercase tracking-tighter text-foreground mb-3">
               Payment Successful
             </h2>
-            <p className="text-gray-300 font-medium text-lg">
+            <p className="text-muted-foreground font-medium text-lg">
               {message}
             </p>
             <p className="font-bold uppercase text-[10px] mt-5 tracking-widest" style={{ color: accent }}>
@@ -109,13 +109,13 @@ function SuccessContent() {
       )}
 
       {status === 'error' && (
-        <div className="flex flex-col items-center gap-6 max-w-md w-full bg-white/5 border border-red-500/30 p-10 rounded-[2rem] shadow-2xl">
+        <div className="flex flex-col items-center gap-6 max-w-md w-full bg-accent border border-red-500/30 p-10 rounded-[2rem] shadow-2xl">
           <AlertCircle className="h-20 w-20 text-red-500 mb-2" />
           <div>
-            <h2 className="text-4xl font-black italic uppercase tracking-tighter text-white mb-3">
+            <h2 className="text-4xl font-black italic uppercase tracking-tighter text-foreground mb-3">
               Payment Issue
             </h2>
-            <p className="text-gray-300 font-medium text-lg leading-relaxed">
+            <p className="text-muted-foreground font-medium text-lg leading-relaxed">
               {message}
             </p>
             <p className="text-red-400 text-sm mt-4">
@@ -135,7 +135,7 @@ function SuccessContent() {
             <Button
               variant="outline"
               onClick={() => router.push('/')}
-              className="flex-1 h-16 border-white/30 bg-transparent hover:bg-white/10 text-white font-black italic uppercase text-lg rounded-xl transition-transform hover:scale-[1.02]"
+              className="flex-1 h-16 border-border bg-transparent hover:bg-accent text-foreground font-black italic uppercase text-lg rounded-xl transition-transform hover:scale-[1.02]"
             >
               Go Home
             </Button>
@@ -154,17 +154,17 @@ export default function PaymentSuccessPage() {
   const gymInitials = gymName.split(' ').map((n: string) => n[0]).join('').substring(0, 2).toUpperCase();
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white selection:bg-[#daa857]/30 selection:text-black font-sans flex flex-col relative overflow-hidden">
+    <div className="min-h-screen bg-[#0a0a0a] text-foreground selection:bg-[#daa857]/30 selection:text-black font-sans flex flex-col relative overflow-hidden">
       {/* Background glow matching the gym's accent */}
       <div 
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full blur-[120px] opacity-[0.03] pointer-events-none"
         style={{ backgroundColor: accent }}
       />
       
-      <nav className="w-full bg-[#0a0a0a]/80 backdrop-blur-xl border-b border-white/5 relative z-10">
+      <nav className="w-full bg-[#0a0a0a]/80 backdrop-blur-xl border-b border-border relative z-10">
         <div className="container mx-auto px-6 h-24 flex items-center justify-center">
           {isLoading ? (
-            <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
+            <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
           ) : (
             <div className="flex items-center gap-3">
               <div className="relative h-10 w-10 overflow-hidden rounded-full border flex items-center justify-center" style={{ borderColor: `${accent}4d`, backgroundColor: logo ? 'white' : '#111' }}>
