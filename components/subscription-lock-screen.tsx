@@ -118,7 +118,7 @@ export function SubscriptionLockScreen({
       <div className="max-w-4xl w-full grid md:grid-cols-5 gap-0 border border-border bg-card rounded-[2.5rem] shadow-2xl overflow-hidden my-8">
         
         {/* Left Panel: Info & Selection */}
-        <div className="md:col-span-3 p-8 md:p-12 space-y-8 relative">
+        <div className="md:col-span-3 p-4 md:p-8 space-y-8 relative">
           <div className="absolute inset-0 bg-[#daa857]/5 opacity-10 pointer-events-none" style={{ backgroundColor: `${accent}0D` }} />
           
           <div className="relative z-10">
@@ -216,7 +216,7 @@ export function SubscriptionLockScreen({
         </div>
 
         {/* Right Panel: Checkout */}
-        <div className="md:col-span-2 bg-card/40 p-8 md:p-12 border-l border-border flex flex-col justify-between">
+        <div className="md:col-span-2 bg-card/40 p-4 md:p-8 border-l border-border flex flex-col justify-between">
           <div className="space-y-6">
             <h3 className="text-xl font-black italic uppercase tracking-tighter">Summary</h3>
             
@@ -261,7 +261,7 @@ export function SubscriptionLockScreen({
           <div className="mt-12 space-y-6">
             <div className="flex justify-between items-end">
               <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Total Payable</span>
-              <span className="text-4xl font-black italic text-orange-500" style={{ color: accent }}>
+              <span className="text-2xl md:text-4xl font-black italic text-orange-500" style={{ color: accent }}>
                 ₦{pricing.total.toLocaleString()}
               </span>
             </div>

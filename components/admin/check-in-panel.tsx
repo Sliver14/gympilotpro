@@ -232,12 +232,12 @@ export default function CheckInPanel() {
   }, [initializeScanner, stopScanner, startScanner])
 
   return (
-    <div className="flex flex-col items-center gap-10 p-4">
+    <div className="flex flex-col items-center gap-4 md:gap-6 md:gap-10 p-4">
       {/* Result Display */}
       {result && (
         <div
           className={cn(
-            "w-full max-w-lg rounded-[2.5rem] border-2 p-10 shadow-2xl relative overflow-hidden transition-all duration-500 animate-in zoom-in-95",
+            "w-full max-w-lg rounded-[2.5rem] border-2 p-5 md:p-10 shadow-2xl relative overflow-hidden transition-all duration-500 animate-in zoom-in-95",
             result.isValid
               ? 'border-green-500/30 bg-green-500/5'
               : result.message.toLowerCase().includes('pending verification')
@@ -249,11 +249,11 @@ export default function CheckInPanel() {
         >
           <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full opacity-20 blur-[80px]" style={{ backgroundColor: result.isValid ? '#22c55e' : result.message.toLowerCase().includes('pending verification') ? '#f97316' : result.message.includes('Already checked in') ? '#daa857' : '#ef4444' }} />
           
-          <div className="flex flex-col items-center text-center gap-8 relative z-10">
+          <div className="flex flex-col items-center text-center gap-4 md:gap-8 relative z-10">
             {result.member && (
               <Avatar className="h-40 w-40 border-4 border-border shadow-2xl group transition-transform duration-500 hover:scale-105">
                 <AvatarImage src={result.member.profileImage || undefined} className="object-cover" />
-                <AvatarFallback className="text-4xl bg-background font-black uppercase italic text-[#daa857]">
+                <AvatarFallback className="text-2xl md:text-4xl bg-background font-black uppercase italic text-[#daa857]">
                   {result.member.fullName.split(' ').map(n => n[0]).join('')}
                 </AvatarFallback>
               </Avatar>
@@ -331,8 +331,8 @@ export default function CheckInPanel() {
               <div className="aspect-square flex flex-col items-center justify-center bg-card/50 relative group">
                 <div className="absolute inset-0 bg-[#daa857]/5 opacity-0 group-hover:opacity-100 transition-opacity blur-[100px]" />
                 {error ? (
-                  <div className="text-center p-10 space-y-6 relative z-10">
-                    <div className="h-20 w-20 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center mx-auto">
+                  <div className="text-center p-5 md:p-10 space-y-6 relative z-10">
+                    <div className="h-16 md:h-20 w-20 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center mx-auto">
                       <AlertCircle className="h-10 w-10 text-red-500" />
                     </div>
                     <p className="text-sm font-bold text-red-400 uppercase tracking-widest leading-relaxed">{error}</p>
@@ -346,7 +346,7 @@ export default function CheckInPanel() {
                   </div>
                 ) : (
                   <div className="text-center space-y-8 relative z-10">
-                    <div className="h-24 w-24 rounded-full bg-[#daa857]/10 border border-[#daa857]/20 flex items-center justify-center mx-auto shadow-2xl shadow-[#daa857]/5">
+                    <div className="h-16 md:h-24 w-24 rounded-full bg-[#daa857]/10 border border-[#daa857]/20 flex items-center justify-center mx-auto shadow-2xl shadow-[#daa857]/5">
                       <Camera className="h-10 w-10 text-[#daa857]" />
                     </div>
                     <div className="space-y-2">
@@ -367,7 +367,7 @@ export default function CheckInPanel() {
             {(isScanning || isValidating) && (
               <div className="absolute inset-0 flex flex-col items-center justify-center bg-card/50 backdrop-blur-sm">
                 {isValidating ? (
-                  <div className="flex flex-col items-center gap-6">
+                  <div className="flex flex-col items-center gap-4 md:gap-6">
                     <Loader2 className="h-16 w-16 animate-spin text-[#daa857]" />
                     <p className="text-[10px] font-black text-[#daa857] uppercase tracking-[0.5em] animate-pulse">Processing QR Code</p>
                   </div>
@@ -388,7 +388,7 @@ export default function CheckInPanel() {
           </div>
 
           {/* Manual Search & Check-in */}
-          <div className="bg-card border border-border rounded-[2.5rem] p-8 shadow-2xl space-y-6">
+          <div className="bg-card border border-border rounded-[2.5rem] p-4 md:p-8 shadow-2xl space-y-6">
             <div className="space-y-2">
               <Label htmlFor="search" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-2">Manual Search</Label>
               <div className="flex gap-3">
@@ -417,7 +417,7 @@ export default function CheckInPanel() {
             {searchQuery && (
               <div className="max-h-80 overflow-y-auto space-y-2 pr-2 custom-scrollbar">
                 {searchLoading ? (
-                  <div className="p-10 text-center">
+                  <div className="p-5 md:p-10 text-center">
                     <Loader2 className="h-8 w-8 animate-spin text-[#daa857] mx-auto" />
                   </div>
                 ) : filteredMembers.length > 0 ? (
@@ -451,7 +451,7 @@ export default function CheckInPanel() {
                     </div>
                   ))
                 ) : (
-                  <div className="p-10 text-center rounded-2xl bg-card/50 border border-dashed border-border">
+                  <div className="p-5 md:p-10 text-center rounded-2xl bg-card/50 border border-dashed border-border">
                     <p className="text-xs font-black text-muted-foreground uppercase tracking-widest italic italic">No active members match "{searchQuery}"</p>
                   </div>
                 )}

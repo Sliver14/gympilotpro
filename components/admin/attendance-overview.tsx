@@ -70,13 +70,13 @@ export default function AttendanceOverview() {
         <CardDescription>Daily member check-ins and check-outs</CardDescription>
       </CardHeader>
       <CardContent className="space-y-10">
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid gap-4 md:gap-6 md:grid-cols-3">
           {[
             { label: 'Total Checkins', value: totalCheckins, sub: 'LAST 30 DAYS' },
             { label: 'Average Checkins', value: avgDaily, sub: 'DAILY FREQUENCY', accent: true },
             { label: 'Max Checkin', value: Math.max(...data.map((d) => d.checkins), 0), sub: 'MAX DAILY' }
           ].map((stat, i) => (
-            <div key={i} className="rounded-2xl bg-card/50 border border-border p-6 hover:border-[#daa857]/20 transition-all group">
+            <div key={i} className="rounded-2xl bg-card/50 border border-border p-4 md:p-6 hover:border-[#daa857]/20 transition-all group">
               <p className="text-[8px] font-black uppercase tracking-[0.2em] text-muted-foreground mb-2">{stat.label}</p>
               <p className={cn("text-2xl font-black italic tracking-tighter group-hover:scale-105 transition-transform origin-left", stat.accent ? "text-[#daa857]" : "text-foreground")}>
                 {stat.value}
@@ -86,7 +86,7 @@ export default function AttendanceOverview() {
           ))}
         </div>
 
-        <div className="p-6 rounded-[2rem] bg-card/50 border border-border">
+        <div className="p-4 md:p-6 rounded-[2rem] bg-card/50 border border-border">
           {data.length > 0 ? (
             <ResponsiveContainer width="100%" height={350}>
               <LineChart data={data}>

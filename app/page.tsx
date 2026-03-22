@@ -30,7 +30,7 @@ const SectionTag = ({ children }: { children: React.ReactNode }) => (
 )
 
 const FeatureCard = ({ icon: Icon, title, desc }: { icon: any; title: string; desc: string }) => (
-  <div className="group p-6 sm:p-8 rounded-none border-l-2 border-border bg-white/[0.02] backdrop-blur-sm hover:bg-orange-500/5 hover:border-orange-500 transition-all duration-500 relative overflow-hidden">
+  <div className="group p-4 md:p-6 sm:p-8 rounded-none border-l-2 border-border bg-white/[0.02] backdrop-blur-sm hover:bg-orange-500/5 hover:border-orange-500 transition-all duration-500 relative overflow-hidden">
     <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
     <div className="mb-5 sm:mb-6 inline-block p-3 bg-orange-500/10 text-orange-500 group-hover:scale-110 transition-transform relative z-10">
       <Icon className="w-7 h-7 sm:w-8 sm:h-8" strokeWidth={1.5} />
@@ -60,7 +60,7 @@ export default function SaaSLandingPage() {
     <div className="min-h-screen bg-[#080808] text-foreground selection:bg-orange-500 selection:text-black font-sans relative">
       {/* Navigation - Add hamburger menu for mobile when ready */}
       <nav className="absolute top-0 w-full z-[100] bg-gradient-to-b from-black/80 to-transparent">
-        <div className="container mx-auto px-5 sm:px-6 md:px-8 lg:px-10 h-20 sm:h-24 flex items-center justify-between">
+        <div className="container mx-auto px-5 sm:px-6 md:px-8 lg:px-10 h-16 md:h-20 sm:h-24 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 group">
             <Image 
               src="/gympilotpro.png" 
@@ -75,7 +75,7 @@ export default function SaaSLandingPage() {
             </span>
           </Link>
 
-          <div className="hidden md:flex items-center gap-8 lg:gap-10 text-xs sm:text-[11px] font-black uppercase tracking-[0.2em]">
+          <div className="hidden md:flex items-center gap-4 md:gap-8 lg:gap-10 text-xs sm:text-[11px] font-black uppercase tracking-[0.2em]">
             <Link href="#features" className="hover:text-orange-500 transition-colors">Platform</Link>
             <Link href="#demo" className="hover:text-orange-500 transition-colors">Demo</Link>
             <Link href="#pricing" className="hover:text-orange-500 transition-colors">Pricing</Link>
@@ -108,7 +108,7 @@ export default function SaaSLandingPage() {
         <div className="container mx-auto px-5 sm:px-6 md:px-8 lg:px-10 relative z-10">
           <div className="max-w-4xl lg:max-w-5xl">
             <SectionTag>// Performance Infrastructure</SectionTag>
-            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black italic uppercase leading-[0.9] mb-6 sm:mb-8 tracking-tighter">
+            <h1 className="text-3xl md:text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black italic uppercase leading-[0.9] mb-6 sm:mb-8 tracking-tighter">
               Run Your Gym <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-orange-500/50 border-t-2 border-b-2 border-border">
                 Like A Pro
@@ -138,10 +138,10 @@ export default function SaaSLandingPage() {
       {/* Problem Section */}
       <section className="py-20 md:py-28 lg:py-32 bg-gradient-to-b from-[#080808] to-[#0d0d0d] border-y border-border">
         <div className="container mx-auto px-5 sm:px-6 md:px-8 lg:px-10">
-          <div className="flex flex-col md:flex-row gap-10 md:gap-16 items-start md:items-end mb-12 md:mb-20">
+          <div className="flex flex-col md:flex-row gap-4 md:gap-6 md:gap-10 md:gap-16 items-start md:items-end mb-12 md:mb-20">
             <div className="flex-1">
               <SectionTag>// The Problem</SectionTag>
-              <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black italic uppercase tracking-tighter">
+              <h2 className="text-2xl md:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black italic uppercase tracking-tighter">
                 Manual Management <br /><span className="text-orange-500">Kills Growth</span>
               </h2>
             </div>
@@ -157,7 +157,7 @@ export default function SaaSLandingPage() {
               { title: "Manual Chaos", desc: "Drowning in paper logs and fragmented WhatsApp messages." },
               { title: "Retention Loss", desc: "No automated system to bring members back before they quit." }
             ].map((item, i) => (
-              <div key={i} className="bg-background p-6 sm:p-8 md:p-10 hover:bg-orange-500/5 transition-colors">
+              <div key={i} className="bg-background p-4 md:p-6 sm:p-8 md:p-10 hover:bg-orange-500/5 transition-colors">
                 <AlertCircle className="text-orange-500 mb-4 sm:mb-6" size={28} />
                 <h4 className="text-lg sm:text-xl font-black italic uppercase mb-3 sm:mb-4">{item.title}</h4>
                 <p className="text-muted-foreground text-sm sm:text-base font-medium leading-relaxed">{item.desc}</p>
@@ -172,9 +172,9 @@ export default function SaaSLandingPage() {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_center,rgba(249,115,22,0.03),transparent_70%)] pointer-events-none" />
         <div className="container mx-auto px-5 sm:px-6 md:px-8 lg:px-10 text-center mb-16 md:mb-24">
           <SectionTag>// Command & Control</SectionTag>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black italic uppercase tracking-tighter">Pro-Grade Tools</h2>
+          <h2 className="text-2xl md:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black italic uppercase tracking-tighter">Pro-Grade Tools</h2>
         </div>
-        <div className="container mx-auto px-5 sm:px-6 md:px-8 lg:px-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        <div className="container mx-auto px-5 sm:px-6 md:px-8 lg:px-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 md:gap-8">
           <FeatureCard icon={Users} title="Access Control" desc="QR and Biometric integration to ensure only active members enter." />
           <FeatureCard icon={MessageSquare} title="Auto-Pilot Comms" desc="Automatically send WhatsApp reminders before memberships expire — so you never miss payments again." />
           <FeatureCard icon={BarChart3} title="Deep Analytics" desc="Track MRR, peak hours, and trainer performance at a glance." />
@@ -189,7 +189,7 @@ export default function SaaSLandingPage() {
         <div className="container mx-auto px-5 sm:px-6 md:px-8 lg:px-10">
           <div className="text-center mb-12 md:mb-16">
             <SectionTag>// See It In Action</SectionTag>
-            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black italic uppercase tracking-tighter mb-4 md:mb-6">
+            <h2 className="text-2xl md:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black italic uppercase tracking-tighter mb-4 md:mb-6">
               Platform Walkthrough
             </h2>
             <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto font-medium">
@@ -240,14 +240,14 @@ export default function SaaSLandingPage() {
       <section className="py-20 md:py-28 lg:py-32 bg-[#080808]">
         <div className="container mx-auto px-5 sm:px-6 md:px-8 lg:px-10 text-center">
           <SectionTag>// Trusted by Gym Owners</SectionTag>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black italic uppercase tracking-tighter mb-10 md:mb-12">
+          <h2 className="text-2xl md:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black italic uppercase tracking-tighter mb-10 md:mb-12">
             Real Results from Lagos Gym Leaders
           </h2>
 
           <div className="max-w-4xl mx-auto">
-            <div className="bg-white/[0.03] border border-orange-500/20 p-6 sm:p-8 md:p-10 rounded-none shadow-[0_0_30px_rgba(249,115,22,0.08)] relative">
+            <div className="bg-white/[0.03] border border-orange-500/20 p-4 md:p-6 sm:p-8 md:p-10 rounded-none shadow-[0_0_30px_rgba(249,115,22,0.08)] relative">
               <Quote className="absolute -top-8 sm:-top-10 left-6 sm:left-10 text-orange-500/30 w-16 h-16 sm:w-20 sm:h-20" />
-              <div className="flex flex-col md:flex-row items-center gap-6 md:gap-8">
+              <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6 md:gap-8">
                 <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden border-4 border-orange-500/40 flex-shrink-0">
                   <img
                     src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800&auto=format&fit=crop"
@@ -287,7 +287,7 @@ export default function SaaSLandingPage() {
         <div className="container mx-auto px-5 sm:px-6 md:px-8 lg:px-10 relative z-10">
           <div className="text-center mb-12 md:mb-16">
             <SectionTag>// Pricing Plans</SectionTag>
-            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black italic uppercase tracking-tighter mb-4 md:mb-6">Scale Your Empire</h2>
+            <h2 className="text-2xl md:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black italic uppercase tracking-tighter mb-4 md:mb-6">Scale Your Empire</h2>
 
             <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mt-8 md:mt-12 mb-6 md:mb-8">
               {DURATIONS.map((d) => (
@@ -308,7 +308,7 @@ export default function SaaSLandingPage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8 max-w-6xl mx-auto">
             {(Object.keys(PLANS) as PlanKey[]).map((key) => {
               const p = PLANS[key]
               const isPopular = key === 'pro'
@@ -319,7 +319,7 @@ export default function SaaSLandingPage() {
                 <div
                   key={key}
                   className={cn(
-                    "p-6 sm:p-8 md:p-10 border-2 flex flex-col transition-all duration-500 relative group",
+                    "p-4 md:p-6 sm:p-8 md:p-10 border-2 flex flex-col transition-all duration-500 relative group",
                     isPopular
                       ? "border-orange-500 bg-white/5 scale-100 md:scale-105 z-10 shadow-[0_0_40px_rgba(249,115,22,0.15)]"
                       : "border-border bg-background"
@@ -399,7 +399,7 @@ export default function SaaSLandingPage() {
           >
             Get GymPilotPro
           </Button>
-          <div className="pt-10 md:pt-12 mt-16 md:mt-24 border-t border-border w-full flex flex-col md:flex-row justify-between items-center gap-6 md:gap-8">
+          <div className="pt-10 md:pt-12 mt-16 md:mt-24 border-t border-border w-full flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6 md:gap-8">
             <Link href="/" className="flex items-center gap-3 group">
               <Image 
                 src="/gympilotpro.png" 

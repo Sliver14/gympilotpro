@@ -117,7 +117,7 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
   return (
     <Card>
       <CardHeader>
-        <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-4 md:gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <CardTitle className="flex items-center gap-3">
               <CreditCard className="h-5 w-5 text-[#daa857]" /> Update <span className="text-[#daa857]">Queue</span>
@@ -144,8 +144,8 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
         ) : (
           <div className="grid gap-4">
             {payments.map((payment) => (
-              <div key={payment.id} className="flex flex-col md:flex-row md:items-center justify-between rounded-3xl bg-card/50 border border-border p-6 hover:border-[#daa857]/30 transition-all group relative overflow-hidden">
-                <div className="absolute -right-12 -top-12 h-24 w-24 rounded-full bg-accent blur-2xl group-hover:bg-[#daa857]/5 transition-colors" />
+              <div key={payment.id} className="flex flex-col md:flex-row md:items-center justify-between rounded-3xl bg-card/50 border border-border p-4 md:p-6 hover:border-[#daa857]/30 transition-all group relative overflow-hidden">
+                <div className="absolute -right-12 -top-12 h-16 md:h-24 w-24 rounded-full bg-accent blur-2xl group-hover:bg-[#daa857]/5 transition-colors" />
                 
                 <div className="space-y-4 flex-1 min-w-0 relative z-10">
                   <div className="flex items-center gap-3">
@@ -205,7 +205,7 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
         )}
 
         <Dialog open={!!selectedPayment} onOpenChange={(open) => !open && setSelectedPayment(null)}>
-          <DialogContent className="bg-card border-border text-foreground rounded-[2.5rem] p-10 max-w-lg">
+          <DialogContent className="bg-card border-border text-foreground rounded-[2.5rem] p-5 md:p-10 max-w-lg">
             <DialogHeader className="space-y-4">
               <DialogTitle className="text-3xl font-black uppercase italic tracking-tighter">
                 Manual <span className="text-[#daa857]">Authorization</span>
@@ -216,7 +216,7 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
               </DialogDescription>
             </DialogHeader>
             
-            <div className="grid gap-8 py-8">
+            <div className="grid gap-4 md:gap-8 py-8">
               <div className="space-y-3">
                 <Label htmlFor="startDate" className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">
                   <CalendarIcon className="h-3.5 w-3.5 text-[#daa857]" />

@@ -134,7 +134,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         {/* Logo */}
         <Link href="/" className="mb-12 flex flex-col items-center justify-center gap-4 group">
-          <div className="relative h-20 w-20 overflow-hidden rounded-full border-2 flex items-center justify-center transition-transform group-hover:scale-110" style={{ borderColor: `${accent}80`, backgroundColor: logoUrl  ? 'white' : 'hsl(var(--card))' }}>
+          <div className="relative h-16 md:h-20 w-20 overflow-hidden rounded-full border-2 flex items-center justify-center transition-transform group-hover:scale-110" style={{ borderColor: `${accent}80`, backgroundColor: logoUrl  ? 'white' : 'hsl(var(--card))' }}>
             {logoUrl ? (
               <Image 
                 src={logoUrl} 
@@ -155,14 +155,14 @@ export default function LoginPage() {
         </Link>
 
         {/* Login Form Container */}
-        <div className="p-8 bg-card border rounded-[2.5rem] shadow-2xl relative overflow-hidden" style={{ borderColor: `${accent}33` }}>
+        <div className="p-4 md:p-8 bg-card border rounded-[2.5rem] shadow-2xl relative overflow-hidden" style={{ borderColor: `${accent}33` }}>
           {/* Subtle Glow Decor */}
           <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full blur-[80px]" style={{ backgroundColor: `${accent}1a` }} />
           <div className="absolute -bottom-24 -left-24 h-48 w-48 rounded-full blur-[80px]" style={{ backgroundColor: `${accent}0d` }} />
 
           <div className="relative z-10">
             <div className="mb-10">
-              <h2 className="text-4xl font-black uppercase italic tracking-tighter leading-none">Welcome <span style={{ color: accent }}>Back</span></h2>
+              <h2 className="text-2xl md:text-4xl font-black uppercase italic tracking-tighter leading-none">Welcome <span style={{ color: accent }}>Back</span></h2>
               <p className="text-muted-foreground text-sm mt-3 font-medium">Enter your credentials to access the space.</p>
             </div>
 

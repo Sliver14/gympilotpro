@@ -85,7 +85,7 @@ export default function StaffList() {
   return (
     <Card>
       <CardHeader>
-        <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-4 md:gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <CardTitle className="flex items-center gap-3">
               <UserCheck className="h-5 w-5 text-[#daa857]" /> Staff <span className="text-[#daa857]">Members</span>
@@ -128,8 +128,8 @@ export default function StaffList() {
               const initials = `${s.firstName?.[0] ?? ''}${s.lastName?.[0] ?? ''}`.toUpperCase()
 
               return (
-                <div key={s.id} className="flex flex-col md:flex-row md:items-center justify-between rounded-3xl bg-card/50 border border-border p-6 hover:border-[#daa857]/30 transition-all group relative overflow-hidden">
-                  <div className="absolute -right-12 -top-12 h-24 w-24 rounded-full bg-accent blur-2xl group-hover:bg-[#daa857]/5 transition-colors" />
+                <div key={s.id} className="flex flex-col md:flex-row md:items-center justify-between rounded-3xl bg-card/50 border border-border p-4 md:p-6 hover:border-[#daa857]/30 transition-all group relative overflow-hidden">
+                  <div className="absolute -right-12 -top-12 h-16 md:h-24 w-24 rounded-full bg-accent blur-2xl group-hover:bg-[#daa857]/5 transition-colors" />
                   
                   <div className="flex items-center gap-5 flex-1 min-w-0 relative z-10">
                     <Avatar className="h-14 w-14 border-2 border-border group-hover:border-[#daa857]/30 transition-all duration-500 shadow-xl">
@@ -150,7 +150,7 @@ export default function StaffList() {
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between md:justify-end gap-8 mt-6 md:mt-0 pt-6 md:pt-0 border-t md:border-none border-border relative z-10">
+                  <div className="flex items-center justify-between md:justify-end gap-4 md:gap-8 mt-6 md:mt-0 pt-6 md:pt-0 border-t md:border-none border-border relative z-10">
                     <div className="text-left md:text-right">
                       <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground mb-1">Specialization</p>
                       <p className="text-xs font-black text-foreground uppercase italic">{s.staffProfile?.specialization || 'General Role'}</p>

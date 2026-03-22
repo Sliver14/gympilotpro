@@ -84,7 +84,7 @@ function AdminSettingsContent() {
             </h1>
           </div>
         </header>
-        <div className="flex flex-1 flex-col gap-8 p-6 md:p-10 pb-24 md:pb-20">
+        <div className="flex flex-1 flex-col gap-4 md:gap-8 p-4 md:p-6 pb-24 md:pb-20">
           <div className="max-w-4xl mx-auto w-full space-y-10">
             <SettingsForm userData={adminData} onUpdate={refreshData} />
             {(adminData.role === 'admin' || adminData.role === 'owner') && (

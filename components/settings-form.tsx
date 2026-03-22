@@ -235,16 +235,16 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
     <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
       
       {/* Header Profile Section */}
-      <div className="bg-card border border-border rounded-[2.5rem] p-8 md:p-12 shadow-2xl relative overflow-hidden">
+      <div className="bg-card border border-border rounded-[2.5rem] p-4 md:p-8 shadow-2xl relative overflow-hidden">
         <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-[#daa857]/5 blur-[100px]" />
         
-        <div className="relative z-10 flex flex-col md:flex-row items-center gap-10">
+        <div className="relative z-10 flex flex-col md:flex-row items-center gap-4 md:gap-6 md:gap-10">
           <div className="relative group shrink-0">
             <Avatar className={cn(
               "h-44 w-44 border-4 border-[#daa857]/20 transition-all duration-500 group-hover:border-[#daa857]/50 shadow-2xl shadow-[#daa857]/5"
             )}>
               <AvatarImage src={previewUrl || profileImage || undefined} className="object-cover" />
-              <AvatarFallback className="text-5xl bg-background font-black uppercase italic text-[#daa857]">
+              <AvatarFallback className="text-3xl md:text-5xl bg-background font-black uppercase italic text-[#daa857]">
                 {initials || '??'}
               </AvatarFallback>
             </Avatar>
@@ -260,7 +260,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
           </div>
           
           <div className="text-center md:text-left space-y-2 flex-1">
-            <h2 className="text-4xl font-black uppercase italic tracking-tighter text-foreground">
+            <h2 className="text-2xl md:text-4xl font-black uppercase italic tracking-tighter text-foreground">
               {userData.firstName} <span className="text-[#daa857]">{userData.lastName}</span>
             </h2>
             <p className="text-sm font-bold text-muted-foreground uppercase tracking-[0.3em]">{userData.email}</p>
@@ -277,15 +277,15 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
       </div>
 
       {/* Action Options */}
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid gap-4 md:gap-6 md:grid-cols-2">
         
         {/* Update Details Modal Trigger */}
         <Dialog open={isDetailsModalOpen} onOpenChange={setIsDetailsModalOpen}>
           <DialogTrigger asChild>
-            <div className="group cursor-pointer bg-card border border-border rounded-3xl p-8 hover:border-[#daa857]/30 transition-all duration-500 shadow-xl relative overflow-hidden">
-              <div className="absolute -right-12 -top-12 h-24 w-24 rounded-full bg-[#daa857]/5 blur-2xl group-hover:bg-[#daa857]/10 transition-colors" />
+            <div className="group cursor-pointer bg-card border border-border rounded-3xl p-4 md:p-8 hover:border-[#daa857]/30 transition-all duration-500 shadow-xl relative overflow-hidden">
+              <div className="absolute -right-12 -top-12 h-16 md:h-24 w-24 rounded-full bg-[#daa857]/5 blur-2xl group-hover:bg-[#daa857]/10 transition-colors" />
               <div className="flex items-center justify-between relative z-10">
-                <div className="flex items-center gap-6">
+                <div className="flex items-center gap-4 md:gap-6">
                   <div className="h-14 w-14 rounded-2xl bg-[#daa857]/10 flex items-center justify-center text-[#daa857] group-hover:scale-110 transition-transform">
                     <UserIcon className="h-7 w-7" />
                   </div>
@@ -298,7 +298,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
               </div>
             </div>
           </DialogTrigger>
-          <DialogContent className="bg-card border-border text-foreground rounded-[2.5rem] p-10 max-w-2xl max-h-[90vh] overflow-y-auto custom-scrollbar">
+          <DialogContent className="bg-card border-border text-foreground rounded-[2.5rem] p-5 md:p-10 max-w-2xl max-h-[90vh] overflow-y-auto custom-scrollbar">
             <DialogHeader className="space-y-4">
               <DialogTitle className="text-3xl font-black uppercase italic tracking-tighter">
                 Update <span className="text-[#daa857]">Profile</span>
@@ -309,7 +309,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
             </DialogHeader>
             
             <form onSubmit={handleUpdateDetails} className="space-y-8 py-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                 <div className="space-y-3">
                   <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">First Name</Label>
                   <Input 
@@ -330,7 +330,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                 <div className="space-y-3">
                   <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Comm Channel</Label>
                   <div className="relative">
@@ -359,7 +359,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
 
               {userData.role === 'member' && (
                 <>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                     <div className="space-y-3">
                       <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Cycle of Origin (Birthday)</Label>
                       <Input 
@@ -393,7 +393,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
                       value={detailsForm.fitnessGoalsDetails}
                       onChange={(e) => setDetailsForm({...detailsForm, fitnessGoalsDetails: e.target.value})}
                       placeholder="Specify your tactical objectives, injuries, or requirements..."
-                      className="min-h-[120px] bg-background border-border rounded-2xl focus:border-[#daa857] p-6 font-bold text-xs uppercase tracking-widest leading-relaxed"
+                      className="min-h-[120px] bg-background border-border rounded-2xl focus:border-[#daa857] p-4 md:p-6 font-bold text-xs uppercase tracking-widest leading-relaxed"
                     />
                   </div>
                 </>
@@ -423,10 +423,10 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
         {/* Change Password Modal Trigger */}
         <Dialog open={isPasswordModalOpen} onOpenChange={setIsPasswordModalOpen}>
           <DialogTrigger asChild>
-            <div className="group cursor-pointer bg-card border border-border rounded-3xl p-8 hover:border-[#daa857]/30 transition-all duration-500 shadow-xl relative overflow-hidden">
-              <div className="absolute -right-12 -top-12 h-24 w-24 rounded-full bg-[#daa857]/5 blur-2xl group-hover:bg-[#daa857]/10 transition-colors" />
+            <div className="group cursor-pointer bg-card border border-border rounded-3xl p-4 md:p-8 hover:border-[#daa857]/30 transition-all duration-500 shadow-xl relative overflow-hidden">
+              <div className="absolute -right-12 -top-12 h-16 md:h-24 w-24 rounded-full bg-[#daa857]/5 blur-2xl group-hover:bg-[#daa857]/10 transition-colors" />
               <div className="flex items-center justify-between relative z-10">
-                <div className="flex items-center gap-6">
+                <div className="flex items-center gap-4 md:gap-6">
                   <div className="h-14 w-14 rounded-2xl bg-[#daa857]/10 flex items-center justify-center text-[#daa857] group-hover:scale-110 transition-transform">
                     <Lock className="h-7 w-7" />
                   </div>
@@ -439,7 +439,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
               </div>
             </div>
           </DialogTrigger>
-          <DialogContent className="bg-card border-border text-foreground rounded-[2.5rem] p-10 max-w-md shadow-2xl">
+          <DialogContent className="bg-card border-border text-foreground rounded-[2.5rem] p-5 md:p-10 max-w-md shadow-2xl">
             <DialogHeader className="space-y-4">
               <DialogTitle className="text-3xl font-black uppercase italic tracking-tighter">
                 Entry <span className="text-[#daa857]">Security</span>
@@ -602,7 +602,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
       </Dialog>
 
       {/* Info Card */}
-      <div className="bg-[#daa857]/5 border border-[#daa857]/10 rounded-3xl p-8 flex items-start gap-6">
+      <div className="bg-[#daa857]/5 border border-[#daa857]/10 rounded-3xl p-4 md:p-8 flex items-start gap-4 md:gap-6">
         <div className="h-12 w-12 rounded-2xl bg-[#daa857]/10 flex items-center justify-center text-[#daa857] shrink-0">
           <Info className="h-6 w-6" />
         </div>

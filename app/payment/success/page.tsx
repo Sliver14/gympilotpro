@@ -53,7 +53,7 @@ function SuccessContent() {
   };
 
   return (
-    <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
+    <div className="flex-1 flex flex-col items-center justify-center p-4 md:p-6 text-center">
       {status === 'loading' && (
         <div className="flex flex-col items-center gap-4">
           <Loader2 className="h-16 w-16 text-orange-500 animate-spin" />
@@ -65,10 +65,10 @@ function SuccessContent() {
       )}
 
       {status === 'success' && (
-        <div className="flex flex-col items-center gap-6 max-w-md w-full bg-white/5 border border-border p-10">
-          <CheckCircle className="h-20 w-20 text-green-500 mb-2" />
+        <div className="flex flex-col items-center gap-4 md:gap-6 max-w-md w-full bg-white/5 border border-border p-5 md:p-10">
+          <CheckCircle className="h-16 md:h-20 w-20 text-green-500 mb-2" />
           <div>
-            <h2 className="text-4xl font-black italic uppercase tracking-tighter text-foreground mb-2">
+            <h2 className="text-2xl md:text-4xl font-black italic uppercase tracking-tighter text-foreground mb-2">
               Payment Successful
             </h2>
             <p className="text-muted-foreground font-medium text-lg leading-relaxed">
@@ -88,10 +88,10 @@ function SuccessContent() {
       )}
 
       {status === 'error' && (
-        <div className="flex flex-col items-center gap-6 max-w-md w-full bg-white/5 border border-red-500/30 p-10">
-          <AlertCircle className="h-20 w-20 text-red-500 mb-2" />
+        <div className="flex flex-col items-center gap-4 md:gap-6 max-w-md w-full bg-white/5 border border-red-500/30 p-5 md:p-10">
+          <AlertCircle className="h-16 md:h-20 w-20 text-red-500 mb-2" />
           <div>
-            <h2 className="text-4xl font-black italic uppercase tracking-tighter text-foreground mb-2">
+            <h2 className="text-2xl md:text-4xl font-black italic uppercase tracking-tighter text-foreground mb-2">
               Verification Failed
             </h2>
             <p className="text-muted-foreground font-medium text-lg">
@@ -114,7 +114,7 @@ export default function PaymentSuccessPage() {
   return (
     <div className="min-h-screen bg-background text-foreground selection:bg-orange-500 selection:text-black font-sans flex flex-col">
       <nav className="w-full bg-background/80 backdrop-blur-xl border-b border-border">
-        <div className="container mx-auto px-6 h-24 flex items-center justify-center">
+        <div className="container mx-auto px-6 h-16 md:h-24 flex items-center justify-center">
           <span className="text-2xl font-black italic uppercase tracking-tighter">
             Insight<span className="text-orange-500">Gym</span>
           </span>

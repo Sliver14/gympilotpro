@@ -124,18 +124,18 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
   }
 
   return (
-    <div className="grid gap-8 lg:grid-cols-2">
+    <div className="grid gap-4 md:gap-8 lg:grid-cols-2">
       {/* Profile & Info */}
       <div className="space-y-8">
-        <div className="bg-card border border-border rounded-[2rem] p-8 shadow-2xl relative overflow-hidden">
+        <div className="bg-card border border-border rounded-[2rem] p-4 md:p-8 shadow-2xl relative overflow-hidden">
           <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-[#daa857]/5 blur-[80px]" />
           
           <div className="relative z-10 space-y-8">
-            <div className="flex flex-col items-center gap-6 sm:flex-row">
+            <div className="flex flex-col items-center gap-4 md:gap-6 sm:flex-row">
               <div className="relative group">
                 <Avatar className="h-32 w-32 border-4 border-[#daa857]/20 group-hover:border-[#daa857]/50 transition-all duration-500">
                   <AvatarImage src={previewUrl || profileImage || undefined} alt="Profile" className="object-cover" />
-                  <AvatarFallback className="text-4xl bg-background font-black uppercase italic text-[#daa857]">{initials || '??'}</AvatarFallback>
+                  <AvatarFallback className="text-2xl md:text-4xl bg-background font-black uppercase italic text-[#daa857]">{initials || '??'}</AvatarFallback>
                 </Avatar>
                 <Button
                   variant="secondary"
@@ -171,7 +171,7 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
               </div>
             </div>
 
-            <div className="grid gap-6 sm:grid-cols-2 pt-4">
+            <div className="grid gap-4 md:gap-6 sm:grid-cols-2 pt-4">
               <div className="flex items-center gap-4 p-4 rounded-2xl bg-card/50 border border-border">
                 <div className="h-10 w-10 rounded-xl bg-accent flex items-center justify-center text-[#daa857]">
                   <Mail className="h-5 w-5" />
@@ -198,7 +198,7 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
         </div>
 
         {/* Membership Details */}
-        <div className="bg-card border border-border rounded-[2rem] p-8 shadow-2xl relative overflow-hidden">
+        <div className="bg-card border border-border rounded-[2rem] p-4 md:p-8 shadow-2xl relative overflow-hidden">
           <div className="flex items-center justify-between mb-8 pb-4 border-b border-border">
             <h3 className="text-xl font-black uppercase italic tracking-tighter text-foreground flex items-center gap-3">
               <Zap className="h-5 w-5 text-[#daa857]" /> Membership <span className="text-[#daa857]">Status</span>
@@ -236,7 +236,7 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
 
       {/* Fitness Goals & Plan */}
       <div className="space-y-8">
-        <div className="bg-card border border-border rounded-[2rem] p-8 shadow-2xl h-full relative overflow-hidden">
+        <div className="bg-card border border-border rounded-[2rem] p-4 md:p-8 shadow-2xl h-full relative overflow-hidden">
           <div className="absolute -bottom-24 -left-24 h-48 w-48 rounded-full bg-[#daa857]/5 blur-[80px]" />
           
           <div className="relative z-10 space-y-8 h-full flex flex-col">
@@ -250,7 +250,7 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
             <div className="space-y-6 flex-1">
               <div>
                 <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground mb-3">Primary Objectives</p>
-                <div className="p-6 rounded-2xl bg-card/50 border border-border min-h-[100px]">
+                <div className="p-4 md:p-6 rounded-2xl bg-card/50 border border-border min-h-[100px]">
                   <p className="text-sm font-bold text-muted-foreground leading-relaxed italic">
                     {profile.fitnessGoals || 'No primary objectives defined in the plan.'}
                   </p>
@@ -260,7 +260,7 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
               {profile.fitnessGoalsDetails && (
                 <div>
                   <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground mb-3">Tactical Details</p>
-                  <div className="p-6 rounded-2xl bg-card/50 border border-border">
+                  <div className="p-4 md:p-6 rounded-2xl bg-card/50 border border-border">
                     <p className="text-xs font-medium text-muted-foreground leading-relaxed">
                       {profile.fitnessGoalsDetails}
                     </p>
@@ -271,7 +271,7 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
               {profile.emergencyContact && (
                 <div className="mt-auto pt-8 border-t border-border">
                   <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground mb-4 text-center">Emergency Check-out Process</p>
-                  <div className="flex items-center justify-center gap-8">
+                  <div className="flex items-center justify-center gap-4 md:gap-8">
                     <div className="text-center">
                       <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground mb-1">Liaison</p>
                       <p className="text-sm font-black text-foreground italic">{profile.emergencyContact}</p>

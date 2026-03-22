@@ -197,14 +197,14 @@ export default function RenewMembershipPage() {
           </Card>
         )}
 
-        <div className="grid gap-8 md:grid-cols-3">
+        <div className="grid gap-4 md:gap-8 md:grid-cols-3">
           {/* Membership Selection */}
           <div className="md:col-span-2 space-y-4">
             <h2 className="text-xl font-semibold">Select Membership Package</h2>
             {memberships.map((membership) => (
               <div
                 key={membership.id}
-                className={`cursor-pointer rounded-lg border-2 p-6 transition-all ${
+                className={`cursor-pointer rounded-lg border-2 p-4 md:p-6 transition-all ${
                   selectedId === membership.id
                     ? 'border-primary bg-primary/5 ring-2 ring-primary'
                     : 'border-border hover:border-primary/50'

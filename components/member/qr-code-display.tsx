@@ -62,7 +62,7 @@ export default function QRCodeDisplay({ memberId }: QRCodeDisplayProps) {
   }
 
   return (
-    <div className="bg-card border border-border rounded-[2rem] p-8 shadow-2xl relative overflow-hidden">
+    <div className="bg-card border border-border rounded-[2rem] p-4 md:p-8 shadow-2xl relative overflow-hidden">
       <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-[#daa857]/5 blur-[80px]" />
       
       <div className="relative z-10">
@@ -73,10 +73,10 @@ export default function QRCodeDisplay({ memberId }: QRCodeDisplayProps) {
           <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Access Authenticator</p>
         </div>
 
-        <div className="flex flex-col items-center gap-10">
+        <div className="flex flex-col items-center gap-4 md:gap-6 md:gap-10">
           {qrCode && (
             <>
-              <div className="relative p-8 rounded-[2.5rem] bg-white shadow-[0_0_50px_rgba(218,168,87,0.15)] group transition-all duration-500 hover:scale-[1.02]">
+              <div className="relative p-4 md:p-8 rounded-[2.5rem] bg-white shadow-[0_0_50px_rgba(218,168,87,0.15)] group transition-all duration-500 hover:scale-[1.02]">
                 <div className="absolute inset-0 border-2 border-[#daa857]/20 rounded-[2.5rem] scale-105 group-hover:scale-110 transition-transform duration-500" />
                 <img src={qrCode} alt="Member QR Code" className="h-64 w-64 relative z-10" />
               </div>

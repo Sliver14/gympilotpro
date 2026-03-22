@@ -27,7 +27,7 @@ export default function DomainDashboard() {
 
   if (isLoading || !gymData) {
     return (
-      <div className="flex-1 flex items-center justify-center p-8 bg-background">
+      <div className="flex-1 flex items-center justify-center p-4 md:p-8 bg-background">
         <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
       </div>
     )
@@ -36,9 +36,9 @@ export default function DomainDashboard() {
   const currentPlan = gymData.subscriptions?.[0]?.plan || 'starter'
   if (!hasPremiumAccess(currentPlan, 'pro')) {
     return (
-      <div className="flex-1 p-8 bg-background text-foreground min-h-screen font-sans flex items-center justify-center">
-        <div className="max-w-md w-full text-center space-y-6 bg-card p-10 rounded-[2rem] border border-border shadow-2xl">
-          <div className="h-20 w-20 bg-orange-500/10 rounded-full flex items-center justify-center mx-auto border border-orange-500/20 text-orange-500">
+      <div className="flex-1 p-4 md:p-8 bg-background text-foreground min-h-screen font-sans flex items-center justify-center">
+        <div className="max-w-md w-full text-center space-y-6 bg-card p-5 md:p-10 rounded-[2rem] border border-border shadow-2xl">
+          <div className="h-16 md:h-20 w-20 bg-orange-500/10 rounded-full flex items-center justify-center mx-auto border border-orange-500/20 text-orange-500">
             <Lock size={32} />
           </div>
           <div className="flex flex-col items-center">
@@ -111,7 +111,7 @@ export default function DomainDashboard() {
   const isConnected = gymData.domainVerified && gymData.customDomain
 
   return (
-    <div className="flex-1 p-8 bg-background text-foreground min-h-screen font-sans">
+    <div className="flex-1 p-4 md:p-8 bg-background text-foreground min-h-screen font-sans">
       <div className="max-w-4xl mx-auto space-y-8">
 
         <Button 
@@ -125,7 +125,7 @@ export default function DomainDashboard() {
         {/* HEADER */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
-            <h1 className="text-4xl font-black italic uppercase tracking-tighter mb-2">
+            <h1 className="text-2xl md:text-4xl font-black italic uppercase tracking-tighter mb-2">
               Domain Settings
             </h1>
             <p className="text-muted-foreground font-medium uppercase text-[10px] tracking-widest">
@@ -144,13 +144,13 @@ export default function DomainDashboard() {
         </div>
 
         {/* STATUS CARD */}
-        <div className="p-8 bg-card border border-border rounded-[2rem] shadow-2xl relative overflow-hidden">
+        <div className="p-4 md:p-8 bg-card border border-border rounded-[2rem] shadow-2xl relative overflow-hidden">
           <h2 className="text-sm font-black uppercase tracking-[0.2em] text-muted-foreground mb-6">
             Live Configuration
           </h2>
 
           {isConnected ? (
-            <div className="flex items-center gap-6 p-6 bg-green-500/5 border border-green-500/20 rounded-2xl">
+            <div className="flex items-center gap-4 md:gap-6 p-4 md:p-6 bg-green-500/5 border border-green-500/20 rounded-2xl">
               <div className="h-14 w-14 rounded-xl bg-green-500/10 flex items-center justify-center text-green-500">
                 <ShieldCheck size={28} />
               </div>
@@ -168,7 +168,7 @@ export default function DomainDashboard() {
               </div>
             </div>
           ) : (
-            <div className="flex items-center gap-6 p-6 bg-orange-500/5 border border-orange-500/20 rounded-2xl">
+            <div className="flex items-center gap-4 md:gap-6 p-4 md:p-6 bg-orange-500/5 border border-orange-500/20 rounded-2xl">
               <AlertTriangle size={28} className="text-orange-500" />
               <div>
                 <p className="text-[10px] font-black uppercase text-muted-foreground mb-1">
@@ -183,11 +183,11 @@ export default function DomainDashboard() {
         </div>
 
         {/* MAIN GRID */}
-        <div className="grid md:grid-cols-5 gap-8">
+        <div className="grid md:grid-cols-5 gap-4 md:gap-8">
 
           {/* FORM */}
           <div className="md:col-span-3">
-            <div className="p-8 bg-card border border-border rounded-[2rem]">
+            <div className="p-4 md:p-8 bg-card border border-border rounded-[2rem]">
               <h2 className="text-xl font-black italic uppercase mb-6">
                 1. Connect Your Domain
               </h2>
@@ -215,7 +215,7 @@ export default function DomainDashboard() {
 
           {/* DNS SECTION */}
           <div className="md:col-span-2">
-            <div className="p-8 bg-background border border-border rounded-[2rem]">
+            <div className="p-4 md:p-8 bg-background border border-border rounded-[2rem]">
 
               <h2 className="text-xl font-black italic uppercase mb-4">
                 2. DNS Setup

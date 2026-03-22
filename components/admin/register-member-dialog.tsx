@@ -165,7 +165,7 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
           Enroll Member
         </Button>
       </DialogTrigger>
-      <DialogContent className="bg-card border-border text-foreground rounded-[2.5rem] p-10 max-w-2xl max-h-[90vh] overflow-y-auto custom-scrollbar">
+      <DialogContent className="bg-card border-border text-foreground rounded-[2.5rem] p-5 md:p-10 max-w-2xl max-h-[90vh] overflow-y-auto custom-scrollbar">
         <DialogHeader className="space-y-4">
           <DialogTitle className="text-3xl font-black uppercase italic tracking-tighter">
             New Member <span className="text-[#daa857]">Enrollment</span>
@@ -176,7 +176,7 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
         </DialogHeader>
         
         <form onSubmit={handleSubmit} className="space-y-8 py-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
             <div className="space-y-3">
               <Label htmlFor="firstName" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">First Name *</Label>
               <Input
@@ -201,7 +201,7 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
             <div className="space-y-3">
               <Label htmlFor="email" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Comm Channel *</Label>
               <Input
@@ -228,7 +228,7 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
             <div className="space-y-3">
               <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Date of Birth</Label>
               <div className="flex gap-2">
@@ -308,7 +308,7 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
             <div className="space-y-3">
               <Label htmlFor="membership" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Membership Plan *</Label>
               <Select
@@ -352,7 +352,7 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 items-end">
             <div className="space-y-3">
               <Label htmlFor="startDate" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Deployment Start *</Label>
               <Input
@@ -389,7 +389,7 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
               onChange={(e) => setFormData({ ...formData, fitnessGoalsDetails: e.target.value })}
               placeholder="SPECIFY TARGETS OR MEDICAL CONTRAINDICATIONS..."
               rows={3}
-              className="bg-background border-border rounded-2xl focus:border-[#daa857] p-6 font-bold text-xs uppercase tracking-widest"
+              className="bg-background border-border rounded-2xl focus:border-[#daa857] p-4 md:p-6 font-bold text-xs uppercase tracking-widest"
             />
           </div>
 

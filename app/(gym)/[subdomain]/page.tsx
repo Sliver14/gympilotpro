@@ -104,7 +104,7 @@ export default function GymLandingPage() {
 
       {/* Navigation */}
       <nav className="fixed top-0 z-50 w-full border-b border-border bg-card/50 backdrop-blur-lg transition-all duration-300">
-        <div className="container mx-auto flex h-20 items-center justify-between px-6">
+        <div className="container mx-auto flex h-16 md:h-20 items-center justify-between px-6">
           <div className="flex items-center gap-3">
             <div className="relative h-12 w-12 overflow-hidden rounded-full border flex items-center justify-center font-bold text-xl" style={{ borderColor: `${accent}80`, backgroundColor: dark, color: accent }}>
               {logoUrl ? (
@@ -123,7 +123,7 @@ export default function GymLandingPage() {
               <span style={{ color: accent }}>{gymName.split(' ').slice(1).join(' ')}</span>
             </span>     
           </div>
-          <div className="hidden md:flex items-center gap-8 text-sm font-medium uppercase tracking-widest">
+          <div className="hidden md:flex items-center gap-4 md:gap-8 text-sm font-medium uppercase tracking-widest">
             <Link href="#features" className="hover:text-foreground transition-colors" style={{ color: accent }}>Experience</Link>
             <Link href="#membership" className="hover:text-foreground transition-colors" style={{ color: accent }}>Memberships</Link>
             <Link
@@ -206,7 +206,7 @@ export default function GymLandingPage() {
               </div>
             </div>
             <div className="space-y-8">
-              <h2 className="text-4xl font-black uppercase md:text-5xl leading-tight italic">
+              <h2 className="text-2xl md:text-4xl font-black uppercase md:text-5xl leading-tight italic">
                 World-Class <span style={{ color: accent }}>Sanctuary</span> For Athletes
               </h2>
               <div className="space-y-6">
@@ -234,16 +234,16 @@ export default function GymLandingPage() {
       <section id="membership" className="py-24 bg-background">
         <div className="container mx-auto px-6">
           <div className="mb-16 text-center">
-            <h2 className="text-4xl md:text-7xl font-black uppercase italic tracking-tighter leading-none">
+            <h2 className="text-2xl md:text-4xl md:text-7xl font-black uppercase italic tracking-tighter leading-none">
               Choose Your <span style={{ color: accent }}>Tier</span>
             </h2>
           </div>
 
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 md:gap-8 md:grid-cols-2 lg:grid-cols-3">
             {visiblePackages.map((pkg, idx) => (
               <div
                 key={idx}
-                className={`relative rounded-3xl p-8 transition-all duration-500 hover:-translate-y-2 ${
+                className={`relative rounded-3xl p-4 md:p-8 transition-all duration-500 hover:-translate-y-2 ${
                   pkg.popular
                   ? 'bg-gradient-to-br scale-105 z-10 shadow-2xl'
                   : 'bg-card border border-border'
@@ -253,7 +253,7 @@ export default function GymLandingPage() {
                 {pkg.popular && <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-background text-[10px] font-black px-6 py-1 rounded-full uppercase" style={{ color: accent }}>Top Choice</span>}
                 <h3 className={`text-2xl font-black uppercase italic ${pkg.popular ? '' : 'text-foreground'}`}>{pkg.name}</h3>
                 <div className="my-8">
-                  <span className="text-5xl font-black italic">₦{pkg.price}</span>
+                  <span className="text-3xl md:text-5xl font-black italic">₦{pkg.price}</span>
                   <span className={`text-sm ml-2 font-bold ${pkg.popular ? 'opacity-70' : 'text-muted-foreground'}`}>/ {pkg.duration}</span>
                 </div>
                 <ul className="space-y-4 mb-10">
@@ -282,8 +282,8 @@ export default function GymLandingPage() {
 
       {/* Footer */}
       <footer className="border-t bg-[#050505] py-20 px-6" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
-        <div className="container mx-auto flex flex-col md:flex-row justify-between items-center gap-10">
-          <div className="text-4xl font-black uppercase italic tracking-tighter">
+        <div className="container mx-auto flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6 md:gap-10">
+          <div className="text-2xl md:text-4xl font-black uppercase italic tracking-tighter">
             {gymName.split(' ')[0]}<span style={{ color: accent }}>{gymName.split(' ').slice(1).join(' ')}</span>
           </div>
           <div className="flex gap-12 font-bold uppercase text-xs tracking-widest text-muted-foreground">

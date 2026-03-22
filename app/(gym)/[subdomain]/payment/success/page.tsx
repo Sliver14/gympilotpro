@@ -73,7 +73,7 @@ function SuccessContent() {
   const accent = gymData?.primaryColor || '#daa857';
 
   return (
-    <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
+    <div className="flex-1 flex flex-col items-center justify-center p-4 md:p-6 text-center">
       {status === 'loading' && (
         <div className="flex flex-col items-center gap-4">
           <Loader2 className="h-16 w-16 animate-spin" style={{ color: accent }} />
@@ -85,10 +85,10 @@ function SuccessContent() {
       )}
 
       {status === 'success' && (
-        <div className="flex flex-col items-center gap-6 max-w-md w-full bg-accent border border-border p-10 rounded-[2rem] shadow-2xl">
-          <CheckCircle className="h-20 w-20 text-green-500 mb-2" />
+        <div className="flex flex-col items-center gap-4 md:gap-6 max-w-md w-full bg-accent border border-border p-5 md:p-10 rounded-[2rem] shadow-2xl">
+          <CheckCircle className="h-16 md:h-20 w-20 text-green-500 mb-2" />
           <div>
-            <h2 className="text-4xl font-black italic uppercase tracking-tighter text-foreground mb-3">
+            <h2 className="text-2xl md:text-4xl font-black italic uppercase tracking-tighter text-foreground mb-3">
               Payment Successful
             </h2>
             <p className="text-muted-foreground font-medium text-lg">
@@ -109,10 +109,10 @@ function SuccessContent() {
       )}
 
       {status === 'error' && (
-        <div className="flex flex-col items-center gap-6 max-w-md w-full bg-accent border border-red-500/30 p-10 rounded-[2rem] shadow-2xl">
-          <AlertCircle className="h-20 w-20 text-red-500 mb-2" />
+        <div className="flex flex-col items-center gap-4 md:gap-6 max-w-md w-full bg-accent border border-red-500/30 p-5 md:p-10 rounded-[2rem] shadow-2xl">
+          <AlertCircle className="h-16 md:h-20 w-20 text-red-500 mb-2" />
           <div>
-            <h2 className="text-4xl font-black italic uppercase tracking-tighter text-foreground mb-3">
+            <h2 className="text-2xl md:text-4xl font-black italic uppercase tracking-tighter text-foreground mb-3">
               Payment Issue
             </h2>
             <p className="text-muted-foreground font-medium text-lg leading-relaxed">
@@ -162,7 +162,7 @@ export default function PaymentSuccessPage() {
       />
       
       <nav className="w-full bg-background/80 backdrop-blur-xl border-b border-border relative z-10">
-        <div className="container mx-auto px-6 h-24 flex items-center justify-center">
+        <div className="container mx-auto px-6 h-16 md:h-24 flex items-center justify-center">
           {isLoading ? (
             <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
           ) : (

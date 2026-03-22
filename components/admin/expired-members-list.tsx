@@ -90,7 +90,7 @@ export default function ExpiredMembersList({ onMemberRenewed }: { onMemberRenewe
   return (
     <Card className="border-red-500/20 bg-red-500/5">
       <CardHeader>
-        <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-4 md:gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <CardTitle className="flex items-center gap-3 text-red-500">
               <CalendarX className="h-5 w-5 stroke-[3px]" /> Deactivated <span className="text-foreground">Members</span>
@@ -127,8 +127,8 @@ export default function ExpiredMembersList({ onMemberRenewed }: { onMemberRenewe
         ) : (
           <div className="grid gap-4">
             {filteredMembers.map((member) => (
-              <div key={member.id} className="flex flex-col md:flex-row md:items-center justify-between rounded-3xl bg-background border border-border p-6 hover:border-red-500/30 transition-all group relative overflow-hidden">
-                <div className="absolute -right-12 -top-12 h-24 w-24 rounded-full bg-red-500/5 blur-2xl group-hover:bg-red-500/10 transition-colors" />
+              <div key={member.id} className="flex flex-col md:flex-row md:items-center justify-between rounded-3xl bg-background border border-border p-4 md:p-6 hover:border-red-500/30 transition-all group relative overflow-hidden">
+                <div className="absolute -right-12 -top-12 h-16 md:h-24 w-24 rounded-full bg-red-500/5 blur-2xl group-hover:bg-red-500/10 transition-colors" />
                 
                 <div className="flex-1 min-w-0 relative z-10">
                   <p className="font-black text-foreground uppercase italic tracking-tight text-lg mb-2">
@@ -146,7 +146,7 @@ export default function ExpiredMembersList({ onMemberRenewed }: { onMemberRenewe
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between md:justify-end gap-10 mt-6 md:mt-0 relative z-10">
+                <div className="flex items-center justify-between md:justify-end gap-4 md:gap-6 md:gap-10 mt-6 md:mt-0 relative z-10">
                   <div className="text-left md:text-right">
                     <p className="text-[10px] font-black text-red-500 uppercase italic tracking-tight">
                       EXPIRED {getDaysExpired(member.memberProfile.expiryDate)} DAYS AGO

@@ -108,12 +108,12 @@ export function GymSettingsForm() {
   }
 
   if (loading) {
-    return <div className="flex justify-center p-10"><Loader2 className="animate-spin" /></div>
+    return <div className="flex justify-center p-5 md:p-10"><Loader2 className="animate-spin" /></div>
   }
 
   return (
     <Card className="bg-card border-border shadow-2xl rounded-[2rem] overflow-hidden relative">
-      <CardHeader className="bg-card/50 border-b border-border p-8">
+      <CardHeader className="bg-card/50 border-b border-border p-4 md:p-8">
         <div className="flex justify-between items-center">
           <div>
             <CardTitle className="text-2xl font-black uppercase italic tracking-tighter text-foreground">Gym Branding</CardTitle>
@@ -133,9 +133,9 @@ export function GymSettingsForm() {
         </div>
       </CardHeader>
       
-      <CardContent className="p-8 space-y-10">
+      <CardContent className="p-4 md:p-8 space-y-10">
         <form onSubmit={handleSave} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
             <div className="space-y-3">
               <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Gym Name</Label>
               <Input 
@@ -154,7 +154,7 @@ export function GymSettingsForm() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
             <div className="space-y-3">
               <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Hero Title</Label>
               <Input 
@@ -173,7 +173,7 @@ export function GymSettingsForm() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
             <div className="space-y-3">
               <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Primary Color</Label>
               <div className="flex gap-4 items-center">
@@ -220,7 +220,7 @@ export function GymSettingsForm() {
           <p className="text-xs text-muted-foreground font-bold uppercase tracking-widest">Connect your Paystack account to receive payments directly.</p>
           
           <form onSubmit={handleSave} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
               <div className="space-y-3">
                 <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Paystack Public Key</Label>
                 <Input 
@@ -243,7 +243,7 @@ export function GymSettingsForm() {
               </div>
             </div>
 
-            <div className="bg-orange-500/10 border border-orange-500/20 p-6 rounded-xl space-y-4">
+            <div className="bg-orange-500/10 border border-orange-500/20 p-4 md:p-6 rounded-xl space-y-4">
               <p className="text-xs font-black uppercase tracking-widest text-orange-500">Required Webhook Configuration</p>
               <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest">Copy these URLs into your Paystack Dashboard (Settings &gt; API Keys & Webhooks):</p>
               
@@ -276,7 +276,7 @@ export function GymSettingsForm() {
           <p className="text-xs text-muted-foreground font-bold uppercase tracking-widest">Provide your gym's bank details for manual member renewals and signups.</p>
           
           <form onSubmit={handleSave} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
               <div className="space-y-3">
                 <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Bank Name</Label>
                 <Input 
@@ -321,7 +321,7 @@ export function GymSettingsForm() {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
             {/* Logo Upload */}
             <div className="p-4 bg-background border border-border rounded-2xl flex flex-col items-center justify-center gap-4 text-center">
-              <div className="h-20 w-20 rounded-full border border-border overflow-hidden flex items-center justify-center bg-card">
+              <div className="h-16 md:h-20 w-20 rounded-full border border-border overflow-hidden flex items-center justify-center bg-card">
                 {gymData?.logo ? <img src={gymData.logo} alt="Logo" className="w-full h-full object-contain p-2" /> : <Camera className="text-muted-foreground" />}
               </div>
               <Label className="text-[10px] font-black uppercase tracking-widest cursor-pointer hover:text-[#daa857]">
@@ -332,7 +332,7 @@ export function GymSettingsForm() {
 
             {/* Favicon Upload */}
             <div className="p-4 bg-background border border-border rounded-2xl flex flex-col items-center justify-center gap-4 text-center">
-              <div className="h-20 w-20 rounded-xl border border-border overflow-hidden flex items-center justify-center bg-card">
+              <div className="h-16 md:h-20 w-20 rounded-xl border border-border overflow-hidden flex items-center justify-center bg-card">
                 {gymData?.favicon ? <img src={gymData.favicon} alt="Favicon" className="w-full h-full object-contain p-4" /> : <ImageIcon className="text-muted-foreground" />}
               </div>
               <Label className="text-[10px] font-black uppercase tracking-widest cursor-pointer hover:text-[#daa857]">
@@ -343,7 +343,7 @@ export function GymSettingsForm() {
 
             {/* Hero Video Upload */}
             <div className="p-4 bg-background border border-border rounded-2xl flex flex-col items-center justify-center gap-4 text-center">
-              <div className="h-20 w-20 rounded-xl border border-border overflow-hidden flex items-center justify-center bg-card">
+              <div className="h-16 md:h-20 w-20 rounded-xl border border-border overflow-hidden flex items-center justify-center bg-card">
                 {gymData?.heroVideo ? <Video className="text-[#daa857]" /> : <Video className="text-muted-foreground" />}
               </div>
               <Label className="text-[10px] font-black uppercase tracking-widest cursor-pointer hover:text-[#daa857]">
@@ -354,7 +354,7 @@ export function GymSettingsForm() {
 
             {/* Showcase 1 Upload */}
             <div className="p-4 bg-background border border-border rounded-2xl flex flex-col items-center justify-center gap-4 text-center">
-              <div className="h-20 w-20 rounded-xl border border-border overflow-hidden flex items-center justify-center bg-card">
+              <div className="h-16 md:h-20 w-20 rounded-xl border border-border overflow-hidden flex items-center justify-center bg-card">
                 {gymData?.showcaseImage1 ? <img src={gymData.showcaseImage1} alt="S1" className="w-full h-full object-cover" /> : <ImageIcon className="text-muted-foreground" />}
               </div>
               <Label className="text-[10px] font-black uppercase tracking-widest cursor-pointer hover:text-[#daa857]">
@@ -365,7 +365,7 @@ export function GymSettingsForm() {
 
             {/* Showcase 2 Upload */}
             <div className="p-4 bg-background border border-border rounded-2xl flex flex-col items-center justify-center gap-4 text-center">
-              <div className="h-20 w-20 rounded-xl border border-border overflow-hidden flex items-center justify-center bg-card">
+              <div className="h-16 md:h-20 w-20 rounded-xl border border-border overflow-hidden flex items-center justify-center bg-card">
                 {gymData?.showcaseImage2 ? <img src={gymData.showcaseImage2} alt="S2" className="w-full h-full object-cover" /> : <ImageIcon className="text-muted-foreground" />}
               </div>
               <Label className="text-[10px] font-black uppercase tracking-widest cursor-pointer hover:text-[#daa857]">

@@ -57,7 +57,7 @@ export default function ProgressNotes({ memberId }: ProgressNotesProps) {
   }
 
   return (
-    <div className="bg-card border border-border rounded-[2rem] p-8 shadow-2xl relative overflow-hidden">
+    <div className="bg-card border border-border rounded-[2rem] p-4 md:p-8 shadow-2xl relative overflow-hidden">
       <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-[#daa857]/5 blur-[80px]" />
       
       <div className="relative z-10">
@@ -76,7 +76,7 @@ export default function ProgressNotes({ memberId }: ProgressNotesProps) {
         ) : (
           <div className="space-y-6">
             {notes.map((note) => (
-              <div key={note.id} className="rounded-2xl bg-card/50 border border-border p-6 hover:border-[#daa857]/30 transition-all group">
+              <div key={note.id} className="rounded-2xl bg-card/50 border border-border p-4 md:p-6 hover:border-[#daa857]/30 transition-all group">
                 <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-3">

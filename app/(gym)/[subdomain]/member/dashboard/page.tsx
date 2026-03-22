@@ -189,12 +189,12 @@ function MemberDashboardContent() {
             </h1>
           </div>
         </header>
-        <div className="flex flex-1 flex-col gap-6 p-6 md:p-10 pb-24 md:pb-20">
+        <div className="flex flex-1 flex-col gap-4 md:gap-6 p-4 md:p-6 pb-24 md:pb-20">
           {/* Membership Status Alert */}
           {membershipStatus === 'pending' && (
-            <div className="rounded-3xl p-8 border-2 border-primary/20 bg-primary/5 relative overflow-hidden group">
+            <div className="rounded-3xl p-4 md:p-8 border-2 border-primary/20 bg-primary/5 relative overflow-hidden group">
               <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-primary/10 blur-[80px]" />
-              <div className="flex items-start gap-6 relative z-10">
+              <div className="flex items-start gap-4 md:gap-6 relative z-10">
                 <div className="h-14 w-14 rounded-2xl bg-primary flex items-center justify-center shrink-0 shadow-lg shadow-primary/20">
                   <Clock className="h-8 w-8 text-primary-foreground" />
                 </div>
@@ -212,9 +212,9 @@ function MemberDashboardContent() {
           )}
 
           {membershipStatus === 'expired' && (
-            <div className="rounded-3xl p-8 border-2 border-destructive/20 bg-destructive/5 relative overflow-hidden group">
+            <div className="rounded-3xl p-4 md:p-8 border-2 border-destructive/20 bg-destructive/5 relative overflow-hidden group">
               <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-destructive/10 blur-[80px]" />
-              <div className="flex items-start gap-6 relative z-10">
+              <div className="flex items-start gap-4 md:gap-6 relative z-10">
                 <div className="h-14 w-14 rounded-2xl bg-destructive flex items-center justify-center shrink-0 shadow-lg shadow-destructive/20">
                   <AlertCircle className="h-8 w-8 text-destructive-foreground" />
                 </div>
@@ -234,9 +234,9 @@ function MemberDashboardContent() {
           )}
 
           {membershipStatus === 'expiring' && (
-            <div className="rounded-3xl p-8 border-2 border-primary/20 bg-primary/5 relative overflow-hidden group">
+            <div className="rounded-3xl p-4 md:p-8 border-2 border-primary/20 bg-primary/5 relative overflow-hidden group">
               <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-primary/10 blur-[80px]" />
-              <div className="flex items-start gap-6 relative z-10">
+              <div className="flex items-start gap-4 md:gap-6 relative z-10">
                 <div className="h-14 w-14 rounded-2xl bg-primary flex items-center justify-center shrink-0 shadow-lg shadow-primary/20">
                   <Clock className="h-8 w-8 text-black" />
                 </div>
@@ -260,7 +260,7 @@ function MemberDashboardContent() {
             <div className={currentTab === 'overview' ? 'block' : 'hidden'}>
               <div className="space-y-10">
                 {/* Stats Grid */}
-                <div className="grid gap-6 md:grid-cols-3">
+                <div className="grid gap-4 md:gap-6 md:grid-cols-3">
                   {[
                     { label: 'Current Tier', value: memberData.memberProfile.membership.name, sub: membershipStatus === 'pending' ? 'PENDING VERIFICATION' : membershipStatus.toUpperCase(), accent: true },
                     { label: 'Active Days', value: membershipStatus === 'pending' ? '...' : Math.max(0, daysUntilExpiry), sub: membershipStatus === 'pending' ? 'VERIFICATION IN PROGRESS' : `Until ${expiryDate.toLocaleDateString()}` },
@@ -270,10 +270,10 @@ function MemberDashboardContent() {
                       return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear();
                     }).length, sub: 'TRAINING SESSIONS' }
                   ].map((stat, i) => (
-                    <div key={i} className="bg-card border border-border/50 rounded-3xl p-8 shadow-xl relative overflow-hidden group hover:border-primary/30 transition-colors">
+                    <div key={i} className="bg-card border border-border/50 rounded-3xl p-4 md:p-8 shadow-xl relative overflow-hidden group hover:border-primary/30 transition-colors">
                       <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground mb-4">{stat.label}</p>
                       <div className="flex items-baseline gap-2">
-                        <p className={cn("text-4xl font-black italic tracking-tighter", stat.accent ? "text-primary" : "text-foreground")}>
+                        <p className={cn("text-2xl md:text-4xl font-black italic tracking-tighter", stat.accent ? "text-primary" : "text-foreground")}>
                           {stat.value}
                         </p>
                       </div>

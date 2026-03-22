@@ -81,13 +81,13 @@ export default function RevenueAnalytics() {
       </CardHeader>
       <CardContent className="space-y-10">
         {/* Stats Cards */}
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid gap-4 md:gap-6 md:grid-cols-3">
           {[
             { label: 'Total Revenue', value: formatCurrency(totalRevenue), sub: 'ALL-TIME' },
             { label: 'Avg. Monthly', value: formatCurrency(avgMonthly), sub: 'MONTHLY AVERAGE', accent: true },
             { label: 'Total Transactions', value: totalPayments.toLocaleString('en-NG'), sub: 'PAYMENT COUNT' }
           ].map((stat, i) => (
-            <div key={i} className="rounded-2xl bg-card border border-border p-6 hover:border-[#daa857]/50 transition-all group shadow-sm">
+            <div key={i} className="rounded-2xl bg-card border border-border p-4 md:p-6 hover:border-[#daa857]/50 transition-all group shadow-sm">
               <p className="text-[8px] font-black uppercase tracking-[0.2em] text-muted-foreground mb-2">{stat.label}</p>
               <p className={cn("text-2xl font-black italic tracking-tighter group-hover:scale-105 transition-transform origin-left", stat.accent ? "text-[#daa857]" : "text-foreground")}>
                 {stat.value}
@@ -98,7 +98,7 @@ export default function RevenueAnalytics() {
         </div>
 
         {/* Chart */}
-        <div className="p-6 rounded-[2rem] bg-card/50 border border-border shadow-sm">
+        <div className="p-4 md:p-6 rounded-[2rem] bg-card/50 border border-border shadow-sm">
           {data.length > 0 ? (
             <ResponsiveContainer width="100%" height={350}>
               <BarChart data={data}>

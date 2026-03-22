@@ -27,7 +27,7 @@ export default function AdminHeader({ adminData, onLogout, title, description }:
 
   return (
     <header className="border-b border-border bg-card/50 backdrop-blur-md sticky top-0 z-30">
-      <div className="container mx-auto flex h-16 items-center justify-between px-6">
+      <div className="container mx-auto flex h-14 md:h-16 items-center justify-between px-4 md:px-6">
         <div className="flex items-center gap-4">
           <Link href={`/admin/dashboard`} className="flex items-center gap-2 group">
             <div className="relative h-8 w-8 overflow-hidden rounded-full border flex items-center justify-center transition-transform group-hover:scale-110" style={{ borderColor: `${accent}4d`, backgroundColor: logo  ? 'white' : 'hsl(var(--card))' }}>

@@ -89,10 +89,10 @@ function ResetPasswordContent() {
 
   if (error) {
     return (
-      <div className="p-8 bg-card border border-red-500/20 rounded-[2.5rem] shadow-2xl relative overflow-hidden text-center animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <div className="p-4 md:p-8 bg-card border border-red-500/20 rounded-[2.5rem] shadow-2xl relative overflow-hidden text-center animate-in fade-in slide-in-from-bottom-4 duration-500">
         <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-red-500/5 blur-[80px]" />
         <div className="relative z-10 space-y-6">
-          <div className="h-20 w-20 rounded-full flex items-center justify-center mx-auto border-2 border-red-500/20 bg-background">
+          <div className="h-16 md:h-20 w-20 rounded-full flex items-center justify-center mx-auto border-2 border-red-500/20 bg-background">
             <AlertCircle className="h-10 w-10 text-red-500" />
           </div>
           <div className="space-y-2">
@@ -110,14 +110,14 @@ function ResetPasswordContent() {
   }
 
   return (
-    <div className="p-8 bg-card border border-[#daa857]/20 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
+    <div className="p-4 md:p-8 bg-card border border-[#daa857]/20 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
       <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-[#daa857]/10 blur-[80px]" />
       <div className="absolute -bottom-24 -left-24 h-48 w-48 rounded-full bg-[#daa857]/5 blur-[80px]" />
 
       <div className="relative z-10">
         {isSuccess ? (
           <div className="text-center py-6 space-y-6 animate-in fade-in zoom-in duration-500">
-            <div className="h-20 w-20 rounded-full flex items-center justify-center mx-auto border-2 border-green-500/20 bg-background shadow-xl shadow-green-500/5">
+            <div className="h-16 md:h-20 w-20 rounded-full flex items-center justify-center mx-auto border-2 border-green-500/20 bg-background shadow-xl shadow-green-500/5">
               <CheckCircle className="h-10 w-10 text-green-500" />
             </div>
             <div className="space-y-3">
@@ -135,7 +135,7 @@ function ResetPasswordContent() {
         ) : (
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="mb-10">
-              <h2 className="text-4xl font-black uppercase italic tracking-tighter leading-none">Reset <span style={{ color: accent }}>Password</span></h2>
+              <h2 className="text-2xl md:text-4xl font-black uppercase italic tracking-tighter leading-none">Reset <span style={{ color: accent }}>Password</span></h2>
               <p className="text-muted-foreground text-sm mt-3 font-medium">Define your new secure entry credentials.</p>
             </div>
 
@@ -212,7 +212,7 @@ export default function ResetPasswordPage() {
       <div className="w-full max-w-md">
         {/* Logo */}
         <Link href="/" className="mb-12 flex flex-col items-center justify-center gap-4 group">
-          <div className="relative h-20 w-20 overflow-hidden rounded-full border-2 transition-transform group-hover:scale-110" style={{ borderColor: `${accent}80` }}>
+          <div className="relative h-16 md:h-20 w-20 overflow-hidden rounded-full border-2 transition-transform group-hover:scale-110" style={{ borderColor: `${accent}80` }}>
             <Image 
               src="/WhatsApp_Image_2026-02-25_at_9.54.33_AM-removebg-preview.png" 
               alt="Klimarx Space Logo" 
@@ -227,7 +227,7 @@ export default function ResetPasswordPage() {
         </Link>
 
         <Suspense fallback={
-          <div className="p-12 flex justify-center bg-card border border-border rounded-[2.5rem]">
+          <div className="p-4 md:p-6 md:p-12 flex justify-center bg-card border border-border rounded-[2.5rem]">
             <Loader2 className="h-10 w-10 animate-spin text-[#daa857]" />
           </div>
         }>

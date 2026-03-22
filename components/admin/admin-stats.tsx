@@ -75,7 +75,7 @@ export default function AdminStats({
       <div className={cn("grid gap-4", hideRevenue ? "md:grid-cols-4" : "md:grid-cols-5")}>
         {[...Array(hideRevenue ? 4 : 5)].map((_, i) => (
           <Card key={i}>
-            <CardContent className="h-24 animate-pulse bg-muted" />
+            <CardContent className="h-16 md:h-24 animate-pulse bg-muted" />
           </Card>
         ))}
       </div>
@@ -83,7 +83,7 @@ export default function AdminStats({
   }
 
   return (
-    <div className={cn("grid gap-6", hideRevenue ? "grid-cols-2 md:grid-cols-4" : "grid-cols-2 md:grid-cols-5")}>
+    <div className={cn("grid gap-4 md:gap-6", hideRevenue ? "grid-cols-2 md:grid-cols-4" : "grid-cols-2 md:grid-cols-5")}>
       {[
         { label: 'Total Members', value: stats.totalMembers, sub: 'All registered', icon: Users },
         { label: 'Active Members', value: stats.activeMembers, sub: 'Valid memberships', icon: TrendingUp, accent: true },
@@ -106,11 +106,11 @@ export default function AdminStats({
         <div 
           key={i} 
           className={cn(
-            "bg-card border border-border/50 rounded-3xl p-6 shadow-xl relative overflow-hidden group hover:border-primary/30 transition-all duration-500",
+            "bg-card border border-border/50 rounded-3xl p-4 md:p-6 shadow-xl relative overflow-hidden group hover:border-primary/30 transition-all duration-500",
             item.warning && "border-destructive/20 bg-destructive/5 hover:border-destructive/40"
           )}
         >
-          <div className="absolute -top-12 -right-12 h-24 w-24 rounded-full bg-primary/5 blur-2xl group-hover:bg-primary/10 transition-colors" />
+          <div className="absolute -top-12 -right-12 h-16 md:h-24 w-24 rounded-full bg-primary/5 blur-2xl group-hover:bg-primary/10 transition-colors" />
           
           <div className="flex flex-col gap-4 relative z-10">
             <div className="flex items-center justify-between">

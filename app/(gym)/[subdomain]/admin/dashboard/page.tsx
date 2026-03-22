@@ -134,10 +134,10 @@ function AdminDashboardContent() {
         </header>
 
         {!isConfigComplete && adminData.role === 'admin' && (
-          <div className="p-6 md:p-10 pb-0">
-            <div className="bg-gradient-to-r from-primary/20 to-transparent border border-primary/30 rounded-[2rem] p-8 relative overflow-hidden group">
+          <div className="p-4 md:p-6 pb-0">
+            <div className="bg-gradient-to-r from-primary/20 to-transparent border border-primary/30 rounded-[2rem] p-4 md:p-8 relative overflow-hidden group">
               <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-primary/10 blur-[100px] group-hover:bg-primary/20 transition-all duration-1000" />
-              <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+              <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-4 md:gap-8">
                 <div className="space-y-4 text-center md:text-left">
                   <div className="flex items-center justify-center md:justify-start gap-3 text-primary">
                     <ShieldCheck className="h-6 w-6" />
@@ -171,11 +171,11 @@ function AdminDashboardContent() {
           </div>
         )}
 
-        <div className="flex flex-1 flex-col gap-8 p-6 md:p-10 pb-24 md:pb-20">
+        <div className="flex flex-1 flex-col gap-4 md:gap-8 p-4 md:p-6 pb-24 md:pb-20">
           {/* Tab Content */}
           <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
             <div className={currentTab === 'check-in' ? 'block' : 'hidden'}>
-              <div className="mx-auto grid w-full max-w-2xl items-start gap-6">
+              <div className="mx-auto grid w-full max-w-2xl items-start gap-4 md:gap-6">
                 <CheckInPanel />
               </div>
             </div>

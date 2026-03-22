@@ -140,7 +140,7 @@ function AdminPackagesContent() {
           </div>
         </header>
         
-        <div className="flex flex-1 flex-col gap-8 p-6 md:p-10 pb-24 md:pb-20">
+        <div className="flex flex-1 flex-col gap-4 md:gap-8 p-4 md:p-6 pb-24 md:pb-20">
           <div className="max-w-6xl mx-auto w-full space-y-8">
             <div className="flex justify-between items-center">
               <h2 className="text-3xl font-black uppercase italic tracking-tighter text-foreground">Membership Plans</h2>
@@ -149,15 +149,15 @@ function AdminPackagesContent() {
               </Button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {packages.map((pkg) => (
                 <Card key={pkg.id} className="bg-card border-border shadow-xl rounded-[2rem] overflow-hidden">
-                  <CardHeader className="bg-card/50 border-b border-border p-6">
+                  <CardHeader className="bg-card/50 border-b border-border p-4 md:p-6">
                     <CardTitle className="text-xl font-black uppercase italic tracking-tighter text-foreground">
                       {pkg.name.split(' - ')[0]}
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="p-6 space-y-4">
+                  <CardContent className="p-4 md:p-6 space-y-4">
                     <div>
                       <span className="text-3xl font-black italic text-[#daa857]">₦{pkg.price.toLocaleString()}</span>
                     </div>
@@ -177,7 +177,7 @@ function AdminPackagesContent() {
               ))}
               
               {packages.length === 0 && (
-                <div className="col-span-full text-center p-12 text-muted-foreground uppercase tracking-widest font-bold">
+                <div className="col-span-full text-center p-4 md:p-6 md:p-12 text-muted-foreground uppercase tracking-widest font-bold">
                   No packages found. Create one to get started.
                 </div>
               )}
@@ -188,7 +188,7 @@ function AdminPackagesContent() {
       </SidebarInset>
 
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="bg-card border-border text-foreground rounded-[2.5rem] p-8 max-w-md">
+        <DialogContent className="bg-card border-border text-foreground rounded-[2.5rem] p-4 md:p-8 max-w-md">
           <DialogHeader>
             <DialogTitle className="text-2xl font-black uppercase italic tracking-tighter text-foreground">
               {editingId ? 'Edit' : 'Create'} <span className="text-[#daa857]">Package</span>

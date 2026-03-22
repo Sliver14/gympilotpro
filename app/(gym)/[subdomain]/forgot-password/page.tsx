@@ -69,7 +69,7 @@ export default function ForgotPasswordPage() {
       <div className="w-full max-w-md">
         {/* Logo */}
         <Link href="/" className="mb-12 flex flex-col items-center justify-center gap-4 group">
-          <div className="relative h-20 w-20 overflow-hidden rounded-full border-2 transition-transform group-hover:scale-110" style={{ borderColor: `${accent}80` }}>
+          <div className="relative h-16 md:h-20 w-20 overflow-hidden rounded-full border-2 transition-transform group-hover:scale-110" style={{ borderColor: `${accent}80` }}>
             <Image 
               src="/WhatsApp_Image_2026-02-25_at_9.54.33_AM-removebg-preview.png" 
               alt="Klimarx Space Logo" 
@@ -84,7 +84,7 @@ export default function ForgotPasswordPage() {
         </Link>
 
         {/* Content Container */}
-        <div className="p-8 bg-card border border-[#daa857]/20 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
+        <div className="p-4 md:p-8 bg-card border border-[#daa857]/20 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
           {/* Subtle Glow Decor */}
           <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-[#daa857]/10 blur-[80px]" />
           <div className="absolute -bottom-24 -left-24 h-48 w-48 rounded-full bg-[#daa857]/5 blur-[80px]" />
@@ -98,7 +98,7 @@ export default function ForgotPasswordPage() {
 
             {isSubmitted ? (
               <div className="text-center py-6 space-y-6 animate-in fade-in zoom-in duration-500">
-                <div className="h-20 w-20 rounded-full flex items-center justify-center mx-auto border-2 border-[#daa857]/20 bg-background shadow-xl shadow-[#daa857]/5">
+                <div className="h-16 md:h-20 w-20 rounded-full flex items-center justify-center mx-auto border-2 border-[#daa857]/20 bg-background shadow-xl shadow-[#daa857]/5">
                   <Mail className="h-10 w-10 text-[#daa857]" />
                 </div>
                 <div className="space-y-3">
@@ -119,7 +119,7 @@ export default function ForgotPasswordPage() {
             ) : (
               <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                 <div className="mb-10">
-                  <h2 className="text-4xl font-black uppercase italic tracking-tighter leading-none">Lost Your <span style={{ color: accent }}>Password?</span></h2>
+                  <h2 className="text-2xl md:text-4xl font-black uppercase italic tracking-tighter leading-none">Lost Your <span style={{ color: accent }}>Password?</span></h2>
                   <p className="text-muted-foreground text-sm mt-3 font-medium">Enter your registered email to receive a recovery link.</p>
                 </div>
 

@@ -102,11 +102,11 @@ function TrainerDashboardContent() {
             </h1>
           </div>
         </header>
-        <div className="flex flex-1 flex-col gap-8 p-6 md:p-10 pb-24 md:pb-20">
+        <div className="flex flex-1 flex-col gap-4 md:gap-8 p-4 md:p-6 pb-24 md:pb-20">
           {/* Tab Content */}
           <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
             <div className={currentTab === 'check-in' ? 'block' : 'hidden'}>
-              <div className="mx-auto grid w-full max-w-2xl items-start gap-6">
+              <div className="mx-auto grid w-full max-w-2xl items-start gap-4 md:gap-6">
                 <CheckInPanel />
               </div>
             </div>

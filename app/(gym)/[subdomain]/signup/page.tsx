@@ -282,7 +282,7 @@ export default function SignupPage() {
       <div className="mx-auto w-full max-w-4xl">
         
         {/* Header */}
-        <div className="mb-12 flex flex-col items-center justify-center gap-6">
+        <div className="mb-12 flex flex-col items-center justify-center gap-4 md:gap-6">
           <Link href="/" className="group flex flex-col items-center gap-3">
              <div className="relative h-16 w-16 overflow-hidden rounded-full border-2 flex items-center justify-center p-1 transition-transform group-hover:scale-110" style={{ borderColor: `${accent}80`, backgroundColor: logoUrl  ? 'white' : 'hsl(var(--card))' }}>
               {logoUrl ? (
@@ -333,7 +333,7 @@ export default function SignupPage() {
         </div>
 
         {/* Form Container */}
-        <div className="bg-card border border-border rounded-[2.5rem] p-6 md:p-12 shadow-2xl relative overflow-hidden min-h-[500px]">
+        <div className="bg-card border border-border rounded-[2.5rem] p-4 md:p-6 md:p-12 shadow-2xl relative overflow-hidden min-h-[500px]">
            <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-[#daa857]/5 blur-[100px]" />
            
            <div className="relative z-10">
@@ -354,7 +354,7 @@ export default function SignupPage() {
                         fieldErrors.profileImage ? "border-red-500" : "border-[#daa857]/30 group-hover:border-[#daa857]"
                       )}>
                         <AvatarImage src={previewUrl || formData.profileImage} className="object-cover" />
-                        <AvatarFallback className="text-4xl bg-background font-black uppercase italic">
+                        <AvatarFallback className="text-2xl md:text-4xl bg-background font-black uppercase italic">
                           {formData.firstName?.[0] || '?'}
                         </AvatarFallback>
                       </Avatar>
@@ -370,7 +370,7 @@ export default function SignupPage() {
                     </div>
                     
                     <div className="flex-1 space-y-6 w-full">
-                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                           <div className="space-y-1">
                             <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-2">First Name</Label>
                             <Input 
@@ -391,7 +391,7 @@ export default function SignupPage() {
                           </div>
                        </div>
                        
-                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                           <div className="space-y-1">
                             <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-2">Gender</Label>
                             <Select value={formData.gender} onValueChange={(v) => updateFormData({ gender: v })}>
@@ -435,7 +435,7 @@ export default function SignupPage() {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                        <div className="space-y-1">
                          <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-2">How did you find us?</Label>
                          <Select value={formData.hearAboutUs} onValueChange={(v) => updateFormData({ hearAboutUs: v })}>
@@ -501,7 +501,7 @@ export default function SignupPage() {
                         key={m.id}
                         onClick={() => updateFormData({ membershipId: m.id })}
                         className={cn(
-                          "group cursor-pointer rounded-2xl p-6 border-2 transition-all duration-300",
+                          "group cursor-pointer rounded-2xl p-4 md:p-6 border-2 transition-all duration-300",
                           formData.membershipId === m.id 
                             ? "bg-[#daa857] border-[#daa857] text-black" 
                             : "bg-background border-border text-foreground hover:border-[#daa857]/50"
@@ -545,7 +545,7 @@ export default function SignupPage() {
                     </div>
 
                           {isBankTransfer && (
-                      <div className="p-6 rounded-2xl bg-background border border-[#daa857]/30 border-dashed">
+                      <div className="p-4 md:p-6 rounded-2xl bg-background border border-[#daa857]/30 border-dashed">
                         <div className="flex items-center gap-3 text-[#daa857] mb-2">
                            <AlertTriangle className="h-5 w-5" />
                            <span className="text-xs font-black uppercase tracking-widest">Instructions</span>
@@ -591,11 +591,11 @@ export default function SignupPage() {
                       placeholder="Specify your targets, existing injuries, or specialized requirements..."
                       value={formData.fitnessGoalsDetails}
                       onChange={(e) => updateFormData({ fitnessGoalsDetails: e.target.value })}
-                      className="min-h-[150px] bg-background border-border rounded-2xl focus:border-[#daa857] p-6 font-bold text-sm"
+                      className="min-h-[150px] bg-background border-border rounded-2xl focus:border-[#daa857] p-4 md:p-6 font-bold text-sm"
                     />
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                     <div className="space-y-1">
                       <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-2">Emergency Liaison</Label>
                       <Input 
@@ -621,7 +621,7 @@ export default function SignupPage() {
              {/* Step 4: Security */}
              {step === 4 && (
                <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                     <div className="space-y-1">
                       <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-2">Secure Password</Label>
                       <div className="relative">
@@ -665,11 +665,11 @@ export default function SignupPage() {
                   <div 
                     onClick={() => setPaymentConfirmed(!paymentConfirmed)}
                     className={cn(
-                      "p-8 rounded-[2rem] border-2 cursor-pointer transition-all",
+                      "p-4 md:p-8 rounded-[2rem] border-2 cursor-pointer transition-all",
                       paymentConfirmed ? "bg-[#daa857]/10 border-[#daa857]" : "bg-background border-border border-dashed"
                     )}
                   >
-                    <div className="flex gap-6 items-start">
+                    <div className="flex gap-4 md:gap-6 items-start">
                        <div className={cn(
                           "h-6 w-6 rounded-full border-2 flex items-center justify-center shrink-0 mt-1",
                           paymentConfirmed ? "bg-[#daa857] border-[#daa857]" : "border-gray-700"
@@ -686,7 +686,7 @@ export default function SignupPage() {
                   </div>
 
                   {/* Summary Card */}
-                  <div className="p-8 rounded-[2rem] bg-card/50 border border-border space-y-4">
+                  <div className="p-4 md:p-8 rounded-[2rem] bg-card/50 border border-border space-y-4">
                      <div className="flex justify-between items-center border-b border-border pb-4">
                         <span className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground">Review Application</span>
                         <Badge className="bg-[#daa857] text-black font-black uppercase tracking-tighter italic">Pending Approval</Badge>

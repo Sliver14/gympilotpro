@@ -122,7 +122,7 @@ export default function ManualRenewalDialog({ memberId, memberName, onRenewed }:
           Renew
         </Button>
       </DialogTrigger>
-      <DialogContent className="bg-card border-border text-foreground rounded-[2.5rem] p-10 max-w-lg">
+      <DialogContent className="bg-card border-border text-foreground rounded-[2.5rem] p-5 md:p-10 max-w-lg">
         <DialogHeader className="space-y-4">
           <DialogTitle className="text-3xl font-black uppercase italic tracking-tighter">
             Manual <span className="text-[#daa857]">Renewal</span>
@@ -152,7 +152,7 @@ export default function ManualRenewalDialog({ memberId, memberName, onRenewed }:
             </Select>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
             <div className="space-y-3">
               <Label htmlFor="startDate" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Start Date *</Label>
               <Input

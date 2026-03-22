@@ -40,7 +40,7 @@ export default function AttendanceHistory({ attendance }: AttendanceHistoryProps
   }
 
   return (
-    <div className="bg-card border border-border rounded-[2rem] p-8 shadow-2xl relative overflow-hidden">
+    <div className="bg-card border border-border rounded-[2rem] p-4 md:p-8 shadow-2xl relative overflow-hidden">
       <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-[#daa857]/5 blur-[80px]" />
       
       <div className="relative z-10">
@@ -58,7 +58,7 @@ export default function AttendanceHistory({ attendance }: AttendanceHistoryProps
         ) : (
           <div className="space-y-4">
             {sortedAttendance.map((record) => (
-              <div key={record.id} className="flex flex-col md:flex-row md:items-center justify-between rounded-2xl bg-card/50 border border-border p-6 hover:border-[#daa857]/30 transition-colors group">
+              <div key={record.id} className="flex flex-col md:flex-row md:items-center justify-between rounded-2xl bg-card/50 border border-border p-4 md:p-6 hover:border-[#daa857]/30 transition-colors group">
                 <div className="space-y-1 mb-4 md:mb-0">
                   <p className="text-sm font-black text-foreground uppercase italic tracking-tight">{formatTime(record.checkInTime)}</p>
                   <p className="text-[10px] font-bold text-[#daa857] uppercase tracking-widest">
@@ -101,7 +101,7 @@ export default function AttendanceHistory({ attendance }: AttendanceHistoryProps
                 )
               }).length, sub: 'LAST 7 DAYS' }
             ].map((stat, i) => (
-              <div key={i} className="bg-card/50 border border-border rounded-2xl p-6 text-center group hover:border-[#daa857]/20 transition-all">
+              <div key={i} className="bg-card/50 border border-border rounded-2xl p-4 md:p-6 text-center group hover:border-[#daa857]/20 transition-all">
                 <p className="text-[8px] font-black uppercase tracking-[0.2em] text-muted-foreground mb-2">{stat.label}</p>
                 <p className="text-3xl font-black text-foreground italic tracking-tighter group-hover:text-[#daa857] transition-colors">{stat.value}</p>
                 {stat.sub && <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground mt-1">{stat.sub}</p>}
