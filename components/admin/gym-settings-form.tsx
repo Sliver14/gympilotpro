@@ -15,7 +15,8 @@ import {
   CreditCard,
   Building2,
   ImagePlus,
-  ChevronRight
+  ChevronRight,
+  Copy
 } from 'lucide-react'
 import {
   Dialog,
@@ -136,6 +137,11 @@ export function GymSettingsForm() {
     } finally {
       setUploadingField(null)
     }
+  }
+
+  const handleCopy = (text: string, type: string) => {
+    navigator.clipboard.writeText(text)
+    toast({ title: 'Copied', description: `${type} copied to clipboard.` })
   }
 
   if (loading) {
@@ -442,18 +448,40 @@ export function GymSettingsForm() {
                 <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest leading-relaxed">
                   These URLs must be copied into your Paystack Dashboard (Settings &gt; API Keys & Webhooks) for automated payments to sync correctly.
                 </p>
-                <div className="space-y-3 mt-4">
+                <div className="space-y-4 mt-4">
                   <div>
                     <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Callback URL</Label>
-                    <code className="block mt-1 p-3 bg-background border border-border rounded-xl text-xs font-mono text-muted-foreground select-all shadow-inner">
-                      https://{gymData?.slug}.gympilotpro.com/payment/success
-                    </code>
+                    <div className="mt-1 flex items-center gap-2">
+                      <code className="flex-1 block p-3 bg-background border border-border rounded-xl text-[10px] md:text-xs font-mono text-muted-foreground shadow-inner overflow-x-auto whitespace-nowrap custom-scrollbar">
+                        https://{gymData?.slug}.gympilotpro.com/payment/success
+                      </code>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon"
+                        className="shrink-0 h-10 w-10 md:h-11 md:w-11 rounded-xl border-orange-500/30 text-orange-500 hover:bg-orange-500/10"
+                        onClick={() => handleCopy(`https://${gymData?.slug}.gympilotpro.com/payment/success`, 'Callback URL')}
+                      >
+                        <Copy className="h-4 w-4 md:h-5 md:w-5" />
+                      </Button>
+                    </div>
                   </div>
                   <div>
                     <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Webhook URL</Label>
-                    <code className="block mt-1 p-3 bg-background border border-border rounded-xl text-xs font-mono text-muted-foreground select-all shadow-inner">
-                      https://{gymData?.slug}.gympilotpro.com/api/webhooks/paystack/{gymData?.id}
-                    </code>
+                    <div className="mt-1 flex items-center gap-2">
+                      <code className="flex-1 block p-3 bg-background border border-border rounded-xl text-[10px] md:text-xs font-mono text-muted-foreground shadow-inner overflow-x-auto whitespace-nowrap custom-scrollbar">
+                        https://{gymData?.slug}.gympilotpro.com/api/webhooks/paystack/{gymData?.id}
+                      </code>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon"
+                        className="shrink-0 h-10 w-10 md:h-11 md:w-11 rounded-xl border-orange-500/30 text-orange-500 hover:bg-orange-500/10"
+                        onClick={() => handleCopy(`https://${gymData?.slug}.gympilotpro.com/api/webhooks/paystack/${gymData?.id}`, 'Webhook URL')}
+                      >
+                        <Copy className="h-4 w-4 md:h-5 md:w-5" />
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>
