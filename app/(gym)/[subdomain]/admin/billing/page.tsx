@@ -38,13 +38,13 @@ function AdminBillingContent() {
   }, [fetchAdminData])
 
   if (isLoading || !adminData || !gymData) {
-    return <div className="flex min-h-screen items-center justify-center bg-[#0a0a0a]"><Spinner className="h-8 w-8 text-[#daa857]" /></div>
+    return <div className="flex min-h-screen items-center justify-center bg-background"><Spinner className="h-8 w-8 text-[#daa857]" /></div>
   }
 
   const currentPlan = gymData.subscriptions?.[0]?.plan || 'starter'
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] relative">
+    <div className="min-h-screen bg-background relative">
       <div className="p-6 md:p-8">
         <Button 
           variant="ghost" 
@@ -71,7 +71,7 @@ function AdminBillingContent() {
 
 export default function AdminBilling() {
   return (
-    <Suspense fallback={<div className="flex min-h-screen items-center justify-center bg-[#0a0a0a]"><Spinner className="h-8 w-8 text-primary" /></div>}>
+    <Suspense fallback={<div className="flex min-h-screen items-center justify-center bg-background"><Spinner className="h-8 w-8 text-primary" /></div>}>
       <AdminBillingContent />
     </Suspense>
   )

@@ -121,7 +121,7 @@ export default function ExpiredMembersList({ onMemberRenewed }: { onMemberRenewe
 
         {filteredMembers.length === 0 ? (
           <div className="py-20 text-center bg-card/50 rounded-[2rem] border border-dashed border-border">
-            <AlertTriangle className="mx-auto h-12 w-12 text-gray-800 mb-4 opacity-20" />
+            <AlertTriangle className="mx-auto h-12 w-12 text-muted-foreground mb-4 opacity-20" />
             <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest italic">No expired members detected at the check-in.</p>
           </div>
         ) : (

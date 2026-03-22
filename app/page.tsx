@@ -30,7 +30,7 @@ const SectionTag = ({ children }: { children: React.ReactNode }) => (
 )
 
 const FeatureCard = ({ icon: Icon, title, desc }: { icon: any; title: string; desc: string }) => (
-  <div className="group p-6 sm:p-8 rounded-none border-l-2 border-white/5 bg-white/[0.02] backdrop-blur-sm hover:bg-orange-500/5 hover:border-orange-500 transition-all duration-500 relative overflow-hidden">
+  <div className="group p-6 sm:p-8 rounded-none border-l-2 border-border bg-white/[0.02] backdrop-blur-sm hover:bg-orange-500/5 hover:border-orange-500 transition-all duration-500 relative overflow-hidden">
     <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
     <div className="mb-5 sm:mb-6 inline-block p-3 bg-orange-500/10 text-orange-500 group-hover:scale-110 transition-transform relative z-10">
       <Icon className="w-7 h-7 sm:w-8 sm:h-8" strokeWidth={1.5} />
@@ -38,7 +38,7 @@ const FeatureCard = ({ icon: Icon, title, desc }: { icon: any; title: string; de
     <h3 className="text-xl sm:text-2xl font-black italic uppercase mb-3 tracking-tight relative z-10">
       {title}
     </h3>
-    <p className="text-gray-400 text-sm sm:text-base leading-relaxed font-medium relative z-10">
+    <p className="text-muted-foreground text-sm sm:text-base leading-relaxed font-medium relative z-10">
       {desc}
     </p>
   </div>
@@ -57,7 +57,7 @@ export default function SaaSLandingPage() {
   const currentDuration = DURATIONS.find(d => d.months === selectedMonths) || DURATIONS[0]
 
   return (
-    <div className="min-h-screen bg-[#080808] text-white selection:bg-orange-500 selection:text-black font-sans relative">
+    <div className="min-h-screen bg-[#080808] text-foreground selection:bg-orange-500 selection:text-black font-sans relative">
       {/* Navigation - Add hamburger menu for mobile when ready */}
       <nav className="absolute top-0 w-full z-[100] bg-gradient-to-b from-black/80 to-transparent">
         <div className="container mx-auto px-5 sm:px-6 md:px-8 lg:px-10 h-20 sm:h-24 flex items-center justify-between">
@@ -110,11 +110,11 @@ export default function SaaSLandingPage() {
             <SectionTag>// Performance Infrastructure</SectionTag>
             <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black italic uppercase leading-[0.9] mb-6 sm:mb-8 tracking-tighter">
               Run Your Gym <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-orange-500/50 border-t-2 border-b-2 border-white/20">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-orange-500/50 border-t-2 border-b-2 border-border">
                 Like A Pro
               </span>
             </h1>
-            <p className="text-lg sm:text-xl md:text-2xl text-gray-400 mb-8 sm:mb-12 max-w-xl font-medium leading-relaxed">
+            <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground mb-8 sm:mb-12 max-w-xl font-medium leading-relaxed">
               Stop losing money from expired members. Automate your gym and get paid on time, every time.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
@@ -126,7 +126,7 @@ export default function SaaSLandingPage() {
               </Button>
               <Button
                 asChild
-                className="h-14 sm:h-16 md:h-20 px-8 sm:px-10 md:px-12 text-white border-2 border-white/20 hover:border-orange-500/50 hover:bg-orange-500/5 hover:text-white text-base sm:text-xl font-black italic uppercase rounded-none bg-white/5 backdrop-blur-sm transition-all"
+                className="h-14 sm:h-16 md:h-20 px-8 sm:px-10 md:px-12 text-foreground border-2 border-border hover:border-orange-500/50 hover:bg-orange-500/5 hover:text-foreground text-base sm:text-xl font-black italic uppercase rounded-none bg-white/5 backdrop-blur-sm transition-all"
               >
                 <Link href="#features">Explore Platform</Link>
               </Button>
@@ -136,7 +136,7 @@ export default function SaaSLandingPage() {
       </section>
 
       {/* Problem Section */}
-      <section className="py-20 md:py-28 lg:py-32 bg-gradient-to-b from-[#080808] to-[#0d0d0d] border-y border-white/5">
+      <section className="py-20 md:py-28 lg:py-32 bg-gradient-to-b from-[#080808] to-[#0d0d0d] border-y border-border">
         <div className="container mx-auto px-5 sm:px-6 md:px-8 lg:px-10">
           <div className="flex flex-col md:flex-row gap-10 md:gap-16 items-start md:items-end mb-12 md:mb-20">
             <div className="flex-1">
@@ -145,22 +145,22 @@ export default function SaaSLandingPage() {
                 Manual Management <br /><span className="text-orange-500">Kills Growth</span>
               </h2>
             </div>
-            <p className="flex-1 text-gray-500 text-lg sm:text-xl font-medium max-w-lg">
+            <p className="flex-1 text-muted-foreground text-lg sm:text-xl font-medium max-w-lg">
               Inconsistent tracking leads to revenue leakage. If you aren't automating, you're leaving money on the gym floor.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 bg-white/5 p-1 border border-white/10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 bg-white/5 p-1 border border-border">
             {[
               { title: "Expired Access", desc: "Non-paying members slipping through the cracks daily." },
               { title: "Zero Data", desc: "Flying blind without real-time profit and churn analytics." },
               { title: "Manual Chaos", desc: "Drowning in paper logs and fragmented WhatsApp messages." },
               { title: "Retention Loss", desc: "No automated system to bring members back before they quit." }
             ].map((item, i) => (
-              <div key={i} className="bg-[#0a0a0a] p-6 sm:p-8 md:p-10 hover:bg-orange-500/5 transition-colors">
+              <div key={i} className="bg-background p-6 sm:p-8 md:p-10 hover:bg-orange-500/5 transition-colors">
                 <AlertCircle className="text-orange-500 mb-4 sm:mb-6" size={28} />
                 <h4 className="text-lg sm:text-xl font-black italic uppercase mb-3 sm:mb-4">{item.title}</h4>
-                <p className="text-gray-400 text-sm sm:text-base font-medium leading-relaxed">{item.desc}</p>
+                <p className="text-muted-foreground text-sm sm:text-base font-medium leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -185,20 +185,20 @@ export default function SaaSLandingPage() {
       </section>
 
       {/* Demo */}
-      <section id="demo" className="py-20 md:py-28 lg:py-32 bg-gradient-to-b from-[#0d0d0d] to-[#080808] border-y border-white/5">
+      <section id="demo" className="py-20 md:py-28 lg:py-32 bg-gradient-to-b from-[#0d0d0d] to-[#080808] border-y border-border">
         <div className="container mx-auto px-5 sm:px-6 md:px-8 lg:px-10">
           <div className="text-center mb-12 md:mb-16">
             <SectionTag>// See It In Action</SectionTag>
             <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black italic uppercase tracking-tighter mb-4 md:mb-6">
               Platform Walkthrough
             </h2>
-            <p className="text-lg sm:text-xl text-gray-400 max-w-3xl mx-auto font-medium">
+            <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto font-medium">
               Get a first look at how GymPilotPro automates WhatsApp reminders, QR check-ins, billing, access control and member management — built specifically for Nigerian gym owners.
             </p>
           </div>
 
           <div className="max-w-4xl lg:max-w-5xl mx-auto rounded-none overflow-hidden border-2 border-orange-500/30 shadow-[0_0_30px_rgba(249,115,22,0.15)] relative group">
-            <div className="relative pb-[56.25%] h-0 overflow-hidden bg-[#0a0a0a]">
+            <div className="relative pb-[56.25%] h-0 overflow-hidden bg-background">
               <img
                 src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2400&auto=format&fit=crop"
                 alt="GymPilotPro Dashboard Preview — Coming Soon"
@@ -209,7 +209,7 @@ export default function SaaSLandingPage() {
                 <div className="bg-orange-500/90 text-black font-black italic uppercase text-3xl sm:text-4xl md:text-5xl lg:text-6xl px-8 sm:px-10 md:px-12 py-3 md:py-4 tracking-tighter mb-4 md:mb-6 shadow-[0_0_30px_rgba(249,115,22,0.5)] transform group-hover:scale-105 transition-transform">
                   COMING SOON
                 </div>
-                <p className="text-base sm:text-xl md:text-2xl font-medium max-w-xl text-white/90 drop-shadow-lg">
+                <p className="text-base sm:text-xl md:text-2xl font-medium max-w-xl text-foreground/90 drop-shadow-lg">
                   Full 3-minute demo video dropping shortly — showcasing your real GymPilotPro dashboard
                 </p>
               </div>
@@ -222,7 +222,7 @@ export default function SaaSLandingPage() {
           </div>
 
           <div className="text-center mt-10 md:mt-12">
-            <p className="text-gray-500 italic text-base sm:text-lg mb-6 md:mb-8">
+            <p className="text-muted-foreground italic text-base sm:text-lg mb-6 md:mb-8">
               Video walkthrough in production — will show the actual clean, fast dashboard<br className="hidden sm:inline" />
               tailored for Lagos gyms (no bloat, no fluff).
             </p>
@@ -256,14 +256,14 @@ export default function SaaSLandingPage() {
                   />
                 </div>
                 <div className="text-left">
-                  <p className="text-lg sm:text-xl md:text-2xl text-gray-300 font-medium italic leading-relaxed mb-4 md:mb-6">
+                  <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground font-medium italic leading-relaxed mb-4 md:mb-6">
                     "GymPilotPro changed everything. The automated WhatsApp reminders alone recovered ₦1.2M in expired memberships in the first 3 months. No more chasing payments — now I focus on growth at Klimarx Space Gym."
                   </p>
                   <div>
                     <h4 className="text-xl sm:text-2xl font-black italic uppercase text-orange-500">
                       Nere Emiko
                     </h4>
-                    <p className="text-gray-400 font-bold uppercase text-xs sm:text-sm tracking-wider mt-1">
+                    <p className="text-muted-foreground font-bold uppercase text-xs sm:text-sm tracking-wider mt-1">
                       Owner, Klimarx Space Gym – Lagos
                     </p>
                   </div>
@@ -271,11 +271,11 @@ export default function SaaSLandingPage() {
               </div>
             </div>
 
-            <p className="text-gray-500 text-base sm:text-lg md:text-xl font-medium mt-12 md:mt-16 max-w-2xl mx-auto italic">
+            <p className="text-muted-foreground text-base sm:text-lg md:text-xl font-medium mt-12 md:mt-16 max-w-2xl mx-auto italic">
               Helping gyms across Lagos eliminate revenue loss and grow faster. Join high-performance facilities using GymPilotPro.
             </p>
 
-            <div className="mt-12 md:mt-16 h-16 sm:h-20 border-y border-white/5 flex items-center justify-center opacity-30">
+            <div className="mt-12 md:mt-16 h-16 sm:h-20 border-y border-border flex items-center justify-center opacity-30">
               <p className="italic text-xs sm:text-sm tracking-[0.5em] uppercase">More Industry Leaders Coming Soon</p>
             </div>
           </div>
@@ -283,7 +283,7 @@ export default function SaaSLandingPage() {
       </section>
 
       {/* Pricing */}
-      <section id="pricing" className="py-20 md:py-28 lg:py-32 bg-[#0d0d0d] border-y border-white/5 relative overflow-hidden">
+      <section id="pricing" className="py-20 md:py-28 lg:py-32 bg-[#0d0d0d] border-y border-border relative overflow-hidden">
         <div className="container mx-auto px-5 sm:px-6 md:px-8 lg:px-10 relative z-10">
           <div className="text-center mb-12 md:mb-16">
             <SectionTag>// Pricing Plans</SectionTag>
@@ -297,12 +297,12 @@ export default function SaaSLandingPage() {
                   className={cn(
                     "px-6 sm:px-8 py-2.5 sm:py-3 font-black italic uppercase text-xs sm:text-sm tracking-widest border-2 transition-all",
                     selectedMonths === d.months
-                      ? "bg-orange-500 border-orange-500 text-white shadow-[0_0_20px_rgba(249,115,22,0.3)]"
-                      : "bg-transparent border-white/10 text-gray-500 hover:border-white/30"
+                      ? "bg-orange-500 border-orange-500 text-foreground shadow-[0_0_20px_rgba(249,115,22,0.3)]"
+                      : "bg-transparent border-border text-muted-foreground hover:border-border"
                   )}
                 >
                   {d.label}
-                  {d.discount > 0 && <span className="ml-1.5 sm:ml-2 text-[10px] sm:text-xs text-white/70">-{d.discount * 100}%</span>}
+                  {d.discount > 0 && <span className="ml-1.5 sm:ml-2 text-[10px] sm:text-xs text-foreground/70">-{d.discount * 100}%</span>}
                 </button>
               ))}
             </div>
@@ -322,7 +322,7 @@ export default function SaaSLandingPage() {
                     "p-6 sm:p-8 md:p-10 border-2 flex flex-col transition-all duration-500 relative group",
                     isPopular
                       ? "border-orange-500 bg-white/5 scale-100 md:scale-105 z-10 shadow-[0_0_40px_rgba(249,115,22,0.15)]"
-                      : "border-white/10 bg-[#0a0a0a]"
+                      : "border-border bg-background"
                   )}
                 >
                   {isPopular && (
@@ -333,8 +333,8 @@ export default function SaaSLandingPage() {
                   <h3 className="text-2xl sm:text-3xl font-black italic uppercase mb-2">{p.name}</h3>
 
                   <div className="my-6 sm:my-8 space-y-4">
-                    <div className="p-3 sm:p-4 bg-white/5 border border-white/5 group-hover:border-orange-500/30 transition-colors">
-                      <p className="text-[10px] sm:text-xs font-black uppercase text-gray-500 mb-1 tracking-widest">Initial Access (Setup)</p>
+                    <div className="p-3 sm:p-4 bg-white/5 border border-border group-hover:border-orange-500/30 transition-colors">
+                      <p className="text-[10px] sm:text-xs font-black uppercase text-muted-foreground mb-1 tracking-widest">Initial Access (Setup)</p>
                       <p className="text-2xl sm:text-3xl font-black italic tracking-tighter">₦{p.setupFee.toLocaleString()}</p>
                     </div>
                     <div className="p-3 sm:p-4 bg-orange-500/5 border border-orange-500/20">
@@ -345,7 +345,7 @@ export default function SaaSLandingPage() {
                         <span className="text-3xl sm:text-4xl font-black italic tracking-tighter text-orange-500">
                           ₦{(discountedMonthly * selectedMonths).toLocaleString()}
                         </span>
-                        <span className="text-gray-500 font-bold uppercase text-[10px] sm:text-xs tracking-widest">/{selectedMonths}MO</span>
+                        <span className="text-muted-foreground font-bold uppercase text-[10px] sm:text-xs tracking-widest">/{selectedMonths}MO</span>
                       </div>
                       {currentDuration.discount > 0 && (
                         <p className="text-[9px] sm:text-xs font-bold text-green-500 uppercase mt-1">
@@ -357,15 +357,15 @@ export default function SaaSLandingPage() {
 
                   <ul className="space-y-3 sm:space-y-4 mb-8 sm:mb-10 flex-1">
                     {p.features.map((f, j) => (
-                      <li key={j} className="flex items-start gap-2 sm:gap-3 text-xs sm:text-sm font-bold uppercase text-gray-400 group-hover:text-gray-200 transition-colors">
+                      <li key={j} className="flex items-start gap-2 sm:gap-3 text-xs sm:text-sm font-bold uppercase text-muted-foreground group-hover:text-gray-200 transition-colors">
                         <Check size={16} className="text-orange-500 shrink-0 mt-0.5" /> {f}
                       </li>
                     ))}
                   </ul>
 
-                  <div className="pt-6 border-t border-white/5 mb-6 sm:mb-8">
-                    <p className="text-[10px] sm:text-xs font-black uppercase text-gray-500 mb-1 tracking-widest">Total to Unlock Access</p>
-                    <p className="text-xl sm:text-2xl font-black italic tracking-tighter text-white">₦{totalSetupAndMonthly.toLocaleString()}</p>
+                  <div className="pt-6 border-t border-border mb-6 sm:mb-8">
+                    <p className="text-[10px] sm:text-xs font-black uppercase text-muted-foreground mb-1 tracking-widest">Total to Unlock Access</p>
+                    <p className="text-xl sm:text-2xl font-black italic tracking-tighter text-foreground">₦{totalSetupAndMonthly.toLocaleString()}</p>
                   </div>
 
                   <Button
@@ -373,7 +373,7 @@ export default function SaaSLandingPage() {
                     onClick={() => handlePayNow(key)}
                     className={cn(
                       "w-full h-14 sm:h-16 rounded-none font-black italic uppercase text-base sm:text-lg transition-all",
-                      isPopular ? "bg-orange-500 hover:bg-orange-600 text-white" : "bg-white hover:bg-orange-500 hover:text-white text-black"
+                      isPopular ? "bg-orange-500 hover:bg-orange-600 text-white" : "bg-white hover:bg-orange-500 hover:text-foreground text-black"
                     )}
                   >
                     {loadingPlan === key ? (
@@ -388,18 +388,18 @@ export default function SaaSLandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="py-16 md:py-24 border-t border-white/5 bg-[#080808]">
+      <footer className="py-16 md:py-24 border-t border-border bg-[#080808]">
         <div className="container mx-auto px-5 sm:px-6 md:px-8 lg:px-10 text-center">
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black italic uppercase tracking-tighter mb-8 md:mb-12">
             Ready to fly <span className="text-orange-500 text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-orange-300">Pro?</span>
           </h2>
           <Button
             onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
-            className="h-14 sm:h-16 md:h-20 px-10 sm:px-12 md:px-16 bg-white text-black font-black italic uppercase text-base sm:text-xl rounded-none hover:bg-orange-500 hover:text-white transition-all shadow-2xl"
+            className="h-14 sm:h-16 md:h-20 px-10 sm:px-12 md:px-16 bg-white text-black font-black italic uppercase text-base sm:text-xl rounded-none hover:bg-orange-500 hover:text-foreground transition-all shadow-2xl"
           >
             Get GymPilotPro
           </Button>
-          <div className="pt-10 md:pt-12 mt-16 md:mt-24 border-t border-white/5 w-full flex flex-col md:flex-row justify-between items-center gap-6 md:gap-8">
+          <div className="pt-10 md:pt-12 mt-16 md:mt-24 border-t border-border w-full flex flex-col md:flex-row justify-between items-center gap-6 md:gap-8">
             <Link href="/" className="flex items-center gap-3 group">
               <Image 
                 src="/gympilotpro.png" 
@@ -412,7 +412,7 @@ export default function SaaSLandingPage() {
                 GymPilot<span className="text-orange-500">Pro</span>
               </span>
             </Link>
-            <p className="text-xs sm:text-[10px] font-black uppercase tracking-[0.2em] text-gray-700">
+            <p className="text-xs sm:text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">
               © 2026 GYMPILOTPRO SYSTEMS. RUN LIKE A PRO.
             </p>
           </div>

@@ -91,11 +91,11 @@ export default function GymLandingPage() {
   }
 
   if (isLoading) {
-    return <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">Loading...</div>
+    return <div className="min-h-screen bg-background flex items-center justify-center">Loading...</div>
   }
 
   return (
-    <main className="min-h-screen bg-[#0a0a0a] text-foreground overflow-x-hidden">
+    <main className="min-h-screen bg-background text-foreground overflow-x-hidden">
       <style jsx global>{`
         ::selection {
           background-color: ${accent}4d; /* 30% opacity */

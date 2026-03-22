@@ -119,7 +119,7 @@ export default function StaffList() {
 
         {filteredStaff.length === 0 ? (
           <div className="py-20 text-center bg-card/50 rounded-[2rem] border border-dashed border-border">
-            <UserCheck className="mx-auto h-12 w-12 text-gray-800 mb-4" />
+            <UserCheck className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
             <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest italic">No authorized personnel match the current query.</p>
           </div>
         ) : (
@@ -144,7 +144,7 @@ export default function StaffList() {
                       </p>
                       <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest flex items-center gap-2">
                         <span>{s.email}</span>
-                        <span className="h-1 w-1 rounded-full bg-gray-800" />
+                        <span className="h-1 w-1 rounded-full bg-muted" />
                         <span className="text-[#daa857]/50">{s.role.toUpperCase()} CORE</span>
                       </p>
                     </div>

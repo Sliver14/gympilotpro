@@ -154,20 +154,20 @@ export default function PaymentSuccessPage() {
   const gymInitials = gymName.split(' ').map((n: string) => n[0]).join('').substring(0, 2).toUpperCase();
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-foreground selection:bg-[#daa857]/30 selection:text-black font-sans flex flex-col relative overflow-hidden">
+    <div className="min-h-screen bg-background text-foreground selection:bg-[#daa857]/30 selection:text-black font-sans flex flex-col relative overflow-hidden">
       {/* Background glow matching the gym's accent */}
       <div 
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full blur-[120px] opacity-[0.03] pointer-events-none"
         style={{ backgroundColor: accent }}
       />
       
-      <nav className="w-full bg-[#0a0a0a]/80 backdrop-blur-xl border-b border-border relative z-10">
+      <nav className="w-full bg-background/80 backdrop-blur-xl border-b border-border relative z-10">
         <div className="container mx-auto px-6 h-24 flex items-center justify-center">
           {isLoading ? (
             <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
           ) : (
             <div className="flex items-center gap-3">
-              <div className="relative h-10 w-10 overflow-hidden rounded-full border flex items-center justify-center" style={{ borderColor: `${accent}4d`, backgroundColor: logo ? 'white' : '#111' }}>
+              <div className="relative h-10 w-10 overflow-hidden rounded-full border flex items-center justify-center" style={{ borderColor: `${accent}4d`, backgroundColor: logo  ? 'white' : 'hsl(var(--card))' }}>
                 {logo ? (
                   <Image 
                     src={logo} 

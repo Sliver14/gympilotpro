@@ -16,7 +16,7 @@ export function SubscriptionBanner({ daysUntilExpiry, isExpired, isGracePeriod, 
   
   return (
     <div className={`w-full z-[100] border-b px-4 py-3 flex items-center justify-center gap-4 ${isCritical ? 'bg-red-500 text-white border-red-600' : 'bg-[#daa857]/10 border-[#daa857]/20 text-[#daa857]'}`}>
-      <AlertTriangle className={`h-5 w-5 ${isCritical ? 'text-white' : 'text-[#daa857]'}`} />
+      <AlertTriangle className={`h-5 w-5 ${isCritical ? 'text-foreground' : 'text-[#daa857]'}`} />
       
       <div className="text-sm font-bold flex-1 text-center md:text-left">
         {isCritical ? (

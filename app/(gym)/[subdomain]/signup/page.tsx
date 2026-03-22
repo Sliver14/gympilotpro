@@ -271,20 +271,20 @@ export default function SignupPage() {
 
   if (gymLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#0a0a0a]">
+      <div className="flex min-h-screen items-center justify-center bg-background">
         <Loader2 className="h-8 w-8 animate-spin text-[#daa857]" />
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-foreground selection:bg-[#daa857]/30 px-4 py-12 md:py-20">
+    <div className="min-h-screen bg-background text-foreground selection:bg-[#daa857]/30 px-4 py-12 md:py-20">
       <div className="mx-auto w-full max-w-4xl">
         
         {/* Header */}
         <div className="mb-12 flex flex-col items-center justify-center gap-6">
           <Link href="/" className="group flex flex-col items-center gap-3">
-             <div className="relative h-16 w-16 overflow-hidden rounded-full border-2 flex items-center justify-center p-1 transition-transform group-hover:scale-110" style={{ borderColor: `${accent}80`, backgroundColor: logoUrl ? 'white' : '#111' }}>
+             <div className="relative h-16 w-16 overflow-hidden rounded-full border-2 flex items-center justify-center p-1 transition-transform group-hover:scale-110" style={{ borderColor: `${accent}80`, backgroundColor: logoUrl  ? 'white' : 'hsl(var(--card))' }}>
               {logoUrl ? (
                 <Image 
                   src={logoUrl} 
@@ -539,7 +539,7 @@ export default function SignupPage() {
                           )}
                         >
                           {method.name}
-                          {!method.isEnabled && method.errorLabel && <Badge className="absolute -top-2 -right-2 scale-75 bg-zinc-800 text-white">{method.errorLabel}</Badge>}
+                          {!method.isEnabled && method.errorLabel && <Badge className="absolute -top-2 -right-2 scale-75 bg-accent text-foreground">{method.errorLabel}</Badge>}
                         </div>
                       ))}
                     </div>
@@ -778,7 +778,7 @@ export default function SignupPage() {
           </p>
         </div>
 
-        <p className="mt-12 text-center text-[10px] text-gray-800 font-black uppercase tracking-[0.5em]">
+        <p className="mt-12 text-center text-[10px] text-muted-foreground font-black uppercase tracking-[0.5em]">
           Klimarx Space Sanctuary © 2026
         </p>
       </div>

@@ -208,7 +208,7 @@ export default function ResetPasswordPage() {
   const accent = '#daa857'
   
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#0a0a0a] text-foreground selection:bg-[#daa857]/30 px-4">
+    <div className="flex min-h-screen items-center justify-center bg-background text-foreground selection:bg-[#daa857]/30 px-4">
       <div className="w-full max-w-md">
         {/* Logo */}
         <Link href="/" className="mb-12 flex flex-col items-center justify-center gap-4 group">

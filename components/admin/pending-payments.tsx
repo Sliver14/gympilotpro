@@ -138,7 +138,7 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
       <CardContent>
         {payments.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 text-center bg-card/50 rounded-[2rem] border border-dashed border-border">
-            <CheckCircle className="h-12 w-12 text-gray-800 mb-4 opacity-20" />
+            <CheckCircle className="h-12 w-12 text-muted-foreground mb-4 opacity-20" />
             <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest italic">All systems updated. No pending transactions.</p>
           </div>
         ) : (

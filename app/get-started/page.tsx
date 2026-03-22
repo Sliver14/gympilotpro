@@ -101,21 +101,21 @@ function GetStartedContent() {
 
   return (
     <div className="flex-1 flex items-center justify-center p-6 py-24">
-      <div className="w-full max-w-xl bg-white/5 border border-white/10 p-10 shadow-2xl relative">
+      <div className="w-full max-w-xl bg-white/5 border border-border p-10 shadow-2xl relative">
         <div className="text-center mb-10">
           <span className="text-orange-500 font-black italic uppercase tracking-[0.2em] text-sm mb-4 block">
             // Onboarding
           </span>
-          <h1 className="text-4xl md:text-5xl font-black italic uppercase tracking-tighter mb-4 text-white">
+          <h1 className="text-4xl md:text-5xl font-black italic uppercase tracking-tighter mb-4 text-foreground">
             Create Your Gym
           </h1>
-          <p className="text-gray-400 font-medium">Set up your account and complete your payment to get started.</p>
+          <p className="text-muted-foreground font-medium">Set up your account and complete your payment to get started.</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-xs font-bold uppercase text-gray-500 mb-2">Full Name</label>
+              <label className="block text-xs font-bold uppercase text-muted-foreground mb-2">Full Name</label>
               <input 
                 type="text" 
                 name="fullName"
@@ -124,11 +124,11 @@ function GetStartedContent() {
                 value={formData.fullName}
                 onChange={handleChange}
                 placeholder="JOHN DOE" 
-                className="w-full bg-transparent border-2 border-white/10 p-4 font-black italic uppercase focus:border-orange-500 outline-none transition-colors text-white"
+                className="w-full bg-transparent border-2 border-border p-4 font-black italic uppercase focus:border-orange-500 outline-none transition-colors text-foreground"
               />
             </div>
             <div>
-              <label className="block text-xs font-bold uppercase text-gray-500 mb-2">Gym Name</label>
+              <label className="block text-xs font-bold uppercase text-muted-foreground mb-2">Gym Name</label>
               <input 
                 type="text" 
                 name="gymName"
@@ -137,14 +137,14 @@ function GetStartedContent() {
                 value={formData.gymName}
                 onChange={handleChange}
                 placeholder="IRON FITNESS" 
-                className="w-full bg-transparent border-2 border-white/10 p-4 font-black italic uppercase focus:border-orange-500 outline-none transition-colors text-white"
+                className="w-full bg-transparent border-2 border-border p-4 font-black italic uppercase focus:border-orange-500 outline-none transition-colors text-foreground"
               />
             </div>
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-xs font-bold uppercase text-gray-500 mb-2">Email Address</label>
+              <label className="block text-xs font-bold uppercase text-muted-foreground mb-2">Email Address</label>
               <input 
                 type="email" 
                 name="email"
@@ -153,11 +153,11 @@ function GetStartedContent() {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="HELLO@GYM.COM" 
-                className="w-full bg-transparent border-2 border-white/10 p-4 font-black italic uppercase focus:border-orange-500 outline-none transition-colors text-white"
+                className="w-full bg-transparent border-2 border-border p-4 font-black italic uppercase focus:border-orange-500 outline-none transition-colors text-foreground"
               />
             </div>
             <div>
-              <label className="block text-xs font-bold uppercase text-gray-500 mb-2">Phone (WhatsApp)</label>
+              <label className="block text-xs font-bold uppercase text-muted-foreground mb-2">Phone (WhatsApp)</label>
               <input 
                 type="tel" 
                 name="phone"
@@ -166,21 +166,21 @@ function GetStartedContent() {
                 value={formData.phone}
                 onChange={handleChange}
                 placeholder="+234 800 000 0000" 
-                className="w-full bg-transparent border-2 border-white/10 p-4 font-black italic uppercase focus:border-orange-500 outline-none transition-colors text-white"
+                className="w-full bg-transparent border-2 border-border p-4 font-black italic uppercase focus:border-orange-500 outline-none transition-colors text-foreground"
               />
             </div>
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-xs font-bold uppercase text-gray-500 mb-2">Selected Plan</label>
+              <label className="block text-xs font-bold uppercase text-muted-foreground mb-2">Selected Plan</label>
               <div className="relative">
                 <select 
                   name="plan"
                   disabled={loading}
                   value={formData.plan}
                   onChange={handleChange}
-                  className="w-full bg-[#0a0a0a] border-2 border-white/10 p-4 font-black italic uppercase focus:border-orange-500 outline-none transition-colors text-white appearance-none cursor-pointer"
+                  className="w-full bg-background border-2 border-border p-4 font-black italic uppercase focus:border-orange-500 outline-none transition-colors text-foreground appearance-none cursor-pointer"
                 >
                   {Object.values(PLANS).map(p => (
                     <option key={p.id} value={p.id}>{p.name}</option>
@@ -190,14 +190,14 @@ function GetStartedContent() {
               </div>
             </div>
             <div>
-              <label className="block text-xs font-bold uppercase text-gray-500 mb-2">Duration</label>
+              <label className="block text-xs font-bold uppercase text-muted-foreground mb-2">Duration</label>
               <div className="relative">
                 <select 
                   name="months"
                   disabled={loading}
                   value={formData.months}
                   onChange={handleChange}
-                  className="w-full bg-[#0a0a0a] border-2 border-white/10 p-4 font-black italic uppercase focus:border-orange-500 outline-none transition-colors text-white appearance-none cursor-pointer"
+                  className="w-full bg-background border-2 border-border p-4 font-black italic uppercase focus:border-orange-500 outline-none transition-colors text-foreground appearance-none cursor-pointer"
                 >
                   {DURATIONS.map(d => (
                     <option key={d.months} value={d.months}>{d.label}</option>
@@ -208,13 +208,13 @@ function GetStartedContent() {
             </div>
           </div>
 
-          <div className="pt-6 border-t border-white/10">
+          <div className="pt-6 border-t border-border">
             <div className="space-y-2 mb-6">
-              <div className="flex justify-between text-xs font-bold uppercase text-gray-500">
+              <div className="flex justify-between text-xs font-bold uppercase text-muted-foreground">
                 <span>Setup Fee</span>
                 <span>₦{pricing.setupFeeCharge.toLocaleString()}</span>
               </div>
-              <div className="flex justify-between text-xs font-bold uppercase text-gray-500">
+              <div className="flex justify-between text-xs font-bold uppercase text-muted-foreground">
                 <span>{formData.months} Month(s) Access</span>
                 <span>₦{pricing.monthlyTotal.toLocaleString()}</span>
               </div>
@@ -224,7 +224,7 @@ function GetStartedContent() {
                   <span>-₦{pricing.discountAmount.toLocaleString()}</span>
                 </div>
               )}
-              <div className="flex justify-between items-center text-xl font-black italic uppercase text-white pt-2">
+              <div className="flex justify-between items-center text-xl font-black italic uppercase text-foreground pt-2">
                 <span>Total Due Today</span>
                 <span className="text-orange-500">₦{pricing.total.toLocaleString()}</span>
               </div>
@@ -243,7 +243,7 @@ function GetStartedContent() {
             >
               {loading ? <Loader2 className="animate-spin" /> : `Proceed to Payment`}
             </Button>
-            <p className="text-center text-[10px] font-bold uppercase text-gray-500 tracking-widest mt-4">
+            <p className="text-center text-[10px] font-bold uppercase text-muted-foreground tracking-widest mt-4">
               Secured by Paystack
             </p>
           </div>
@@ -255,15 +255,15 @@ function GetStartedContent() {
 
 export default function GetStartedPage() {
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white selection:bg-orange-500 selection:text-black font-sans flex flex-col">
-      <nav className="fixed top-0 w-full z-[100] bg-[#0a0a0a]/80 backdrop-blur-xl border-b border-white/10">
+    <div className="min-h-screen bg-background text-foreground selection:bg-orange-500 selection:text-black font-sans flex flex-col">
+      <nav className="fixed top-0 w-full z-[100] bg-background/80 backdrop-blur-xl border-b border-border">
         <div className="container mx-auto px-6 h-24 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
             <span className="text-2xl font-black italic uppercase tracking-tighter">
               Insight<span className="text-orange-500">Gym</span>
             </span>
           </Link>
-          <Link href="/" className="text-[11px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-white transition-colors">
+          <Link href="/" className="text-[11px] font-black uppercase tracking-[0.2em] text-muted-foreground hover:text-foreground transition-colors">
             BACK TO HOME
           </Link>
         </div>

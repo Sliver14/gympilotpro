@@ -30,7 +30,7 @@ export default function AdminHeader({ adminData, onLogout, title, description }:
       <div className="container mx-auto flex h-16 items-center justify-between px-6">
         <div className="flex items-center gap-4">
           <Link href={`/admin/dashboard`} className="flex items-center gap-2 group">
-            <div className="relative h-8 w-8 overflow-hidden rounded-full border flex items-center justify-center transition-transform group-hover:scale-110" style={{ borderColor: `${accent}4d`, backgroundColor: logo ? 'white' : '#111' }}>
+            <div className="relative h-8 w-8 overflow-hidden rounded-full border flex items-center justify-center transition-transform group-hover:scale-110" style={{ borderColor: `${accent}4d`, backgroundColor: logo  ? 'white' : 'hsl(var(--card))' }}>
               {logo ? (
                 <Image 
                   src={logo} 
@@ -48,7 +48,7 @@ export default function AdminHeader({ adminData, onLogout, title, description }:
           {(title || description) && (
             <div className="hidden md:flex items-center gap-3 border-l border-border pl-4">
               {title && <h1 className="text-[10px] font-black uppercase tracking-[0.3em]" style={{ color: accent }}>{title}</h1>}
-              {description && <span className="h-1 w-1 rounded-full bg-gray-800" />}
+              {description && <span className="h-1 w-1 rounded-full bg-muted" />}
               {description && <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">{description}</p>}
             </div>
           )}

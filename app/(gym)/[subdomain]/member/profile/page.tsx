@@ -73,7 +73,7 @@ function MemberProfileSettingsContent() {
   return (
     <SidebarProvider>
       <MemberSidebar memberData={memberData} onLogout={handleLogout} />
-      <SidebarInset className="bg-[#0a0a0a]">
+      <SidebarInset className="bg-background">
         <header className="flex h-16 shrink-0 items-center gap-2 border-b border-border px-6 sticky top-0 z-30 bg-card/50 backdrop-blur-md">
           <SidebarTrigger className="-ml-1" />
           <div className="flex items-center gap-2">

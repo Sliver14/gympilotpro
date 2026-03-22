@@ -83,7 +83,7 @@ function MemberSidebarContent({ memberData, onLogout }: MemberSidebarProps) {
                 <div 
                   className={cn(
                     "flex aspect-square size-10 items-center justify-center rounded-xl p-1.5 shadow-sm dark:shadow-[0_0_20px_rgba(255,255,255,0.1)] border transition-transform group-hover:scale-110 overflow-hidden",
-                    logo ? "bg-white" : "bg-white dark:bg-[#111]"
+                    logo ? "bg-white" : "bg-white dark:bg-card"
                   )} 
                   style={{ borderColor: `${accent}4d` }}
                 >

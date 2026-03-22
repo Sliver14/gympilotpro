@@ -27,7 +27,7 @@ export default function DomainDashboard() {
 
   if (isLoading || !gymData) {
     return (
-      <div className="flex-1 flex items-center justify-center p-8 bg-[#0a0a0a]">
+      <div className="flex-1 flex items-center justify-center p-8 bg-background">
         <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
       </div>
     )
@@ -36,7 +36,7 @@ export default function DomainDashboard() {
   const currentPlan = gymData.subscriptions?.[0]?.plan || 'starter'
   if (!hasPremiumAccess(currentPlan, 'pro')) {
     return (
-      <div className="flex-1 p-8 bg-[#0a0a0a] text-foreground min-h-screen font-sans flex items-center justify-center">
+      <div className="flex-1 p-8 bg-background text-foreground min-h-screen font-sans flex items-center justify-center">
         <div className="max-w-md w-full text-center space-y-6 bg-card p-10 rounded-[2rem] border border-border shadow-2xl">
           <div className="h-20 w-20 bg-orange-500/10 rounded-full flex items-center justify-center mx-auto border border-orange-500/20 text-orange-500">
             <Lock size={32} />
@@ -111,7 +111,7 @@ export default function DomainDashboard() {
   const isConnected = gymData.domainVerified && gymData.customDomain
 
   return (
-    <div className="flex-1 p-8 bg-[#0a0a0a] text-foreground min-h-screen font-sans">
+    <div className="flex-1 p-8 bg-background text-foreground min-h-screen font-sans">
       <div className="max-w-4xl mx-auto space-y-8">
 
         <Button 

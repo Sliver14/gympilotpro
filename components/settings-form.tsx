@@ -235,7 +235,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
     <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
       
       {/* Header Profile Section */}
-      <div className="bg-[#111] border border-white/5 rounded-[2.5rem] p-8 md:p-12 shadow-2xl relative overflow-hidden">
+      <div className="bg-card border border-border rounded-[2.5rem] p-8 md:p-12 shadow-2xl relative overflow-hidden">
         <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-[#daa857]/5 blur-[100px]" />
         
         <div className="relative z-10 flex flex-col md:flex-row items-center gap-10">
@@ -244,7 +244,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
               "h-44 w-44 border-4 border-[#daa857]/20 transition-all duration-500 group-hover:border-[#daa857]/50 shadow-2xl shadow-[#daa857]/5"
             )}>
               <AvatarImage src={previewUrl || profileImage || undefined} className="object-cover" />
-              <AvatarFallback className="text-5xl bg-black font-black uppercase italic text-[#daa857]">
+              <AvatarFallback className="text-5xl bg-background font-black uppercase italic text-[#daa857]">
                 {initials || '??'}
               </AvatarFallback>
             </Avatar>
@@ -260,15 +260,15 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
           </div>
           
           <div className="text-center md:text-left space-y-2 flex-1">
-            <h2 className="text-4xl font-black uppercase italic tracking-tighter text-white">
+            <h2 className="text-4xl font-black uppercase italic tracking-tighter text-foreground">
               {userData.firstName} <span className="text-[#daa857]">{userData.lastName}</span>
             </h2>
-            <p className="text-sm font-bold text-gray-500 uppercase tracking-[0.3em]">{userData.email}</p>
+            <p className="text-sm font-bold text-muted-foreground uppercase tracking-[0.3em]">{userData.email}</p>
             <div className="flex flex-wrap justify-center md:justify-start gap-3 mt-6">
               <div className="inline-flex items-center rounded-full bg-[#daa857]/10 border border-[#daa857]/20 px-4 py-1 text-[10px] font-black uppercase tracking-widest text-[#daa857]">
                 {userData.role} Core
               </div>
-              <div className="inline-flex items-center rounded-full bg-white/5 border border-white/10 px-4 py-1 text-[10px] font-black uppercase tracking-widest text-gray-400">
+              <div className="inline-flex items-center rounded-full bg-white/5 border border-border px-4 py-1 text-[10px] font-black uppercase tracking-widest text-muted-foreground">
                 Authorized Profile
               </div>
             </div>
@@ -282,7 +282,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
         {/* Update Details Modal Trigger */}
         <Dialog open={isDetailsModalOpen} onOpenChange={setIsDetailsModalOpen}>
           <DialogTrigger asChild>
-            <div className="group cursor-pointer bg-[#111] border border-white/5 rounded-3xl p-8 hover:border-[#daa857]/30 transition-all duration-500 shadow-xl relative overflow-hidden">
+            <div className="group cursor-pointer bg-card border border-border rounded-3xl p-8 hover:border-[#daa857]/30 transition-all duration-500 shadow-xl relative overflow-hidden">
               <div className="absolute -right-12 -top-12 h-24 w-24 rounded-full bg-[#daa857]/5 blur-2xl group-hover:bg-[#daa857]/10 transition-colors" />
               <div className="flex items-center justify-between relative z-10">
                 <div className="flex items-center gap-6">
@@ -290,68 +290,68 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
                     <UserIcon className="h-7 w-7" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-black uppercase italic tracking-tighter text-white mb-1">Profile</h3>
-                    <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Update Personal Metrics</p>
+                    <h3 className="text-xl font-black uppercase italic tracking-tighter text-foreground mb-1">Profile</h3>
+                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Update Personal Metrics</p>
                   </div>
                 </div>
-                <ChevronRight className="h-6 w-6 text-gray-700 group-hover:text-[#daa857] transition-colors" />
+                <ChevronRight className="h-6 w-6 text-muted-foreground group-hover:text-[#daa857] transition-colors" />
               </div>
             </div>
           </DialogTrigger>
-          <DialogContent className="bg-[#111] border-white/10 text-white rounded-[2.5rem] p-10 max-w-2xl max-h-[90vh] overflow-y-auto custom-scrollbar">
+          <DialogContent className="bg-card border-border text-foreground rounded-[2.5rem] p-10 max-w-2xl max-h-[90vh] overflow-y-auto custom-scrollbar">
             <DialogHeader className="space-y-4">
               <DialogTitle className="text-3xl font-black uppercase italic tracking-tighter">
                 Update <span className="text-[#daa857]">Profile</span>
               </DialogTitle>
-              <DialogDescription className="text-gray-500 font-medium uppercase text-[10px] tracking-widest leading-relaxed">
-                Update core profile data for the <span className="text-white font-black">{userData.role}</span> account.
+              <DialogDescription className="text-muted-foreground font-medium uppercase text-[10px] tracking-widest leading-relaxed">
+                Update core profile data for the <span className="text-foreground font-black">{userData.role}</span> account.
               </DialogDescription>
             </DialogHeader>
             
             <form onSubmit={handleUpdateDetails} className="space-y-8 py-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-3">
-                  <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">First Name</Label>
+                  <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">First Name</Label>
                   <Input 
                     value={detailsForm.firstName}
                     onChange={(e) => setDetailsForm({...detailsForm, firstName: e.target.value})}
                     placeholder={userData.firstName}
-                    className="h-14 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-6 font-bold uppercase tracking-widest text-[10px]"
+                    className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-6 font-bold uppercase tracking-widest text-[10px]"
                   />
                 </div>
                 <div className="space-y-3">
-                  <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Last Name</Label>
+                  <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Last Name</Label>
                   <Input 
                     value={detailsForm.lastName}
                     onChange={(e) => setDetailsForm({...detailsForm, lastName: e.target.value})}
                     placeholder={userData.lastName}
-                    className="h-14 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-6 font-bold uppercase tracking-widest text-[10px]"
+                    className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-6 font-bold uppercase tracking-widest text-[10px]"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-3">
-                  <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Comm Channel</Label>
+                  <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Comm Channel</Label>
                   <div className="relative">
-                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-600" />
+                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input 
                       value={detailsForm.email}
                       onChange={(e) => setDetailsForm({...detailsForm, email: e.target.value})}
                       placeholder={userData.email}
-                      className="h-14 pl-12 bg-black border-white/5 rounded-xl focus:border-[#daa857] font-bold uppercase tracking-widest text-[10px]"
+                      className="h-14 pl-12 bg-background border-border rounded-xl focus:border-[#daa857] font-bold uppercase tracking-widest text-[10px]"
                     />
                   </div>
                 </div>
                 <div className="space-y-3">
-                  <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Secure Line</Label>
+                  <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Secure Line</Label>
                   <div className="relative">
-                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-600" />
+                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input 
                       value={detailsForm.phoneNumber}
                       onChange={(e) => setDetailsForm({...detailsForm, phoneNumber: e.target.value})}
                       placeholder={userData.phoneNumber || '080XXXXXXXX'}
-                      className="h-14 pl-12 bg-black border-white/5 rounded-xl focus:border-[#daa857] font-bold uppercase tracking-widest text-[10px]"
+                      className="h-14 pl-12 bg-background border-border rounded-xl focus:border-[#daa857] font-bold uppercase tracking-widest text-[10px]"
                     />
                   </div>
                 </div>
@@ -361,24 +361,24 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
                 <>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-3">
-                      <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Cycle of Origin (Birthday)</Label>
+                      <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Cycle of Origin (Birthday)</Label>
                       <Input 
                         type="date"
                         value={detailsForm.birthday}
                         onChange={(e) => setDetailsForm({...detailsForm, birthday: e.target.value})}
-                        className="h-14 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-6 font-bold uppercase tracking-widest text-[10px]"
+                        className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-6 font-bold uppercase tracking-widest text-[10px]"
                       />
                     </div>
                     <div className="space-y-3">
-                      <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Gender</Label>
+                      <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Gender</Label>
                       <Select 
                         value={detailsForm.gender} 
                         onValueChange={(v) => setDetailsForm({...detailsForm, gender: v})}
                       >
-                        <SelectTrigger className="h-14 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-6 font-bold uppercase tracking-widest text-[10px]">
+                        <SelectTrigger className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-6 font-bold uppercase tracking-widest text-[10px]">
                           <SelectValue placeholder="SELECT GENDER" />
                         </SelectTrigger>
-                        <SelectContent className="bg-[#111] border-white/10 text-white">
+                        <SelectContent className="bg-card border-border text-foreground">
                           <SelectItem value="male" className="focus:bg-[#daa857]/10 focus:text-[#daa857] font-bold uppercase text-[10px]">MALE</SelectItem>
                           <SelectItem value="female" className="focus:bg-[#daa857]/10 focus:text-[#daa857] font-bold uppercase text-[10px]">FEMALE</SelectItem>
                           <SelectItem value="other" className="focus:bg-[#daa857]/10 focus:text-[#daa857] font-bold uppercase text-[10px]">OTHER</SelectItem>
@@ -388,23 +388,23 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
                   </div>
 
                   <div className="space-y-3">
-                    <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Fitness Goals</Label>
+                    <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Fitness Goals</Label>
                     <Textarea 
                       value={detailsForm.fitnessGoalsDetails}
                       onChange={(e) => setDetailsForm({...detailsForm, fitnessGoalsDetails: e.target.value})}
                       placeholder="Specify your tactical objectives, injuries, or requirements..."
-                      className="min-h-[120px] bg-black border-white/5 rounded-2xl focus:border-[#daa857] p-6 font-bold text-xs uppercase tracking-widest leading-relaxed"
+                      className="min-h-[120px] bg-background border-border rounded-2xl focus:border-[#daa857] p-6 font-bold text-xs uppercase tracking-widest leading-relaxed"
                     />
                   </div>
                 </>
               )}
 
-              <DialogFooter className="pt-6 border-t border-white/5 gap-3 sm:gap-0">
+              <DialogFooter className="pt-6 border-t border-border gap-3 sm:gap-0">
                 <Button 
                   type="button" 
                   variant="outline" 
                   onClick={() => setIsDetailsModalOpen(false)}
-                  className="h-14 px-8 border-white/10 hover:bg-white/5 rounded-xl text-[10px] font-black uppercase tracking-widest text-gray-500"
+                  className="h-14 px-8 border-border hover:bg-white/5 rounded-xl text-[10px] font-black uppercase tracking-widest text-muted-foreground"
                 >
                   Abort
                 </Button>
@@ -423,7 +423,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
         {/* Change Password Modal Trigger */}
         <Dialog open={isPasswordModalOpen} onOpenChange={setIsPasswordModalOpen}>
           <DialogTrigger asChild>
-            <div className="group cursor-pointer bg-[#111] border border-white/5 rounded-3xl p-8 hover:border-[#daa857]/30 transition-all duration-500 shadow-xl relative overflow-hidden">
+            <div className="group cursor-pointer bg-card border border-border rounded-3xl p-8 hover:border-[#daa857]/30 transition-all duration-500 shadow-xl relative overflow-hidden">
               <div className="absolute -right-12 -top-12 h-24 w-24 rounded-full bg-[#daa857]/5 blur-2xl group-hover:bg-[#daa857]/10 transition-colors" />
               <div className="flex items-center justify-between relative z-10">
                 <div className="flex items-center gap-6">
@@ -431,46 +431,46 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
                     <Lock className="h-7 w-7" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-black uppercase italic tracking-tighter text-white mb-1">Account Password</h3>
-                    <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Update Login Credentials</p>
+                    <h3 className="text-xl font-black uppercase italic tracking-tighter text-foreground mb-1">Account Password</h3>
+                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Update Login Credentials</p>
                   </div>
                 </div>
-                <ChevronRight className="h-6 w-6 text-gray-700 group-hover:text-[#daa857] transition-colors" />
+                <ChevronRight className="h-6 w-6 text-muted-foreground group-hover:text-[#daa857] transition-colors" />
               </div>
             </div>
           </DialogTrigger>
-          <DialogContent className="bg-[#111] border-white/10 text-white rounded-[2.5rem] p-10 max-w-md shadow-2xl">
+          <DialogContent className="bg-card border-border text-foreground rounded-[2.5rem] p-10 max-w-md shadow-2xl">
             <DialogHeader className="space-y-4">
               <DialogTitle className="text-3xl font-black uppercase italic tracking-tighter">
                 Entry <span className="text-[#daa857]">Security</span>
               </DialogTitle>
-              <DialogDescription className="text-gray-500 font-medium uppercase text-[10px] tracking-widest leading-relaxed">
+              <DialogDescription className="text-muted-foreground font-medium uppercase text-[10px] tracking-widest leading-relaxed">
                 Define a new secure password for your account.
               </DialogDescription>
             </DialogHeader>
             
             <form onSubmit={handleChangePassword} className="space-y-6 py-6">
               <div className="space-y-3">
-                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Current Password</Label>
+                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Current Password</Label>
                 <div className="relative">
                   <Input 
                     type={showCurrentPassword ? "text" : "password"}
                     value={passwords.currentPassword}
                     onChange={(e) => setPasswords({...passwords, currentPassword: e.target.value})}
                     required
-                    className="h-16 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-6 pr-14 font-bold"
+                    className="h-16 bg-background border-border rounded-xl focus:border-[#daa857] px-6 pr-14 font-bold"
                   />
                   <button
                     type="button"
                     onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                    className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition-colors focus:outline-none"
+                    className="absolute right-5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors focus:outline-none"
                   >
                     {showCurrentPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                   </button>
                 </div>
               </div>
               <div className="space-y-3 pt-2">
-                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">New Password</Label>
+                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">New Password</Label>
                 <div className="relative">
                   <Input 
                     type={showNewPassword ? "text" : "password"}
@@ -478,43 +478,43 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
                     onChange={(e) => setPasswords({...passwords, newPassword: e.target.value})}
                     required
                     placeholder="Min 8 Characters"
-                    className="h-16 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-6 pr-14 font-bold"
+                    className="h-16 bg-background border-border rounded-xl focus:border-[#daa857] px-6 pr-14 font-bold"
                   />
                   <button
                     type="button"
                     onClick={() => setShowNewPassword(!showNewPassword)}
-                    className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition-colors focus:outline-none"
+                    className="absolute right-5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors focus:outline-none"
                   >
                     {showNewPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                   </button>
                 </div>
               </div>
               <div className="space-y-3">
-                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Verify New Password</Label>
+                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Verify New Password</Label>
                 <div className="relative">
                   <Input 
                     type={showConfirmPassword ? "text" : "password"}
                     value={passwords.confirmPassword}
                     onChange={(e) => setPasswords({...passwords, confirmPassword: e.target.value})}
                     required
-                    className="h-16 bg-black border-white/5 rounded-xl focus:border-[#daa857] px-6 pr-14 font-bold"
+                    className="h-16 bg-background border-border rounded-xl focus:border-[#daa857] px-6 pr-14 font-bold"
                   />
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition-colors focus:outline-none"
+                    className="absolute right-5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors focus:outline-none"
                   >
                     {showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                   </button>
                 </div>
               </div>
 
-              <DialogFooter className="pt-6 border-t border-white/5 gap-3 sm:gap-0 mt-4">
+              <DialogFooter className="pt-6 border-t border-border gap-3 sm:gap-0 mt-4">
                 <Button 
                   type="button" 
                   variant="outline" 
                   onClick={() => setIsPasswordModalOpen(false)}
-                  className="h-14 px-8 border-white/10 hover:bg-white/5 rounded-xl text-[10px] font-black uppercase tracking-widest text-gray-500"
+                  className="h-14 px-8 border-border hover:bg-white/5 rounded-xl text-[10px] font-black uppercase tracking-widest text-muted-foreground"
                 >
                   Abort
                 </Button>
@@ -533,12 +533,12 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
       </div>
 
       <Dialog open={isCropperModalOpen} onOpenChange={setIsCropperModalOpen}>
-        <DialogContent className="bg-[#111] border-white/10 text-white rounded-[1.5rem] md:rounded-[2.5rem] p-0 overflow-hidden w-[95vw] md:max-w-2xl shadow-2xl">
+        <DialogContent className="bg-card border-border text-foreground rounded-[1.5rem] md:rounded-[2.5rem] p-0 overflow-hidden w-[95vw] md:max-w-2xl shadow-2xl">
           <DialogHeader className="sr-only">
             <DialogTitle>Adjust Profile Picture</DialogTitle>
           </DialogHeader>
 
-          <div className="p-5 md:p-8 border-b border-white/5 flex items-center justify-between">
+          <div className="p-5 md:p-8 border-b border-border flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="h-10 w-10 rounded-xl bg-[#daa857]/10 flex items-center justify-center text-[#daa857]">
                 <CropIcon className="h-5 w-5" />
@@ -550,7 +550,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
             </Button>
           </div>
 
-          <div className="relative h-[300px] md:h-[400px] w-full bg-black">
+          <div className="relative h-[300px] md:h-[400px] w-full bg-background">
             {imageToCrop && (
               <Cropper
                 image={imageToCrop}
@@ -566,10 +566,10 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
             )}
           </div>
 
-          <div className="p-5 md:p-8 space-y-6 md:space-y-8 bg-[#111]">
+          <div className="p-5 md:p-8 space-y-6 md:space-y-8 bg-card">
             <div className="space-y-4">
               <div className="flex justify-between items-center">
-                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">Image Zoom</Label>
+                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Image Zoom</Label>
                 <span className="text-[10px] font-black text-[#daa857]">{Math.round(zoom * 100)}%</span>
               </div>
               <Slider
@@ -586,7 +586,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
               <Button 
                 variant="outline" 
                 onClick={() => setIsCropperModalOpen(false)}
-                className="h-12 md:h-14 px-8 border-white/10 hover:bg-white/5 rounded-xl text-[10px] font-black uppercase tracking-widest text-gray-500"
+                className="h-12 md:h-14 px-8 border-border hover:bg-white/5 rounded-xl text-[10px] font-black uppercase tracking-widest text-muted-foreground"
               >
                 Cancel
               </Button>
@@ -607,8 +607,8 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
           <Info className="h-6 w-6" />
         </div>
         <div>
-          <h4 className="text-sm font-black uppercase italic tracking-widest text-white mb-2">Important Note</h4>
-          <p className="text-xs font-medium text-gray-500 leading-relaxed uppercase tracking-tighter">
+          <h4 className="text-sm font-black uppercase italic tracking-widest text-foreground mb-2">Important Note</h4>
+          <p className="text-xs font-medium text-muted-foreground leading-relaxed uppercase tracking-tighter">
             Changes to core profile information may require re-verification by Gym Staff. 
             Maintain accurate data to ensure uninterrupted access.
           </p>

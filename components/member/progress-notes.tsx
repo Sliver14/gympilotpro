@@ -70,7 +70,7 @@ export default function ProgressNotes({ memberId }: ProgressNotesProps) {
 
         {notes.length === 0 ? (
           <div className="text-center py-20 bg-card/50 rounded-3xl border border-dashed border-border">
-            <TrendingUp className="mx-auto h-12 w-12 text-gray-800" />
+            <TrendingUp className="mx-auto h-12 w-12 text-muted-foreground" />
             <p className="mt-4 text-sm font-bold text-muted-foreground uppercase tracking-widest italic">Progress notes pending trainer briefing.</p>
           </div>
         ) : (

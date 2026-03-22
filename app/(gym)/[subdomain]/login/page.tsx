@@ -118,14 +118,14 @@ export default function LoginPage() {
 
   if (gymLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#0a0a0a]">
+      <div className="flex min-h-screen items-center justify-center bg-background">
         <Loader2 className="h-8 w-8 animate-spin text-[#daa857]" />
       </div>
     )
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#0a0a0a] text-foreground px-4 py-20">
+    <div className="flex min-h-screen items-center justify-center bg-background text-foreground px-4 py-20">
       <style jsx global>{`
         ::selection {
           background-color: ${accent}4d;
@@ -134,7 +134,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         {/* Logo */}
         <Link href="/" className="mb-12 flex flex-col items-center justify-center gap-4 group">
-          <div className="relative h-20 w-20 overflow-hidden rounded-full border-2 flex items-center justify-center transition-transform group-hover:scale-110" style={{ borderColor: `${accent}80`, backgroundColor: logoUrl ? 'white' : '#111' }}>
+          <div className="relative h-20 w-20 overflow-hidden rounded-full border-2 flex items-center justify-center transition-transform group-hover:scale-110" style={{ borderColor: `${accent}80`, backgroundColor: logoUrl  ? 'white' : 'hsl(var(--card))' }}>
             {logoUrl ? (
               <Image 
                 src={logoUrl} 

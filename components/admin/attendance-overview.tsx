@@ -108,7 +108,7 @@ export default function AttendanceOverview() {
                 />
                 <Tooltip
                   contentStyle={{ 
-                    backgroundColor: '#111', 
+                    backgroundColor: 'hsl(var(--card))', 
                     border: '1px solid rgba(218,168,87,0.2)',
                     borderRadius: '1rem',
                     fontSize: '10px',

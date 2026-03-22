@@ -193,7 +193,7 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
 
         {filteredMembers.length === 0 ? (
           <div className="py-20 text-center bg-card/50 rounded-[2rem] border border-dashed border-border">
-            <Users className="mx-auto h-12 w-12 text-gray-800 mb-4" />
+            <Users className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
             <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest italic">No matching members found in the database.</p>
           </div>
         ) : (
@@ -219,7 +219,7 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
                       </p>
                       <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest flex items-center gap-2">
                         <span className="truncate max-w-[150px]">{member.email}</span>
-                        <span className="h-1 w-1 rounded-full bg-gray-800" />
+                        <span className="h-1 w-1 rounded-full bg-muted" />
                         <span className="text-[#daa857]/50">ID: {member.id.slice(-6).toUpperCase()}</span>
                       </p>
                     </div>
