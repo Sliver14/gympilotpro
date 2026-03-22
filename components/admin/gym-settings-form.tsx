@@ -451,15 +451,15 @@ export function GymSettingsForm() {
                 <div className="space-y-4 mt-4">
                   <div>
                     <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Callback URL</Label>
-                    <div className="mt-1 flex items-center gap-2">
-                      <code className="flex-1 block p-3 bg-background border border-border rounded-xl text-[10px] md:text-xs font-mono text-muted-foreground shadow-inner overflow-x-auto whitespace-nowrap custom-scrollbar">
+                    <div className="mt-1 flex items-start sm:items-center gap-2">
+                      <code className="flex-1 block p-3 bg-background border border-border rounded-xl text-[10px] md:text-xs font-mono text-muted-foreground shadow-inner break-all">
                         https://{gymData?.slug}.gympilotpro.com/payment/success
                       </code>
                       <Button
                         type="button"
                         variant="outline"
                         size="icon"
-                        className="shrink-0 h-10 w-10 md:h-11 md:w-11 rounded-xl border-orange-500/30 text-orange-500 hover:bg-orange-500/10"
+                        className="shrink-0 h-10 w-10 md:h-11 md:w-11 rounded-xl border-orange-500/30 text-orange-500 hover:bg-orange-500/10 mt-1 sm:mt-0"
                         onClick={() => handleCopy(`https://${gymData?.slug}.gympilotpro.com/payment/success`, 'Callback URL')}
                       >
                         <Copy className="h-4 w-4 md:h-5 md:w-5" />
@@ -468,15 +468,15 @@ export function GymSettingsForm() {
                   </div>
                   <div>
                     <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Webhook URL</Label>
-                    <div className="mt-1 flex items-center gap-2">
-                      <code className="flex-1 block p-3 bg-background border border-border rounded-xl text-[10px] md:text-xs font-mono text-muted-foreground shadow-inner overflow-x-auto whitespace-nowrap custom-scrollbar">
+                    <div className="mt-1 flex items-start sm:items-center gap-2">
+                      <code className="flex-1 block p-3 bg-background border border-border rounded-xl text-[10px] md:text-xs font-mono text-muted-foreground shadow-inner break-all">
                         https://{gymData?.slug}.gympilotpro.com/api/webhooks/paystack/{gymData?.id}
                       </code>
                       <Button
                         type="button"
                         variant="outline"
                         size="icon"
-                        className="shrink-0 h-10 w-10 md:h-11 md:w-11 rounded-xl border-orange-500/30 text-orange-500 hover:bg-orange-500/10"
+                        className="shrink-0 h-10 w-10 md:h-11 md:w-11 rounded-xl border-orange-500/30 text-orange-500 hover:bg-orange-500/10 mt-1 sm:mt-0"
                         onClick={() => handleCopy(`https://${gymData?.slug}.gympilotpro.com/api/webhooks/paystack/${gymData?.id}`, 'Webhook URL')}
                       >
                         <Copy className="h-4 w-4 md:h-5 md:w-5" />
