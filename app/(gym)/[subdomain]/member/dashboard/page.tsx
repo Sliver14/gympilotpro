@@ -184,7 +184,7 @@ function MemberDashboardContent() {
         <header className="flex h-16 shrink-0 items-center gap-2 border-b border-border/50 px-6 sticky top-0 z-30 bg-background/50 backdrop-blur-md">
           <SidebarTrigger className="-ml-1" />
           <div className="flex items-center gap-2">
-            <h1 className="text-sm font-black uppercase italic tracking-[0.2em] text-muted-foreground">
+            <h1 className="text-sm font-black italic tracking-[0.2em] text-muted-foreground">
               Member <span className="text-primary">Terminal</span>
             </h1>
           </div>
@@ -203,7 +203,7 @@ function MemberDashboardContent() {
                   <p className="text-sm font-medium text-muted-foreground max-w-xl">
                     Your recent payment is currently <span className="text-primary font-bold">pending verification</span> by the gym management. Access will be restored once confirmed.
                   </p>
-                  <Button disabled className="mt-6 h-12 px-8 bg-primary/50 text-primary-foreground font-black uppercase tracking-widest rounded-xl cursor-not-allowed">
+                  <Button disabled className="mt-6 h-12 px-8 bg-primary/50 text-primary-foreground font-black rounded-xl cursor-not-allowed">
                     Awaiting Approval
                   </Button>
                 </div>
@@ -224,7 +224,7 @@ function MemberDashboardContent() {
                     Your membership expired on <span className="text-destructive font-bold">{expiryDate.toLocaleDateString()}</span>. The terminal is locked until renewal is processed.
                   </p>
                   <Link href="/member/renew-membership">
-                    <Button className="mt-6 h-12 px-8 bg-destructive hover:bg-destructive/80 text-destructive-foreground font-black uppercase tracking-widest rounded-xl transition-all hover:scale-[1.02]">
+                    <Button className="mt-6 h-12 px-8 bg-destructive hover:bg-destructive/80 text-destructive-foreground font-black rounded-xl transition-all hover:scale-[1.02]">
                       Initiate Renewal
                     </Button>
                   </Link>
@@ -246,7 +246,7 @@ function MemberDashboardContent() {
                     Gym access expires in <span className="text-primary font-bold">{daysUntilExpiry} days</span> ({expiryDate.toLocaleDateString()}). Extend plan now to maintain uninterrupted access.
                   </p>
                   <Link href="/member/renew-membership">
-                    <Button className="mt-6 h-12 px-8 bg-primary hover:bg-primary/80 text-primary-foreground font-black uppercase tracking-widest rounded-xl transition-all hover:scale-[1.02]">
+                    <Button className="mt-6 h-12 px-8 bg-primary hover:bg-primary/80 text-primary-foreground font-black rounded-xl transition-all hover:scale-[1.02]">
                       Extend Plan
                     </Button>
                   </Link>
@@ -271,13 +271,13 @@ function MemberDashboardContent() {
                     }).length, sub: 'TRAINING SESSIONS' }
                   ].map((stat, i) => (
                     <div key={i} className="bg-card border border-border/50 rounded-3xl p-4 md:p-8 shadow-xl relative overflow-hidden group hover:border-primary/30 transition-colors">
-                      <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground mb-4">{stat.label}</p>
+                      <p className="text-[10px] font-black tracking-[0.3em] text-muted-foreground mb-4">{stat.label}</p>
                       <div className="flex items-baseline gap-2">
                         <p className={cn("text-2xl md:text-4xl font-black italic tracking-tighter", stat.accent ? "text-primary" : "text-foreground")}>
                           {stat.value}
                         </p>
                       </div>
-                      <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 mt-2">{stat.sub}</p>
+                      <p className="text-[10px] font-black text-muted-foreground/60 mt-2">{stat.sub}</p>
                     </div>
                   ))}
                 </div>

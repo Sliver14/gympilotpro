@@ -263,12 +263,12 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
             <h2 className="text-2xl md:text-4xl font-black uppercase italic tracking-tighter text-foreground">
               {userData.firstName} <span className="text-[#daa857]">{userData.lastName}</span>
             </h2>
-            <p className="text-sm font-bold text-muted-foreground uppercase tracking-[0.3em]">{userData.email}</p>
+            <p className="text-sm font-bold text-muted-foreground tracking-[0.3em]">{userData.email}</p>
             <div className="flex flex-wrap justify-center md:justify-start gap-3 mt-6">
-              <div className="inline-flex items-center rounded-full bg-[#daa857]/10 border border-[#daa857]/20 px-4 py-1 text-[10px] font-black uppercase tracking-widest text-[#daa857]">
+              <div className="inline-flex items-center rounded-full bg-[#daa857]/10 border border-[#daa857]/20 px-4 py-1 text-[10px] font-black text-[#daa857]">
                 {userData.role} Core
               </div>
-              <div className="inline-flex items-center rounded-full bg-white/5 border border-border px-4 py-1 text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+              <div className="inline-flex items-center rounded-full bg-white/5 border border-border px-4 py-1 text-[10px] font-black text-muted-foreground">
                 Authorized Profile
               </div>
             </div>
@@ -291,7 +291,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
                   </div>
                   <div>
                     <h3 className="text-xl font-black uppercase italic tracking-tighter text-foreground mb-1">Profile</h3>
-                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Update Personal Metrics</p>
+                    <p className="text-[10px] font-bold text-muted-foreground">Update Personal Metrics</p>
                   </div>
                 </div>
                 <ChevronRight className="h-6 w-6 text-muted-foreground group-hover:text-[#daa857] transition-colors" />
@@ -303,7 +303,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
               <DialogTitle className="text-3xl font-black uppercase italic tracking-tighter">
                 Update <span className="text-[#daa857]">Profile</span>
               </DialogTitle>
-              <DialogDescription className="text-muted-foreground font-medium uppercase text-[10px] tracking-widest leading-relaxed">
+              <DialogDescription className="text-muted-foreground font-medium text-[10px] leading-relaxed">
                 Update core profile data for the <span className="text-foreground font-black">{userData.role}</span> account.
               </DialogDescription>
             </DialogHeader>
@@ -311,47 +311,47 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
             <form onSubmit={handleUpdateDetails} className="space-y-8 py-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                 <div className="space-y-3">
-                  <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">First Name</Label>
+                  <Label className="text-[10px] font-black tracking-[0.2em] text-muted-foreground ml-1">First Name</Label>
                   <Input 
                     value={detailsForm.firstName}
                     onChange={(e) => setDetailsForm({...detailsForm, firstName: e.target.value})}
                     placeholder={userData.firstName}
-                    className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-6 font-bold uppercase tracking-widest text-[10px]"
+                    className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-6 font-bold text-[10px]"
                   />
                 </div>
                 <div className="space-y-3">
-                  <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Last Name</Label>
+                  <Label className="text-[10px] font-black tracking-[0.2em] text-muted-foreground ml-1">Last Name</Label>
                   <Input 
                     value={detailsForm.lastName}
                     onChange={(e) => setDetailsForm({...detailsForm, lastName: e.target.value})}
                     placeholder={userData.lastName}
-                    className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-6 font-bold uppercase tracking-widest text-[10px]"
+                    className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-6 font-bold text-[10px]"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                 <div className="space-y-3">
-                  <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Comm Channel</Label>
+                  <Label className="text-[10px] font-black tracking-[0.2em] text-muted-foreground ml-1">Comm Channel</Label>
                   <div className="relative">
                     <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input 
                       value={detailsForm.email}
                       onChange={(e) => setDetailsForm({...detailsForm, email: e.target.value})}
                       placeholder={userData.email}
-                      className="h-14 pl-12 bg-background border-border rounded-xl focus:border-[#daa857] font-bold uppercase tracking-widest text-[10px]"
+                      className="h-14 pl-12 bg-background border-border rounded-xl focus:border-[#daa857] font-bold text-[10px]"
                     />
                   </div>
                 </div>
                 <div className="space-y-3">
-                  <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Secure Line</Label>
+                  <Label className="text-[10px] font-black tracking-[0.2em] text-muted-foreground ml-1">Secure Line</Label>
                   <div className="relative">
                     <Phone className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input 
                       value={detailsForm.phoneNumber}
                       onChange={(e) => setDetailsForm({...detailsForm, phoneNumber: e.target.value})}
                       placeholder={userData.phoneNumber || '080XXXXXXXX'}
-                      className="h-14 pl-12 bg-background border-border rounded-xl focus:border-[#daa857] font-bold uppercase tracking-widest text-[10px]"
+                      className="h-14 pl-12 bg-background border-border rounded-xl focus:border-[#daa857] font-bold text-[10px]"
                     />
                   </div>
                 </div>
@@ -361,39 +361,39 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
                 <>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                     <div className="space-y-3">
-                      <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Cycle of Origin (Birthday)</Label>
+                      <Label className="text-[10px] font-black tracking-[0.2em] text-muted-foreground ml-1">Cycle of Origin (Birthday)</Label>
                       <Input 
                         type="date"
                         value={detailsForm.birthday}
                         onChange={(e) => setDetailsForm({...detailsForm, birthday: e.target.value})}
-                        className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-6 font-bold uppercase tracking-widest text-[10px]"
+                        className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-6 font-bold text-[10px]"
                       />
                     </div>
                     <div className="space-y-3">
-                      <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Gender</Label>
+                      <Label className="text-[10px] font-black tracking-[0.2em] text-muted-foreground ml-1">Gender</Label>
                       <Select 
                         value={detailsForm.gender} 
                         onValueChange={(v) => setDetailsForm({...detailsForm, gender: v})}
                       >
-                        <SelectTrigger className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-6 font-bold uppercase tracking-widest text-[10px]">
+                        <SelectTrigger className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-6 font-bold text-[10px]">
                           <SelectValue placeholder="SELECT GENDER" />
                         </SelectTrigger>
                         <SelectContent className="bg-card border-border text-foreground">
-                          <SelectItem value="male" className="focus:bg-[#daa857]/10 focus:text-[#daa857] font-bold uppercase text-[10px]">MALE</SelectItem>
-                          <SelectItem value="female" className="focus:bg-[#daa857]/10 focus:text-[#daa857] font-bold uppercase text-[10px]">FEMALE</SelectItem>
-                          <SelectItem value="other" className="focus:bg-[#daa857]/10 focus:text-[#daa857] font-bold uppercase text-[10px]">OTHER</SelectItem>
+                          <SelectItem value="male" className="focus:bg-[#daa857]/10 focus:text-[#daa857] font-bold text-[10px]">MALE</SelectItem>
+                          <SelectItem value="female" className="focus:bg-[#daa857]/10 focus:text-[#daa857] font-bold text-[10px]">FEMALE</SelectItem>
+                          <SelectItem value="other" className="focus:bg-[#daa857]/10 focus:text-[#daa857] font-bold text-[10px]">OTHER</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
                   </div>
 
                   <div className="space-y-3">
-                    <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Fitness Goals</Label>
+                    <Label className="text-[10px] font-black tracking-[0.2em] text-muted-foreground ml-1">Fitness Goals</Label>
                     <Textarea 
                       value={detailsForm.fitnessGoalsDetails}
                       onChange={(e) => setDetailsForm({...detailsForm, fitnessGoalsDetails: e.target.value})}
                       placeholder="Specify your tactical objectives, injuries, or requirements..."
-                      className="min-h-[120px] bg-background border-border rounded-2xl focus:border-[#daa857] p-4 md:p-6 font-bold text-xs uppercase tracking-widest leading-relaxed"
+                      className="min-h-[120px] bg-background border-border rounded-2xl focus:border-[#daa857] p-4 md:p-6 font-bold text-xs leading-relaxed"
                     />
                   </div>
                 </>
@@ -404,14 +404,14 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
                   type="button" 
                   variant="outline" 
                   onClick={() => setIsDetailsModalOpen(false)}
-                  className="h-14 px-8 border-border hover:bg-white/5 rounded-xl text-[10px] font-black uppercase tracking-widest text-muted-foreground"
+                  className="h-14 px-8 border-border hover:bg-white/5 rounded-xl text-[10px] font-black text-muted-foreground"
                 >
                   Abort
                 </Button>
                 <Button 
                   type="submit" 
                   disabled={detailsLoading}
-                  className="flex-1 h-14 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black uppercase tracking-widest rounded-xl transition-all shadow-xl shadow-[#daa857]/10"
+                  className="flex-1 h-14 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black rounded-xl transition-all shadow-xl shadow-[#daa857]/10"
                 >
                   {detailsLoading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : 'Update Profile'}
                 </Button>
@@ -432,7 +432,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
                   </div>
                   <div>
                     <h3 className="text-xl font-black uppercase italic tracking-tighter text-foreground mb-1">Account Password</h3>
-                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Update Login Credentials</p>
+                    <p className="text-[10px] font-bold text-muted-foreground">Update Login Credentials</p>
                   </div>
                 </div>
                 <ChevronRight className="h-6 w-6 text-muted-foreground group-hover:text-[#daa857] transition-colors" />
@@ -444,14 +444,14 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
               <DialogTitle className="text-3xl font-black uppercase italic tracking-tighter">
                 Entry <span className="text-[#daa857]">Security</span>
               </DialogTitle>
-              <DialogDescription className="text-muted-foreground font-medium uppercase text-[10px] tracking-widest leading-relaxed">
+              <DialogDescription className="text-muted-foreground font-medium text-[10px] leading-relaxed">
                 Define a new secure password for your account.
               </DialogDescription>
             </DialogHeader>
             
             <form onSubmit={handleChangePassword} className="space-y-6 py-6">
               <div className="space-y-3">
-                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Current Password</Label>
+                <Label className="text-[10px] font-black tracking-[0.2em] text-muted-foreground ml-1">Current Password</Label>
                 <div className="relative">
                   <Input 
                     type={showCurrentPassword ? "text" : "password"}
@@ -470,7 +470,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
                 </div>
               </div>
               <div className="space-y-3 pt-2">
-                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">New Password</Label>
+                <Label className="text-[10px] font-black tracking-[0.2em] text-muted-foreground ml-1">New Password</Label>
                 <div className="relative">
                   <Input 
                     type={showNewPassword ? "text" : "password"}
@@ -490,7 +490,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
                 </div>
               </div>
               <div className="space-y-3">
-                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Verify New Password</Label>
+                <Label className="text-[10px] font-black tracking-[0.2em] text-muted-foreground ml-1">Verify New Password</Label>
                 <div className="relative">
                   <Input 
                     type={showConfirmPassword ? "text" : "password"}
@@ -514,14 +514,14 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
                   type="button" 
                   variant="outline" 
                   onClick={() => setIsPasswordModalOpen(false)}
-                  className="h-14 px-8 border-border hover:bg-white/5 rounded-xl text-[10px] font-black uppercase tracking-widest text-muted-foreground"
+                  className="h-14 px-8 border-border hover:bg-white/5 rounded-xl text-[10px] font-black text-muted-foreground"
                 >
                   Abort
                 </Button>
                 <Button 
                   type="submit" 
                   disabled={passwordLoading}
-                  className="flex-1 h-14 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black uppercase tracking-widest rounded-xl transition-all shadow-xl shadow-[#daa857]/10"
+                  className="flex-1 h-14 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black rounded-xl transition-all shadow-xl shadow-[#daa857]/10"
                 >
                   {passwordLoading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : 'Update Password'}
                 </Button>
@@ -569,7 +569,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
           <div className="p-5 md:p-8 space-y-6 md:space-y-8 bg-card">
             <div className="space-y-4">
               <div className="flex justify-between items-center">
-                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Image Zoom</Label>
+                <Label className="text-[10px] font-black tracking-[0.2em] text-muted-foreground">Image Zoom</Label>
                 <span className="text-[10px] font-black text-[#daa857]">{Math.round(zoom * 100)}%</span>
               </div>
               <Slider
@@ -586,13 +586,13 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
               <Button 
                 variant="outline" 
                 onClick={() => setIsCropperModalOpen(false)}
-                className="h-12 md:h-14 px-8 border-border hover:bg-white/5 rounded-xl text-[10px] font-black uppercase tracking-widest text-muted-foreground"
+                className="h-12 md:h-14 px-8 border-border hover:bg-white/5 rounded-xl text-[10px] font-black text-muted-foreground"
               >
                 Cancel
               </Button>
               <Button 
                 onClick={handleCropConfirm}
-                className="flex-1 h-12 md:h-14 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black uppercase tracking-widest rounded-xl transition-all shadow-xl shadow-[#daa857]/10"
+                className="flex-1 h-12 md:h-14 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black rounded-xl transition-all shadow-xl shadow-[#daa857]/10"
               >
                 Save Profile Picture
               </Button>
@@ -607,8 +607,8 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
           <Info className="h-6 w-6" />
         </div>
         <div>
-          <h4 className="text-sm font-black uppercase italic tracking-widest text-foreground mb-2">Important Note</h4>
-          <p className="text-xs font-medium text-muted-foreground leading-relaxed uppercase tracking-tighter">
+          <h4 className="text-sm font-black italic text-foreground mb-2">Important Note</h4>
+          <p className="text-xs font-medium text-muted-foreground leading-relaxed">
             Changes to core profile information may require re-verification by Gym Staff. 
             Maintain accurate data to ensure uninterrupted access.
           </p>

@@ -87,11 +87,11 @@ export default async function GymSubdomainLayout({
               <span className="text-orange-500 text-3xl font-black">!</span>
             </div>
             <h1 className="text-2xl md:text-4xl font-black uppercase italic mb-4 tracking-tighter">Domain Not Connected</h1>
-            <p className="text-muted-foreground max-w-md font-medium uppercase text-[10px] tracking-widest leading-relaxed">
+            <p className="text-muted-foreground max-w-md font-medium text-[10px] leading-relaxed">
               This domain is currently pointing to our servers but hasn't been verified or linked to any active gym yet.
             </p>
             <div className="mt-10 pt-10 border-t border-border w-full max-w-xs">
-               <p className="text-[8px] text-muted-foreground font-black uppercase tracking-[0.5em]">GYMPILOTPRO SYSTEMS • 2026</p>
+               <p className="text-[8px] text-muted-foreground font-black tracking-[0.5em]">GYMPILOTPRO SYSTEMS • 2026</p>
             </div>
           </div>
         )

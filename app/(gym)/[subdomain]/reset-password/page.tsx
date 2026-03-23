@@ -100,7 +100,7 @@ function ResetPasswordContent() {
             <p className="text-muted-foreground text-sm font-medium">{error}</p>
           </div>
           <Link href="/forgot-password">
-            <Button className="w-full h-14 bg-red-500 hover:bg-red-600 text-white font-black uppercase tracking-[0.2em] rounded-2xl">
+            <Button className="w-full h-14 bg-red-500 hover:bg-red-600 text-white font-black tracking-[0.2em] rounded-2xl">
               Request New Link
             </Button>
           </Link>
@@ -127,7 +127,7 @@ function ResetPasswordContent() {
               </p>
             </div>
             <Link href="/login">
-              <Button className="w-full h-14 bg-green-600 hover:bg-green-700 text-white font-black uppercase tracking-[0.2em] rounded-2xl mt-4">
+              <Button className="w-full h-14 bg-green-600 hover:bg-green-700 text-white font-black tracking-[0.2em] rounded-2xl mt-4">
                 Login Now
               </Button>
             </Link>
@@ -184,7 +184,7 @@ function ResetPasswordContent() {
 
               <Button 
                 type="submit" 
-                className="w-full h-16 text-black font-black uppercase tracking-[0.2em] rounded-2xl transition-all hover:scale-[1.02] active:scale-[0.98] group mt-4 shadow-xl shadow-[#daa857]/10" 
+                className="w-full h-16 text-black font-black tracking-[0.2em] rounded-2xl transition-all hover:scale-[1.02] active:scale-[0.98] group mt-4 shadow-xl shadow-[#daa857]/10" 
                 style={{ backgroundColor: accent }}
                 disabled={isLoading}
               >
@@ -222,7 +222,7 @@ export default function ResetPasswordPage() {
           </div>
           <div className="text-center">
             <h1 className="text-3xl font-black tracking-tighter uppercase italic">Klimarx<span style={{ color: accent }}>Space</span></h1>
-            <p className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground font-bold mt-1">Security Terminal</p>
+            <p className="text-[10px] tracking-[0.3em] text-muted-foreground font-bold mt-1">Security Terminal</p>
           </div>
         </Link>
 
@@ -235,7 +235,7 @@ export default function ResetPasswordPage() {
         </Suspense>
 
         {/* Footer info */}
-        <p className="mt-12 text-center text-[10px] text-muted-foreground font-black uppercase tracking-[0.5em]">
+        <p className="mt-12 text-center text-[10px] text-muted-foreground font-black tracking-[0.5em]">
           Klimarx Space © 2026 • Security Active
         </p>
       </div>

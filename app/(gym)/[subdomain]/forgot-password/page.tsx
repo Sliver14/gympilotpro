@@ -79,7 +79,7 @@ export default function ForgotPasswordPage() {
           </div>
           <div className="text-center">
             <h1 className="text-3xl font-black tracking-tighter uppercase italic">Klimarx<span style={{ color: accent }}>Space</span></h1>
-            <p className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground font-bold mt-1">Account Recovery</p>
+            <p className="text-[10px] tracking-[0.3em] text-muted-foreground font-bold mt-1">Account Recovery</p>
           </div>
         </Link>
 
@@ -91,7 +91,7 @@ export default function ForgotPasswordPage() {
 
           <div className="relative z-10">
             <div className="mb-2">
-              <Link href="/login" className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground hover:text-[#daa857] transition-colors">
+              <Link href="/login" className="inline-flex items-center gap-2 text-[10px] font-black tracking-[0.2em] text-muted-foreground hover:text-[#daa857] transition-colors">
                 <ArrowLeft className="h-3 w-3" /> Back to Login
               </Link>
             </div>
@@ -110,7 +110,7 @@ export default function ForgotPasswordPage() {
                 </div>
                 <Button 
                   variant="outline" 
-                  className="w-full h-14 border-border bg-transparent hover:bg-accent rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] mt-4" 
+                  className="w-full h-14 border-border bg-transparent hover:bg-accent rounded-2xl text-[10px] font-black tracking-[0.2em] mt-4" 
                   onClick={() => setIsSubmitted(false)}
                 >
                   Resend Link
@@ -126,7 +126,7 @@ export default function ForgotPasswordPage() {
                 {error && (
                   <div className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center gap-3 animate-in fade-in slide-in-from-top-2">
                     <AlertCircle className="h-5 w-5 text-red-500 shrink-0" />
-                    <p className="text-xs font-bold text-red-500 uppercase tracking-widest leading-tight">{error}</p>
+                    <p className="text-xs font-bold text-red-500 leading-tight">{error}</p>
                   </div>
                 )}
 
@@ -147,7 +147,7 @@ export default function ForgotPasswordPage() {
 
                   <Button 
                     type="submit" 
-                    className="w-full h-16 text-black font-black uppercase tracking-[0.2em] rounded-2xl transition-all hover:scale-[1.02] active:scale-[0.98] group shadow-xl shadow-[#daa857]/10" 
+                    className="w-full h-16 text-black font-black tracking-[0.2em] rounded-2xl transition-all hover:scale-[1.02] active:scale-[0.98] group shadow-xl shadow-[#daa857]/10" 
                     style={{ backgroundColor: accent }}
                     disabled={isLoading}
                   >
@@ -166,7 +166,7 @@ export default function ForgotPasswordPage() {
         </div>
 
         {/* Footer info */}
-        <p className="mt-12 text-center text-[10px] text-muted-foreground font-black uppercase tracking-[0.5em]">
+        <p className="mt-12 text-center text-[10px] text-muted-foreground font-black tracking-[0.5em]">
           Klimarx Space © 2026 • Security Active
         </p>
       </div>

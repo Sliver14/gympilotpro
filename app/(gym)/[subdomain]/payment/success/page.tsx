@@ -94,7 +94,7 @@ function SuccessContent() {
             <p className="text-muted-foreground font-medium text-lg">
               {message}
             </p>
-            <p className="font-bold uppercase text-[10px] mt-5 tracking-widest" style={{ color: accent }}>
+            <p className="font-bold text-[10px] mt-5" style={{ color: accent }}>
               Your access has been granted
             </p>
           </div>

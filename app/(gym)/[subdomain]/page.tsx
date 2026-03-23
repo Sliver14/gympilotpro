@@ -123,12 +123,12 @@ export default function GymLandingPage() {
               <span style={{ color: accent }}>{gymName.split(' ').slice(1).join(' ')}</span>
             </span>     
           </div>
-          <div className="hidden md:flex items-center gap-4 md:gap-8 text-sm font-medium uppercase tracking-widest">
+          <div className="hidden md:flex items-center gap-4 md:gap-8 text-sm font-medium">
             <Link href="#features" className="hover:text-foreground transition-colors" style={{ color: accent }}>Experience</Link>
             <Link href="#membership" className="hover:text-foreground transition-colors" style={{ color: accent }}>Memberships</Link>
             <Link
               href="/login"
-              className="hover:text-foreground transition-colors uppercase font-bold tracking-widest"
+              className="hover:text-foreground transition-colors font-bold"
               style={{ color: accent }}
             >
               Login
@@ -147,7 +147,7 @@ export default function GymLandingPage() {
           <div className="flex md:hidden items-center gap-4">
             <Link
               href="/login"
-              className="text-[10px] font-black uppercase tracking-[0.2em] border px-4 py-2 rounded-full backdrop-blur-sm bg-card/50"
+              className="text-[10px] font-black tracking-[0.2em] border px-4 py-2 rounded-full backdrop-blur-sm bg-card/50"
               style={{ color: accent, borderColor: `${accent}4d` }}
             >
               Login
@@ -250,7 +250,7 @@ export default function GymLandingPage() {
                 }`}
                 style={pkg.popular ? { background: `linear-gradient(to bottom right, ${accent}, #b89778)`, color: dark } : { color: 'white' }}
               >
-                {pkg.popular && <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-background text-[10px] font-black px-6 py-1 rounded-full uppercase" style={{ color: accent }}>Top Choice</span>}
+                {pkg.popular && <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-background text-[10px] font-black px-6 py-1 rounded-full" style={{ color: accent }}>Top Choice</span>}
                 <h3 className={`text-2xl font-black uppercase italic ${pkg.popular ? '' : 'text-foreground'}`}>{pkg.name}</h3>
                 <div className="my-8">
                   <span className="text-3xl md:text-5xl font-black italic">₦{pkg.price}</span>
@@ -273,7 +273,7 @@ export default function GymLandingPage() {
           </div>
 
           <div className="mt-16 flex justify-center">
-            <button onClick={() => setShowAll(!showAll)} className="flex items-center gap-4 font-black uppercase tracking-widest group" style={{ color: accent }}>
+            <button onClick={() => setShowAll(!showAll)} className="flex items-center gap-4 font-black group" style={{ color: accent }}>
               {showAll ? <><ChevronUp /> Show Less</> : <>View All Tiers <ChevronDown className="animate-bounce" /></>}
             </button>
           </div>
@@ -286,12 +286,12 @@ export default function GymLandingPage() {
           <div className="text-2xl md:text-4xl font-black uppercase italic tracking-tighter">
             {gymName.split(' ')[0]}<span style={{ color: accent }}>{gymName.split(' ').slice(1).join(' ')}</span>
           </div>
-          <div className="flex gap-12 font-bold uppercase text-xs tracking-widest text-muted-foreground">
+          <div className="flex gap-12 font-bold text-xs text-muted-foreground">
             <span className="hover:text-foreground transition-colors cursor-pointer" style={{ ':hover': { color: accent } } as any}>Instagram</span>
             <span className="hover:text-foreground transition-colors cursor-pointer" style={{ ':hover': { color: accent } } as any}>Twitter</span>
             <span className="hover:text-foreground transition-colors cursor-pointer" style={{ ':hover': { color: accent } } as any}>Facebook</span>
           </div>
-          <p className="text-xs text-muted-foreground font-bold tracking-widest uppercase italic">© 2026 {gymName.toUpperCase()}. ELITE ONLY.</p>
+          <p className="text-xs text-muted-foreground font-bold italic">© 2026 {gymName.toUpperCase()}. ELITE ONLY.</p>
         </div>
       </footer>
     </main>

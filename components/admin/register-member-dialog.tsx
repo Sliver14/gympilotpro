@@ -160,7 +160,7 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="h-10 px-6 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black uppercase text-[10px] tracking-widest gap-2 rounded-xl transition-all shadow-xl shadow-[#daa857]/10">
+        <Button className="h-10 px-6 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black text-[10px] gap-2 rounded-xl transition-all shadow-xl shadow-[#daa857]/10">
           <UserPlus className="h-3.5 w-3.5 stroke-[3px]" />
           Enroll Member
         </Button>
@@ -170,7 +170,7 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
           <DialogTitle className="text-3xl font-black uppercase italic tracking-tighter">
             New Member <span className="text-[#daa857]">Enrollment</span>
           </DialogTitle>
-          <DialogDescription className="text-muted-foreground font-medium uppercase text-[10px] tracking-widest leading-relaxed">
+          <DialogDescription className="text-muted-foreground font-medium text-[10px] leading-relaxed">
             Establishing a new profile in the gym. Default password: <span className="text-[#daa857] font-black">12345678</span>
           </DialogDescription>
         </DialogHeader>
@@ -178,24 +178,24 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
         <form onSubmit={handleSubmit} className="space-y-8 py-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
             <div className="space-y-3">
-              <Label htmlFor="firstName" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">First Name *</Label>
+              <Label htmlFor="firstName" className="text-[10px] font-black tracking-[0.2em] text-muted-foreground ml-1">First Name *</Label>
               <Input
                 id="firstName"
                 value={formData.firstName}
                 onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
                 placeholder="FIRST NAME"
-                className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-6 font-bold uppercase tracking-widest text-[10px]"
+                className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-6 font-bold text-[10px]"
                 required
               />
             </div>
             <div className="space-y-3">
-              <Label htmlFor="lastName" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Last Name *</Label>
+              <Label htmlFor="lastName" className="text-[10px] font-black tracking-[0.2em] text-muted-foreground ml-1">Last Name *</Label>
               <Input
                 id="lastName"
                 value={formData.lastName}
                 onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
                 placeholder="LAST NAME"
-                className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-6 font-bold uppercase tracking-widest text-[10px]"
+                className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-6 font-bold text-[10px]"
                 required
               />
             </div>
@@ -203,26 +203,26 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
             <div className="space-y-3">
-              <Label htmlFor="email" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Comm Channel *</Label>
+              <Label htmlFor="email" className="text-[10px] font-black tracking-[0.2em] text-muted-foreground ml-1">Comm Channel *</Label>
               <Input
                 id="email"
                 type="email"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 placeholder="EMAIL@EXAMPLE.COM"
-                className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-6 font-bold uppercase tracking-widest text-[10px]"
+                className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-6 font-bold text-[10px]"
                 required
               />
             </div>
             <div className="space-y-3">
-              <Label htmlFor="phoneNumber" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Secure Line *</Label>
+              <Label htmlFor="phoneNumber" className="text-[10px] font-black tracking-[0.2em] text-muted-foreground ml-1">Secure Line *</Label>
               <Input
                 id="phoneNumber"
                 type="tel"
                 value={formData.phoneNumber}
                 onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
                 placeholder="CONTACT NUMBER"
-                className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-6 font-bold uppercase tracking-widest text-[10px]"
+                className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-6 font-bold text-[10px]"
                 required
               />
             </div>
@@ -230,7 +230,7 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
             <div className="space-y-3">
-              <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Date of Birth</Label>
+              <Label className="text-[10px] font-black tracking-[0.2em] text-muted-foreground ml-1">Date of Birth</Label>
               <div className="flex gap-2">
                 <Select
                   value={formData.birthday?.split('-')[0] || ''}
@@ -240,7 +240,7 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
                     setFormData({ ...formData, birthday: `${month}-${newDay.padStart(2, '0')}` })
                   }}
                 >
-                  <SelectTrigger className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-4 font-black uppercase tracking-widest text-[10px] flex-1">
+                  <SelectTrigger className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-4 font-black text-[10px] flex-1">
                     <SelectValue placeholder="MONTH" />
                   </SelectTrigger>
                   <SelectContent className="bg-card border-border text-foreground">
@@ -250,7 +250,7 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
                       { value: '07', label: 'JUL' }, { value: '08', label: 'AUG' }, { value: '09', label: 'SEP' },
                       { value: '10', label: 'OCT' }, { value: '11', label: 'NOV' }, { value: '12', label: 'DEC' },
                     ].map((m) => (
-                      <SelectItem key={m.value} value={m.value} className="focus:bg-[#daa857]/10 focus:text-[#daa857] font-bold uppercase text-[10px]">
+                      <SelectItem key={m.value} value={m.value} className="focus:bg-[#daa857]/10 focus:text-[#daa857] font-bold text-[10px]">
                         {m.label}
                       </SelectItem>
                     ))}
@@ -265,7 +265,7 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
                   }}
                   disabled={!formData.birthday?.split('-')[0]}
                 >
-                  <SelectTrigger className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-4 font-black uppercase tracking-widest text-[10px] w-24">
+                  <SelectTrigger className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-4 font-black text-[10px] w-24">
                     <SelectValue placeholder="DAY" />
                   </SelectTrigger>
                   <SelectContent className="bg-card border-border text-foreground">
@@ -277,7 +277,7 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
                         const dayNum = i + 1
                         const dayStr = dayNum.toString().padStart(2, '0')
                         return (
-                          <SelectItem key={dayStr} value={dayStr} className="focus:bg-[#daa857]/10 focus:text-[#daa857] font-bold uppercase text-[10px]">
+                          <SelectItem key={dayStr} value={dayStr} className="focus:bg-[#daa857]/10 focus:text-[#daa857] font-bold text-[10px]">
                             {dayNum}
                           </SelectItem>
                         )
@@ -289,17 +289,17 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
             </div>
 
             <div className="space-y-3">
-              <Label htmlFor="gender" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Gender</Label>
+              <Label htmlFor="gender" className="text-[10px] font-black tracking-[0.2em] text-muted-foreground ml-1">Gender</Label>
               <Select
                 value={formData.gender}
                 onValueChange={(value) => setFormData({ ...formData, gender: value })}
               >
-                <SelectTrigger id="gender" className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-4 font-black uppercase tracking-widest text-[10px]">
+                <SelectTrigger id="gender" className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-4 font-black text-[10px]">
                   <SelectValue placeholder="SELECT GENDER" />
                 </SelectTrigger>
                 <SelectContent className="bg-card border-border text-foreground">
                   {GENDER_OPTIONS.map((opt) => (
-                    <SelectItem key={opt.value} value={opt.value} className="focus:bg-[#daa857]/10 focus:text-[#daa857] font-bold uppercase text-[10px]">
+                    <SelectItem key={opt.value} value={opt.value} className="focus:bg-[#daa857]/10 focus:text-[#daa857] font-bold text-[10px]">
                       {opt.label.toUpperCase()}
                     </SelectItem>
                   ))}
@@ -310,17 +310,17 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
             <div className="space-y-3">
-              <Label htmlFor="membership" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Membership Plan *</Label>
+              <Label htmlFor="membership" className="text-[10px] font-black tracking-[0.2em] text-muted-foreground ml-1">Membership Plan *</Label>
               <Select
                 value={formData.membershipId}
                 onValueChange={(value) => setFormData({ ...formData, membershipId: value })}
               >
-                <SelectTrigger id="membership" className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-4 font-black uppercase tracking-widest text-[10px]">
+                <SelectTrigger id="membership" className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-4 font-black text-[10px]">
                   <SelectValue placeholder="SELECT TIER" />
                 </SelectTrigger>
                 <SelectContent className="bg-card border-border text-foreground">
                   {memberships.map((m) => (
-                    <SelectItem key={m.id} value={m.id} className="focus:bg-[#daa857]/10 focus:text-[#daa857] font-bold uppercase text-[10px]">
+                    <SelectItem key={m.id} value={m.id} className="focus:bg-[#daa857]/10 focus:text-[#daa857] font-bold text-[10px]">
                       {m.name.toUpperCase()} - ₦{m.price.toLocaleString('en-NG')}
                     </SelectItem>
                   ))}
@@ -328,12 +328,12 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
               </Select>
             </div>
             <div className="space-y-3">
-              <Label htmlFor="paymentMethod" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Authorization *</Label>
+              <Label htmlFor="paymentMethod" className="text-[10px] font-black tracking-[0.2em] text-muted-foreground ml-1">Authorization *</Label>
               <Select
                 value={formData.paymentMethod}
                 onValueChange={(value) => setFormData({ ...formData, paymentMethod: value })}
               >
-                <SelectTrigger id="paymentMethod" className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-4 font-black uppercase tracking-widest text-[10px]">
+                <SelectTrigger id="paymentMethod" className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-4 font-black text-[10px]">
                   <SelectValue placeholder="METHOD" />
                 </SelectTrigger>
                 <SelectContent className="bg-card border-border text-foreground">
@@ -342,7 +342,7 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
                       key={method.id} 
                       value={method.id} 
                       disabled={method.disabled}
-                      className="focus:bg-[#daa857]/10 focus:text-[#daa857] font-bold uppercase text-[10px]"
+                      className="focus:bg-[#daa857]/10 focus:text-[#daa857] font-bold text-[10px]"
                     >
                       {method.name.toUpperCase()} {method.disabled ? '(NOT CONFIGURED)' : ''}
                     </SelectItem>
@@ -354,14 +354,14 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 items-end">
             <div className="space-y-3">
-              <Label htmlFor="startDate" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Deployment Start *</Label>
+              <Label htmlFor="startDate" className="text-[10px] font-black tracking-[0.2em] text-muted-foreground ml-1">Deployment Start *</Label>
               <Input
                 id="startDate"
                 type="date"
                 value={formData.startDate}
                 onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
                 max={new Date().toISOString().split('T')[0]}
-                className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-4 font-black uppercase tracking-widest text-[10px]"
+                className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-4 font-black text-[10px]"
                 required
               />
             </div>
@@ -374,7 +374,7 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
               />
               <Label
                 htmlFor="payment-completed"
-                className="text-[9px] font-black uppercase tracking-widest text-muted-foreground cursor-pointer"
+                className="text-[9px] font-black text-muted-foreground cursor-pointer"
               >
                 Instant Verification & Activation
               </Label>
@@ -382,14 +382,14 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
           </div>
 
           <div className="space-y-3">
-            <Label htmlFor="fitnessGoals" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Fitness Goals</Label>
+            <Label htmlFor="fitnessGoals" className="text-[10px] font-black tracking-[0.2em] text-muted-foreground ml-1">Fitness Goals</Label>
             <Textarea
               id="fitnessGoals"
               value={formData.fitnessGoalsDetails}
               onChange={(e) => setFormData({ ...formData, fitnessGoalsDetails: e.target.value })}
               placeholder="SPECIFY TARGETS OR MEDICAL CONTRAINDICATIONS..."
               rows={3}
-              className="bg-background border-border rounded-2xl focus:border-[#daa857] p-4 md:p-6 font-bold text-xs uppercase tracking-widest"
+              className="bg-background border-border rounded-2xl focus:border-[#daa857] p-4 md:p-6 font-bold text-xs"
             />
           </div>
 
@@ -398,14 +398,14 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
               type="button" 
               variant="outline" 
               onClick={() => setOpen(false)}
-              className="h-14 px-8 border-border hover:bg-accent rounded-xl text-[10px] font-black uppercase tracking-widest text-muted-foreground"
+              className="h-14 px-8 border-border hover:bg-accent rounded-xl text-[10px] font-black text-muted-foreground"
             >
               Abort
             </Button>
             <Button 
               type="submit" 
               disabled={isLoading}
-              className="flex-1 h-14 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black uppercase tracking-widest rounded-xl transition-all shadow-xl shadow-[#daa857]/10"
+              className="flex-1 h-14 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black rounded-xl transition-all shadow-xl shadow-[#daa857]/10"
             >
               {isLoading ? (
                 <Loader2 className="h-4 w-4 animate-spin mr-2" />

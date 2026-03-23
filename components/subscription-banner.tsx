@@ -20,11 +20,11 @@ export function SubscriptionBanner({ daysUntilExpiry, isExpired, isGracePeriod, 
       
       <div className="text-sm font-bold flex-1 text-center md:text-left">
         {isCritical ? (
-          <span className="uppercase tracking-widest">Action Required: Your SaaS plan has expired. Please renew to avoid service interruption for your members.</span>
+          <span className="">Action Required: Your SaaS plan has expired. Please renew to avoid service interruption for your members.</span>
         ) : isGracePeriod ? (
-          <span className="uppercase tracking-widest">Grace Period Active: Your SaaS plan has expired. Service will be disconnected in {daysUntilExpiry} days.</span>
+          <span className="">Grace Period Active: Your SaaS plan has expired. Service will be disconnected in {daysUntilExpiry} days.</span>
         ) : (
-          <span className="uppercase tracking-widest">Warning: Your SaaS plan will expire in {daysUntilExpiry} days.</span>
+          <span className="">Warning: Your SaaS plan will expire in {daysUntilExpiry} days.</span>
         )}
       </div>
 

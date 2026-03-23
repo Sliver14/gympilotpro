@@ -116,14 +116,14 @@ function AdminDashboardContent() {
           <SidebarTrigger className="-ml-1" />
           <div className="flex items-center justify-between w-full">
             <div className="flex items-center gap-2">
-              <h1 className="text-sm font-black uppercase italic tracking-[0.2em] text-muted-foreground">
+              <h1 className="text-sm font-black italic tracking-[0.2em] text-muted-foreground">
                 {adminData.role} <span className="text-primary">Dashboard</span>
               </h1>
             </div>
             {!isConfigComplete && adminData.role === 'admin' && (
               <div className="hidden md:flex items-center gap-4 bg-primary/10 border border-primary/20 px-4 py-1.5 rounded-full animate-pulse">
                 <AlertTriangle className="h-4 w-4 text-primary" />
-                <span className="text-[10px] font-black uppercase tracking-widest text-primary">
+                <span className="text-[10px] font-black text-primary">
                   Compulsory Configuration Pending: 
                   {!hasPackages && " [Create Packages]"}
                   {!hasBankDetails && " [Add Bank Details]"}
@@ -143,18 +143,18 @@ function AdminDashboardContent() {
                     <ShieldCheck className="h-6 w-6" />
                     <h2 className="text-2xl font-black uppercase italic tracking-tighter">Action Required</h2>
                   </div>
-                  <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest leading-relaxed max-w-xl">
+                  <p className="text-xs font-bold text-muted-foreground leading-relaxed max-w-xl">
                     Your gym sanctuary is live, but members cannot register or renew without core configurations. 
                     Please complete these steps to ensure uninterrupted operations.
                   </p>
                   <div className="flex flex-wrap justify-center md:justify-start gap-4">
                     {!hasPackages && (
-                      <div className="flex items-center gap-2 px-3 py-1.5 bg-destructive/10 border border-destructive/20 rounded-lg text-[10px] font-black uppercase tracking-widest text-destructive">
+                      <div className="flex items-center gap-2 px-3 py-1.5 bg-destructive/10 border border-destructive/20 rounded-lg text-[10px] font-black text-destructive">
                         Missing Membership Packages
                       </div>
                     )}
                     {!hasBankDetails && (
-                      <div className="flex items-center gap-2 px-3 py-1.5 bg-destructive/10 border border-destructive/20 rounded-lg text-[10px] font-black uppercase tracking-widest text-destructive">
+                      <div className="flex items-center gap-2 px-3 py-1.5 bg-destructive/10 border border-destructive/20 rounded-lg text-[10px] font-black text-destructive">
                         Missing Bank Account Details
                       </div>
                     )}
@@ -162,7 +162,7 @@ function AdminDashboardContent() {
                 </div>
                 <Button 
                   onClick={() => router.push(hasPackages ? '/admin/settings' : '?tab=packages')}
-                  className="h-14 px-10 bg-primary hover:bg-primary/80 text-primary-foreground font-black uppercase tracking-widest rounded-xl shadow-xl shadow-primary/10 transition-all hover:scale-105 active:scale-95"
+                  className="h-14 px-10 bg-primary hover:bg-primary/80 text-primary-foreground font-black rounded-xl shadow-xl shadow-primary/10 transition-all hover:scale-105 active:scale-95"
                 >
                   Configure Now
                 </Button>

@@ -24,7 +24,7 @@ import { PLANS, DURATIONS, PlanKey } from '@/lib/plans'
 
 // Reusable Components
 const SectionTag = ({ children }: { children: React.ReactNode }) => (
-  <span className="text-orange-500 font-black italic uppercase tracking-[0.2em] text-xs sm:text-sm mb-3 sm:mb-4 block">
+  <span className="text-orange-500 font-black italic tracking-[0.2em] text-xs sm:text-sm mb-3 sm:mb-4 block">
     {children}
   </span>
 )
@@ -75,7 +75,7 @@ export default function SaaSLandingPage() {
             </span>
           </Link>
 
-          <div className="hidden md:flex items-center gap-4 md:gap-8 lg:gap-10 text-xs sm:text-[11px] font-black uppercase tracking-[0.2em]">
+          <div className="hidden md:flex items-center gap-4 md:gap-8 lg:gap-10 text-xs sm:text-[11px] font-black tracking-[0.2em]">
             <Link href="#features" className="hover:text-orange-500 transition-colors">Platform</Link>
             <Link href="#demo" className="hover:text-orange-500 transition-colors">Demo</Link>
             <Link href="#pricing" className="hover:text-orange-500 transition-colors">Pricing</Link>
@@ -263,7 +263,7 @@ export default function SaaSLandingPage() {
                     <h4 className="text-xl sm:text-2xl font-black italic uppercase text-orange-500">
                       Nere Emiko
                     </h4>
-                    <p className="text-muted-foreground font-bold uppercase text-xs sm:text-sm tracking-wider mt-1">
+                    <p className="text-muted-foreground font-bold text-xs sm:text-sm mt-1">
                       Owner, Klimarx Space Gym – Lagos
                     </p>
                   </div>
@@ -276,7 +276,7 @@ export default function SaaSLandingPage() {
             </p>
 
             <div className="mt-12 md:mt-16 h-16 sm:h-20 border-y border-border flex items-center justify-center opacity-30">
-              <p className="italic text-xs sm:text-sm tracking-[0.5em] uppercase">More Industry Leaders Coming Soon</p>
+              <p className="italic text-xs sm:text-sm tracking-[0.5em]">More Industry Leaders Coming Soon</p>
             </div>
           </div>
         </div>
@@ -295,7 +295,7 @@ export default function SaaSLandingPage() {
                   key={d.months}
                   onClick={() => setSelectedMonths(d.months)}
                   className={cn(
-                    "px-6 sm:px-8 py-2.5 sm:py-3 font-black italic uppercase text-xs sm:text-sm tracking-widest border-2 transition-all",
+                    "px-6 sm:px-8 py-2.5 sm:py-3 font-black italic text-xs sm:text-sm border-2 transition-all",
                     selectedMonths === d.months
                       ? "bg-orange-500 border-orange-500 text-foreground shadow-[0_0_20px_rgba(249,115,22,0.3)]"
                       : "bg-transparent border-border text-muted-foreground hover:border-border"
@@ -326,7 +326,7 @@ export default function SaaSLandingPage() {
                   )}
                 >
                   {isPopular && (
-                    <span className="absolute -top-4 sm:-top-5 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-[10px] sm:text-xs font-black px-5 sm:px-6 py-1.5 sm:py-2 uppercase italic tracking-widest shadow-xl">
+                    <span className="absolute -top-4 sm:-top-5 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-[10px] sm:text-xs font-black px-5 sm:px-6 py-1.5 sm:py-2 italic shadow-xl">
                       Owner's Choice
                     </span>
                   )}
@@ -334,21 +334,21 @@ export default function SaaSLandingPage() {
 
                   <div className="my-6 sm:my-8 space-y-4">
                     <div className="p-3 sm:p-4 bg-white/5 border border-border group-hover:border-orange-500/30 transition-colors">
-                      <p className="text-[10px] sm:text-xs font-black uppercase text-muted-foreground mb-1 tracking-widest">Initial Access (Setup)</p>
+                      <p className="text-[10px] sm:text-xs font-black text-muted-foreground mb-1">Initial Access (Setup)</p>
                       <p className="text-2xl sm:text-3xl font-black italic tracking-tighter">₦{p.setupFee.toLocaleString()}</p>
                     </div>
                     <div className="p-3 sm:p-4 bg-orange-500/5 border border-orange-500/20">
-                      <p className="text-[10px] sm:text-xs font-black uppercase text-orange-500/70 mb-1 tracking-widest">
+                      <p className="text-[10px] sm:text-xs font-black text-orange-500/70 mb-1">
                         {selectedMonths} Month{selectedMonths > 1 ? 's' : ''} Access
                       </p>
                       <div className="flex items-baseline gap-1">
                         <span className="text-3xl sm:text-4xl font-black italic tracking-tighter text-orange-500">
                           ₦{(discountedMonthly * selectedMonths).toLocaleString()}
                         </span>
-                        <span className="text-muted-foreground font-bold uppercase text-[10px] sm:text-xs tracking-widest">/{selectedMonths}MO</span>
+                        <span className="text-muted-foreground font-bold text-[10px] sm:text-xs">/{selectedMonths}MO</span>
                       </div>
                       {currentDuration.discount > 0 && (
-                        <p className="text-[9px] sm:text-xs font-bold text-green-500 uppercase mt-1">
+                        <p className="text-[9px] sm:text-xs font-bold text-green-500 mt-1">
                           Includes {currentDuration.discount * 100}% multi-month discount
                         </p>
                       )}
@@ -357,14 +357,14 @@ export default function SaaSLandingPage() {
 
                   <ul className="space-y-3 sm:space-y-4 mb-8 sm:mb-10 flex-1">
                     {p.features.map((f, j) => (
-                      <li key={j} className="flex items-start gap-2 sm:gap-3 text-xs sm:text-sm font-bold uppercase text-muted-foreground group-hover:text-gray-200 transition-colors">
+                      <li key={j} className="flex items-start gap-2 sm:gap-3 text-xs sm:text-sm font-bold text-muted-foreground group-hover:text-gray-200 transition-colors">
                         <Check size={16} className="text-orange-500 shrink-0 mt-0.5" /> {f}
                       </li>
                     ))}
                   </ul>
 
                   <div className="pt-6 border-t border-border mb-6 sm:mb-8">
-                    <p className="text-[10px] sm:text-xs font-black uppercase text-muted-foreground mb-1 tracking-widest">Total to Unlock Access</p>
+                    <p className="text-[10px] sm:text-xs font-black text-muted-foreground mb-1">Total to Unlock Access</p>
                     <p className="text-xl sm:text-2xl font-black italic tracking-tighter text-foreground">₦{totalSetupAndMonthly.toLocaleString()}</p>
                   </div>
 
@@ -412,7 +412,7 @@ export default function SaaSLandingPage() {
                 GymPilot<span className="text-orange-500">Pro</span>
               </span>
             </Link>
-            <p className="text-xs sm:text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">
+            <p className="text-xs sm:text-[10px] font-black tracking-[0.2em] text-muted-foreground">
               © 2026 GYMPILOTPRO SYSTEMS. RUN LIKE A PRO.
             </p>
           </div>

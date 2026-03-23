@@ -178,7 +178,7 @@ export default function RegisterStaffDialog({ onStaffAdded }: { onStaffAdded?: (
             </div>
             <div className="space-y-2">
               <Label>Security</Label>
-              <div className="h-10 px-3 flex items-center bg-muted rounded-md text-[10px] font-medium text-muted-foreground uppercase tracking-widest leading-tight">
+              <div className="h-10 px-3 flex items-center bg-muted rounded-md text-[10px] font-medium text-muted-foreground leading-tight">
                 Default password (12345678) will be assigned.
               </div>
             </div>
@@ -195,7 +195,7 @@ export default function RegisterStaffDialog({ onStaffAdded }: { onStaffAdded?: (
           </div>
 
           <div className="bg-[#daa857]/5 border border-[#daa857]/20 p-4 rounded-xl">
-             <p className="text-[10px] font-bold text-[#daa857] uppercase tracking-widest leading-relaxed">
+             <p className="text-[10px] font-bold text-[#daa857] leading-relaxed">
                A welcome email will be sent to the staff member with their login credentials and the gym's access URL.
              </p>
           </div>

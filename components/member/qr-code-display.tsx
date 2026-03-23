@@ -70,7 +70,7 @@ export default function QRCodeDisplay({ memberId }: QRCodeDisplayProps) {
           <h3 className="text-xl font-black uppercase italic tracking-tighter text-foreground flex items-center gap-3">
             <QrCode className="h-5 w-5 text-[#daa857]" /> Access <span className="text-[#daa857]">Pass</span>
           </h3>
-          <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Access Authenticator</p>
+          <p className="text-[10px] font-black text-muted-foreground">Access Authenticator</p>
         </div>
 
         <div className="flex flex-col items-center gap-4 md:gap-6 md:gap-10">
@@ -82,12 +82,12 @@ export default function QRCodeDisplay({ memberId }: QRCodeDisplayProps) {
               </div>
               
               <div className="text-center max-w-sm">
-                <p className="mb-8 text-xs font-bold text-muted-foreground uppercase tracking-widest leading-relaxed">
+                <p className="mb-8 text-xs font-bold text-muted-foreground leading-relaxed">
                   Present this <span className="text-[#daa857]">QR Code</span> at the check-in terminal for instant gym access.
                 </p>
                 <Button 
                   onClick={handleDownload} 
-                  className="w-full h-14 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black uppercase tracking-widest rounded-xl transition-all shadow-xl shadow-[#daa857]/10 flex items-center justify-center gap-3"
+                  className="w-full h-14 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black rounded-xl transition-all shadow-xl shadow-[#daa857]/10 flex items-center justify-center gap-3"
                 >
                   <Download className="h-5 w-5" />
                   Download QR Code

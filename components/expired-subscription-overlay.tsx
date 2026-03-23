@@ -25,7 +25,7 @@ export function ExpiredSubscriptionOverlay({ role, accent = '#daa857' }: Expired
         </p>
 
         <div className="pt-8">
-          <p className="text-muted-foreground font-black tracking-[0.3em] text-[10px] uppercase">
+          <p className="text-muted-foreground font-black tracking-[0.3em] text-[10px]">
             GymPilotPro Systems © 2026
           </p>
         </div>

@@ -47,9 +47,9 @@ export default function AdminHeader({ adminData, onLogout, title, description }:
           
           {(title || description) && (
             <div className="hidden md:flex items-center gap-3 border-l border-border pl-4">
-              {title && <h1 className="text-[10px] font-black uppercase tracking-[0.3em]" style={{ color: accent }}>{title}</h1>}
+              {title && <h1 className="text-[10px] font-black tracking-[0.3em]" style={{ color: accent }}>{title}</h1>}
               {description && <span className="h-1 w-1 rounded-full bg-muted" />}
-              {description && <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">{description}</p>}
+              {description && <p className="text-[10px] font-bold text-muted-foreground">{description}</p>}
             </div>
           )}
         </div>
@@ -67,17 +67,17 @@ export default function AdminHeader({ adminData, onLogout, title, description }:
             <DropdownMenuContent align="end" className="w-56 bg-card border-border text-foreground rounded-xl">
               <DropdownMenuItem disabled className="opacity-100">
                 <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-black uppercase italic">{adminData.firstName} {adminData.lastName}</p>
-                  <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest capitalize">{adminData.role} DASHBOARD</p>
+                  <p className="text-sm font-black italic">{adminData.firstName} {adminData.lastName}</p>
+                  <p className="text-[10px] font-bold text-muted-foreground capitalize">{adminData.role} DASHBOARD</p>
                 </div>
               </DropdownMenuItem>
               <DropdownMenuItem asChild className="focus:bg-accent cursor-pointer">
-                <Link href="/admin/settings" className="flex items-center gap-2 font-bold uppercase text-[10px] tracking-widest">
+                <Link href="/admin/settings" className="flex items-center gap-2 font-bold text-[10px]">
                   <Settings className="h-3.5 w-3.5" style={{ color: accent }} />
                   Admin Settings
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={onLogout} className="focus:bg-red-500/10 focus:text-red-500 cursor-pointer text-red-500/80 font-bold uppercase text-[10px] tracking-widest">
+              <DropdownMenuItem onClick={onLogout} className="focus:bg-red-500/10 focus:text-red-500 cursor-pointer text-red-500/80 font-bold text-[10px]">
                 <LogOut className="h-3.5 w-3.5" />
                 System Logout
               </DropdownMenuItem>

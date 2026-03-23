@@ -25,13 +25,13 @@ export function ModeToggle() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="rounded-2xl bg-card border-border text-foreground p-2 shadow-2xl">
-        <DropdownMenuItem onClick={() => setTheme('light')} className="rounded-xl focus:bg-accent focus:text-accent-foreground cursor-pointer py-2 px-4 font-bold uppercase text-[10px] tracking-widest">
+        <DropdownMenuItem onClick={() => setTheme('light')} className="rounded-xl focus:bg-accent focus:text-accent-foreground cursor-pointer py-2 px-4 font-bold text-[10px]">
           Light
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme('dark')} className="rounded-xl focus:bg-accent focus:text-accent-foreground cursor-pointer py-2 px-4 font-bold uppercase text-[10px] tracking-widest">
+        <DropdownMenuItem onClick={() => setTheme('dark')} className="rounded-xl focus:bg-accent focus:text-accent-foreground cursor-pointer py-2 px-4 font-bold text-[10px]">
           Dark
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme('system')} className="rounded-xl focus:bg-accent focus:text-accent-foreground cursor-pointer py-2 px-4 font-bold uppercase text-[10px] tracking-widest">
+        <DropdownMenuItem onClick={() => setTheme('system')} className="rounded-xl focus:bg-accent focus:text-accent-foreground cursor-pointer py-2 px-4 font-bold text-[10px]">
           System
         </DropdownMenuItem>
       </DropdownMenuContent>

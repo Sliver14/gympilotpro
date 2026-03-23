@@ -101,7 +101,7 @@ export default function ExpiredMembersList({ onMemberRenewed }: { onMemberRenewe
             onClick={fetchExpiredMembers} 
             variant="outline" 
             size="sm" 
-            className="h-10 px-4 border-red-500/10 bg-background hover:bg-red-500/10 text-red-500 font-black uppercase text-[10px] tracking-widest gap-2 rounded-xl"
+            className="h-10 px-4 border-red-500/10 bg-background hover:bg-red-500/10 text-red-500 font-black text-[10px] gap-2 rounded-xl"
           >
             <RefreshCw className={cn("h-3.5 w-3.5", isLoading && "animate-spin")} />
             Update Deactivated
@@ -122,7 +122,7 @@ export default function ExpiredMembersList({ onMemberRenewed }: { onMemberRenewe
         {filteredMembers.length === 0 ? (
           <div className="py-20 text-center bg-card/50 rounded-[2rem] border border-dashed border-border">
             <AlertTriangle className="mx-auto h-12 w-12 text-muted-foreground mb-4 opacity-20" />
-            <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest italic">No expired members detected at the check-in.</p>
+            <p className="text-sm font-bold text-muted-foreground italic">No expired members detected at the check-in.</p>
           </div>
         ) : (
           <div className="grid gap-4">
@@ -135,11 +135,11 @@ export default function ExpiredMembersList({ onMemberRenewed }: { onMemberRenewe
                     {member.firstName} <span className="text-red-500">{member.lastName}</span>
                   </p>
                   <div className="flex flex-wrap gap-x-6 gap-y-2 pt-2 border-t border-border">
-                    <div className="flex items-center gap-2 text-[8px] font-black uppercase tracking-widest text-muted-foreground">
+                    <div className="flex items-center gap-2 text-[8px] font-black text-muted-foreground">
                       <Mail className="h-3 w-3 text-red-500/50" />
                       {member.email}
                     </div>
-                    <div className="flex items-center gap-2 text-[8px] font-black uppercase tracking-widest text-muted-foreground">
+                    <div className="flex items-center gap-2 text-[8px] font-black text-muted-foreground">
                       <Phone className="h-3 w-3 text-red-500/50" />
                       {member.phoneNumber}
                     </div>
@@ -148,10 +148,10 @@ export default function ExpiredMembersList({ onMemberRenewed }: { onMemberRenewe
 
                 <div className="flex items-center justify-between md:justify-end gap-4 md:gap-6 md:gap-10 mt-6 md:mt-0 relative z-10">
                   <div className="text-left md:text-right">
-                    <p className="text-[10px] font-black text-red-500 uppercase italic tracking-tight">
+                    <p className="text-[10px] font-black text-red-500 italic">
                       EXPIRED {getDaysExpired(member.memberProfile.expiryDate)} DAYS AGO
                     </p>
-                    <p className="text-[8px] font-bold text-muted-foreground uppercase tracking-widest mt-1">
+                    <p className="text-[8px] font-bold text-muted-foreground mt-1">
                       LAST TIER: {member.memberProfile.membership.name.toUpperCase()}
                     </p>
                   </div>

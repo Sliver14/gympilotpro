@@ -74,7 +74,7 @@ function SuccessContent() {
             <p className="text-muted-foreground font-medium text-lg leading-relaxed">
               {message}
             </p>
-            <p className="text-orange-500 font-bold uppercase text-sm mt-5 tracking-widest">
+            <p className="text-orange-500 font-bold text-sm mt-5">
               Plan Activated
             </p>
           </div>

@@ -114,7 +114,7 @@ export default function AdminStats({
           
           <div className="flex flex-col gap-4 relative z-10">
             <div className="flex items-center justify-between">
-              <p className="text-[8px] font-black uppercase tracking-[0.3em] text-muted-foreground">{item.label}</p>
+              <p className="text-[8px] font-black tracking-[0.3em] text-muted-foreground">{item.label}</p>
               <item.icon className={cn(
                 "h-4 w-4",
                 item.accent ? "text-primary" : item.warning ? "text-destructive animate-pulse" : "text-muted-foreground/50"
@@ -128,7 +128,7 @@ export default function AdminStats({
               )}>
                 {item.value}
               </p>
-              <p className="text-[8px] font-bold uppercase tracking-widest text-muted-foreground/60 mt-1">{item.sub}</p>
+              <p className="text-[8px] font-bold text-muted-foreground/60 mt-1">{item.sub}</p>
             </div>
           </div>
         </div>

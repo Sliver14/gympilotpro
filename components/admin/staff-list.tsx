@@ -98,7 +98,7 @@ export default function StaffList() {
               onClick={fetchStaff} 
               variant="outline" 
               size="sm" 
-              className="h-10 px-4 border-border bg-background hover:bg-accent text-muted-foreground font-black uppercase text-[10px] tracking-widest gap-2 rounded-xl"
+              className="h-10 px-4 border-border bg-background hover:bg-accent text-muted-foreground font-black text-[10px] gap-2 rounded-xl"
             >
               <RefreshCw className={cn("h-3.5 w-3.5", isLoading && "animate-spin")} />
               Update
@@ -120,7 +120,7 @@ export default function StaffList() {
         {filteredStaff.length === 0 ? (
           <div className="py-20 text-center bg-card/50 rounded-[2rem] border border-dashed border-border">
             <UserCheck className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-            <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest italic">No authorized personnel match the current query.</p>
+            <p className="text-sm font-bold text-muted-foreground italic">No authorized personnel match the current query.</p>
           </div>
         ) : (
           <div className="grid gap-4">
@@ -142,7 +142,7 @@ export default function StaffList() {
                       <p className="font-black text-foreground uppercase italic tracking-tight text-lg leading-none mb-1">
                         {s.firstName} <span className="text-[#daa857]">{s.lastName}</span>
                       </p>
-                      <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest flex items-center gap-2">
+                      <p className="text-[10px] font-bold text-muted-foreground flex items-center gap-2">
                         <span>{s.email}</span>
                         <span className="h-1 w-1 rounded-full bg-muted" />
                         <span className="text-[#daa857]/50">{s.role.toUpperCase()} CORE</span>
@@ -152,18 +152,18 @@ export default function StaffList() {
 
                   <div className="flex items-center justify-between md:justify-end gap-4 md:gap-8 mt-6 md:mt-0 pt-6 md:pt-0 border-t md:border-none border-border relative z-10">
                     <div className="text-left md:text-right">
-                      <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground mb-1">Specialization</p>
-                      <p className="text-xs font-black text-foreground uppercase italic">{s.staffProfile?.specialization || 'General Role'}</p>
+                      <p className="text-[8px] font-black text-muted-foreground mb-1">Specialization</p>
+                      <p className="text-xs font-black text-foreground italic">{s.staffProfile?.specialization || 'General Role'}</p>
                     </div>
                     
                     <div className="text-left md:text-right">
-                      <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground mb-1">Personnel Since</p>
+                      <p className="text-[8px] font-black text-muted-foreground mb-1">Personnel Since</p>
                       <p className="text-xs font-bold text-muted-foreground">
                         {new Date(s.createdAt).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' }).toUpperCase()}
                       </p>
                     </div>
 
-                    <Badge className="bg-[#daa857]/10 text-[#daa857] border border-[#daa857]/20 px-4 py-1 rounded-full text-[8px] font-black uppercase tracking-widest italic">
+                    <Badge className="bg-[#daa857]/10 text-[#daa857] border border-[#daa857]/20 px-4 py-1 rounded-full text-[8px] font-black italic">
                       {s.role.toUpperCase()}
                     </Badge>
                   </div>

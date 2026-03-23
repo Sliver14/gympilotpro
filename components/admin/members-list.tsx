@@ -132,7 +132,7 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
             <CardDescription>{members.length} verified members in the gym</CardDescription>
             {maxMembers !== Infinity && (
               <div className="mt-3 max-w-[200px]">
-                <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1">
+                <div className="flex justify-between text-[10px] font-bold text-muted-foreground mb-1">
                   <span>Capacity</span>
                   <span>{members.length} / {maxMembers}</span>
                 </div>
@@ -149,7 +149,7 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
             {isAtCapacity ? (
               <Button 
                 onClick={() => window.location.href = '/admin/billing'}
-                className="bg-orange-500 hover:bg-orange-600 text-black font-black uppercase tracking-widest rounded-xl shadow-[0_0_20px_rgba(249,115,22,0.3)]"
+                className="bg-orange-500 hover:bg-orange-600 text-black font-black rounded-xl shadow-[0_0_20px_rgba(249,115,22,0.3)]"
               >
                 Upgrade Plan to Add More
               </Button>
@@ -163,7 +163,7 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
               onClick={fetchMembers} 
               variant="outline" 
               size="sm" 
-              className="h-10 px-4 border-border bg-background hover:bg-accent text-muted-foreground font-black uppercase text-[10px] tracking-widest gap-2 rounded-xl"
+              className="h-10 px-4 border-border bg-background hover:bg-accent text-muted-foreground font-black text-[10px] gap-2 rounded-xl"
             >
               <RefreshCw className={cn("h-3.5 w-3.5", isLoading && "animate-spin")} />
               Update
@@ -172,7 +172,7 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
               onClick={handleExport} 
               variant="outline" 
               size="sm" 
-              className="h-10 px-4 border-border bg-background hover:bg-accent text-muted-foreground font-black uppercase text-[10px] tracking-widest gap-2 rounded-xl"
+              className="h-10 px-4 border-border bg-background hover:bg-accent text-muted-foreground font-black text-[10px] gap-2 rounded-xl"
             >
               <Download className="h-3.5 w-3.5" />
               Extract
@@ -194,7 +194,7 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
         {filteredMembers.length === 0 ? (
           <div className="py-20 text-center bg-card/50 rounded-[2rem] border border-dashed border-border">
             <Users className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-            <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest italic">No matching members found in the database.</p>
+            <p className="text-sm font-bold text-muted-foreground italic">No matching members found in the database.</p>
           </div>
         ) : (
           <div className="grid gap-4">
@@ -217,7 +217,7 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
                       <p className="font-black text-foreground uppercase italic tracking-tight text-lg leading-none mb-1">
                         {member.firstName} <span className="text-[#daa857]">{member.lastName}</span>
                       </p>
-                      <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest flex items-center gap-2">
+                      <p className="text-[10px] font-bold text-muted-foreground flex items-center gap-2">
                         <span className="truncate max-w-[150px]">{member.email}</span>
                         <span className="h-1 w-1 rounded-full bg-muted" />
                         <span className="text-[#daa857]/50">ID: {member.id.slice(-6).toUpperCase()}</span>
@@ -227,20 +227,20 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
 
                   <div className="flex items-center justify-between md:justify-end gap-4 md:gap-8 mt-6 md:mt-0 pt-6 md:pt-0 border-t md:border-none border-border relative z-10">
                     <div className="text-left md:text-right">
-                      <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground mb-1">Membership Plan</p>
-                      <p className="text-xs font-black text-foreground uppercase italic">{member.memberProfile.membership.name}</p>
+                      <p className="text-[8px] font-black text-muted-foreground mb-1">Membership Plan</p>
+                      <p className="text-xs font-black text-foreground italic">{member.memberProfile.membership.name}</p>
                     </div>
                     
                     <div className="text-left md:text-right">
-                      <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground mb-1">Expiry Date</p>
-                      <p className="text-xs font-bold text-muted-foreground uppercase tracking-tighter">
+                      <p className="text-[8px] font-black text-muted-foreground mb-1">Expiry Date</p>
+                      <p className="text-xs font-bold text-muted-foreground">
                         {new Date(member.memberProfile.expiryDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).toUpperCase()}
                       </p>
                     </div>
 
                     <Badge
                       className={cn(
-                        "px-4 py-1.5 rounded-full text-[10px] font-black uppercase italic tracking-tighter border-none",
+                        "px-4 py-1.5 rounded-full text-[10px] font-black italic border-none",
                         status === 'active' ? "bg-green-500 text-black" : status === 'expiring' ? "bg-[#daa857] text-black" : "bg-red-500 text-white"
                       )}
                     >

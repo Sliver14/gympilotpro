@@ -133,7 +133,7 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight ml-2">
                   <span className="truncate font-black uppercase italic tracking-tighter text-lg">{gymName}<span style={{ color: accent }}>Space</span></span>
-                  <span className="truncate text-[8px] font-bold uppercase tracking-[0.4em] text-muted-foreground mt-0.5 capitalize">{role} Dashboard</span>
+                  <span className="truncate text-[8px] font-bold tracking-[0.4em] text-muted-foreground mt-0.5 capitalize">{role} Dashboard</span>
                 </div>
               </Link>
             </SidebarMenuButton>
@@ -177,7 +177,7 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
       <SidebarFooter>
         <div className="px-4 py-2 border-t border-sidebar-border/50">
           <div className="flex items-center justify-between">
-            <span className="text-[10px] font-black uppercase tracking-widest text-sidebar-foreground/50">Appearance</span>
+            <span className="text-[10px] font-black text-sidebar-foreground/50">Appearance</span>
             <ModeToggle />
           </div>
         </div>
@@ -194,10 +194,10 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
                     <AvatarFallback className="rounded-lg font-black" style={{ backgroundColor: `${accent}1a`, color: accent }}>{initials || '??'}</AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-black uppercase italic tracking-tight text-foreground">
+                    <span className="truncate font-black italic text-foreground">
                       {adminData.firstName} {adminData.lastName}
                     </span>
-                    <span className="truncate text-[10px] font-bold text-muted-foreground uppercase tracking-tighter">{adminData.email}</span>
+                    <span className="truncate text-[10px] font-bold text-muted-foreground">{adminData.email}</span>
                   </div>
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
@@ -209,18 +209,18 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
               >
                 <DropdownMenuItem disabled className="opacity-100 p-4 border-b border-border mb-2">
                   <div className="flex flex-col space-y-1">
-                    <p className="text-xs font-black uppercase italic tracking-widest text-foreground">{adminData.firstName} {adminData.lastName}</p>
-                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-tighter">{adminData.email}</p>
+                    <p className="text-xs font-black italic text-foreground">{adminData.firstName} {adminData.lastName}</p>
+                    <p className="text-[10px] font-bold text-muted-foreground">{adminData.email}</p>
                   </div>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild className="rounded-xl focus:bg-accent cursor-pointer py-3 px-4 text-foreground focus:text-accent-foreground">
-                  <Link href="/admin/settings" className="flex items-center gap-3 font-black uppercase text-[10px] tracking-widest">
+                  <Link href="/admin/settings" className="flex items-center gap-3 font-black text-[10px]">
                     <Settings className="size-4" style={{ color: accent }} />
                     Gym Settings
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild className="rounded-xl focus:bg-accent cursor-pointer py-3 px-4 text-foreground focus:text-accent-foreground">
-                  <Link href="/admin/domain" className="flex items-center gap-3 font-black uppercase text-[10px] tracking-widest w-full justify-between">
+                  <Link href="/admin/domain" className="flex items-center gap-3 font-black text-[10px] w-full justify-between">
                     <div className="flex items-center gap-3">
                       <Globe className="size-4" style={{ color: accent }} />
                       Domain Setup
@@ -231,7 +231,7 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={onLogout} className="rounded-xl focus:bg-accent cursor-pointer py-3 px-4 text-foreground focus:text-accent-foreground">
-                  <div className="flex items-center gap-3 font-black uppercase text-[10px] tracking-widest">
+                  <div className="flex items-center gap-3 font-black text-[10px]">
                     <LogOut className="size-4" />
                     Log Out
                   </div>

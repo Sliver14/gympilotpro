@@ -150,7 +150,7 @@ export default function LoginPage() {
             <h1 className="text-3xl font-black tracking-tighter uppercase italic">
               {gymName.split(' ')[0]}<span style={{ color: accent }}>{gymName.split(' ').slice(1).join(' ')}</span>
             </h1>
-            <p className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground font-bold mt-1">{tagline}</p>
+            <p className="text-[10px] tracking-[0.3em] text-muted-foreground font-bold mt-1">{tagline}</p>
           </div>
         </Link>
 
@@ -169,7 +169,7 @@ export default function LoginPage() {
             {error && (
               <div className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center gap-3 animate-in fade-in slide-in-from-top-2">
                 <AlertCircle className="h-5 w-5 text-red-500 shrink-0" />
-                <p className="text-xs font-bold text-red-500 uppercase tracking-widest leading-tight">{error}</p>
+                <p className="text-xs font-bold text-red-500 leading-tight">{error}</p>
               </div>
             )}
 
@@ -195,7 +195,7 @@ export default function LoginPage() {
                   />
                 </div>
                 {fieldErrors.email && (
-                  <p className="text-[10px] text-red-500 font-bold uppercase tracking-widest ml-2 flex items-center gap-1">
+                  <p className="text-[10px] text-red-500 font-bold ml-2 flex items-center gap-1">
                     <AlertCircle className="h-3 w-3" /> {fieldErrors.email}
                   </p>
                 )}
@@ -230,7 +230,7 @@ export default function LoginPage() {
                   </button>
                 </div>
                 {fieldErrors.password && (
-                  <p className="text-[10px] text-red-500 font-bold uppercase tracking-widest ml-2 flex items-center gap-1">
+                  <p className="text-[10px] text-red-500 font-bold ml-2 flex items-center gap-1">
                     <AlertCircle className="h-3 w-3" /> {fieldErrors.password}
                   </p>
                 )}
@@ -239,7 +239,7 @@ export default function LoginPage() {
               <div className="flex justify-end pr-2">
                 <Link
                   href="/forgot-password"
-                  className="text-xs text-muted-foreground hover:text-foreground transition-colors font-bold uppercase tracking-widest"
+                  className="text-xs text-muted-foreground hover:text-foreground transition-colors font-bold"
                   style={{ color: `${accent}cc` }}
                 >
                   Forgot Password?
@@ -248,7 +248,7 @@ export default function LoginPage() {
 
               <Button 
                 type="submit" 
-                className="w-full h-16 text-black font-black uppercase tracking-[0.2em] rounded-2xl transition-all hover:scale-[1.02] active:scale-[0.98] group mt-4 shadow-xl shadow-black/20" 
+                className="w-full h-16 text-black font-black tracking-[0.2em] rounded-2xl transition-all hover:scale-[1.02] active:scale-[0.98] group mt-4 shadow-xl shadow-black/20" 
                 style={{ backgroundColor: accent, color: gymData?.secondaryColor || '#000000' }}
                 disabled={isLoading}
               >
@@ -265,7 +265,7 @@ export default function LoginPage() {
             <div className="mt-10 text-center">
               <p className="text-sm text-muted-foreground font-medium">
                 New to the space?{' '}
-                <Link href="/signup" className="font-black hover:underline uppercase tracking-tight ml-1" style={{ color: accent }}>
+                <Link href="/signup" className="font-black hover:underline ml-1" style={{ color: accent }}>
                   Apply for Membership
                 </Link>
               </p>
@@ -274,7 +274,7 @@ export default function LoginPage() {
         </div>
 
         {/* Footer info */}
-        <p className="mt-12 text-center text-[10px] text-muted-foreground font-black uppercase tracking-[0.5em]">
+        <p className="mt-12 text-center text-[10px] text-muted-foreground font-black tracking-[0.5em]">
           {gymName} © 2026 • Security Active
         </p>
       </div>

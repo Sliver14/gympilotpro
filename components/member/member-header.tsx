@@ -54,17 +54,17 @@ export default function MemberHeader({ memberData, onLogout }: MemberHeaderProps
             <DropdownMenuContent align="end" className="w-56 bg-card border-border text-foreground rounded-xl">
               <DropdownMenuItem disabled className="opacity-100">
                 <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-black uppercase italic">{memberData.firstName} {memberData.lastName}</p>
-                  <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">{memberData.email}</p>
+                  <p className="text-sm font-black italic">{memberData.firstName} {memberData.lastName}</p>
+                  <p className="text-[10px] font-bold text-muted-foreground">{memberData.email}</p>
                 </div>
               </DropdownMenuItem>
               <DropdownMenuItem asChild className="focus:bg-accent cursor-pointer">
-                <Link href="/member/profile" className="flex items-center gap-2 font-bold uppercase text-[10px] tracking-widest">
+                <Link href="/member/profile" className="flex items-center gap-2 font-bold text-[10px]">
                   <Settings className="h-3.5 w-3.5" style={{ color: accent }} />
                   Profile Settings
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={onLogout} className="focus:bg-red-500/10 focus:text-red-500 cursor-pointer text-red-500/80 font-bold uppercase text-[10px] tracking-widest">
+              <DropdownMenuItem onClick={onLogout} className="focus:bg-red-500/10 focus:text-red-500 cursor-pointer text-red-500/80 font-bold text-[10px]">
                 <LogOut className="h-3.5 w-3.5" />
                 Logout
               </DropdownMenuItem>

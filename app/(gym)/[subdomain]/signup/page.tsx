@@ -324,7 +324,7 @@ export default function SignupPage() {
                   <item.icon className="h-4 w-4" />
                 </div>
                 <span className={cn(
-                  "text-[10px] font-black uppercase tracking-widest",
+                  "text-[10px] font-black",
                   step >= item.s ? "text-[#daa857]" : "text-muted-foreground"
                 )}>{item.label}</span>
               </div>
@@ -340,7 +340,7 @@ export default function SignupPage() {
              {(error || submitError) && (
                <div className="mb-8 p-4 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center gap-3 animate-in fade-in slide-in-from-top-2">
                  <AlertCircle className="h-5 w-5 text-red-500 shrink-0" />
-                 <p className="text-xs font-bold text-red-500 uppercase tracking-widest leading-tight">{error || submitError}</p>
+                 <p className="text-xs font-bold text-red-500 leading-tight">{error || submitError}</p>
                </div>
              )}
              
@@ -372,7 +372,7 @@ export default function SignupPage() {
                     <div className="flex-1 space-y-6 w-full">
                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                           <div className="space-y-1">
-                            <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-2">First Name</Label>
+                            <Label className="text-[10px] font-black tracking-[0.2em] text-muted-foreground ml-2">First Name</Label>
                             <Input 
                               placeholder="First Name" 
                               value={formData.firstName}
@@ -381,7 +381,7 @@ export default function SignupPage() {
                             />
                           </div>
                           <div className="space-y-1">
-                            <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-2">Last Name</Label>
+                            <Label className="text-[10px] font-black tracking-[0.2em] text-muted-foreground ml-2">Last Name</Label>
                             <Input 
                               placeholder="Last Name" 
                               value={formData.lastName}
@@ -393,7 +393,7 @@ export default function SignupPage() {
                        
                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                           <div className="space-y-1">
-                            <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-2">Gender</Label>
+                            <Label className="text-[10px] font-black tracking-[0.2em] text-muted-foreground ml-2">Gender</Label>
                             <Select value={formData.gender} onValueChange={(v) => updateFormData({ gender: v })}>
                               <SelectTrigger className={cn("h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-6 font-bold", fieldErrors.gender && "border-red-500")}>
                                 <SelectValue placeholder="Select" />
@@ -406,7 +406,7 @@ export default function SignupPage() {
                             </Select>
                           </div>
                           <div className="space-y-1">
-                            <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-2">Phone</Label>
+                            <Label className="text-[10px] font-black tracking-[0.2em] text-muted-foreground ml-2">Phone</Label>
                             <div className="relative">
                               <Phone className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                               <Input 
@@ -423,7 +423,7 @@ export default function SignupPage() {
 
                  <div className="space-y-6">
                     <div className="space-y-1">
-                      <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-2">Email Address</Label>
+                      <Label className="text-[10px] font-black tracking-[0.2em] text-muted-foreground ml-2">Email Address</Label>
                       <div className="relative">
                         <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                         <Input 
@@ -437,7 +437,7 @@ export default function SignupPage() {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                        <div className="space-y-1">
-                         <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-2">How did you find us?</Label>
+                         <Label className="text-[10px] font-black tracking-[0.2em] text-muted-foreground ml-2">How did you find us?</Label>
                          <Select value={formData.hearAboutUs} onValueChange={(v) => updateFormData({ hearAboutUs: v })}>
                            <SelectTrigger className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-6 font-bold">
                              <SelectValue placeholder="Select Source" />
@@ -449,7 +449,7 @@ export default function SignupPage() {
                        </div>
                        
                        <div className="space-y-1">
-                         <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-2">Birthday (Optional)</Label>
+                         <Label className="text-[10px] font-black tracking-[0.2em] text-muted-foreground ml-2">Birthday (Optional)</Label>
                          <div className="flex gap-2">
                             <Select 
                               value={formData.birthday?.split('-')[0]} 
@@ -513,7 +513,7 @@ export default function SignupPage() {
                         </div>
                         <div className="mb-4">
                           <span className="text-3xl font-black italic">₦{m.price.toLocaleString()}</span>
-                          <span className={cn("text-[10px] font-black ml-2 uppercase opacity-60")}>/ {m.duration} Days</span>
+                          <span className={cn("text-[10px] font-black ml-2 opacity-60")}>/ {m.duration} Days</span>
                         </div>
                         <p className={cn("text-xs font-bold leading-relaxed", formData.membershipId === m.id ? "text-black/70" : "text-muted-foreground group-hover:text-muted-foreground")}>
                           {m.description}
@@ -524,14 +524,14 @@ export default function SignupPage() {
                  </div>
 
                  <div className="space-y-4">
-                    <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-2">Verification Method</Label>
+                    <Label className="text-[10px] font-black tracking-[0.2em] text-muted-foreground ml-2">Verification Method</Label>
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                       {PAYMENT_METHODS.map((method) => (
                         <div
                           key={method.id}
                           onClick={() => method.isEnabled && updateFormData({ paymentMethod: method.id })}
                           className={cn(
-                            "relative cursor-pointer rounded-xl py-4 border-2 text-center text-[10px] font-black uppercase tracking-widest transition-all",
+                            "relative cursor-pointer rounded-xl py-4 border-2 text-center text-[10px] font-black transition-all",
                             formData.paymentMethod === method.id 
                               ? "bg-[#daa857] border-[#daa857] text-black" 
                               : "bg-background border-border text-foreground hover:border-[#daa857]/50",
@@ -548,7 +548,7 @@ export default function SignupPage() {
                       <div className="p-4 md:p-6 rounded-2xl bg-background border border-[#daa857]/30 border-dashed">
                         <div className="flex items-center gap-3 text-[#daa857] mb-2">
                            <AlertTriangle className="h-5 w-5" />
-                           <span className="text-xs font-black uppercase tracking-widest">Instructions</span>
+                           <span className="text-xs font-black">Instructions</span>
                         </div>
                         <p className="text-[10px] text-muted-foreground font-bold whitespace-pre-line leading-relaxed">
                           {bankDetailsMessage}
@@ -581,13 +581,13 @@ export default function SignupPage() {
                         )}>
                           {(formData.fitnessGoals as string[])?.includes(goal.id) && <ShieldCheck className="h-3 w-3 text-black" />}
                         </div>
-                        <span className="text-[10px] font-black uppercase tracking-widest">{goal.label}</span>
+                        <span className="text-[10px] font-black">{goal.label}</span>
                       </div>
                     ))}
                   </div>
 
                   <div className="space-y-1">
-                    <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-2">Fitness Goals</Label>                    <Textarea 
+                    <Label className="text-[10px] font-black tracking-[0.2em] text-muted-foreground ml-2">Fitness Goals</Label>                    <Textarea 
                       placeholder="Specify your targets, existing injuries, or specialized requirements..."
                       value={formData.fitnessGoalsDetails}
                       onChange={(e) => updateFormData({ fitnessGoalsDetails: e.target.value })}
@@ -597,7 +597,7 @@ export default function SignupPage() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                     <div className="space-y-1">
-                      <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-2">Emergency Liaison</Label>
+                      <Label className="text-[10px] font-black tracking-[0.2em] text-muted-foreground ml-2">Emergency Liaison</Label>
                       <Input 
                         placeholder="Contact Name" 
                         value={formData.emergencyContact}
@@ -606,7 +606,7 @@ export default function SignupPage() {
                       />
                     </div>
                     <div className="space-y-1">
-                      <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-2">Emergency Phone</Label>
+                      <Label className="text-[10px] font-black tracking-[0.2em] text-muted-foreground ml-2">Emergency Phone</Label>
                       <Input 
                         placeholder="Contact Phone" 
                         value={formData.emergencyPhone}
@@ -623,7 +623,7 @@ export default function SignupPage() {
                <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                     <div className="space-y-1">
-                      <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-2">Secure Password</Label>
+                      <Label className="text-[10px] font-black tracking-[0.2em] text-muted-foreground ml-2">Secure Password</Label>
                       <div className="relative">
                         <Input 
                           type={showPassword ? "text" : "password"}
@@ -642,7 +642,7 @@ export default function SignupPage() {
                       </div>
                     </div>
                     <div className="space-y-1">
-                      <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-2">Verify Password</Label>
+                      <Label className="text-[10px] font-black tracking-[0.2em] text-muted-foreground ml-2">Verify Password</Label>
                       <div className="relative">
                         <Input 
                           type={showConfirmPassword ? "text" : "password"}
@@ -677,8 +677,8 @@ export default function SignupPage() {
                           {paymentConfirmed && <ShieldCheck className="h-4 w-4 text-black" />}
                        </div>
                        <div className="space-y-2">
-                          <h3 className="font-black uppercase italic tracking-wider text-sm">Deployment Confirmation</h3>
-                          <p className="text-[10px] text-muted-foreground font-bold leading-relaxed uppercase tracking-widest">
+                          <h3 className="font-black italic text-sm">Deployment Confirmation</h3>
+                          <p className="text-[10px] text-muted-foreground font-bold leading-relaxed">
                             I verify that all provided data is accurate and I acknowledge the payment policy for the selected membership tier.
                           </p>
                        </div>
@@ -688,8 +688,8 @@ export default function SignupPage() {
                   {/* Summary Card */}
                   <div className="p-4 md:p-8 rounded-[2rem] bg-card/50 border border-border space-y-4">
                      <div className="flex justify-between items-center border-b border-border pb-4">
-                        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground">Review Application</span>
-                        <Badge className="bg-[#daa857] text-black font-black uppercase tracking-tighter italic">Pending Approval</Badge>
+                        <span className="text-[10px] font-black tracking-[0.3em] text-muted-foreground">Review Application</span>
+                        <Badge className="bg-[#daa857] text-black font-black italic">Pending Approval</Badge>
                      </div>
                      <div className="grid grid-cols-2 gap-y-4 gap-x-8">
                         {[
@@ -699,7 +699,7 @@ export default function SignupPage() {
                           { l: 'Method', v: formData.paymentMethod || 'None' }
                         ].map((item, i) => (
                           <div key={i} className="space-y-1">
-                             <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground">{item.l}</p>
+                             <p className="text-[8px] font-black text-muted-foreground">{item.l}</p>
                              <p className="text-xs font-black truncate">{item.v}</p>
                           </div>
                         ))}
@@ -715,7 +715,7 @@ export default function SignupPage() {
                    variant="outline" 
                    onClick={prevStep} 
                    disabled={isLoading}
-                   className="h-16 px-8 rounded-xl border-border bg-transparent hover:bg-accent text-muted-foreground font-black uppercase tracking-widest"
+                   className="h-16 px-8 rounded-xl border-border bg-transparent hover:bg-accent text-muted-foreground font-black"
                  >
                    Back
                  </Button>
@@ -724,7 +724,7 @@ export default function SignupPage() {
                {step < 4 ? (
                  <Button 
                    onClick={handleNextStep}
-                   className="flex-1 h-16 rounded-xl text-black font-black uppercase tracking-[0.2em] transition-all hover:scale-[1.01] active:scale-[0.98] shadow-xl shadow-[#daa857]/5"
+                   className="flex-1 h-16 rounded-xl text-black font-black tracking-[0.2em] transition-all hover:scale-[1.01] active:scale-[0.98] shadow-xl shadow-[#daa857]/5"
                    style={{ backgroundColor: accent }}
                  >
                    Advance <ArrowRight className="ml-2 h-5 w-5" />
@@ -757,7 +757,7 @@ export default function SignupPage() {
                         setIsSubmitting(false)
                       }
                    }}
-                   className="flex-1 h-16 rounded-xl text-black font-black uppercase tracking-[0.2em] transition-all hover:scale-[1.01] active:scale-[0.98] shadow-xl shadow-[#daa857]/5"
+                   className="flex-1 h-16 rounded-xl text-black font-black tracking-[0.2em] transition-all hover:scale-[1.01] active:scale-[0.98] shadow-xl shadow-[#daa857]/5"
                    style={{ backgroundColor: accent }}
                  >
                    {isLoading ? <Loader2 className="h-6 w-6 animate-spin" /> : 'Complete Application'}
@@ -772,13 +772,13 @@ export default function SignupPage() {
         <div className="mt-10 text-center">
           <p className="text-sm text-muted-foreground font-medium tracking-tight">
             Already authenticated?{' '}
-            <Link href="/login" className="font-black text-[#daa857] hover:underline uppercase tracking-tight ml-1">
+            <Link href="/login" className="font-black text-[#daa857] hover:underline ml-1">
               Login
             </Link>
           </p>
         </div>
 
-        <p className="mt-12 text-center text-[10px] text-muted-foreground font-black uppercase tracking-[0.5em]">
+        <p className="mt-12 text-center text-[10px] text-muted-foreground font-black tracking-[0.5em]">
           Klimarx Space Sanctuary © 2026
         </p>
       </div>
@@ -820,7 +820,7 @@ export default function SignupPage() {
           <div className="p-5 md:p-8 space-y-6 md:space-y-8 bg-card">
             <div className="space-y-4">
               <div className="flex justify-between items-center">
-                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Image Zoom</Label>
+                <Label className="text-[10px] font-black tracking-[0.2em] text-muted-foreground">Image Zoom</Label>
                 <span className="text-[10px] font-black text-[#daa857]">{Math.round(zoom * 100)}%</span>
               </div>
               <Slider
@@ -837,13 +837,13 @@ export default function SignupPage() {
               <Button 
                 variant="outline" 
                 onClick={() => setIsCropperModalOpen(false)}
-                className="h-12 md:h-14 px-8 border-border hover:bg-accent rounded-xl text-[10px] font-black uppercase tracking-widest text-muted-foreground"
+                className="h-12 md:h-14 px-8 border-border hover:bg-accent rounded-xl text-[10px] font-black text-muted-foreground"
               >
                 Cancel
               </Button>
               <Button 
                 onClick={handleCropConfirm}
-                className="flex-1 h-12 md:h-14 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black uppercase tracking-widest rounded-xl transition-all shadow-xl shadow-[#daa857]/10"
+                className="flex-1 h-12 md:h-14 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black rounded-xl transition-all shadow-xl shadow-[#daa857]/10"
               >
                 Save Profile Picture
               </Button>

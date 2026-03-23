@@ -115,7 +115,7 @@ export default function PackagesList({ onPackageUpdate }: { onPackageUpdate?: ()
     <div className="max-w-6xl mx-auto w-full space-y-8">
       <div className="flex justify-between items-center">
         <h2 className="text-3xl font-black uppercase italic tracking-tighter text-foreground">Membership Plans</h2>
-        <Button onClick={() => openModal()} className="bg-[#daa857] hover:bg-[#cdb48b] text-black font-black uppercase tracking-widest rounded-xl">
+        <Button onClick={() => openModal()} className="bg-[#daa857] hover:bg-[#cdb48b] text-black font-black rounded-xl">
           <Plus className="mr-2 h-4 w-4" /> New Package
         </Button>
       </div>
@@ -132,7 +132,7 @@ export default function PackagesList({ onPackageUpdate }: { onPackageUpdate?: ()
               <div>
                 <span className="text-3xl font-black italic text-[#daa857]">₦{pkg.price.toLocaleString()}</span>
               </div>
-              <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Duration: {pkg.duration} Days</p>
+              <p className="text-xs font-bold text-muted-foreground">Duration: {pkg.duration} Days</p>
               <p className="text-sm text-muted-foreground mt-4">{pkg.description}</p>
               
               <div className="flex gap-3 pt-4 border-t border-border mt-4">
@@ -148,7 +148,7 @@ export default function PackagesList({ onPackageUpdate }: { onPackageUpdate?: ()
         ))}
         
         {packages.length === 0 && (
-          <div className="col-span-full text-center p-4 md:p-6 md:p-12 text-muted-foreground uppercase tracking-widest font-bold">
+          <div className="col-span-full text-center p-4 md:p-6 md:p-12 text-muted-foreground font-bold">
             No packages found. Create one to get started.
           </div>
         )}
@@ -164,18 +164,18 @@ export default function PackagesList({ onPackageUpdate }: { onPackageUpdate?: ()
           
           <form onSubmit={handleSave} className="space-y-6 mt-4">
             <div className="space-y-3">
-              <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Plan Name</Label>
+              <Label className="text-[10px] font-black tracking-[0.2em] text-muted-foreground">Plan Name</Label>
               <Input 
                 value={form.name}
                 onChange={e => setForm({...form, name: e.target.value})}
                 required
-                className="h-14 bg-background border-border rounded-xl font-bold uppercase tracking-widest text-xs"
+                className="h-14 bg-background border-border rounded-xl font-bold text-xs"
               />
             </div>
             
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-3">
-                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Duration (Days)</Label>
+                <Label className="text-[10px] font-black tracking-[0.2em] text-muted-foreground">Duration (Days)</Label>
                 <Input 
                   type="number"
                   value={form.duration}
@@ -186,7 +186,7 @@ export default function PackagesList({ onPackageUpdate }: { onPackageUpdate?: ()
                 />
               </div>
               <div className="space-y-3">
-                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Price (₦)</Label>
+                <Label className="text-[10px] font-black tracking-[0.2em] text-muted-foreground">Price (₦)</Label>
                 <Input 
                   type="number"
                   value={form.price}
@@ -199,7 +199,7 @@ export default function PackagesList({ onPackageUpdate }: { onPackageUpdate?: ()
             </div>
 
             <div className="space-y-3">
-              <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Description</Label>
+              <Label className="text-[10px] font-black tracking-[0.2em] text-muted-foreground">Description</Label>
               <Textarea 
                 value={form.description}
                 onChange={e => setForm({...form, description: e.target.value})}
@@ -212,7 +212,7 @@ export default function PackagesList({ onPackageUpdate }: { onPackageUpdate?: ()
               <Button type="button" variant="ghost" onClick={() => setIsModalOpen(false)} className="hover:bg-accent hover:text-foreground text-muted-foreground">
                 Cancel
               </Button>
-              <Button type="submit" disabled={isSaving} className="bg-[#daa857] hover:bg-[#cdb48b] text-black font-black uppercase tracking-widest rounded-xl px-8">
+              <Button type="submit" disabled={isSaving} className="bg-[#daa857] hover:bg-[#cdb48b] text-black font-black rounded-xl px-8">
                 {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Save Package'}
               </Button>
             </DialogFooter>

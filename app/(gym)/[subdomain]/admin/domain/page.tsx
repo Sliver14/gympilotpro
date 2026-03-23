@@ -45,17 +45,17 @@ export default function DomainDashboard() {
             <Button 
               variant="ghost" 
               onClick={() => router.back()}
-              className="mb-4 text-muted-foreground hover:text-foreground focus:text-foreground uppercase text-[10px] font-black tracking-widest gap-2"
+              className="mb-4 text-muted-foreground hover:text-foreground focus:text-foreground text-[10px] font-black gap-2"
             >
               <ChevronLeft size={14} /> Back
             </Button>
             <h2 className="text-2xl font-black italic uppercase tracking-tighter mb-2">Premium Feature</h2>
-            <p className="text-muted-foreground font-medium text-xs tracking-widest uppercase leading-relaxed text-center">
+            <p className="text-muted-foreground font-medium text-xs leading-relaxed text-center">
               Custom Domain Setup is available on <span className="text-orange-500 font-black">Pro</span> and <span className="text-orange-500 font-black">Elite</span> plans. Upgrade your gym to connect your own brand identity.
             </p>
           </div>
           <Button 
-            className="w-full h-14 bg-orange-500 text-black hover:text-black focus:text-black font-black uppercase tracking-widest rounded-xl"
+            className="w-full h-14 bg-orange-500 text-black hover:text-black focus:text-black font-black rounded-xl"
             onClick={() => router.push('/admin/billing')}
           >
             Upgrade Plan
@@ -117,7 +117,7 @@ export default function DomainDashboard() {
         <Button 
           variant="ghost" 
           onClick={() => router.back()}
-          className="text-muted-foreground hover:text-foreground uppercase text-[10px] font-black tracking-widest gap-2 p-0 h-auto"
+          className="text-muted-foreground hover:text-foreground text-[10px] font-black gap-2 p-0 h-auto"
         >
           <ChevronLeft size={14} /> Back to Dashboard
         </Button>
@@ -128,7 +128,7 @@ export default function DomainDashboard() {
             <h1 className="text-2xl md:text-4xl font-black italic uppercase tracking-tighter mb-2">
               Domain Settings
             </h1>
-            <p className="text-muted-foreground font-medium uppercase text-[10px] tracking-widest">
+            <p className="text-muted-foreground font-medium text-[10px]">
               Connect your custom brand identity to your dashboard.
             </p>
           </div>
@@ -136,7 +136,7 @@ export default function DomainDashboard() {
           {isConnected && (
             <div className="flex items-center gap-2 px-4 py-2 bg-accent border border-border rounded-full">
               <div className="h-2 w-2 rounded-full bg-green-500" />
-              <span className="text-[10px] font-black uppercase tracking-widest">
+              <span className="text-[10px] font-black">
                 Verified
               </span>
             </div>
@@ -145,7 +145,7 @@ export default function DomainDashboard() {
 
         {/* STATUS CARD */}
         <div className="p-4 md:p-8 bg-card border border-border rounded-[2rem] shadow-2xl relative overflow-hidden">
-          <h2 className="text-sm font-black uppercase tracking-[0.2em] text-muted-foreground mb-6">
+          <h2 className="text-sm font-black tracking-[0.2em] text-muted-foreground mb-6">
             Live Configuration
           </h2>
 
@@ -155,7 +155,7 @@ export default function DomainDashboard() {
                 <ShieldCheck size={28} />
               </div>
               <div>
-                <p className="text-[10px] font-black uppercase text-muted-foreground mb-1">
+                <p className="text-[10px] font-black text-muted-foreground mb-1">
                   Active Destination
                 </p>
                 <a
@@ -171,7 +171,7 @@ export default function DomainDashboard() {
             <div className="flex items-center gap-4 md:gap-6 p-4 md:p-6 bg-orange-500/5 border border-orange-500/20 rounded-2xl">
               <AlertTriangle size={28} className="text-orange-500" />
               <div>
-                <p className="text-[10px] font-black uppercase text-muted-foreground mb-1">
+                <p className="text-[10px] font-black text-muted-foreground mb-1">
                   Current Access Point
                 </p>
                 <p className="text-xl font-black italic uppercase">
@@ -206,7 +206,7 @@ export default function DomainDashboard() {
                 {error && <p className="text-red-500 text-xs">{error}</p>}
                 {success && <p className="text-green-500 text-xs">{success}</p>}
 
-                <Button className="w-full h-16 bg-orange-500 font-black uppercase">
+                <Button className="w-full h-16 bg-orange-500 font-black">
                   {verifying ? 'Verifying...' : 'Verify & Link Domain'}
                 </Button>
               </form>
@@ -221,7 +221,7 @@ export default function DomainDashboard() {
                 2. DNS Setup
               </h2>
 
-              <p className="text-muted-foreground text-xs mb-6 uppercase">
+              <p className="text-muted-foreground text-xs mb-6">
                 Add BOTH records below in your domain provider.
               </p>
 

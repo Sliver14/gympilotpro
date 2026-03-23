@@ -282,7 +282,7 @@ export default function CheckInPanel() {
                 </div>
               )}
               <p className={cn(
-                "text-sm font-bold uppercase tracking-widest",
+                "text-sm font-bold",
                 result.isValid ? 'text-green-400/70' : result.message.toLowerCase().includes('pending verification') ? 'text-orange-400/70' : result.message.includes('Already checked in') ? 'text-[#daa857]/70' : 'text-red-400/70'
               )}>
                 {result.message}
@@ -293,7 +293,7 @@ export default function CheckInPanel() {
               <div className="space-y-2">
                 <p className="text-3xl font-black text-foreground uppercase italic tracking-tighter">{result.member.fullName}</p>
                 <div className="flex flex-col items-center gap-1">
-                  <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground">Access Control System</p>
+                  <p className="text-[10px] font-black tracking-[0.3em] text-muted-foreground">Access Control System</p>
                   <p className="text-xs font-bold text-muted-foreground">
                     VALID UNTIL: <span className={cn("font-black italic", result.isValid ? "text-foreground" : "text-red-500")}>{new Date(result.member.expiryDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).toUpperCase()}</span>
                   </p>
@@ -304,7 +304,7 @@ export default function CheckInPanel() {
             <Button
               onClick={resetScanner}
               className={cn(
-                "w-full h-16 text-black font-black uppercase tracking-widest rounded-2xl transition-all hover:scale-[1.02] shadow-xl",
+                "w-full h-16 text-black font-black rounded-2xl transition-all hover:scale-[1.02] shadow-xl",
                 result.isValid ? "bg-green-500 hover:bg-green-600" : "bg-[#daa857] hover:bg-[#cdb48b]"
               )}
             >
@@ -335,11 +335,11 @@ export default function CheckInPanel() {
                     <div className="h-16 md:h-20 w-20 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center mx-auto">
                       <AlertCircle className="h-10 w-10 text-red-500" />
                     </div>
-                    <p className="text-sm font-bold text-red-400 uppercase tracking-widest leading-relaxed">{error}</p>
+                    <p className="text-sm font-bold text-red-400 leading-relaxed">{error}</p>
                     <Button 
                       variant="outline" 
                       onClick={startScanner}
-                      className="h-14 px-8 border-border hover:bg-accent rounded-xl text-[10px] font-black uppercase tracking-widest"
+                      className="h-14 px-8 border-border hover:bg-accent rounded-xl text-[10px] font-black"
                     >
                       Retry Scan
                     </Button>
@@ -351,11 +351,11 @@ export default function CheckInPanel() {
                     </div>
                     <div className="space-y-2">
                       <h3 className="text-xl font-black text-foreground uppercase italic tracking-tighter">Manual Check-in</h3>
-                      <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.3em]">Scanner Ready for Uplink</p>
+                      <p className="text-[10px] font-black text-muted-foreground tracking-[0.3em]">Scanner Ready for Uplink</p>
                     </div>
                     <Button 
                       onClick={startScanner} 
-                      className="h-16 px-10 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black uppercase tracking-widest rounded-2xl transition-all hover:scale-105 shadow-xl shadow-[#daa857]/10"
+                      className="h-16 px-10 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black rounded-2xl transition-all hover:scale-105 shadow-xl shadow-[#daa857]/10"
                     >
                       Start QR Scan
                     </Button>
@@ -369,7 +369,7 @@ export default function CheckInPanel() {
                 {isValidating ? (
                   <div className="flex flex-col items-center gap-4 md:gap-6">
                     <Loader2 className="h-16 w-16 animate-spin text-[#daa857]" />
-                    <p className="text-[10px] font-black text-[#daa857] uppercase tracking-[0.5em] animate-pulse">Processing QR Code</p>
+                    <p className="text-[10px] font-black text-[#daa857] tracking-[0.5em] animate-pulse">Processing QR Code</p>
                   </div>
                 ) : (
                   <div className="text-foreground text-center space-y-4">
@@ -380,7 +380,7 @@ export default function CheckInPanel() {
                       <div className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-[#daa857]" />
                       <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-[#daa857]/30 animate-scan" />
                     </div>
-                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#daa857]">Align QR Code</p>
+                    <p className="text-[10px] font-black tracking-[0.3em] text-[#daa857]">Align QR Code</p>
                   </div>
                 )}
               </div>
@@ -390,7 +390,7 @@ export default function CheckInPanel() {
           {/* Manual Search & Check-in */}
           <div className="bg-card border border-border rounded-[2.5rem] p-4 md:p-8 shadow-2xl space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="search" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-2">Manual Search</Label>
+              <Label htmlFor="search" className="text-[10px] font-black tracking-[0.2em] text-muted-foreground ml-2">Manual Search</Label>
               <div className="flex gap-3">
                 <div className="relative flex-1">
                   <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -434,8 +434,8 @@ export default function CheckInPanel() {
                           </AvatarFallback>
                         </Avatar>
                         <div>
-                          <p className="text-sm font-black text-foreground uppercase italic tracking-tight">{member.fullName}</p>
-                          <p className="text-[8px] font-bold text-muted-foreground uppercase tracking-widest">
+                          <p className="text-sm font-black text-foreground italic">{member.fullName}</p>
+                          <p className="text-[8px] font-bold text-muted-foreground">
                             EXP: {new Date(member.expiryDate).toLocaleDateString().toUpperCase()}
                           </p>
                         </div>
@@ -444,7 +444,7 @@ export default function CheckInPanel() {
                         size="sm"
                         onClick={() => manualCheckIn(member)}
                         disabled={isValidating}
-                        className="h-10 px-6 bg-accent hover:bg-[#daa857] hover:text-black text-muted-foreground font-black uppercase text-[10px] tracking-widest rounded-xl transition-all"
+                        className="h-10 px-6 bg-accent hover:bg-[#daa857] hover:text-black text-muted-foreground font-black text-[10px] rounded-xl transition-all"
                       >
                         Override
                       </Button>
@@ -452,7 +452,7 @@ export default function CheckInPanel() {
                   ))
                 ) : (
                   <div className="p-5 md:p-10 text-center rounded-2xl bg-card/50 border border-dashed border-border">
-                    <p className="text-xs font-black text-muted-foreground uppercase tracking-widest italic italic">No active members match "{searchQuery}"</p>
+                    <p className="text-xs font-black text-muted-foreground italic italic">No active members match "{searchQuery}"</p>
                   </div>
                 )}
               </div>

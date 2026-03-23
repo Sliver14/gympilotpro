@@ -101,7 +101,7 @@ function MemberSidebarContent({ memberData, onLogout }: MemberSidebarProps) {
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight ml-2">
                   <span className="truncate font-black uppercase italic tracking-tighter text-lg">{gymName}<span style={{ color: accent }}>Space</span></span>
-                  <span className="truncate text-[8px] font-bold uppercase tracking-[0.4em] text-muted-foreground mt-0.5">Member Portal</span>
+                  <span className="truncate text-[8px] font-bold tracking-[0.4em] text-muted-foreground mt-0.5">Member Portal</span>
                 </div>
               </Link>
             </SidebarMenuButton>
@@ -145,7 +145,7 @@ function MemberSidebarContent({ memberData, onLogout }: MemberSidebarProps) {
       <SidebarFooter>
         <div className="px-4 py-2 border-t border-sidebar-border/50">
           <div className="flex items-center justify-between">
-            <span className="text-[10px] font-black uppercase tracking-widest text-sidebar-foreground/50">Appearance</span>
+            <span className="text-[10px] font-black text-sidebar-foreground/50">Appearance</span>
             <ModeToggle />
           </div>
         </div>
@@ -162,10 +162,10 @@ function MemberSidebarContent({ memberData, onLogout }: MemberSidebarProps) {
                     <AvatarFallback className="rounded-lg font-black" style={{ backgroundColor: `${accent}1a`, color: accent }}>{initials || '??'}</AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-black uppercase italic tracking-tight text-foreground">
+                    <span className="truncate font-black italic text-foreground">
                       {memberData.firstName} {memberData.lastName}
                     </span>
-                    <span className="truncate text-[10px] font-bold text-muted-foreground uppercase tracking-tighter">{memberData.email}</span>
+                    <span className="truncate text-[10px] font-bold text-muted-foreground">{memberData.email}</span>
                   </div>
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
@@ -177,18 +177,18 @@ function MemberSidebarContent({ memberData, onLogout }: MemberSidebarProps) {
               >
                 <DropdownMenuItem disabled className="opacity-100 p-4 border-b border-border mb-2">
                   <div className="flex flex-col space-y-1">
-                    <p className="text-xs font-black uppercase italic tracking-widest text-foreground">{memberData.firstName} {memberData.lastName}</p>
-                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-tighter">{memberData.email}</p>
+                    <p className="text-xs font-black italic text-foreground">{memberData.firstName} {memberData.lastName}</p>
+                    <p className="text-[10px] font-bold text-muted-foreground">{memberData.email}</p>
                   </div>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild className="rounded-xl focus:bg-accent cursor-pointer py-3 px-4 text-foreground focus:text-accent-foreground">
-                  <Link href="/member/profile" className="flex items-center gap-3 font-black uppercase text-[10px] tracking-widest">
+                  <Link href="/member/profile" className="flex items-center gap-3 font-black text-[10px]">
                     <Settings className="size-4" style={{ color: accent }} />
                     Profile Settings
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={onLogout} className="rounded-xl focus:bg-red-500/10 focus:text-red-500 cursor-pointer py-3 px-4 mt-1 text-red-500/80">
-                  <div className="flex items-center gap-3 font-black uppercase text-[10px] tracking-widest">
+                  <div className="flex items-center gap-3 font-black text-[10px]">
                     <LogOut className="size-4" />
                     Log Out
                   </div>

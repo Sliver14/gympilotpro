@@ -126,7 +126,7 @@ export function SubscriptionLockScreen({
               <Button 
                 variant="ghost" 
                 onClick={() => router.back()}
-                className="mb-4 text-muted-foreground hover:text-foreground focus:text-foreground uppercase text-[10px] font-black tracking-widest gap-2 p-0 h-auto"
+                className="mb-4 text-muted-foreground hover:text-foreground focus:text-foreground text-[10px] font-black gap-2 p-0 h-auto"
               >
                 <ChevronLeft size={14} /> Back
               </Button>
@@ -156,7 +156,7 @@ export function SubscriptionLockScreen({
             <div className="space-y-6 relative z-10">
               {/* Plan Selection */}
               <div>
-                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-3 block">Choose Plan</label>
+                <label className="text-[10px] font-black text-muted-foreground mb-3 block">Choose Plan</label>
                 <div className="grid grid-cols-3 gap-3">
                   {(Object.keys(PLANS) as PlanKey[]).map((key) => {
                     const plan = PLANS[key];
@@ -175,13 +175,13 @@ export function SubscriptionLockScreen({
                         )}
                         style={isSelected ? { borderColor: accent } : {}}
                       >
-                        <p className={cn("text-xs font-black uppercase mb-1", isSelected ? "text-orange-500" : "text-muted-foreground")}
+                        <p className={cn("text-xs font-black mb-1", isSelected ? "text-orange-500" : "text-muted-foreground")}
                            style={isSelected ? { color: accent } : {}}>
                           {plan.name}
                         </p>
                         <p className="text-sm font-bold text-muted-foreground">₦{plan.monthlyFee.toLocaleString()}</p>
                         {isCurrent && !isPending && (
-                          <span className="absolute top-1 right-1 bg-white/10 text-[8px] px-1 rounded uppercase">Current</span>
+                          <span className="absolute top-1 right-1 bg-white/10 text-[8px] px-1 rounded">Current</span>
                         )}
                       </button>
                     );
@@ -191,7 +191,7 @@ export function SubscriptionLockScreen({
 
               {/* Duration Selection */}
               <div>
-                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-3 block">Duration</label>
+                <label className="text-[10px] font-black text-muted-foreground mb-3 block">Duration</label>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   {DURATIONS.map((d) => (
                     <button
@@ -205,7 +205,7 @@ export function SubscriptionLockScreen({
                       )}
                       style={selectedMonths === d.months ? { borderColor: accent } : {}}
                     >
-                      <p className="text-xs font-black uppercase">{d.label}</p>
+                      <p className="text-xs font-black">{d.label}</p>
                       {d.discount > 0 && <p className="text-[8px] font-bold text-green-500">{(d.discount * 100)}% OFF</p>}
                     </button>
                   ))}
@@ -222,36 +222,36 @@ export function SubscriptionLockScreen({
             
             <div className="space-y-4">
               <div className="flex justify-between items-center py-3 border-b border-border">
-                <span className="text-muted-foreground text-xs font-bold uppercase">Plan</span>
-                <span className="text-sm font-black uppercase italic">{PLANS[selectedPlan].name}</span>
+                <span className="text-muted-foreground text-xs font-bold">Plan</span>
+                <span className="text-sm font-black italic">{PLANS[selectedPlan].name}</span>
               </div>
               <div className="flex justify-between items-center py-3 border-b border-border">
-                <span className="text-muted-foreground text-xs font-bold uppercase">Duration</span>
-                <span className="text-sm font-black uppercase italic">{selectedMonths} Month(s)</span>
+                <span className="text-muted-foreground text-xs font-bold">Duration</span>
+                <span className="text-sm font-black italic">{selectedMonths} Month(s)</span>
               </div>
               
               {pricing.setupFeeCharge > 0 && (
                 <div className="flex justify-between items-center py-3 border-b border-border">
-                  <span className="text-muted-foreground text-xs font-bold uppercase">{isPending ? "Setup Fee" : "Upgrade Fee"}</span>
+                  <span className="text-muted-foreground text-xs font-bold">{isPending ? "Setup Fee" : "Upgrade Fee"}</span>
                   <span className="text-sm font-black italic">₦{pricing.setupFeeCharge.toLocaleString()}</span>
                 </div>
               )}
 
               <div className="flex justify-between items-center py-3 border-b border-border">
-                <span className="text-muted-foreground text-xs font-bold uppercase">Monthly Fee</span>
+                <span className="text-muted-foreground text-xs font-bold">Monthly Fee</span>
                 <span className="text-sm font-black italic">₦{pricing.monthlyTotal.toLocaleString()}</span>
               </div>
 
               {pricing.discountAmount > 0 && (
                 <div className="flex justify-between items-center py-3 border-b border-border">
-                  <span className="text-green-500 text-[10px] font-black uppercase">Discount Applied</span>
+                  <span className="text-green-500 text-[10px] font-black">Discount Applied</span>
                   <span className="text-green-500 text-sm font-black italic">-₦{pricing.discountAmount.toLocaleString()}</span>
                 </div>
               )}
 
               {isActuallyUpgrade && pricing.unusedCredit > 0 && (
                 <div className="flex justify-between items-center py-3 border-b border-border">
-                  <span className="text-green-500 text-[10px] font-black uppercase">Unused Credit Applied</span>
+                  <span className="text-green-500 text-[10px] font-black">Unused Credit Applied</span>
                   <span className="text-green-500 text-sm font-black italic">-₦{pricing.unusedCredit.toLocaleString()}</span>
                 </div>
               )}
@@ -260,7 +260,7 @@ export function SubscriptionLockScreen({
 
           <div className="mt-12 space-y-6">
             <div className="flex justify-between items-end">
-              <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Total Payable</span>
+              <span className="text-[10px] font-black text-muted-foreground">Total Payable</span>
               <span className="text-2xl md:text-4xl font-black italic text-orange-500" style={{ color: accent }}>
                 ₦{pricing.total.toLocaleString()}
               </span>
@@ -271,7 +271,7 @@ export function SubscriptionLockScreen({
                 <Button 
                   onClick={handleRenew} 
                   disabled={loading}
-                  className="w-full h-16 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black uppercase tracking-widest rounded-xl transition-all shadow-xl shadow-[#daa857]/10"
+                  className="w-full h-16 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black rounded-xl transition-all shadow-xl shadow-[#daa857]/10"
                   style={{ backgroundColor: accent }}
                 >
                   {loading ? <Loader2 className="h-6 w-6 animate-spin" /> : <><CreditCard className="h-5 w-5 mr-2" /> Pay with Paystack</>}
@@ -282,7 +282,7 @@ export function SubscriptionLockScreen({
                 <Button 
                   onClick={handleLogout} 
                   variant="outline"
-                  className="w-full h-14 border-border bg-transparent hover:bg-white/5 text-muted-foreground font-black uppercase tracking-widest rounded-xl"
+                  className="w-full h-14 border-border bg-transparent hover:bg-white/5 text-muted-foreground font-black rounded-xl"
                 >
                   <LogOut className="h-5 w-5 mr-2" /> Logout
                 </Button>

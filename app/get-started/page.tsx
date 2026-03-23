@@ -103,7 +103,7 @@ function GetStartedContent() {
     <div className="flex-1 flex items-center justify-center p-4 md:p-6 py-24">
       <div className="w-full max-w-xl bg-white/5 border border-border p-5 md:p-10 shadow-2xl relative">
         <div className="text-center mb-10">
-          <span className="text-orange-500 font-black italic uppercase tracking-[0.2em] text-sm mb-4 block">
+          <span className="text-orange-500 font-black italic tracking-[0.2em] text-sm mb-4 block">
             // Onboarding
           </span>
           <h1 className="text-2xl md:text-4xl md:text-5xl font-black italic uppercase tracking-tighter mb-4 text-foreground">
@@ -115,7 +115,7 @@ function GetStartedContent() {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid md:grid-cols-2 gap-4 md:gap-6">
             <div>
-              <label className="block text-xs font-bold uppercase text-muted-foreground mb-2">Full Name</label>
+              <label className="block text-xs font-bold text-muted-foreground mb-2">Full Name</label>
               <input 
                 type="text" 
                 name="fullName"
@@ -124,11 +124,11 @@ function GetStartedContent() {
                 value={formData.fullName}
                 onChange={handleChange}
                 placeholder="JOHN DOE" 
-                className="w-full bg-transparent border-2 border-border p-4 font-black italic uppercase focus:border-orange-500 outline-none transition-colors text-foreground"
+                className="w-full bg-transparent border-2 border-border p-4 font-black italic focus:border-orange-500 outline-none transition-colors text-foreground"
               />
             </div>
             <div>
-              <label className="block text-xs font-bold uppercase text-muted-foreground mb-2">Gym Name</label>
+              <label className="block text-xs font-bold text-muted-foreground mb-2">Gym Name</label>
               <input 
                 type="text" 
                 name="gymName"
@@ -137,14 +137,14 @@ function GetStartedContent() {
                 value={formData.gymName}
                 onChange={handleChange}
                 placeholder="IRON FITNESS" 
-                className="w-full bg-transparent border-2 border-border p-4 font-black italic uppercase focus:border-orange-500 outline-none transition-colors text-foreground"
+                className="w-full bg-transparent border-2 border-border p-4 font-black italic focus:border-orange-500 outline-none transition-colors text-foreground"
               />
             </div>
           </div>
 
           <div className="grid md:grid-cols-2 gap-4 md:gap-6">
             <div>
-              <label className="block text-xs font-bold uppercase text-muted-foreground mb-2">Email Address</label>
+              <label className="block text-xs font-bold text-muted-foreground mb-2">Email Address</label>
               <input 
                 type="email" 
                 name="email"
@@ -153,11 +153,11 @@ function GetStartedContent() {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="HELLO@GYM.COM" 
-                className="w-full bg-transparent border-2 border-border p-4 font-black italic uppercase focus:border-orange-500 outline-none transition-colors text-foreground"
+                className="w-full bg-transparent border-2 border-border p-4 font-black italic focus:border-orange-500 outline-none transition-colors text-foreground"
               />
             </div>
             <div>
-              <label className="block text-xs font-bold uppercase text-muted-foreground mb-2">Phone (WhatsApp)</label>
+              <label className="block text-xs font-bold text-muted-foreground mb-2">Phone (WhatsApp)</label>
               <input 
                 type="tel" 
                 name="phone"
@@ -166,21 +166,21 @@ function GetStartedContent() {
                 value={formData.phone}
                 onChange={handleChange}
                 placeholder="+234 800 000 0000" 
-                className="w-full bg-transparent border-2 border-border p-4 font-black italic uppercase focus:border-orange-500 outline-none transition-colors text-foreground"
+                className="w-full bg-transparent border-2 border-border p-4 font-black italic focus:border-orange-500 outline-none transition-colors text-foreground"
               />
             </div>
           </div>
 
           <div className="grid md:grid-cols-2 gap-4 md:gap-6">
             <div>
-              <label className="block text-xs font-bold uppercase text-muted-foreground mb-2">Selected Plan</label>
+              <label className="block text-xs font-bold text-muted-foreground mb-2">Selected Plan</label>
               <div className="relative">
                 <select 
                   name="plan"
                   disabled={loading}
                   value={formData.plan}
                   onChange={handleChange}
-                  className="w-full bg-background border-2 border-border p-4 font-black italic uppercase focus:border-orange-500 outline-none transition-colors text-foreground appearance-none cursor-pointer"
+                  className="w-full bg-background border-2 border-border p-4 font-black italic focus:border-orange-500 outline-none transition-colors text-foreground appearance-none cursor-pointer"
                 >
                   {Object.values(PLANS).map(p => (
                     <option key={p.id} value={p.id}>{p.name}</option>
@@ -190,14 +190,14 @@ function GetStartedContent() {
               </div>
             </div>
             <div>
-              <label className="block text-xs font-bold uppercase text-muted-foreground mb-2">Duration</label>
+              <label className="block text-xs font-bold text-muted-foreground mb-2">Duration</label>
               <div className="relative">
                 <select 
                   name="months"
                   disabled={loading}
                   value={formData.months}
                   onChange={handleChange}
-                  className="w-full bg-background border-2 border-border p-4 font-black italic uppercase focus:border-orange-500 outline-none transition-colors text-foreground appearance-none cursor-pointer"
+                  className="w-full bg-background border-2 border-border p-4 font-black italic focus:border-orange-500 outline-none transition-colors text-foreground appearance-none cursor-pointer"
                 >
                   {DURATIONS.map(d => (
                     <option key={d.months} value={d.months}>{d.label}</option>
@@ -210,16 +210,16 @@ function GetStartedContent() {
 
           <div className="pt-6 border-t border-border">
             <div className="space-y-2 mb-6">
-              <div className="flex justify-between text-xs font-bold uppercase text-muted-foreground">
+              <div className="flex justify-between text-xs font-bold text-muted-foreground">
                 <span>Setup Fee</span>
                 <span>₦{pricing.setupFeeCharge.toLocaleString()}</span>
               </div>
-              <div className="flex justify-between text-xs font-bold uppercase text-muted-foreground">
+              <div className="flex justify-between text-xs font-bold text-muted-foreground">
                 <span>{formData.months} Month(s) Access</span>
                 <span>₦{pricing.monthlyTotal.toLocaleString()}</span>
               </div>
               {pricing.discountAmount > 0 && (
-                <div className="flex justify-between text-xs font-bold uppercase text-green-500">
+                <div className="flex justify-between text-xs font-bold text-green-500">
                   <span>Discount Applied</span>
                   <span>-₦{pricing.discountAmount.toLocaleString()}</span>
                 </div>
@@ -231,7 +231,7 @@ function GetStartedContent() {
             </div>
 
             {error && (
-              <div className="p-4 mb-6 bg-red-500/10 border border-red-500/50 text-red-500 text-sm font-bold uppercase flex items-center gap-3">
+              <div className="p-4 mb-6 bg-red-500/10 border border-red-500/50 text-red-500 text-sm font-bold flex items-center gap-3">
                 <AlertCircle size={20} /> {error}
               </div>
             )}
@@ -243,7 +243,7 @@ function GetStartedContent() {
             >
               {loading ? <Loader2 className="animate-spin" /> : `Proceed to Payment`}
             </Button>
-            <p className="text-center text-[10px] font-bold uppercase text-muted-foreground tracking-widest mt-4">
+            <p className="text-center text-[10px] font-bold text-muted-foreground mt-4">
               Secured by Paystack
             </p>
           </div>
@@ -263,7 +263,7 @@ export default function GetStartedPage() {
               Insight<span className="text-orange-500">Gym</span>
             </span>
           </Link>
-          <Link href="/" className="text-[11px] font-black uppercase tracking-[0.2em] text-muted-foreground hover:text-foreground transition-colors">
+          <Link href="/" className="text-[11px] font-black tracking-[0.2em] text-muted-foreground hover:text-foreground transition-colors">
             BACK TO HOME
           </Link>
         </div>

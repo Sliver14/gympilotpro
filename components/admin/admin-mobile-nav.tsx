@@ -79,7 +79,7 @@ function AdminMobileNavContent({ className, role = 'admin' }: AdminMobileNavProp
               </div>
               <span
                 className={cn(
-                  'text-[9px] font-black uppercase tracking-widest',
+                  'text-[9px] font-black',
                   isActive ? '' : 'text-muted-foreground'
                 )}
                 style={isActive ? { color: accent } : {}}
@@ -100,7 +100,7 @@ function AdminMobileNavContent({ className, role = 'admin' }: AdminMobileNavProp
                 <div className="h-8 w-12 rounded-xl flex items-center justify-center transition-all duration-300">
                   <Menu className="h-5 w-5 stroke-[2px]" />
                 </div>
-                <span className="text-[9px] font-black uppercase tracking-widest">
+                <span className="text-[9px] font-black">
                   Menu
                 </span>
               </button>
@@ -127,7 +127,7 @@ function AdminMobileNavContent({ className, role = 'admin' }: AdminMobileNavProp
                          <item.icon className="h-6 w-6" style={isActive ? { color: accent } : {}} />
                       </div>
                       <span className={cn(
-                        "text-[10px] font-black uppercase tracking-widest text-center",
+                        "text-[10px] font-black text-center",
                         isActive ? "" : "text-muted-foreground"
                       )}
                       style={isActive ? { color: accent } : {}}
