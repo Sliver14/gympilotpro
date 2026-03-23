@@ -246,9 +246,9 @@ export default function GymLandingPage() {
                 className={`relative rounded-3xl p-4 md:p-8 transition-all duration-500 hover:-translate-y-2 ${
                   pkg.popular
                   ? 'bg-gradient-to-br scale-105 z-10 shadow-2xl'
-                  : 'bg-card border border-border'
+                  : 'bg-card border border-border text-foreground'
                 }`}
-                style={pkg.popular ? { background: `linear-gradient(to bottom right, ${accent}, #b89778)`, color: dark } : { color: 'white' }}
+                style={pkg.popular ? { background: `linear-gradient(to bottom right, ${accent}, #b89778)`, color: dark } : {}}
               >
                 {pkg.popular && <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-background text-[10px] font-black px-6 py-1 rounded-full" style={{ color: accent }}>Top Choice</span>}
                 <h3 className={`text-2xl font-black uppercase italic ${pkg.popular ? '' : 'text-foreground'}`}>{pkg.name}</h3>
@@ -264,7 +264,7 @@ export default function GymLandingPage() {
                   ))}
                 </ul>
                 <Link href="/signup">
-                  <Button className={`w-full py-8 font-black uppercase tracking-widest rounded-xl ${pkg.popular ? 'bg-background text-foreground hover:bg-zinc-900' : 'text-black'}`} style={!pkg.popular ? { backgroundColor: accent, color: dark } : {}}>
+                  <Button className={`w-full py-8 font-black uppercase tracking-widest rounded-xl ${pkg.popular ? 'bg-background text-foreground hover:bg-foreground hover:text-background' : 'text-black hover:opacity-90'}`} style={!pkg.popular ? { backgroundColor: accent, color: dark } : {}}>
                     Join Now
                   </Button>
                 </Link>
