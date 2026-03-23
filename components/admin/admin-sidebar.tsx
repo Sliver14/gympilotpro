@@ -154,8 +154,8 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
                     className={cn(
                       "transition-all duration-300 h-10 px-4",
                       item.active 
-                        ? "font-black italic uppercase tracking-widest border-r-2 bg-accent/50" 
-                        : "text-muted-foreground font-bold uppercase tracking-widest hover:bg-accent hover:text-accent-foreground"
+                        ? "font-black border-r-2 bg-accent/50" 
+                        : "text-muted-foreground font-bold hover:bg-accent hover:text-accent-foreground"
                     )}
                     style={item.active ? { 
                       backgroundColor: `${accent}1a`, 
