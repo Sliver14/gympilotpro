@@ -47,7 +47,7 @@ export default function GymLandingPage() {
   const dark = branding?.secondaryColor || '#000000'
   const heroTitle = branding?.heroTitle || 'Forge Your Legacy'
   const heroSubtitle = branding?.heroSubtitle || 'Luxury fitness meets raw performance. Elevate your standard.'
-  const gymName = branding?.name || 'Klimarx Space'
+  const gymName = branding?.name || 'Gym'
   
   const logoUrl = branding?.logo
   const initials = branding?.initials || 'GP'

@@ -72,13 +72,13 @@ export default function ForgotPasswordPage() {
           <div className="relative h-16 md:h-20 w-20 overflow-hidden rounded-full border-2 transition-transform group-hover:scale-110" style={{ borderColor: `${accent}80` }}>
             <Image 
               src="/WhatsApp_Image_2026-02-25_at_9.54.33_AM-removebg-preview.png" 
-              alt="Klimarx Space Logo" 
+              alt="Gym Logo" 
               fill
               className="object-contain p-2 bg-white"
             />
           </div>
           <div className="text-center">
-            <h1 className="text-3xl font-black tracking-tighter uppercase">Klimarx<span style={{ color: accent }}>Space</span></h1>
+            <h1 className="text-3xl font-black tracking-tighter uppercase">Gym<span style={{ color: accent }}>Pilot</span></h1>
             <p className="text-[10px] tracking-[0.3em] text-muted-foreground font-bold mt-1">Account Recovery</p>
           </div>
         </Link>
@@ -167,7 +167,7 @@ export default function ForgotPasswordPage() {
 
         {/* Footer info */}
         <p className="mt-12 text-center text-[10px] text-muted-foreground font-black tracking-[0.5em]">
-          Klimarx Space © 2026 • Security Active
+          GymPilot © 2026 • Security Active
         </p>
       </div>
     </div>

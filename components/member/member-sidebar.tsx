@@ -43,7 +43,7 @@ function MemberSidebarContent({ memberData, onLogout }: MemberSidebarProps) {
 
   const accent = gymData?.primaryColor || '#daa857'
   const logo = gymData?.logo
-  const gymName = gymData?.name || 'Klimarx'
+  const gymName = gymData?.name || 'Gym'
   const gymInitials = gymName.split(' ').map((n: string) => n[0]).join('').substring(0, 2).toUpperCase()
 
   const menuItems = [

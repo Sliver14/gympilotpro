@@ -164,7 +164,7 @@ export default function RenewMembershipPage() {
         <div className="mb-8 flex items-center justify-center gap-2">
           <Image 
             src="/WhatsApp_Image_2026-02-25_at_9.54.33_AM-removebg-preview.png" 
-            alt="Klimarx Space Logo" 
+            alt="Gym Logo" 
             width={48} 
             height={48} 
             className="object-contain"
@@ -253,10 +253,12 @@ export default function RenewMembershipPage() {
                   Bank Transfer Instructions
                 </p>
                 <div className="text-xs text-yellow-700 dark:text-yellow-600 space-y-1">
-                  <p>Account Name: KLIMARX SPACE ENTERPRISES</p>
-                  <p>Bank: FIRST CITY MONUMENT BANK (FCMB)</p>
-                  <p>Account Number: 1042020132</p>
-                  <p className="mt-2 font-semibold">After payment, send your proof of transfer to WhatsApp: 07048430667</p>
+                  <p className="whitespace-pre-line">
+                    {gymData?.bankName && gymData?.accountNumber && gymData?.accountName
+                      ? `${gymData.accountName}\n${gymData.bankName}\n${gymData.accountNumber}`
+                      : 'Bank details not configured. Please contact management.'}
+                  </p>
+                  <p className="mt-2 font-semibold">After payment, send your proof of transfer to official WhatsApp.</p>
                 </div>
               </div>
             )}

@@ -42,7 +42,7 @@ export default function QRCodeDisplay({ memberId }: QRCodeDisplayProps) {
 
     const link = document.createElement('a')
     link.href = qrCode
-    link.download = `klimarx-qr-${memberId}.png`
+    link.download = `gym-pass-qr-${memberId}.png`
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)

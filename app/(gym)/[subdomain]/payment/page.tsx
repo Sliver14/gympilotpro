@@ -110,12 +110,12 @@ function PaymentPageInner() {
         <div className="mb-8 flex items-center justify-center gap-2">
           <Image 
             src="/WhatsApp_Image_2026-02-25_at_9.54.33_AM-removebg-preview.png" 
-            alt="Klimarx Space Logo" 
+            alt="Gym Logo" 
             width={48} 
             height={48} 
             className="object-contain"
           />
-          <span className="text-2xl font-bold uppercase tracking-wider text-primary">Klimarx</span>
+          <span className="text-2xl font-bold uppercase tracking-wider text-primary">Gym Checkout</span>
         </div>
 
         {/* Payment Status */}

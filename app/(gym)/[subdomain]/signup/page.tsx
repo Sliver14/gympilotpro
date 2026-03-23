@@ -74,9 +74,7 @@ const HEAR_ABOUT_US_OPTIONS = [
   'Other',
 ]
 
-const BANK_TRANSFER_DETAILS = `KLIMARX SPACE ENTERPRISES
-FIRST CITY MONUMENT BANK (FCMB)
-1042020132`
+
 
 import { useGym } from '@/components/gym-provider'
 
@@ -108,7 +106,7 @@ export default function SignupPage() {
   const accent = gymData?.primaryColor || '#daa857'
   const dark = gymData?.secondaryColor || '#000000'
   const logoUrl = gymData?.logo
-  const gymName = gymData?.name || 'Klimarx Space'
+  const gymName = gymData?.name || 'Gym'
   const gymInitials = gymName.split(' ').map((n: string) => n[0]).join('').substring(0, 2).toUpperCase()
   const hasPaystack = gymData?.hasPaystack || false
 
@@ -779,7 +777,7 @@ export default function SignupPage() {
         </div>
 
         <p className="mt-12 text-center text-[10px] text-muted-foreground font-black tracking-[0.5em]">
-          Klimarx Space Sanctuary © 2026
+          {gymName} Sanctuary © 2026
         </p>
       </div>
 

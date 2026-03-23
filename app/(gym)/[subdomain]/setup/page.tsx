@@ -9,12 +9,12 @@ export default function SetupPage() {
         <div className="mb-6 flex flex-col items-center">
           <Image 
             src="/WhatsApp_Image_2026-02-25_at_9.54.33_AM-removebg-preview.png" 
-            alt="Klimarx Space Logo" 
+            alt="Setup Logo" 
             width={80} 
             height={80} 
             className="object-contain"
           />
-          <h1 className="text-2xl font-bold mt-2">Klimarx Space Setup</h1>
+          <h1 className="text-2xl font-bold mt-2">Gym Setup</h1>
         </div>
         
         <div className="space-y-4 text-sm text-muted-foreground">
