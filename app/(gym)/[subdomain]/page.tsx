@@ -112,7 +112,7 @@ export default function GymLandingPage() {
                   src={logoUrl}
                   alt={`${gymName} Logo`}
                   fill
-                  className="object-cover p-0"
+                  className="object-contain p-1.5"
                 />
               ) : (
                 initials
@@ -281,15 +281,15 @@ export default function GymLandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t bg-[#050505] py-20 px-6" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
+      <footer className="border-t border-border bg-card py-20 px-6">
         <div className="container mx-auto flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6 md:gap-10">
-          <div className="text-2xl md:text-4xl font-black uppercase italic tracking-tighter">
+          <div className="text-2xl md:text-4xl font-black uppercase italic tracking-tighter text-foreground">
             {gymName.split(' ')[0]}<span style={{ color: accent }}>{gymName.split(' ').slice(1).join(' ')}</span>
           </div>
           <div className="flex gap-12 font-bold text-xs text-muted-foreground">
-            <span className="hover:text-foreground transition-colors cursor-pointer" style={{ ':hover': { color: accent } } as any}>Instagram</span>
-            <span className="hover:text-foreground transition-colors cursor-pointer" style={{ ':hover': { color: accent } } as any}>Twitter</span>
-            <span className="hover:text-foreground transition-colors cursor-pointer" style={{ ':hover': { color: accent } } as any}>Facebook</span>
+            <span className="hover:text-foreground transition-colors cursor-pointer">Instagram</span>
+            <span className="hover:text-foreground transition-colors cursor-pointer">Twitter</span>
+            <span className="hover:text-foreground transition-colors cursor-pointer">Facebook</span>
           </div>
           <p className="text-xs text-muted-foreground font-bold italic">© 2026 {gymName.toUpperCase()}. ELITE ONLY.</p>
         </div>
