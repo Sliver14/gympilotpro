@@ -184,7 +184,7 @@ function MemberDashboardContent() {
         <header className="flex h-16 shrink-0 items-center gap-2 border-b border-border/50 px-6 sticky top-0 z-30 bg-background/50 backdrop-blur-md">
           <SidebarTrigger className="-ml-1" />
           <div className="flex items-center gap-2">
-            <h1 className="text-sm font-black italic tracking-[0.2em] text-muted-foreground">
+            <h1 className="text-sm font-black tracking-[0.2em] text-muted-foreground">
               Member <span className="text-primary">Terminal</span>
             </h1>
           </div>
@@ -199,7 +199,7 @@ function MemberDashboardContent() {
                   <Clock className="h-8 w-8 text-primary-foreground" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-black uppercase italic tracking-tight text-foreground mb-1">Payment Pending</h3>
+                  <h3 className="text-xl font-black uppercase tracking-tight text-foreground mb-1">Payment Pending</h3>
                   <p className="text-sm font-medium text-muted-foreground max-w-xl">
                     Your recent payment is currently <span className="text-primary font-bold">pending verification</span> by the gym management. Access will be restored once confirmed.
                   </p>
@@ -219,7 +219,7 @@ function MemberDashboardContent() {
                   <AlertCircle className="h-8 w-8 text-destructive-foreground" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-black uppercase italic tracking-tight text-foreground mb-1">Access Expired</h3>
+                  <h3 className="text-xl font-black uppercase tracking-tight text-foreground mb-1">Access Expired</h3>
                   <p className="text-sm font-medium text-muted-foreground max-w-xl">
                     Your membership expired on <span className="text-destructive font-bold">{expiryDate.toLocaleDateString()}</span>. The terminal is locked until renewal is processed.
                   </p>
@@ -241,7 +241,7 @@ function MemberDashboardContent() {
                   <Clock className="h-8 w-8 text-black" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-black uppercase italic tracking-tight text-foreground mb-1">Subscription Warning</h3>
+                  <h3 className="text-xl font-black uppercase tracking-tight text-foreground mb-1">Subscription Warning</h3>
                   <p className="text-sm font-medium text-muted-foreground max-w-xl">
                     Gym access expires in <span className="text-primary font-bold">{daysUntilExpiry} days</span> ({expiryDate.toLocaleDateString()}). Extend plan now to maintain uninterrupted access.
                   </p>
@@ -273,7 +273,7 @@ function MemberDashboardContent() {
                     <div key={i} className="bg-card border border-border/50 rounded-3xl p-4 md:p-8 shadow-xl relative overflow-hidden group hover:border-primary/30 transition-colors">
                       <p className="text-[10px] font-black tracking-[0.3em] text-muted-foreground mb-4">{stat.label}</p>
                       <div className="flex items-baseline gap-2">
-                        <p className={cn("text-2xl md:text-4xl font-black italic tracking-tighter", stat.accent ? "text-primary" : "text-foreground")}>
+                        <p className={cn("text-2xl md:text-4xl font-black tracking-tighter", stat.accent ? "text-primary" : "text-foreground")}>
                           {stat.value}
                         </p>
                       </div>

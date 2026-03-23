@@ -24,7 +24,7 @@ import { PLANS, DURATIONS, PlanKey } from '@/lib/plans'
 
 // Reusable Components
 const SectionTag = ({ children }: { children: React.ReactNode }) => (
-  <span className="text-orange-500 font-black italic tracking-[0.2em] text-xs sm:text-sm mb-3 sm:mb-4 block">
+  <span className="text-orange-500 font-black tracking-[0.2em] text-xs sm:text-sm mb-3 sm:mb-4 block">
     {children}
   </span>
 )
@@ -35,7 +35,7 @@ const FeatureCard = ({ icon: Icon, title, desc }: { icon: any; title: string; de
     <div className="mb-5 sm:mb-6 inline-block p-3 bg-orange-500/10 text-orange-500 group-hover:scale-110 transition-transform relative z-10">
       <Icon className="w-7 h-7 sm:w-8 sm:h-8" strokeWidth={1.5} />
     </div>
-    <h3 className="text-xl sm:text-2xl font-black italic uppercase mb-3 tracking-tight relative z-10">
+    <h3 className="text-xl sm:text-2xl font-black uppercase mb-3 tracking-tight relative z-10">
       {title}
     </h3>
     <p className="text-muted-foreground text-sm sm:text-base leading-relaxed font-medium relative z-10">
@@ -70,7 +70,7 @@ export default function SaaSLandingPage() {
               className="h-8 sm:h-10 w-auto object-contain transition-transform group-hover:scale-105"
               priority
             />
-            <span className="text-2xl sm:text-3xl font-black italic uppercase tracking-tighter">
+            <span className="text-2xl sm:text-3xl font-black uppercase tracking-tighter">
               GymPilot<span className="text-orange-500">Pro</span>
             </span>
           </Link>
@@ -81,7 +81,7 @@ export default function SaaSLandingPage() {
             <Link href="#pricing" className="hover:text-orange-500 transition-colors">Pricing</Link>
             <Button
               onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
-              className="bg-orange-500 hover:bg-orange-600 text-white font-black italic rounded-none px-6 sm:px-8 shadow-[0_0_20px_rgba(249,115,22,0.3)]"
+              className="bg-orange-500 hover:bg-orange-600 text-white font-black rounded-none px-6 sm:px-8 shadow-[0_0_20px_rgba(249,115,22,0.3)]"
             >
               GET STARTED
             </Button>
@@ -108,7 +108,7 @@ export default function SaaSLandingPage() {
         <div className="container mx-auto px-5 sm:px-6 md:px-8 lg:px-10 relative z-10">
           <div className="max-w-4xl lg:max-w-5xl">
             <SectionTag>// Performance Infrastructure</SectionTag>
-            <h1 className="text-3xl md:text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black italic uppercase leading-[0.9] mb-6 sm:mb-8 tracking-tighter">
+            <h1 className="text-3xl md:text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black uppercase leading-[0.9] mb-6 sm:mb-8 tracking-tighter">
               Run Your Gym <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-orange-500/50 border-t-2 border-b-2 border-border">
                 Like A Pro
@@ -120,13 +120,13 @@ export default function SaaSLandingPage() {
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
               <Button
                 onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
-                className="h-14 sm:h-16 md:h-20 px-8 sm:px-10 md:px-12 bg-orange-500 text-white hover:bg-orange-600 text-base sm:text-xl font-black italic uppercase rounded-none group"
+                className="h-14 sm:h-16 md:h-20 px-8 sm:px-10 md:px-12 bg-orange-500 text-white hover:bg-orange-600 text-base sm:text-xl font-black uppercase rounded-none group"
               >
                 Start Your Journey <ChevronRight className="ml-2 group-hover:translate-x-2 transition-transform" />
               </Button>
               <Button
                 asChild
-                className="h-14 sm:h-16 md:h-20 px-8 sm:px-10 md:px-12 text-foreground border-2 border-border hover:border-orange-500/50 hover:bg-orange-500/5 hover:text-foreground text-base sm:text-xl font-black italic uppercase rounded-none bg-white/5 backdrop-blur-sm transition-all"
+                className="h-14 sm:h-16 md:h-20 px-8 sm:px-10 md:px-12 text-foreground border-2 border-border hover:border-orange-500/50 hover:bg-orange-500/5 hover:text-foreground text-base sm:text-xl font-black uppercase rounded-none bg-white/5 backdrop-blur-sm transition-all"
               >
                 <Link href="#features">Explore Platform</Link>
               </Button>
@@ -141,7 +141,7 @@ export default function SaaSLandingPage() {
           <div className="flex flex-col md:flex-row gap-4 md:gap-6 md:gap-10 md:gap-16 items-start md:items-end mb-12 md:mb-20">
             <div className="flex-1">
               <SectionTag>// The Problem</SectionTag>
-              <h2 className="text-2xl md:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black italic uppercase tracking-tighter">
+              <h2 className="text-2xl md:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter">
                 Manual Management <br /><span className="text-orange-500">Kills Growth</span>
               </h2>
             </div>
@@ -159,7 +159,7 @@ export default function SaaSLandingPage() {
             ].map((item, i) => (
               <div key={i} className="bg-background p-4 md:p-6 sm:p-8 md:p-10 hover:bg-orange-500/5 transition-colors">
                 <AlertCircle className="text-orange-500 mb-4 sm:mb-6" size={28} />
-                <h4 className="text-lg sm:text-xl font-black italic uppercase mb-3 sm:mb-4">{item.title}</h4>
+                <h4 className="text-lg sm:text-xl font-black uppercase mb-3 sm:mb-4">{item.title}</h4>
                 <p className="text-muted-foreground text-sm sm:text-base font-medium leading-relaxed">{item.desc}</p>
               </div>
             ))}
@@ -172,7 +172,7 @@ export default function SaaSLandingPage() {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_center,rgba(249,115,22,0.03),transparent_70%)] pointer-events-none" />
         <div className="container mx-auto px-5 sm:px-6 md:px-8 lg:px-10 text-center mb-16 md:mb-24">
           <SectionTag>// Command & Control</SectionTag>
-          <h2 className="text-2xl md:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black italic uppercase tracking-tighter">Pro-Grade Tools</h2>
+          <h2 className="text-2xl md:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter">Pro-Grade Tools</h2>
         </div>
         <div className="container mx-auto px-5 sm:px-6 md:px-8 lg:px-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 md:gap-8">
           <FeatureCard icon={Users} title="Access Control" desc="QR and Biometric integration to ensure only active members enter." />
@@ -189,7 +189,7 @@ export default function SaaSLandingPage() {
         <div className="container mx-auto px-5 sm:px-6 md:px-8 lg:px-10">
           <div className="text-center mb-12 md:mb-16">
             <SectionTag>// See It In Action</SectionTag>
-            <h2 className="text-2xl md:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black italic uppercase tracking-tighter mb-4 md:mb-6">
+            <h2 className="text-2xl md:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter mb-4 md:mb-6">
               Platform Walkthrough
             </h2>
             <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto font-medium">
@@ -206,7 +206,7 @@ export default function SaaSLandingPage() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center z-10 px-4">
-                <div className="bg-orange-500/90 text-black font-black italic uppercase text-3xl sm:text-4xl md:text-5xl lg:text-6xl px-8 sm:px-10 md:px-12 py-3 md:py-4 tracking-tighter mb-4 md:mb-6 shadow-[0_0_30px_rgba(249,115,22,0.5)] transform group-hover:scale-105 transition-transform">
+                <div className="bg-orange-500/90 text-black font-black uppercase text-3xl sm:text-4xl md:text-5xl lg:text-6xl px-8 sm:px-10 md:px-12 py-3 md:py-4 tracking-tighter mb-4 md:mb-6 shadow-[0_0_30px_rgba(249,115,22,0.5)] transform group-hover:scale-105 transition-transform">
                   COMING SOON
                 </div>
                 <p className="text-base sm:text-xl md:text-2xl font-medium max-w-xl text-foreground/90 drop-shadow-lg">
@@ -222,13 +222,13 @@ export default function SaaSLandingPage() {
           </div>
 
           <div className="text-center mt-10 md:mt-12">
-            <p className="text-muted-foreground italic text-base sm:text-lg mb-6 md:mb-8">
+            <p className="text-muted-foreground text-base sm:text-lg mb-6 md:mb-8">
               Video walkthrough in production — will show the actual clean, fast dashboard<br className="hidden sm:inline" />
               tailored for Lagos gyms (no bloat, no fluff).
             </p>
             <Button
               onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
-              className="h-14 sm:h-16 px-8 sm:px-10 md:px-12 bg-orange-500 hover:bg-orange-600 text-white font-black italic uppercase text-base sm:text-lg rounded-none shadow-lg shadow-orange-500/20"
+              className="h-14 sm:h-16 px-8 sm:px-10 md:px-12 bg-orange-500 hover:bg-orange-600 text-white font-black uppercase text-base sm:text-lg rounded-none shadow-lg shadow-orange-500/20"
             >
               Get Early Access Anyway <ChevronRight className="ml-2" />
             </Button>
@@ -240,7 +240,7 @@ export default function SaaSLandingPage() {
       <section className="py-20 md:py-28 lg:py-32 bg-[#080808]">
         <div className="container mx-auto px-5 sm:px-6 md:px-8 lg:px-10 text-center">
           <SectionTag>// Trusted by Gym Owners</SectionTag>
-          <h2 className="text-2xl md:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black italic uppercase tracking-tighter mb-10 md:mb-12">
+          <h2 className="text-2xl md:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter mb-10 md:mb-12">
             Real Results from Lagos Gym Leaders
           </h2>
 
@@ -256,11 +256,11 @@ export default function SaaSLandingPage() {
                   />
                 </div>
                 <div className="text-left">
-                  <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground font-medium italic leading-relaxed mb-4 md:mb-6">
+                  <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground font-medium leading-relaxed mb-4 md:mb-6">
                     "GymPilotPro changed everything. The automated WhatsApp reminders alone recovered ₦1.2M in expired memberships in the first 3 months. No more chasing payments — now I focus on growth at Klimarx Space Gym."
                   </p>
                   <div>
-                    <h4 className="text-xl sm:text-2xl font-black italic uppercase text-orange-500">
+                    <h4 className="text-xl sm:text-2xl font-black uppercase text-orange-500">
                       Nere Emiko
                     </h4>
                     <p className="text-muted-foreground font-bold text-xs sm:text-sm mt-1">
@@ -271,12 +271,12 @@ export default function SaaSLandingPage() {
               </div>
             </div>
 
-            <p className="text-muted-foreground text-base sm:text-lg md:text-xl font-medium mt-12 md:mt-16 max-w-2xl mx-auto italic">
+            <p className="text-muted-foreground text-base sm:text-lg md:text-xl font-medium mt-12 md:mt-16 max-w-2xl mx-auto">
               Helping gyms across Lagos eliminate revenue loss and grow faster. Join high-performance facilities using GymPilotPro.
             </p>
 
             <div className="mt-12 md:mt-16 h-16 sm:h-20 border-y border-border flex items-center justify-center opacity-30">
-              <p className="italic text-xs sm:text-sm tracking-[0.5em]">More Industry Leaders Coming Soon</p>
+              <p className="text-xs sm:text-sm tracking-[0.5em]">More Industry Leaders Coming Soon</p>
             </div>
           </div>
         </div>
@@ -287,7 +287,7 @@ export default function SaaSLandingPage() {
         <div className="container mx-auto px-5 sm:px-6 md:px-8 lg:px-10 relative z-10">
           <div className="text-center mb-12 md:mb-16">
             <SectionTag>// Pricing Plans</SectionTag>
-            <h2 className="text-2xl md:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black italic uppercase tracking-tighter mb-4 md:mb-6">Scale Your Empire</h2>
+            <h2 className="text-2xl md:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter mb-4 md:mb-6">Scale Your Empire</h2>
 
             <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mt-8 md:mt-12 mb-6 md:mb-8">
               {DURATIONS.map((d) => (
@@ -295,7 +295,7 @@ export default function SaaSLandingPage() {
                   key={d.months}
                   onClick={() => setSelectedMonths(d.months)}
                   className={cn(
-                    "px-6 sm:px-8 py-2.5 sm:py-3 font-black italic text-xs sm:text-sm border-2 transition-all",
+                    "px-6 sm:px-8 py-2.5 sm:py-3 font-black text-xs sm:text-sm border-2 transition-all",
                     selectedMonths === d.months
                       ? "bg-orange-500 border-orange-500 text-foreground shadow-[0_0_20px_rgba(249,115,22,0.3)]"
                       : "bg-transparent border-border text-muted-foreground hover:border-border"
@@ -326,23 +326,23 @@ export default function SaaSLandingPage() {
                   )}
                 >
                   {isPopular && (
-                    <span className="absolute -top-4 sm:-top-5 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-[10px] sm:text-xs font-black px-5 sm:px-6 py-1.5 sm:py-2 italic shadow-xl">
+                    <span className="absolute -top-4 sm:-top-5 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-[10px] sm:text-xs font-black px-5 sm:px-6 py-1.5 sm:py-2 shadow-xl">
                       Owner's Choice
                     </span>
                   )}
-                  <h3 className="text-2xl sm:text-3xl font-black italic uppercase mb-2">{p.name}</h3>
+                  <h3 className="text-2xl sm:text-3xl font-black uppercase mb-2">{p.name}</h3>
 
                   <div className="my-6 sm:my-8 space-y-4">
                     <div className="p-3 sm:p-4 bg-white/5 border border-border group-hover:border-orange-500/30 transition-colors">
                       <p className="text-[10px] sm:text-xs font-black text-muted-foreground mb-1">Initial Access (Setup)</p>
-                      <p className="text-2xl sm:text-3xl font-black italic tracking-tighter">₦{p.setupFee.toLocaleString()}</p>
+                      <p className="text-2xl sm:text-3xl font-black tracking-tighter">₦{p.setupFee.toLocaleString()}</p>
                     </div>
                     <div className="p-3 sm:p-4 bg-orange-500/5 border border-orange-500/20">
                       <p className="text-[10px] sm:text-xs font-black text-orange-500/70 mb-1">
                         {selectedMonths} Month{selectedMonths > 1 ? 's' : ''} Access
                       </p>
                       <div className="flex items-baseline gap-1">
-                        <span className="text-3xl sm:text-4xl font-black italic tracking-tighter text-orange-500">
+                        <span className="text-3xl sm:text-4xl font-black tracking-tighter text-orange-500">
                           ₦{(discountedMonthly * selectedMonths).toLocaleString()}
                         </span>
                         <span className="text-muted-foreground font-bold text-[10px] sm:text-xs">/{selectedMonths}MO</span>
@@ -365,14 +365,14 @@ export default function SaaSLandingPage() {
 
                   <div className="pt-6 border-t border-border mb-6 sm:mb-8">
                     <p className="text-[10px] sm:text-xs font-black text-muted-foreground mb-1">Total to Unlock Access</p>
-                    <p className="text-xl sm:text-2xl font-black italic tracking-tighter text-foreground">₦{totalSetupAndMonthly.toLocaleString()}</p>
+                    <p className="text-xl sm:text-2xl font-black tracking-tighter text-foreground">₦{totalSetupAndMonthly.toLocaleString()}</p>
                   </div>
 
                   <Button
                     disabled={loadingPlan !== null}
                     onClick={() => handlePayNow(key)}
                     className={cn(
-                      "w-full h-14 sm:h-16 rounded-none font-black italic uppercase text-base sm:text-lg transition-all",
+                      "w-full h-14 sm:h-16 rounded-none font-black uppercase text-base sm:text-lg transition-all",
                       isPopular ? "bg-orange-500 hover:bg-orange-600 text-white" : "bg-white hover:bg-orange-500 hover:text-foreground text-black"
                     )}
                   >
@@ -390,12 +390,12 @@ export default function SaaSLandingPage() {
       {/* Footer */}
       <footer className="py-16 md:py-24 border-t border-border bg-[#080808]">
         <div className="container mx-auto px-5 sm:px-6 md:px-8 lg:px-10 text-center">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black italic uppercase tracking-tighter mb-8 md:mb-12">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tighter mb-8 md:mb-12">
             Ready to fly <span className="text-orange-500 text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-orange-300">Pro?</span>
           </h2>
           <Button
             onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
-            className="h-14 sm:h-16 md:h-20 px-10 sm:px-12 md:px-16 bg-white text-black font-black italic uppercase text-base sm:text-xl rounded-none hover:bg-orange-500 hover:text-foreground transition-all shadow-2xl"
+            className="h-14 sm:h-16 md:h-20 px-10 sm:px-12 md:px-16 bg-white text-black font-black uppercase text-base sm:text-xl rounded-none hover:bg-orange-500 hover:text-foreground transition-all shadow-2xl"
           >
             Get GymPilotPro
           </Button>
@@ -408,7 +408,7 @@ export default function SaaSLandingPage() {
                 height={30} 
                 className="h-6 sm:h-8 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity"
               />
-              <span className="text-xl sm:text-2xl font-black italic uppercase tracking-tighter">
+              <span className="text-xl sm:text-2xl font-black uppercase tracking-tighter">
                 GymPilot<span className="text-orange-500">Pro</span>
               </span>
             </Link>

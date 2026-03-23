@@ -244,7 +244,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
               "h-44 w-44 border-4 border-[#daa857]/20 transition-all duration-500 group-hover:border-[#daa857]/50 shadow-2xl shadow-[#daa857]/5"
             )}>
               <AvatarImage src={previewUrl || profileImage || undefined} className="object-cover" />
-              <AvatarFallback className="text-3xl md:text-5xl bg-background font-black uppercase italic text-[#daa857]">
+              <AvatarFallback className="text-3xl md:text-5xl bg-background font-black uppercase text-[#daa857]">
                 {initials || '??'}
               </AvatarFallback>
             </Avatar>
@@ -260,7 +260,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
           </div>
           
           <div className="text-center md:text-left space-y-2 flex-1">
-            <h2 className="text-2xl md:text-4xl font-black uppercase italic tracking-tighter text-foreground">
+            <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tighter text-foreground">
               {userData.firstName} <span className="text-[#daa857]">{userData.lastName}</span>
             </h2>
             <p className="text-sm font-bold text-muted-foreground tracking-[0.3em]">{userData.email}</p>
@@ -290,7 +290,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
                     <UserIcon className="h-7 w-7" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-black uppercase italic tracking-tighter text-foreground mb-1">Profile</h3>
+                    <h3 className="text-xl font-black uppercase tracking-tighter text-foreground mb-1">Profile</h3>
                     <p className="text-[10px] font-bold text-muted-foreground">Update Personal Metrics</p>
                   </div>
                 </div>
@@ -300,7 +300,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
           </DialogTrigger>
           <DialogContent className="bg-card border-border text-foreground rounded-[2.5rem] p-5 md:p-10 max-w-2xl max-h-[90vh] overflow-y-auto custom-scrollbar">
             <DialogHeader className="space-y-4">
-              <DialogTitle className="text-3xl font-black uppercase italic tracking-tighter">
+              <DialogTitle className="text-3xl font-black uppercase tracking-tighter">
                 Update <span className="text-[#daa857]">Profile</span>
               </DialogTitle>
               <DialogDescription className="text-muted-foreground font-medium text-[10px] leading-relaxed">
@@ -431,7 +431,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
                     <Lock className="h-7 w-7" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-black uppercase italic tracking-tighter text-foreground mb-1">Account Password</h3>
+                    <h3 className="text-xl font-black uppercase tracking-tighter text-foreground mb-1">Account Password</h3>
                     <p className="text-[10px] font-bold text-muted-foreground">Update Login Credentials</p>
                   </div>
                 </div>
@@ -441,7 +441,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
           </DialogTrigger>
           <DialogContent className="bg-card border-border text-foreground rounded-[2.5rem] p-5 md:p-10 max-w-md shadow-2xl">
             <DialogHeader className="space-y-4">
-              <DialogTitle className="text-3xl font-black uppercase italic tracking-tighter">
+              <DialogTitle className="text-3xl font-black uppercase tracking-tighter">
                 Entry <span className="text-[#daa857]">Security</span>
               </DialogTitle>
               <DialogDescription className="text-muted-foreground font-medium text-[10px] leading-relaxed">
@@ -543,7 +543,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
               <div className="h-10 w-10 rounded-xl bg-[#daa857]/10 flex items-center justify-center text-[#daa857]">
                 <CropIcon className="h-5 w-5" />
               </div>
-              <h3 className="text-lg md:text-xl font-black uppercase italic tracking-tighter">Adjust <span className="text-[#daa857]">Profile Picture</span></h3>
+              <h3 className="text-lg md:text-xl font-black uppercase tracking-tighter">Adjust <span className="text-[#daa857]">Profile Picture</span></h3>
             </div>
             <Button variant="ghost" size="icon" onClick={() => setIsCropperModalOpen(false)} className="rounded-full hover:bg-white/5">
               <X className="h-5 w-5" />
@@ -607,7 +607,7 @@ export default function SettingsForm({ userData, onUpdate }: SettingsFormProps) 
           <Info className="h-6 w-6" />
         </div>
         <div>
-          <h4 className="text-sm font-black italic text-foreground mb-2">Important Note</h4>
+          <h4 className="text-sm font-black text-foreground mb-2">Important Note</h4>
           <p className="text-xs font-medium text-muted-foreground leading-relaxed">
             Changes to core profile information may require re-verification by Gym Staff. 
             Maintain accurate data to ensure uninterrupted access.

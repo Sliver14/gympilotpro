@@ -67,7 +67,7 @@ export default function QRCodeDisplay({ memberId }: QRCodeDisplayProps) {
       
       <div className="relative z-10">
         <div className="flex items-center justify-between mb-12 pb-4 border-b border-border">
-          <h3 className="text-xl font-black uppercase italic tracking-tighter text-foreground flex items-center gap-3">
+          <h3 className="text-xl font-black uppercase tracking-tighter text-foreground flex items-center gap-3">
             <QrCode className="h-5 w-5 text-[#daa857]" /> Access <span className="text-[#daa857]">Pass</span>
           </h3>
           <p className="text-[10px] font-black text-muted-foreground">Access Authenticator</p>

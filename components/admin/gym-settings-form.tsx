@@ -160,11 +160,11 @@ export function GymSettingsForm() {
             {gymData?.logo ? (
               <img src={gymData.logo} alt="Logo" className="w-full h-full object-contain p-2" />
             ) : (
-              <span className="font-black italic text-xl text-[#daa857]">{form.name ? form.name[0].toUpperCase() : 'G'}</span>
+              <span className="font-black text-xl text-[#daa857]">{form.name ? form.name[0].toUpperCase() : 'G'}</span>
             )}
           </div>
           <div className="space-y-1">
-            <h2 className="text-2xl md:text-3xl font-black uppercase italic tracking-tighter text-foreground">
+            <h2 className="text-2xl md:text-3xl font-black uppercase tracking-tighter text-foreground">
               Gym <span className="text-[#daa857]">Settings</span>
             </h2>
             <p className="text-[10px] font-bold text-muted-foreground">
@@ -201,7 +201,7 @@ export function GymSettingsForm() {
                     <Palette className="h-7 w-7" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-black uppercase italic tracking-tighter text-foreground mb-1">Branding</h3>
+                    <h3 className="text-xl font-black uppercase tracking-tighter text-foreground mb-1">Branding</h3>
                     <p className="text-[10px] font-bold text-muted-foreground">Name, Colors & Tagline</p>
                   </div>
                 </div>
@@ -211,7 +211,7 @@ export function GymSettingsForm() {
           </DialogTrigger>
           <DialogContent className="bg-card border-border text-foreground rounded-[2.5rem] p-5 md:p-10 max-w-2xl max-h-[90vh] overflow-y-auto custom-scrollbar">
             <DialogHeader className="space-y-4">
-              <DialogTitle className="text-3xl font-black uppercase italic tracking-tighter">
+              <DialogTitle className="text-3xl font-black uppercase tracking-tighter">
                 Branding & <span className="text-[#daa857]">Display</span>
               </DialogTitle>
               <DialogDescription className="text-muted-foreground font-medium text-[10px] leading-relaxed">
@@ -325,7 +325,7 @@ export function GymSettingsForm() {
                     <ImagePlus className="h-7 w-7" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-black uppercase italic tracking-tighter text-foreground mb-1">Media</h3>
+                    <h3 className="text-xl font-black uppercase tracking-tighter text-foreground mb-1">Media</h3>
                     <p className="text-[10px] font-bold text-muted-foreground">Logos & Visual Assets</p>
                   </div>
                 </div>
@@ -335,7 +335,7 @@ export function GymSettingsForm() {
           </DialogTrigger>
           <DialogContent className="bg-card border-border text-foreground rounded-[2.5rem] p-5 md:p-10 max-w-4xl max-h-[90vh] overflow-y-auto custom-scrollbar">
             <DialogHeader className="space-y-4">
-              <DialogTitle className="text-3xl font-black uppercase italic tracking-tighter">
+              <DialogTitle className="text-3xl font-black uppercase tracking-tighter">
                 Media <span className="text-[#daa857]">Assets</span>
               </DialogTitle>
               <DialogDescription className="text-muted-foreground font-medium text-[10px] leading-relaxed">
@@ -423,7 +423,7 @@ export function GymSettingsForm() {
                     <CreditCard className="h-7 w-7" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-black uppercase italic tracking-tighter text-foreground mb-1">Paystack</h3>
+                    <h3 className="text-xl font-black uppercase tracking-tighter text-foreground mb-1">Paystack</h3>
                     <p className="text-[10px] font-bold text-muted-foreground">Gateway Configuration</p>
                   </div>
                 </div>
@@ -433,7 +433,7 @@ export function GymSettingsForm() {
           </DialogTrigger>
           <DialogContent className="bg-card border-border text-foreground rounded-[2.5rem] p-5 md:p-10 max-w-2xl max-h-[90vh] overflow-y-auto custom-scrollbar">
             <DialogHeader className="space-y-4">
-              <DialogTitle className="text-3xl font-black uppercase italic tracking-tighter">
+              <DialogTitle className="text-3xl font-black uppercase tracking-tighter">
                 Payment <span className="text-[#daa857]">Gateway</span>
               </DialogTitle>
               <DialogDescription className="text-muted-foreground font-medium text-[10px] leading-relaxed">
@@ -541,7 +541,7 @@ export function GymSettingsForm() {
                     <Building2 className="h-7 w-7" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-black uppercase italic tracking-tighter text-foreground mb-1">Bank Transfer</h3>
+                    <h3 className="text-xl font-black uppercase tracking-tighter text-foreground mb-1">Bank Transfer</h3>
                     <p className="text-[10px] font-bold text-muted-foreground">Manual Payments Info</p>
                   </div>
                 </div>
@@ -551,7 +551,7 @@ export function GymSettingsForm() {
           </DialogTrigger>
           <DialogContent className="bg-card border-border text-foreground rounded-[2.5rem] p-5 md:p-10 max-w-xl max-h-[90vh] overflow-y-auto custom-scrollbar shadow-2xl">
             <DialogHeader className="space-y-4">
-              <DialogTitle className="text-3xl font-black uppercase italic tracking-tighter">
+              <DialogTitle className="text-3xl font-black uppercase tracking-tighter">
                 Bank <span className="text-[#daa857]">Details</span>
               </DialogTitle>
               <DialogDescription className="text-muted-foreground font-medium text-[10px] leading-relaxed">

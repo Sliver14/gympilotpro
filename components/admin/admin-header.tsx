@@ -39,10 +39,10 @@ export default function AdminHeader({ adminData, onLogout, title, description }:
                   className="object-contain p-0.5"
                 />
               ) : (
-                <span className="font-black italic text-xs" style={{ color: accent }}>{gymInitials}</span>
+                <span className="font-black text-xs" style={{ color: accent }}>{gymInitials}</span>
               )}
             </div>
-            <span className="text-xl font-black uppercase italic tracking-tighter text-foreground">{gymName}<span style={{ color: accent }}>Space</span></span>
+            <span className="text-xl font-black uppercase tracking-tighter text-foreground">{gymName}<span style={{ color: accent }}>Space</span></span>
           </Link>
           
           {(title || description) && (
@@ -67,7 +67,7 @@ export default function AdminHeader({ adminData, onLogout, title, description }:
             <DropdownMenuContent align="end" className="w-56 bg-card border-border text-foreground rounded-xl">
               <DropdownMenuItem disabled className="opacity-100">
                 <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-black italic">{adminData.firstName} {adminData.lastName}</p>
+                  <p className="text-sm font-black">{adminData.firstName} {adminData.lastName}</p>
                   <p className="text-[10px] font-bold text-muted-foreground capitalize">{adminData.role} DASHBOARD</p>
                 </div>
               </DropdownMenuItem>

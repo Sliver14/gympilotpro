@@ -122,7 +122,7 @@ export default function AdminStats({
             </div>
             <div>
               <p className={cn(
-                "text-2xl md:text-3xl font-black italic tracking-tighter",
+                "text-2xl md:text-3xl font-black tracking-tighter",
                 item.accent ? "text-primary" : "text-foreground",
                 item.warning && "text-destructive"
               )}>

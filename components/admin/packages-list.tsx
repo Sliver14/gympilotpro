@@ -114,7 +114,7 @@ export default function PackagesList({ onPackageUpdate }: { onPackageUpdate?: ()
   return (
     <div className="max-w-6xl mx-auto w-full space-y-8">
       <div className="flex justify-between items-center">
-        <h2 className="text-3xl font-black uppercase italic tracking-tighter text-foreground">Membership Plans</h2>
+        <h2 className="text-3xl font-black uppercase tracking-tighter text-foreground">Membership Plans</h2>
         <Button onClick={() => openModal()} className="bg-[#daa857] hover:bg-[#cdb48b] text-black font-black rounded-xl">
           <Plus className="mr-2 h-4 w-4" /> New Package
         </Button>
@@ -124,13 +124,13 @@ export default function PackagesList({ onPackageUpdate }: { onPackageUpdate?: ()
         {packages.map((pkg) => (
           <Card key={pkg.id} className="bg-card border-border shadow-xl rounded-[2rem] overflow-hidden">
             <CardHeader className="bg-card/50 border-b border-border p-4 md:p-6">
-              <CardTitle className="text-xl font-black uppercase italic tracking-tighter text-foreground">
+              <CardTitle className="text-xl font-black uppercase tracking-tighter text-foreground">
                 {pkg.name.split(' - ')[0]}
               </CardTitle>
             </CardHeader>
             <CardContent className="p-4 md:p-6 space-y-4">
               <div>
-                <span className="text-3xl font-black italic text-[#daa857]">₦{pkg.price.toLocaleString()}</span>
+                <span className="text-3xl font-black text-[#daa857]">₦{pkg.price.toLocaleString()}</span>
               </div>
               <p className="text-xs font-bold text-muted-foreground">Duration: {pkg.duration} Days</p>
               <p className="text-sm text-muted-foreground mt-4">{pkg.description}</p>
@@ -157,7 +157,7 @@ export default function PackagesList({ onPackageUpdate }: { onPackageUpdate?: ()
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent className="bg-card border-border text-foreground rounded-[2.5rem] p-4 md:p-8 max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-2xl font-black uppercase italic tracking-tighter text-foreground">
+            <DialogTitle className="text-2xl font-black uppercase tracking-tighter text-foreground">
               {editingId ? 'Edit' : 'Create'} <span className="text-[#daa857]">Package</span>
             </DialogTitle>
           </DialogHeader>

@@ -16,7 +16,7 @@ export function ExpiredSubscriptionOverlay({ role, accent = '#daa857' }: Expired
           <AlertCircle className="h-10 w-10 text-muted-foreground" />
         </div>
         
-        <h1 className="text-3xl md:text-4xl font-black text-muted-foreground uppercase tracking-tighter italic">
+        <h1 className="text-3xl md:text-4xl font-black text-muted-foreground uppercase tracking-tighter">
           Service <span style={{ color: accent }}>Paused</span>
         </h1>
         

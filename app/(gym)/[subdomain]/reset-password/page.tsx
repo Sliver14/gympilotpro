@@ -96,7 +96,7 @@ function ResetPasswordContent() {
             <AlertCircle className="h-10 w-10 text-red-500" />
           </div>
           <div className="space-y-2">
-            <h2 className="text-3xl font-black uppercase italic tracking-tighter">Invalid <span className="text-red-500">Link</span></h2>
+            <h2 className="text-3xl font-black uppercase tracking-tighter">Invalid <span className="text-red-500">Link</span></h2>
             <p className="text-muted-foreground text-sm font-medium">{error}</p>
           </div>
           <Link href="/forgot-password">
@@ -121,7 +121,7 @@ function ResetPasswordContent() {
               <CheckCircle className="h-10 w-10 text-green-500" />
             </div>
             <div className="space-y-3">
-              <h2 className="text-3xl font-black uppercase italic tracking-tighter">Reset <span className="text-green-500">Success</span></h2>
+              <h2 className="text-3xl font-black uppercase tracking-tighter">Reset <span className="text-green-500">Success</span></h2>
               <p className="text-muted-foreground text-sm font-medium leading-relaxed">
                 Your password has been updated. Redirecting to login terminal...
               </p>
@@ -135,7 +135,7 @@ function ResetPasswordContent() {
         ) : (
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="mb-10">
-              <h2 className="text-2xl md:text-4xl font-black uppercase italic tracking-tighter leading-none">Reset <span style={{ color: accent }}>Password</span></h2>
+              <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tighter leading-none">Reset <span style={{ color: accent }}>Password</span></h2>
               <p className="text-muted-foreground text-sm mt-3 font-medium">Define your new secure entry credentials.</p>
             </div>
 
@@ -221,7 +221,7 @@ export default function ResetPasswordPage() {
             />
           </div>
           <div className="text-center">
-            <h1 className="text-3xl font-black tracking-tighter uppercase italic">Klimarx<span style={{ color: accent }}>Space</span></h1>
+            <h1 className="text-3xl font-black tracking-tighter uppercase">Klimarx<span style={{ color: accent }}>Space</span></h1>
             <p className="text-[10px] tracking-[0.3em] text-muted-foreground font-bold mt-1">Security Terminal</p>
           </div>
         </Link>

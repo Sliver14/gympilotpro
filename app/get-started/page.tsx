@@ -103,10 +103,10 @@ function GetStartedContent() {
     <div className="flex-1 flex items-center justify-center p-4 md:p-6 py-24">
       <div className="w-full max-w-xl bg-white/5 border border-border p-5 md:p-10 shadow-2xl relative">
         <div className="text-center mb-10">
-          <span className="text-orange-500 font-black italic tracking-[0.2em] text-sm mb-4 block">
+          <span className="text-orange-500 font-black tracking-[0.2em] text-sm mb-4 block">
             // Onboarding
           </span>
-          <h1 className="text-2xl md:text-4xl md:text-5xl font-black italic uppercase tracking-tighter mb-4 text-foreground">
+          <h1 className="text-2xl md:text-4xl md:text-5xl font-black uppercase tracking-tighter mb-4 text-foreground">
             Create Your Gym
           </h1>
           <p className="text-muted-foreground font-medium">Set up your account and complete your payment to get started.</p>
@@ -124,7 +124,7 @@ function GetStartedContent() {
                 value={formData.fullName}
                 onChange={handleChange}
                 placeholder="JOHN DOE" 
-                className="w-full bg-transparent border-2 border-border p-4 font-black italic focus:border-orange-500 outline-none transition-colors text-foreground"
+                className="w-full bg-transparent border-2 border-border p-4 font-black focus:border-orange-500 outline-none transition-colors text-foreground"
               />
             </div>
             <div>
@@ -137,7 +137,7 @@ function GetStartedContent() {
                 value={formData.gymName}
                 onChange={handleChange}
                 placeholder="IRON FITNESS" 
-                className="w-full bg-transparent border-2 border-border p-4 font-black italic focus:border-orange-500 outline-none transition-colors text-foreground"
+                className="w-full bg-transparent border-2 border-border p-4 font-black focus:border-orange-500 outline-none transition-colors text-foreground"
               />
             </div>
           </div>
@@ -153,7 +153,7 @@ function GetStartedContent() {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="HELLO@GYM.COM" 
-                className="w-full bg-transparent border-2 border-border p-4 font-black italic focus:border-orange-500 outline-none transition-colors text-foreground"
+                className="w-full bg-transparent border-2 border-border p-4 font-black focus:border-orange-500 outline-none transition-colors text-foreground"
               />
             </div>
             <div>
@@ -166,7 +166,7 @@ function GetStartedContent() {
                 value={formData.phone}
                 onChange={handleChange}
                 placeholder="+234 800 000 0000" 
-                className="w-full bg-transparent border-2 border-border p-4 font-black italic focus:border-orange-500 outline-none transition-colors text-foreground"
+                className="w-full bg-transparent border-2 border-border p-4 font-black focus:border-orange-500 outline-none transition-colors text-foreground"
               />
             </div>
           </div>
@@ -180,7 +180,7 @@ function GetStartedContent() {
                   disabled={loading}
                   value={formData.plan}
                   onChange={handleChange}
-                  className="w-full bg-background border-2 border-border p-4 font-black italic focus:border-orange-500 outline-none transition-colors text-foreground appearance-none cursor-pointer"
+                  className="w-full bg-background border-2 border-border p-4 font-black focus:border-orange-500 outline-none transition-colors text-foreground appearance-none cursor-pointer"
                 >
                   {Object.values(PLANS).map(p => (
                     <option key={p.id} value={p.id}>{p.name}</option>
@@ -197,7 +197,7 @@ function GetStartedContent() {
                   disabled={loading}
                   value={formData.months}
                   onChange={handleChange}
-                  className="w-full bg-background border-2 border-border p-4 font-black italic focus:border-orange-500 outline-none transition-colors text-foreground appearance-none cursor-pointer"
+                  className="w-full bg-background border-2 border-border p-4 font-black focus:border-orange-500 outline-none transition-colors text-foreground appearance-none cursor-pointer"
                 >
                   {DURATIONS.map(d => (
                     <option key={d.months} value={d.months}>{d.label}</option>
@@ -224,7 +224,7 @@ function GetStartedContent() {
                   <span>-₦{pricing.discountAmount.toLocaleString()}</span>
                 </div>
               )}
-              <div className="flex justify-between items-center text-xl font-black italic uppercase text-foreground pt-2">
+              <div className="flex justify-between items-center text-xl font-black uppercase text-foreground pt-2">
                 <span>Total Due Today</span>
                 <span className="text-orange-500">₦{pricing.total.toLocaleString()}</span>
               </div>
@@ -239,7 +239,7 @@ function GetStartedContent() {
             <Button 
               type="submit"
               disabled={loading}
-              className="w-full h-16 bg-orange-500 hover:bg-orange-600 text-black font-black italic uppercase text-lg rounded-none disabled:opacity-70 flex items-center justify-center transition-transform active:scale-95"
+              className="w-full h-16 bg-orange-500 hover:bg-orange-600 text-black font-black uppercase text-lg rounded-none disabled:opacity-70 flex items-center justify-center transition-transform active:scale-95"
             >
               {loading ? <Loader2 className="animate-spin" /> : `Proceed to Payment`}
             </Button>
@@ -259,7 +259,7 @@ export default function GetStartedPage() {
       <nav className="fixed top-0 w-full z-[100] bg-background/80 backdrop-blur-xl border-b border-border">
         <div className="container mx-auto px-6 h-16 md:h-24 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-            <span className="text-2xl font-black italic uppercase tracking-tighter">
+            <span className="text-2xl font-black uppercase tracking-tighter">
               Insight<span className="text-orange-500">Gym</span>
             </span>
           </Link>

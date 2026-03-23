@@ -49,7 +49,7 @@ export default function DomainDashboard() {
             >
               <ChevronLeft size={14} /> Back
             </Button>
-            <h2 className="text-2xl font-black italic uppercase tracking-tighter mb-2">Premium Feature</h2>
+            <h2 className="text-2xl font-black uppercase tracking-tighter mb-2">Premium Feature</h2>
             <p className="text-muted-foreground font-medium text-xs leading-relaxed text-center">
               Custom Domain Setup is available on <span className="text-orange-500 font-black">Pro</span> and <span className="text-orange-500 font-black">Elite</span> plans. Upgrade your gym to connect your own brand identity.
             </p>
@@ -125,7 +125,7 @@ export default function DomainDashboard() {
         {/* HEADER */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
-            <h1 className="text-2xl md:text-4xl font-black italic uppercase tracking-tighter mb-2">
+            <h1 className="text-2xl md:text-4xl font-black uppercase tracking-tighter mb-2">
               Domain Settings
             </h1>
             <p className="text-muted-foreground font-medium text-[10px]">
@@ -161,7 +161,7 @@ export default function DomainDashboard() {
                 <a
                   href={`https://${gymData.customDomain}`}
                   target="_blank"
-                  className="text-xl font-black italic uppercase hover:text-green-500"
+                  className="text-xl font-black uppercase hover:text-green-500"
                 >
                   {gymData.customDomain}
                 </a>
@@ -174,7 +174,7 @@ export default function DomainDashboard() {
                 <p className="text-[10px] font-black text-muted-foreground mb-1">
                   Current Access Point
                 </p>
-                <p className="text-xl font-black italic uppercase">
+                <p className="text-xl font-black uppercase">
                   {gymData.slug}.gympilotpro.com
                 </p>
               </div>
@@ -188,7 +188,7 @@ export default function DomainDashboard() {
           {/* FORM */}
           <div className="md:col-span-3">
             <div className="p-4 md:p-8 bg-card border border-border rounded-[2rem]">
-              <h2 className="text-xl font-black italic uppercase mb-6">
+              <h2 className="text-xl font-black uppercase mb-6">
                 1. Connect Your Domain
               </h2>
 
@@ -199,7 +199,7 @@ export default function DomainDashboard() {
                     placeholder="www.yourgym.com"
                     value={domain}
                     onChange={(e) => setDomain(e.target.value)}
-                    className="h-16 pl-12 bg-background border-border text-lg font-black italic uppercase"
+                    className="h-16 pl-12 bg-background border-border text-lg font-black uppercase"
                   />
                 </div>
 
@@ -217,7 +217,7 @@ export default function DomainDashboard() {
           <div className="md:col-span-2">
             <div className="p-4 md:p-8 bg-background border border-border rounded-[2rem]">
 
-              <h2 className="text-xl font-black italic uppercase mb-4">
+              <h2 className="text-xl font-black uppercase mb-4">
                 2. DNS Setup
               </h2>
 

@@ -134,7 +134,7 @@ function AdminPackagesContent() {
         <header className="flex h-16 shrink-0 items-center gap-2 border-b border-border px-6 sticky top-0 z-30 bg-card/50 backdrop-blur-md">
           <SidebarTrigger className="-ml-1" />
           <div className="flex items-center gap-2">
-            <h1 className="text-sm font-black italic tracking-[0.2em] text-muted-foreground">
+            <h1 className="text-sm font-black tracking-[0.2em] text-muted-foreground">
               Admin <span className="text-[#daa857]">Packages</span>
             </h1>
           </div>
@@ -143,7 +143,7 @@ function AdminPackagesContent() {
         <div className="flex flex-1 flex-col gap-4 md:gap-8 p-4 md:p-6 pb-24 md:pb-20">
           <div className="max-w-6xl mx-auto w-full space-y-8">
             <div className="flex justify-between items-center">
-              <h2 className="text-3xl font-black uppercase italic tracking-tighter text-foreground">Membership Plans</h2>
+              <h2 className="text-3xl font-black uppercase tracking-tighter text-foreground">Membership Plans</h2>
               <Button onClick={() => openModal()} className="bg-[#daa857] hover:bg-[#cdb48b] text-black font-black rounded-xl">
                 <Plus className="mr-2 h-4 w-4" /> New Package
               </Button>
@@ -153,13 +153,13 @@ function AdminPackagesContent() {
               {packages.map((pkg) => (
                 <Card key={pkg.id} className="bg-card border-border shadow-xl rounded-[2rem] overflow-hidden">
                   <CardHeader className="bg-card/50 border-b border-border p-4 md:p-6">
-                    <CardTitle className="text-xl font-black uppercase italic tracking-tighter text-foreground">
+                    <CardTitle className="text-xl font-black uppercase tracking-tighter text-foreground">
                       {pkg.name.split(' - ')[0]}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="p-4 md:p-6 space-y-4">
                     <div>
-                      <span className="text-3xl font-black italic text-[#daa857]">₦{pkg.price.toLocaleString()}</span>
+                      <span className="text-3xl font-black text-[#daa857]">₦{pkg.price.toLocaleString()}</span>
                     </div>
                     <p className="text-xs font-bold text-muted-foreground">Duration: {pkg.duration} Days</p>
                     <p className="text-sm text-muted-foreground mt-4">{pkg.description}</p>
@@ -190,7 +190,7 @@ function AdminPackagesContent() {
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent className="bg-card border-border text-foreground rounded-[2.5rem] p-4 md:p-8 max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-2xl font-black uppercase italic tracking-tighter text-foreground">
+            <DialogTitle className="text-2xl font-black uppercase tracking-tighter text-foreground">
               {editingId ? 'Edit' : 'Create'} <span className="text-[#daa857]">Package</span>
             </DialogTitle>
           </DialogHeader>

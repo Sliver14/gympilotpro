@@ -116,7 +116,7 @@ function AdminDashboardContent() {
           <SidebarTrigger className="-ml-1" />
           <div className="flex items-center justify-between w-full">
             <div className="flex items-center gap-2">
-              <h1 className="text-sm font-black italic tracking-[0.2em] text-muted-foreground">
+              <h1 className="text-sm font-black tracking-[0.2em] text-muted-foreground">
                 {adminData.role} <span className="text-primary">Dashboard</span>
               </h1>
             </div>
@@ -141,7 +141,7 @@ function AdminDashboardContent() {
                 <div className="space-y-4 text-center md:text-left">
                   <div className="flex items-center justify-center md:justify-start gap-3 text-primary">
                     <ShieldCheck className="h-6 w-6" />
-                    <h2 className="text-2xl font-black uppercase italic tracking-tighter">Action Required</h2>
+                    <h2 className="text-2xl font-black uppercase tracking-tighter">Action Required</h2>
                   </div>
                   <p className="text-xs font-bold text-muted-foreground leading-relaxed max-w-xl">
                     Your gym sanctuary is live, but members cannot register or renew without core configurations. 

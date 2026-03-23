@@ -143,11 +143,11 @@ export default function LoginPage() {
                 className="object-contain p-2"
               />
             ) : (
-              <span className="font-black italic text-2xl" style={{ color: accent }}>{gymInitials}</span>
+              <span className="font-black text-2xl" style={{ color: accent }}>{gymInitials}</span>
             )}
           </div>
           <div className="text-center">
-            <h1 className="text-3xl font-black tracking-tighter uppercase italic">
+            <h1 className="text-3xl font-black tracking-tighter uppercase">
               {gymName.split(' ')[0]}<span style={{ color: accent }}>{gymName.split(' ').slice(1).join(' ')}</span>
             </h1>
             <p className="text-[10px] tracking-[0.3em] text-muted-foreground font-bold mt-1">{tagline}</p>
@@ -162,7 +162,7 @@ export default function LoginPage() {
 
           <div className="relative z-10">
             <div className="mb-10">
-              <h2 className="text-2xl md:text-4xl font-black uppercase italic tracking-tighter leading-none">Welcome <span style={{ color: accent }}>Back</span></h2>
+              <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tighter leading-none">Welcome <span style={{ color: accent }}>Back</span></h2>
               <p className="text-muted-foreground text-sm mt-3 font-medium">Enter your credentials to access the space.</p>
             </div>
 

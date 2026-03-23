@@ -253,7 +253,7 @@ export default function CheckInPanel() {
             {result.member && (
               <Avatar className="h-40 w-40 border-4 border-border shadow-2xl group transition-transform duration-500 hover:scale-105">
                 <AvatarImage src={result.member.profileImage || undefined} className="object-cover" />
-                <AvatarFallback className="text-2xl md:text-4xl bg-background font-black uppercase italic text-[#daa857]">
+                <AvatarFallback className="text-2xl md:text-4xl bg-background font-black uppercase text-[#daa857]">
                   {result.member.fullName.split(' ').map(n => n[0]).join('')}
                 </AvatarFallback>
               </Avatar>
@@ -263,22 +263,22 @@ export default function CheckInPanel() {
               {result.isValid ? (
                 <div className="flex items-center justify-center gap-3 text-green-500">
                   <CheckCircle className="h-8 w-8 stroke-[3px]" />
-                  <span className="text-3xl font-black uppercase italic tracking-tighter">Access Granted</span>
+                  <span className="text-3xl font-black uppercase tracking-tighter">Access Granted</span>
                 </div>
               ) : result.message.toLowerCase().includes('pending verification') ? (
                 <div className="flex items-center justify-center gap-3 text-orange-500">
                   <Clock className="h-8 w-8 stroke-[3px]" />
-                  <span className="text-3xl font-black uppercase italic tracking-tighter">Pending Verification</span>
+                  <span className="text-3xl font-black uppercase tracking-tighter">Pending Verification</span>
                 </div>
               ) : result.message.includes('Already checked in') ? (
                 <div className="flex items-center justify-center gap-3 text-[#daa857]">
                   <Clock className="h-8 w-8 stroke-[3px]" />
-                  <span className="text-3xl font-black uppercase italic tracking-tighter">Duplicate Check-in</span>
+                  <span className="text-3xl font-black uppercase tracking-tighter">Duplicate Check-in</span>
                 </div>
               ) : (
                 <div className="flex items-center justify-center gap-3 text-red-500">
                   <AlertCircle className="h-8 w-8 stroke-[3px]" />
-                  <span className="text-3xl font-black uppercase italic tracking-tighter">Access Denied</span>
+                  <span className="text-3xl font-black uppercase tracking-tighter">Access Denied</span>
                 </div>
               )}
               <p className={cn(
@@ -291,11 +291,11 @@ export default function CheckInPanel() {
 
             {result.member && (
               <div className="space-y-2">
-                <p className="text-3xl font-black text-foreground uppercase italic tracking-tighter">{result.member.fullName}</p>
+                <p className="text-3xl font-black text-foreground uppercase tracking-tighter">{result.member.fullName}</p>
                 <div className="flex flex-col items-center gap-1">
                   <p className="text-[10px] font-black tracking-[0.3em] text-muted-foreground">Access Control System</p>
                   <p className="text-xs font-bold text-muted-foreground">
-                    VALID UNTIL: <span className={cn("font-black italic", result.isValid ? "text-foreground" : "text-red-500")}>{new Date(result.member.expiryDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).toUpperCase()}</span>
+                    VALID UNTIL: <span className={cn("font-black", result.isValid ? "text-foreground" : "text-red-500")}>{new Date(result.member.expiryDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).toUpperCase()}</span>
                   </p>
                 </div>
               </div>
@@ -350,7 +350,7 @@ export default function CheckInPanel() {
                       <Camera className="h-10 w-10 text-[#daa857]" />
                     </div>
                     <div className="space-y-2">
-                      <h3 className="text-xl font-black text-foreground uppercase italic tracking-tighter">Manual Check-in</h3>
+                      <h3 className="text-xl font-black text-foreground uppercase tracking-tighter">Manual Check-in</h3>
                       <p className="text-[10px] font-black text-muted-foreground tracking-[0.3em]">Scanner Ready for Uplink</p>
                     </div>
                     <Button 
@@ -429,12 +429,12 @@ export default function CheckInPanel() {
                       <div className="flex items-center gap-4">
                         <Avatar className="h-12 w-12 border border-border">
                           <AvatarImage src={member.profileImage || undefined} className="object-cover" />
-                          <AvatarFallback className="bg-background text-[#daa857] font-black italic text-xs">
+                          <AvatarFallback className="bg-background text-[#daa857] font-black text-xs">
                             {member.fullName.split(' ').map(n => n[0]).join('')}
                           </AvatarFallback>
                         </Avatar>
                         <div>
-                          <p className="text-sm font-black text-foreground italic">{member.fullName}</p>
+                          <p className="text-sm font-black text-foreground">{member.fullName}</p>
                           <p className="text-[8px] font-bold text-muted-foreground">
                             EXP: {new Date(member.expiryDate).toLocaleDateString().toUpperCase()}
                           </p>
@@ -452,7 +452,7 @@ export default function CheckInPanel() {
                   ))
                 ) : (
                   <div className="p-5 md:p-10 text-center rounded-2xl bg-card/50 border border-dashed border-border">
-                    <p className="text-xs font-black text-muted-foreground italic italic">No active members match "{searchQuery}"</p>
+                    <p className="text-xs font-black text-muted-foreground">No active members match "{searchQuery}"</p>
                   </div>
                 )}
               </div>

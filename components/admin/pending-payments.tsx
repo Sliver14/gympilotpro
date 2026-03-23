@@ -139,7 +139,7 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
         {payments.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 text-center bg-card/50 rounded-[2rem] border border-dashed border-border">
             <CheckCircle className="h-12 w-12 text-muted-foreground mb-4 opacity-20" />
-            <p className="text-sm font-bold text-muted-foreground italic">All systems updated. No pending transactions.</p>
+            <p className="text-sm font-bold text-muted-foreground">All systems updated. No pending transactions.</p>
           </div>
         ) : (
           <div className="grid gap-4">
@@ -149,7 +149,7 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
                 
                 <div className="space-y-4 flex-1 min-w-0 relative z-10">
                   <div className="flex items-center gap-3">
-                    <p className="font-black text-foreground uppercase italic tracking-tight text-lg">
+                    <p className="font-black text-foreground uppercase tracking-tight text-lg">
                       {payment.user.firstName} <span className="text-[#daa857]">{payment.user.lastName}</span>
                     </p>
                     <Badge className="bg-[#daa857]/10 text-[#daa857] border-[#daa857]/20 text-[8px] font-black px-2">
@@ -158,10 +158,10 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
                   </div>
                   
                   <div className="flex flex-wrap items-baseline gap-4">
-                    <p className="text-2xl font-black text-foreground italic tracking-tighter">
+                    <p className="text-2xl font-black text-foreground tracking-tighter">
                       ₦{payment.amount.toLocaleString('en-NG')}
                     </p>
-                    <p className="text-[10px] font-bold text-muted-foreground italic truncate max-w-xs">
+                    <p className="text-[10px] font-bold text-muted-foreground truncate max-w-xs">
                       {payment.description}
                     </p>
                   </div>
@@ -207,7 +207,7 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
         <Dialog open={!!selectedPayment} onOpenChange={(open) => !open && setSelectedPayment(null)}>
           <DialogContent className="bg-card border-border text-foreground rounded-[2.5rem] p-5 md:p-10 max-w-lg">
             <DialogHeader className="space-y-4">
-              <DialogTitle className="text-3xl font-black uppercase italic tracking-tighter">
+              <DialogTitle className="text-3xl font-black uppercase tracking-tighter">
                 Manual <span className="text-[#daa857]">Authorization</span>
               </DialogTitle>
               <DialogDescription className="text-muted-foreground font-medium text-[10px] leading-relaxed">

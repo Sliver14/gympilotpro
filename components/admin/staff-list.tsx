@@ -120,7 +120,7 @@ export default function StaffList() {
         {filteredStaff.length === 0 ? (
           <div className="py-20 text-center bg-card/50 rounded-[2rem] border border-dashed border-border">
             <UserCheck className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-            <p className="text-sm font-bold text-muted-foreground italic">No authorized personnel match the current query.</p>
+            <p className="text-sm font-bold text-muted-foreground">No authorized personnel match the current query.</p>
           </div>
         ) : (
           <div className="grid gap-4">
@@ -134,12 +134,12 @@ export default function StaffList() {
                   <div className="flex items-center gap-5 flex-1 min-w-0 relative z-10">
                     <Avatar className="h-14 w-14 border-2 border-border group-hover:border-[#daa857]/30 transition-all duration-500 shadow-xl">
                       <AvatarImage src={s.profileImage || undefined} className="object-cover" />
-                      <AvatarFallback className="bg-background text-[#daa857] font-black italic">
+                      <AvatarFallback className="bg-background text-[#daa857] font-black">
                         {initials || <User className="h-6 w-6" />}
                       </AvatarFallback>
                     </Avatar>
                     <div className="min-w-0">
-                      <p className="font-black text-foreground uppercase italic tracking-tight text-lg leading-none mb-1">
+                      <p className="font-black text-foreground uppercase tracking-tight text-lg leading-none mb-1">
                         {s.firstName} <span className="text-[#daa857]">{s.lastName}</span>
                       </p>
                       <p className="text-[10px] font-bold text-muted-foreground flex items-center gap-2">
@@ -153,7 +153,7 @@ export default function StaffList() {
                   <div className="flex items-center justify-between md:justify-end gap-4 md:gap-8 mt-6 md:mt-0 pt-6 md:pt-0 border-t md:border-none border-border relative z-10">
                     <div className="text-left md:text-right">
                       <p className="text-[8px] font-black text-muted-foreground mb-1">Specialization</p>
-                      <p className="text-xs font-black text-foreground italic">{s.staffProfile?.specialization || 'General Role'}</p>
+                      <p className="text-xs font-black text-foreground">{s.staffProfile?.specialization || 'General Role'}</p>
                     </div>
                     
                     <div className="text-left md:text-right">
@@ -163,7 +163,7 @@ export default function StaffList() {
                       </p>
                     </div>
 
-                    <Badge className="bg-[#daa857]/10 text-[#daa857] border border-[#daa857]/20 px-4 py-1 rounded-full text-[8px] font-black italic">
+                    <Badge className="bg-[#daa857]/10 text-[#daa857] border border-[#daa857]/20 px-4 py-1 rounded-full text-[8px] font-black">
                       {s.role.toUpperCase()}
                     </Badge>
                   </div>

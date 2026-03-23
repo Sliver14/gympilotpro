@@ -96,11 +96,11 @@ function MemberSidebarContent({ memberData, onLogout }: MemberSidebarProps) {
                       className="object-contain"
                     />
                   ) : (
-                    <span className="font-black italic text-lg" style={{ color: accent }}>{gymInitials}</span>
+                    <span className="font-black text-lg" style={{ color: accent }}>{gymInitials}</span>
                   )}
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight ml-2">
-                  <span className="truncate font-black uppercase italic tracking-tighter text-lg">{gymName}<span style={{ color: accent }}>Space</span></span>
+                  <span className="truncate font-black uppercase tracking-tighter text-lg">{gymName}<span style={{ color: accent }}>Space</span></span>
                   <span className="truncate text-[8px] font-bold tracking-[0.4em] text-muted-foreground mt-0.5">Member Portal</span>
                 </div>
               </Link>
@@ -162,7 +162,7 @@ function MemberSidebarContent({ memberData, onLogout }: MemberSidebarProps) {
                     <AvatarFallback className="rounded-lg font-black" style={{ backgroundColor: `${accent}1a`, color: accent }}>{initials || '??'}</AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-black italic text-foreground">
+                    <span className="truncate font-black text-foreground">
                       {memberData.firstName} {memberData.lastName}
                     </span>
                     <span className="truncate text-[10px] font-bold text-muted-foreground">{memberData.email}</span>
@@ -177,7 +177,7 @@ function MemberSidebarContent({ memberData, onLogout }: MemberSidebarProps) {
               >
                 <DropdownMenuItem disabled className="opacity-100 p-4 border-b border-border mb-2">
                   <div className="flex flex-col space-y-1">
-                    <p className="text-xs font-black italic text-foreground">{memberData.firstName} {memberData.lastName}</p>
+                    <p className="text-xs font-black text-foreground">{memberData.firstName} {memberData.lastName}</p>
                     <p className="text-[10px] font-bold text-muted-foreground">{memberData.email}</p>
                   </div>
                 </DropdownMenuItem>

@@ -77,7 +77,7 @@ function SuccessContent() {
       {status === 'loading' && (
         <div className="flex flex-col items-center gap-4">
           <Loader2 className="h-16 w-16 animate-spin" style={{ color: accent }} />
-          <h2 className="text-2xl font-black italic uppercase tracking-tighter text-foreground">
+          <h2 className="text-2xl font-black uppercase tracking-tighter text-foreground">
             {message}
           </h2>
           <p className="text-muted-foreground font-medium">Please do not close this page.</p>
@@ -88,7 +88,7 @@ function SuccessContent() {
         <div className="flex flex-col items-center gap-4 md:gap-6 max-w-md w-full bg-accent border border-border p-5 md:p-10 rounded-[2rem] shadow-2xl">
           <CheckCircle className="h-16 md:h-20 w-20 text-green-500 mb-2" />
           <div>
-            <h2 className="text-2xl md:text-4xl font-black italic uppercase tracking-tighter text-foreground mb-3">
+            <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tighter text-foreground mb-3">
               Payment Successful
             </h2>
             <p className="text-muted-foreground font-medium text-lg">
@@ -100,7 +100,7 @@ function SuccessContent() {
           </div>
           <Button
             onClick={goToDashboard}
-            className="w-full h-16 mt-6 text-black font-black italic uppercase text-lg rounded-xl transition-transform hover:scale-[1.02]"
+            className="w-full h-16 mt-6 text-black font-black uppercase text-lg rounded-xl transition-transform hover:scale-[1.02]"
             style={{ backgroundColor: accent }}
           >
             Go to Dashboard
@@ -112,7 +112,7 @@ function SuccessContent() {
         <div className="flex flex-col items-center gap-4 md:gap-6 max-w-md w-full bg-accent border border-red-500/30 p-5 md:p-10 rounded-[2rem] shadow-2xl">
           <AlertCircle className="h-16 md:h-20 w-20 text-red-500 mb-2" />
           <div>
-            <h2 className="text-2xl md:text-4xl font-black italic uppercase tracking-tighter text-foreground mb-3">
+            <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tighter text-foreground mb-3">
               Payment Issue
             </h2>
             <p className="text-muted-foreground font-medium text-lg leading-relaxed">
@@ -126,7 +126,7 @@ function SuccessContent() {
           <div className="w-full flex flex-col sm:flex-row gap-4 mt-6">
             <Button
               onClick={goBack}
-              className="flex-1 h-16 text-black font-black italic uppercase text-lg rounded-xl transition-transform hover:scale-[1.02]"
+              className="flex-1 h-16 text-black font-black uppercase text-lg rounded-xl transition-transform hover:scale-[1.02]"
               style={{ backgroundColor: accent }}
             >
               Go Back
@@ -135,7 +135,7 @@ function SuccessContent() {
             <Button
               variant="outline"
               onClick={() => router.push('/')}
-              className="flex-1 h-16 border-border bg-transparent hover:bg-accent text-foreground font-black italic uppercase text-lg rounded-xl transition-transform hover:scale-[1.02]"
+              className="flex-1 h-16 border-border bg-transparent hover:bg-accent text-foreground font-black uppercase text-lg rounded-xl transition-transform hover:scale-[1.02]"
             >
               Go Home
             </Button>
@@ -176,10 +176,10 @@ export default function PaymentSuccessPage() {
                     className="object-contain p-1"
                   />
                 ) : (
-                  <span className="font-black italic text-sm" style={{ color: accent }}>{gymInitials}</span>
+                  <span className="font-black text-sm" style={{ color: accent }}>{gymInitials}</span>
                 )}
               </div>
-              <span className="text-2xl font-black uppercase italic tracking-tighter">
+              <span className="text-2xl font-black uppercase tracking-tighter">
                 {gymName.split(' ')[0]}
                 <span style={{ color: accent }}>{gymName.split(' ').slice(1).join(' ')}</span>
               </span>

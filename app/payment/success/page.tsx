@@ -57,7 +57,7 @@ function SuccessContent() {
       {status === 'loading' && (
         <div className="flex flex-col items-center gap-4">
           <Loader2 className="h-16 w-16 text-orange-500 animate-spin" />
-          <h2 className="text-2xl font-black italic uppercase tracking-tighter text-foreground">
+          <h2 className="text-2xl font-black uppercase tracking-tighter text-foreground">
             {message}
           </h2>
           <p className="text-muted-foreground font-medium">Please do not close this page.</p>
@@ -68,7 +68,7 @@ function SuccessContent() {
         <div className="flex flex-col items-center gap-4 md:gap-6 max-w-md w-full bg-white/5 border border-border p-5 md:p-10">
           <CheckCircle className="h-16 md:h-20 w-20 text-green-500 mb-2" />
           <div>
-            <h2 className="text-2xl md:text-4xl font-black italic uppercase tracking-tighter text-foreground mb-2">
+            <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tighter text-foreground mb-2">
               Payment Successful
             </h2>
             <p className="text-muted-foreground font-medium text-lg leading-relaxed">
@@ -80,7 +80,7 @@ function SuccessContent() {
           </div>
           <Button 
             onClick={handleGoHome}
-            className="w-full h-16 mt-6 bg-orange-500 hover:bg-orange-600 text-black font-black italic uppercase text-lg rounded-none"
+            className="w-full h-16 mt-6 bg-orange-500 hover:bg-orange-600 text-black font-black uppercase text-lg rounded-none"
           >
             Go Back Home
           </Button>
@@ -91,7 +91,7 @@ function SuccessContent() {
         <div className="flex flex-col items-center gap-4 md:gap-6 max-w-md w-full bg-white/5 border border-red-500/30 p-5 md:p-10">
           <AlertCircle className="h-16 md:h-20 w-20 text-red-500 mb-2" />
           <div>
-            <h2 className="text-2xl md:text-4xl font-black italic uppercase tracking-tighter text-foreground mb-2">
+            <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tighter text-foreground mb-2">
               Verification Failed
             </h2>
             <p className="text-muted-foreground font-medium text-lg">
@@ -100,7 +100,7 @@ function SuccessContent() {
           </div>
           <Button 
             onClick={handleGoHome}
-            className="w-full h-16 mt-6 bg-white hover:bg-gray-200 text-black font-black italic uppercase text-lg rounded-none"
+            className="w-full h-16 mt-6 bg-white hover:bg-gray-200 text-black font-black uppercase text-lg rounded-none"
           >
             Go Back Home
           </Button>
@@ -115,7 +115,7 @@ export default function PaymentSuccessPage() {
     <div className="min-h-screen bg-background text-foreground selection:bg-orange-500 selection:text-black font-sans flex flex-col">
       <nav className="w-full bg-background/80 backdrop-blur-xl border-b border-border">
         <div className="container mx-auto px-6 h-16 md:h-24 flex items-center justify-center">
-          <span className="text-2xl font-black italic uppercase tracking-tighter">
+          <span className="text-2xl font-black uppercase tracking-tighter">
             Insight<span className="text-orange-500">Gym</span>
           </span>
         </div>

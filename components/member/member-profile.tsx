@@ -135,7 +135,7 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
               <div className="relative group">
                 <Avatar className="h-32 w-32 border-4 border-[#daa857]/20 group-hover:border-[#daa857]/50 transition-all duration-500">
                   <AvatarImage src={previewUrl || profileImage || undefined} alt="Profile" className="object-cover" />
-                  <AvatarFallback className="text-2xl md:text-4xl bg-background font-black uppercase italic text-[#daa857]">{initials || '??'}</AvatarFallback>
+                  <AvatarFallback className="text-2xl md:text-4xl bg-background font-black uppercase text-[#daa857]">{initials || '??'}</AvatarFallback>
                 </Avatar>
                 <Button
                   variant="secondary"
@@ -159,7 +159,7 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
                 />
               </div>
               <div className="text-center sm:text-left space-y-1">
-                <h3 className="text-3xl font-black uppercase italic tracking-tighter text-foreground">
+                <h3 className="text-3xl font-black uppercase tracking-tighter text-foreground">
                   {memberData.firstName} <span className="text-[#daa857]">{memberData.lastName}</span>
                 </h3>
                 <p className="text-[10px] font-black tracking-[0.3em] text-muted-foreground">{memberData.email}</p>
@@ -200,21 +200,21 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
         {/* Membership Details */}
         <div className="bg-card border border-border rounded-[2rem] p-4 md:p-8 shadow-2xl relative overflow-hidden">
           <div className="flex items-center justify-between mb-8 pb-4 border-b border-border">
-            <h3 className="text-xl font-black uppercase italic tracking-tighter text-foreground flex items-center gap-3">
+            <h3 className="text-xl font-black uppercase tracking-tighter text-foreground flex items-center gap-3">
               <Zap className="h-5 w-5 text-[#daa857]" /> Membership <span className="text-[#daa857]">Status</span>
             </h3>
-            <Badge className="bg-[#daa857] text-black font-black italic text-[10px]">Elite Active</Badge>
+            <Badge className="bg-[#daa857] text-black font-black text-[10px]">Elite Active</Badge>
           </div>
           
           <div className="space-y-6">
             <div className="flex justify-between items-center">
               <p className="text-[10px] font-black tracking-[0.2em] text-muted-foreground">Selected Tier</p>
-              <p className="text-sm font-black text-foreground italic">{membership.name || '—'}</p>
+              <p className="text-sm font-black text-foreground">{membership.name || '—'}</p>
             </div>
 
             <div className="flex justify-between items-center">
               <p className="text-[10px] font-black tracking-[0.2em] text-muted-foreground">Investment</p>
-              <p className="text-xl font-black text-[#daa857] italic">
+              <p className="text-xl font-black text-[#daa857]">
                 {membership.price ? formatCurrency(membership.price) : '—'}
               </p>
             </div>
@@ -244,14 +244,14 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
               <div className="h-10 w-10 rounded-xl bg-[#daa857]/10 flex items-center justify-center text-[#daa857]">
                 <TrendingUp className="h-5 w-5" />
               </div>
-              <h3 className="text-xl font-black uppercase italic tracking-tighter text-foreground">Fitness <span className="text-[#daa857]">Goals</span></h3>
+              <h3 className="text-xl font-black uppercase tracking-tighter text-foreground">Fitness <span className="text-[#daa857]">Goals</span></h3>
             </div>
 
             <div className="space-y-6 flex-1">
               <div>
                 <p className="text-[10px] font-black tracking-[0.2em] text-muted-foreground mb-3">Primary Objectives</p>
                 <div className="p-4 md:p-6 rounded-2xl bg-card/50 border border-border min-h-[100px]">
-                  <p className="text-sm font-bold text-muted-foreground leading-relaxed italic">
+                  <p className="text-sm font-bold text-muted-foreground leading-relaxed">
                     {profile.fitnessGoals || 'No primary objectives defined in the plan.'}
                   </p>
                 </div>
@@ -274,7 +274,7 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
                   <div className="flex items-center justify-center gap-4 md:gap-8">
                     <div className="text-center">
                       <p className="text-[8px] font-black text-muted-foreground mb-1">Liaison</p>
-                      <p className="text-sm font-black text-foreground italic">{profile.emergencyContact}</p>
+                      <p className="text-sm font-black text-foreground">{profile.emergencyContact}</p>
                     </div>
                     {profile.emergencyPhone && (
                       <div className="text-center">
@@ -301,7 +301,7 @@ export default function MemberProfile({ memberData, onUpdate }: MemberProfilePro
               <div className="h-10 w-10 rounded-xl bg-[#daa857]/10 flex items-center justify-center text-[#daa857]">
                 <CropIcon className="h-5 w-5" />
               </div>
-              <h3 className="text-lg md:text-xl font-black uppercase italic tracking-tighter">Adjust <span className="text-[#daa857]">Member</span></h3>
+              <h3 className="text-lg md:text-xl font-black uppercase tracking-tighter">Adjust <span className="text-[#daa857]">Member</span></h3>
             </div>
             <Button variant="ghost" size="icon" onClick={() => setIsCropperModalOpen(false)} className="rounded-full hover:bg-accent">
               <X className="h-5 w-5" />

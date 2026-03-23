@@ -35,10 +35,10 @@ export default function MemberHeader({ memberData, onLogout }: MemberHeaderProps
                 className="object-contain p-0.5"
               />
             ) : (
-              <span className="font-black italic text-xs" style={{ color: accent }}>{gymInitials}</span>
+              <span className="font-black text-xs" style={{ color: accent }}>{gymInitials}</span>
             )}
           </div>
-          <span className="text-xl font-black uppercase italic tracking-tighter">{gymName}<span style={{ color: accent }}>Space</span></span>
+          <span className="text-xl font-black uppercase tracking-tighter">{gymName}<span style={{ color: accent }}>Space</span></span>
         </Link>
 
         <div className="flex items-center gap-4">
@@ -54,7 +54,7 @@ export default function MemberHeader({ memberData, onLogout }: MemberHeaderProps
             <DropdownMenuContent align="end" className="w-56 bg-card border-border text-foreground rounded-xl">
               <DropdownMenuItem disabled className="opacity-100">
                 <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-black italic">{memberData.firstName} {memberData.lastName}</p>
+                  <p className="text-sm font-black">{memberData.firstName} {memberData.lastName}</p>
                   <p className="text-[10px] font-bold text-muted-foreground">{memberData.email}</p>
                 </div>
               </DropdownMenuItem>

@@ -86,7 +86,7 @@ export default async function GymSubdomainLayout({
             <div className="h-16 md:h-20 w-20 bg-orange-500/10 rounded-full flex items-center justify-center mb-6 border border-orange-500/20">
               <span className="text-orange-500 text-3xl font-black">!</span>
             </div>
-            <h1 className="text-2xl md:text-4xl font-black uppercase italic mb-4 tracking-tighter">Domain Not Connected</h1>
+            <h1 className="text-2xl md:text-4xl font-black uppercase mb-4 tracking-tighter">Domain Not Connected</h1>
             <p className="text-muted-foreground max-w-md font-medium text-[10px] leading-relaxed">
               This domain is currently pointing to our servers but hasn't been verified or linked to any active gym yet.
             </p>

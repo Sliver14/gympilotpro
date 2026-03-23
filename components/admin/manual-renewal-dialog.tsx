@@ -124,7 +124,7 @@ export default function ManualRenewalDialog({ memberId, memberName, onRenewed }:
       </DialogTrigger>
       <DialogContent className="bg-card border-border text-foreground rounded-[2.5rem] p-5 md:p-10 max-w-lg">
         <DialogHeader className="space-y-4">
-          <DialogTitle className="text-3xl font-black uppercase italic tracking-tighter">
+          <DialogTitle className="text-3xl font-black uppercase tracking-tighter">
             Manual <span className="text-[#daa857]">Renewal</span>
           </DialogTitle>
           <DialogDescription className="text-muted-foreground font-medium text-[10px] leading-relaxed">

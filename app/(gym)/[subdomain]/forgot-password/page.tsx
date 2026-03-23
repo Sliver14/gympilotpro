@@ -78,7 +78,7 @@ export default function ForgotPasswordPage() {
             />
           </div>
           <div className="text-center">
-            <h1 className="text-3xl font-black tracking-tighter uppercase italic">Klimarx<span style={{ color: accent }}>Space</span></h1>
+            <h1 className="text-3xl font-black tracking-tighter uppercase">Klimarx<span style={{ color: accent }}>Space</span></h1>
             <p className="text-[10px] tracking-[0.3em] text-muted-foreground font-bold mt-1">Account Recovery</p>
           </div>
         </Link>
@@ -102,7 +102,7 @@ export default function ForgotPasswordPage() {
                   <Mail className="h-10 w-10 text-[#daa857]" />
                 </div>
                 <div className="space-y-3">
-                  <h2 className="text-3xl font-black uppercase italic tracking-tighter">Check Your <span style={{ color: accent }}>Inbox</span></h2>
+                  <h2 className="text-3xl font-black uppercase tracking-tighter">Check Your <span style={{ color: accent }}>Inbox</span></h2>
                   <p className="text-muted-foreground text-sm font-medium leading-relaxed">
                     We've sent a recovery link to <span className="text-foreground font-bold">{email}</span>. 
                     Follow the link to reset your account access.
@@ -119,7 +119,7 @@ export default function ForgotPasswordPage() {
             ) : (
               <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                 <div className="mb-10">
-                  <h2 className="text-2xl md:text-4xl font-black uppercase italic tracking-tighter leading-none">Lost Your <span style={{ color: accent }}>Password?</span></h2>
+                  <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tighter leading-none">Lost Your <span style={{ color: accent }}>Password?</span></h2>
                   <p className="text-muted-foreground text-sm mt-3 font-medium">Enter your registered email to receive a recovery link.</p>
                 </div>
 

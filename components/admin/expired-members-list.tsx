@@ -122,7 +122,7 @@ export default function ExpiredMembersList({ onMemberRenewed }: { onMemberRenewe
         {filteredMembers.length === 0 ? (
           <div className="py-20 text-center bg-card/50 rounded-[2rem] border border-dashed border-border">
             <AlertTriangle className="mx-auto h-12 w-12 text-muted-foreground mb-4 opacity-20" />
-            <p className="text-sm font-bold text-muted-foreground italic">No expired members detected at the check-in.</p>
+            <p className="text-sm font-bold text-muted-foreground">No expired members detected at the check-in.</p>
           </div>
         ) : (
           <div className="grid gap-4">
@@ -131,7 +131,7 @@ export default function ExpiredMembersList({ onMemberRenewed }: { onMemberRenewe
                 <div className="absolute -right-12 -top-12 h-16 md:h-24 w-24 rounded-full bg-red-500/5 blur-2xl group-hover:bg-red-500/10 transition-colors" />
                 
                 <div className="flex-1 min-w-0 relative z-10">
-                  <p className="font-black text-foreground uppercase italic tracking-tight text-lg mb-2">
+                  <p className="font-black text-foreground uppercase tracking-tight text-lg mb-2">
                     {member.firstName} <span className="text-red-500">{member.lastName}</span>
                   </p>
                   <div className="flex flex-wrap gap-x-6 gap-y-2 pt-2 border-t border-border">
@@ -148,7 +148,7 @@ export default function ExpiredMembersList({ onMemberRenewed }: { onMemberRenewe
 
                 <div className="flex items-center justify-between md:justify-end gap-4 md:gap-6 md:gap-10 mt-6 md:mt-0 relative z-10">
                   <div className="text-left md:text-right">
-                    <p className="text-[10px] font-black text-red-500 italic">
+                    <p className="text-[10px] font-black text-red-500">
                       EXPIRED {getDaysExpired(member.memberProfile.expiryDate)} DAYS AGO
                     </p>
                     <p className="text-[8px] font-bold text-muted-foreground mt-1">

@@ -97,7 +97,7 @@ function TrainerDashboardContent() {
         <header className="flex h-16 shrink-0 items-center gap-2 border-b border-border px-6 sticky top-0 z-30 bg-card/50 backdrop-blur-md">
           <SidebarTrigger className="-ml-1" />
           <div className="flex items-center gap-2">
-            <h1 className="text-sm font-black italic tracking-[0.2em] text-muted-foreground">
+            <h1 className="text-sm font-black tracking-[0.2em] text-muted-foreground">
               Trainer <span className="text-[#daa857]">Dashboard</span>
             </h1>
           </div>

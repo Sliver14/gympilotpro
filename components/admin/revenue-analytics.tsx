@@ -89,7 +89,7 @@ export default function RevenueAnalytics() {
           ].map((stat, i) => (
             <div key={i} className="rounded-2xl bg-card border border-border p-4 md:p-6 hover:border-[#daa857]/50 transition-all group shadow-sm">
               <p className="text-[8px] font-black tracking-[0.2em] text-muted-foreground mb-2">{stat.label}</p>
-              <p className={cn("text-2xl font-black italic tracking-tighter group-hover:scale-105 transition-transform origin-left", stat.accent ? "text-[#daa857]" : "text-foreground")}>
+              <p className={cn("text-2xl font-black tracking-tighter group-hover:scale-105 transition-transform origin-left", stat.accent ? "text-[#daa857]" : "text-foreground")}>
                 {stat.value}
               </p>
               <p className="text-[8px] font-black text-muted-foreground mt-1">{stat.sub}</p>
@@ -149,7 +149,7 @@ export default function RevenueAnalytics() {
               </BarChart>
             </ResponsiveContainer>
           ) : (
-            <div className="h-80 flex flex-col items-center justify-center text-muted-foreground italic">
+            <div className="h-80 flex flex-col items-center justify-center text-muted-foreground">
               <CreditCard className="h-12 w-12 mb-4 opacity-10" />
               <p className="text-xs font-black">No financial data stream detected</p>
             </div>

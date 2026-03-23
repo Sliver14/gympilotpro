@@ -167,7 +167,7 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
       </DialogTrigger>
       <DialogContent className="bg-card border-border text-foreground rounded-[2.5rem] p-5 md:p-10 max-w-2xl max-h-[90vh] overflow-y-auto custom-scrollbar">
         <DialogHeader className="space-y-4">
-          <DialogTitle className="text-3xl font-black uppercase italic tracking-tighter">
+          <DialogTitle className="text-3xl font-black uppercase tracking-tighter">
             New Member <span className="text-[#daa857]">Enrollment</span>
           </DialogTitle>
           <DialogDescription className="text-muted-foreground font-medium text-[10px] leading-relaxed">

@@ -99,7 +99,7 @@ function MemberMobileNavContent({ className }: MemberMobileNavProps) {
           </DrawerTrigger>
           <DrawerContent className="bg-background border-border">
             <DrawerHeader className="text-left pb-2">
-              <DrawerTitle className="font-black italic uppercase tracking-widest text-lg">More Options</DrawerTitle>
+              <DrawerTitle className="font-black uppercase tracking-widest text-lg">More Options</DrawerTitle>
             </DrawerHeader>
             <div className="grid grid-cols-2 gap-3 p-4 pt-0 pb-8">
               {secondaryNavItems.map((item) => {

@@ -293,10 +293,10 @@ export default function SignupPage() {
                   className="object-contain p-1"
                 />
               ) : (
-                <span className="font-black italic text-xl" style={{ color: accent }}>{gymInitials}</span>
+                <span className="font-black text-xl" style={{ color: accent }}>{gymInitials}</span>
               )}
             </div>
-            <h1 className="text-2xl font-black uppercase italic tracking-tighter">Apply for <span style={{ color: accent }}>Membership</span></h1>
+            <h1 className="text-2xl font-black uppercase tracking-tighter">Apply for <span style={{ color: accent }}>Membership</span></h1>
           </Link>
 
           {/* Progress Steps */}
@@ -354,7 +354,7 @@ export default function SignupPage() {
                         fieldErrors.profileImage ? "border-red-500" : "border-[#daa857]/30 group-hover:border-[#daa857]"
                       )}>
                         <AvatarImage src={previewUrl || formData.profileImage} className="object-cover" />
-                        <AvatarFallback className="text-2xl md:text-4xl bg-background font-black uppercase italic">
+                        <AvatarFallback className="text-2xl md:text-4xl bg-background font-black uppercase">
                           {formData.firstName?.[0] || '?'}
                         </AvatarFallback>
                       </Avatar>
@@ -508,11 +508,11 @@ export default function SignupPage() {
                         )}
                       >
                         <div className="flex justify-between items-start mb-4">
-                          <h3 className="font-black uppercase italic text-lg">{m.name}</h3>
+                          <h3 className="font-black uppercase text-lg">{m.name}</h3>
                           {formData.membershipId === m.id && <ShieldCheck className="h-5 w-5" />}
                         </div>
                         <div className="mb-4">
-                          <span className="text-3xl font-black italic">₦{m.price.toLocaleString()}</span>
+                          <span className="text-3xl font-black">₦{m.price.toLocaleString()}</span>
                           <span className={cn("text-[10px] font-black ml-2 opacity-60")}>/ {m.duration} Days</span>
                         </div>
                         <p className={cn("text-xs font-bold leading-relaxed", formData.membershipId === m.id ? "text-black/70" : "text-muted-foreground group-hover:text-muted-foreground")}>
@@ -677,7 +677,7 @@ export default function SignupPage() {
                           {paymentConfirmed && <ShieldCheck className="h-4 w-4 text-black" />}
                        </div>
                        <div className="space-y-2">
-                          <h3 className="font-black italic text-sm">Deployment Confirmation</h3>
+                          <h3 className="font-black text-sm">Deployment Confirmation</h3>
                           <p className="text-[10px] text-muted-foreground font-bold leading-relaxed">
                             I verify that all provided data is accurate and I acknowledge the payment policy for the selected membership tier.
                           </p>
@@ -689,7 +689,7 @@ export default function SignupPage() {
                   <div className="p-4 md:p-8 rounded-[2rem] bg-card/50 border border-border space-y-4">
                      <div className="flex justify-between items-center border-b border-border pb-4">
                         <span className="text-[10px] font-black tracking-[0.3em] text-muted-foreground">Review Application</span>
-                        <Badge className="bg-[#daa857] text-black font-black italic">Pending Approval</Badge>
+                        <Badge className="bg-[#daa857] text-black font-black">Pending Approval</Badge>
                      </div>
                      <div className="grid grid-cols-2 gap-y-4 gap-x-8">
                         {[
@@ -794,7 +794,7 @@ export default function SignupPage() {
               <div className="h-10 w-10 rounded-xl bg-[#daa857]/10 flex items-center justify-center text-[#daa857]">
                 <CropIcon className="h-5 w-5" />
               </div>
-              <h3 className="text-lg md:text-xl font-black uppercase italic tracking-tighter">Adjust <span className="text-[#daa857]">Profile Picture</span></h3>
+              <h3 className="text-lg md:text-xl font-black uppercase tracking-tighter">Adjust <span className="text-[#daa857]">Profile Picture</span></h3>
             </div>
             <Button variant="ghost" size="icon" onClick={() => setIsCropperModalOpen(false)} className="rounded-full hover:bg-accent">
               <X className="h-5 w-5" />

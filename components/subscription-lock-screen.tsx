@@ -135,7 +135,7 @@ export function SubscriptionLockScreen({
               {isUpgradeMode ? <CreditCard className="h-8 w-8" style={{ color: accent }} /> : <AlertCircle className="h-8 w-8 text-red-500" />}
             </div>
             
-            <h1 className="text-3xl md:text-5xl font-black text-gray-200 uppercase tracking-tighter italic leading-none mb-4">
+            <h1 className="text-3xl md:text-5xl font-black text-gray-200 uppercase tracking-tighter leading-none mb-4">
               {isUpgradeMode ? "Upgrade Your" : (isPending ? "Complete Your" : "Subscription")} <span className={cn(!isUpgradeMode && "text-red-500")} style={isUpgradeMode ? { color: accent } : {}}>{isUpgradeMode ? "Plan" : (isPending ? "Setup" : "Expired")}</span>
             </h1>
             
@@ -218,41 +218,41 @@ export function SubscriptionLockScreen({
         {/* Right Panel: Checkout */}
         <div className="md:col-span-2 bg-card/40 p-4 md:p-8 border-l border-border flex flex-col justify-between">
           <div className="space-y-6">
-            <h3 className="text-xl font-black italic uppercase tracking-tighter">Summary</h3>
+            <h3 className="text-xl font-black uppercase tracking-tighter">Summary</h3>
             
             <div className="space-y-4">
               <div className="flex justify-between items-center py-3 border-b border-border">
                 <span className="text-muted-foreground text-xs font-bold">Plan</span>
-                <span className="text-sm font-black italic">{PLANS[selectedPlan].name}</span>
+                <span className="text-sm font-black">{PLANS[selectedPlan].name}</span>
               </div>
               <div className="flex justify-between items-center py-3 border-b border-border">
                 <span className="text-muted-foreground text-xs font-bold">Duration</span>
-                <span className="text-sm font-black italic">{selectedMonths} Month(s)</span>
+                <span className="text-sm font-black">{selectedMonths} Month(s)</span>
               </div>
               
               {pricing.setupFeeCharge > 0 && (
                 <div className="flex justify-between items-center py-3 border-b border-border">
                   <span className="text-muted-foreground text-xs font-bold">{isPending ? "Setup Fee" : "Upgrade Fee"}</span>
-                  <span className="text-sm font-black italic">₦{pricing.setupFeeCharge.toLocaleString()}</span>
+                  <span className="text-sm font-black">₦{pricing.setupFeeCharge.toLocaleString()}</span>
                 </div>
               )}
 
               <div className="flex justify-between items-center py-3 border-b border-border">
                 <span className="text-muted-foreground text-xs font-bold">Monthly Fee</span>
-                <span className="text-sm font-black italic">₦{pricing.monthlyTotal.toLocaleString()}</span>
+                <span className="text-sm font-black">₦{pricing.monthlyTotal.toLocaleString()}</span>
               </div>
 
               {pricing.discountAmount > 0 && (
                 <div className="flex justify-between items-center py-3 border-b border-border">
                   <span className="text-green-500 text-[10px] font-black">Discount Applied</span>
-                  <span className="text-green-500 text-sm font-black italic">-₦{pricing.discountAmount.toLocaleString()}</span>
+                  <span className="text-green-500 text-sm font-black">-₦{pricing.discountAmount.toLocaleString()}</span>
                 </div>
               )}
 
               {isActuallyUpgrade && pricing.unusedCredit > 0 && (
                 <div className="flex justify-between items-center py-3 border-b border-border">
                   <span className="text-green-500 text-[10px] font-black">Unused Credit Applied</span>
-                  <span className="text-green-500 text-sm font-black italic">-₦{pricing.unusedCredit.toLocaleString()}</span>
+                  <span className="text-green-500 text-sm font-black">-₦{pricing.unusedCredit.toLocaleString()}</span>
                 </div>
               )}
             </div>
@@ -261,7 +261,7 @@ export function SubscriptionLockScreen({
           <div className="mt-12 space-y-6">
             <div className="flex justify-between items-end">
               <span className="text-[10px] font-black text-muted-foreground">Total Payable</span>
-              <span className="text-2xl md:text-4xl font-black italic text-orange-500" style={{ color: accent }}>
+              <span className="text-2xl md:text-4xl font-black text-orange-500" style={{ color: accent }}>
                 ₦{pricing.total.toLocaleString()}
               </span>
             </div>
