@@ -105,7 +105,7 @@ export default function SaaSLandingPage() {
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#080808]" />
         </div>
 
-        <div className="container mx-auto px-5 sm:px-6 md:px-8 lg:px-10 relative z-10">
+        <div className="container mx-auto px-5 sm:px-6 md:px-8 lg:px-10 relative z-10 flex flex-col items-center lg:items-start text-center lg:text-left">
           <div className="max-w-4xl lg:max-w-5xl">
             <SectionTag>// Performance Infrastructure</SectionTag>
             <h1 className="text-3xl md:text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black uppercase leading-[0.9] mb-6 sm:mb-8 tracking-tighter italic">
@@ -114,10 +114,10 @@ export default function SaaSLandingPage() {
                 Like A Pro
               </span>
             </h1>
-            <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground mb-8 sm:mb-12 max-w-xl font-medium leading-relaxed">
+            <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground mb-8 sm:mb-12 max-w-xl font-medium leading-relaxed mx-auto lg:mx-0">
               Stop losing money from expired members. Automate your gym and get paid on time, every time.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center lg:justify-start">
               <Button
                 onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
                 className="h-14 sm:h-16 md:h-20 px-8 sm:px-10 md:px-12 bg-orange-500 text-white hover:bg-orange-600 text-base sm:text-xl font-black uppercase rounded-none group"

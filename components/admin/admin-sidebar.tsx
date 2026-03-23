@@ -16,6 +16,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from '@/components/ui/sidebar'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { QrCode, TrendingUp, Users, Calendar, CreditCard, LogOut, Settings, UserCheck, Wallet, Globe, Package, Lock } from 'lucide-react'
@@ -37,6 +38,7 @@ interface AdminSidebarProps {
 function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
   const pathname = usePathname()
   const { gymSlug, gymData } = useGym()
+  const { setOpenMobile } = useSidebar()
   const initials = `${adminData.firstName?.[0] ?? ''}${adminData.lastName?.[0] ?? ''}`.toUpperCase()
   const profileImage = adminData.profileImage || adminData.memberProfile?.profileImage
 
@@ -163,7 +165,7 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
                       borderRightColor: accent
                     } : {}}
                   >
-                    <Link href={item.url}>
+                    <Link href={item.url} onClick={() => setOpenMobile(false)}>
                       <item.icon className={cn("size-4", item.active && "text-[#daa857]")} style={item.active ? { color: accent } : {}} />
                       <span>{item.title}</span>
                     </Link>
@@ -213,13 +215,13 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
                     <p className="text-[10px] font-bold text-muted-foreground">{adminData.email}</p>
                   </div>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild className="rounded-xl focus:bg-accent cursor-pointer py-3 px-4 text-foreground focus:text-accent-foreground">
+                <DropdownMenuItem asChild className="rounded-xl focus:bg-accent cursor-pointer py-3 px-4 text-foreground focus:text-accent-foreground" onClick={() => setOpenMobile(false)}>
                   <Link href="/admin/settings" className="flex items-center gap-3 font-black text-[10px]">
                     <Settings className="size-4" style={{ color: accent }} />
                     Gym Settings
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild className="rounded-xl focus:bg-accent cursor-pointer py-3 px-4 text-foreground focus:text-accent-foreground">
+                <DropdownMenuItem asChild className="rounded-xl focus:bg-accent cursor-pointer py-3 px-4 text-foreground focus:text-accent-foreground" onClick={() => setOpenMobile(false)}>
                   <Link href="/admin/domain" className="flex items-center gap-3 font-black text-[10px] w-full justify-between">
                     <div className="flex items-center gap-3">
                       <Globe className="size-4" style={{ color: accent }} />

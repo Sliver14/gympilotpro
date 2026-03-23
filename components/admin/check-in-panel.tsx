@@ -446,7 +446,7 @@ export default function CheckInPanel() {
                         disabled={isValidating}
                         className="h-10 px-6 bg-accent hover:bg-[#daa857] hover:text-black text-muted-foreground font-black text-[10px] rounded-xl transition-all"
                       >
-                        Override
+                        Checkin
                       </Button>
                     </div>
                   ))

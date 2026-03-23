@@ -68,7 +68,7 @@ export default function AttendanceHistory({ attendance }: AttendanceHistoryProps
                 <div className="flex items-center gap-4">
                   <div className="text-right hidden md:block">
                     <p className="text-[8px] font-black text-muted-foreground mb-0.5">AUTH METHOD</p>
-                    <p className="text-[10px] font-black text-foreground">{record.method === 'qr' ? 'QR Code' : 'Manual Override'}</p>
+                    <p className="text-[10px] font-black text-foreground">{record.method === 'qr' ? 'QR Code' : 'Manual Checkin'}</p>
                   </div>
                   <Badge className={cn(
                     "px-4 py-1 rounded-full text-[10px] font-black transition-all",

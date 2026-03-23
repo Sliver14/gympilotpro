@@ -16,6 +16,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from '@/components/ui/sidebar'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { User, QrCode, Calendar, TrendingUp, LogOut, Settings } from 'lucide-react'
@@ -36,6 +37,7 @@ interface MemberSidebarProps {
 function MemberSidebarContent({ memberData, onLogout }: MemberSidebarProps) {
   const pathname = usePathname()
   const { gymSlug, gymData } = useGym()
+  const { setOpenMobile } = useSidebar()
   const searchParams = useSearchParams()
   const currentTab = searchParams.get('tab') || 'overview'
   const initials = `${memberData.firstName?.[0] ?? ''}${memberData.lastName?.[0] ?? ''}`.toUpperCase()
@@ -131,7 +133,7 @@ function MemberSidebarContent({ memberData, onLogout }: MemberSidebarProps) {
                       borderRightColor: accent
                     } : {}}
                   >
-                    <Link href={item.url}>
+                    <Link href={item.url} onClick={() => setOpenMobile(false)}>
                       <item.icon className={cn("size-4", item.active && "text-[#daa857]")} style={item.active ? { color: accent } : {}} />
                       <span>{item.title}</span>
                     </Link>
@@ -181,7 +183,7 @@ function MemberSidebarContent({ memberData, onLogout }: MemberSidebarProps) {
                     <p className="text-[10px] font-bold text-muted-foreground">{memberData.email}</p>
                   </div>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild className="rounded-xl focus:bg-accent cursor-pointer py-3 px-4 text-foreground focus:text-accent-foreground">
+                <DropdownMenuItem asChild className="rounded-xl focus:bg-accent cursor-pointer py-3 px-4 text-foreground focus:text-accent-foreground" onClick={() => setOpenMobile(false)}>
                   <Link href="/member/profile" className="flex items-center gap-3 font-black text-[10px]">
                     <Settings className="size-4" style={{ color: accent }} />
                     Profile Settings
