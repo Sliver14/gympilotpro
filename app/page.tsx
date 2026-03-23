@@ -24,7 +24,7 @@ import { PLANS, DURATIONS, PlanKey } from '@/lib/plans'
 
 // Reusable Components
 const SectionTag = ({ children }: { children: React.ReactNode }) => (
-  <span className="text-orange-500 font-black tracking-[0.2em] text-xs sm:text-sm mb-3 sm:mb-4 block">
+  <span className="text-orange-500 font-black tracking-[0.2em] text-xs sm:text-sm mb-3 sm:mb-4 block italic">
     {children}
   </span>
 )
@@ -35,7 +35,7 @@ const FeatureCard = ({ icon: Icon, title, desc }: { icon: any; title: string; de
     <div className="mb-5 sm:mb-6 inline-block p-3 bg-orange-500/10 text-orange-500 group-hover:scale-110 transition-transform relative z-10">
       <Icon className="w-7 h-7 sm:w-8 sm:h-8" strokeWidth={1.5} />
     </div>
-    <h3 className="text-xl sm:text-2xl font-black uppercase mb-3 tracking-tight relative z-10">
+    <h3 className="text-xl sm:text-2xl font-black uppercase mb-3 tracking-tight relative z-10 italic">
       {title}
     </h3>
     <p className="text-muted-foreground text-sm sm:text-base leading-relaxed font-medium relative z-10">
@@ -70,7 +70,7 @@ export default function SaaSLandingPage() {
               className="h-8 sm:h-10 w-auto object-contain transition-transform group-hover:scale-105"
               priority
             />
-            <span className="text-2xl sm:text-3xl font-black uppercase tracking-tighter">
+            <span className="text-2xl sm:text-3xl font-black uppercase tracking-tighter italic">
               GymPilot<span className="text-orange-500">Pro</span>
             </span>
           </Link>
@@ -108,7 +108,7 @@ export default function SaaSLandingPage() {
         <div className="container mx-auto px-5 sm:px-6 md:px-8 lg:px-10 relative z-10">
           <div className="max-w-4xl lg:max-w-5xl">
             <SectionTag>// Performance Infrastructure</SectionTag>
-            <h1 className="text-3xl md:text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black uppercase leading-[0.9] mb-6 sm:mb-8 tracking-tighter">
+            <h1 className="text-3xl md:text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black uppercase leading-[0.9] mb-6 sm:mb-8 tracking-tighter italic">
               Run Your Gym <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-orange-500/50 border-t-2 border-b-2 border-border">
                 Like A Pro
@@ -141,7 +141,7 @@ export default function SaaSLandingPage() {
           <div className="flex flex-col md:flex-row gap-4 md:gap-6 md:gap-10 md:gap-16 items-start md:items-end mb-12 md:mb-20">
             <div className="flex-1">
               <SectionTag>// The Problem</SectionTag>
-              <h2 className="text-2xl md:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter">
+              <h2 className="text-2xl md:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter italic">
                 Manual Management <br /><span className="text-orange-500">Kills Growth</span>
               </h2>
             </div>
@@ -172,7 +172,7 @@ export default function SaaSLandingPage() {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_center,rgba(249,115,22,0.03),transparent_70%)] pointer-events-none" />
         <div className="container mx-auto px-5 sm:px-6 md:px-8 lg:px-10 text-center mb-16 md:mb-24">
           <SectionTag>// Command & Control</SectionTag>
-          <h2 className="text-2xl md:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter">Pro-Grade Tools</h2>
+          <h2 className="text-2xl md:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter italic">Pro-Grade Tools</h2>
         </div>
         <div className="container mx-auto px-5 sm:px-6 md:px-8 lg:px-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 md:gap-8">
           <FeatureCard icon={Users} title="Access Control" desc="QR and Biometric integration to ensure only active members enter." />
@@ -189,7 +189,7 @@ export default function SaaSLandingPage() {
         <div className="container mx-auto px-5 sm:px-6 md:px-8 lg:px-10">
           <div className="text-center mb-12 md:mb-16">
             <SectionTag>// See It In Action</SectionTag>
-            <h2 className="text-2xl md:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter mb-4 md:mb-6">
+            <h2 className="text-2xl md:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter mb-4 md:mb-6 italic">
               Platform Walkthrough
             </h2>
             <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto font-medium">
@@ -240,7 +240,7 @@ export default function SaaSLandingPage() {
       <section className="py-20 md:py-28 lg:py-32 bg-[#080808]">
         <div className="container mx-auto px-5 sm:px-6 md:px-8 lg:px-10 text-center">
           <SectionTag>// Trusted by Gym Owners</SectionTag>
-          <h2 className="text-2xl md:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter mb-10 md:mb-12">
+          <h2 className="text-2xl md:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter mb-10 md:mb-12 italic">
             Real Results from Lagos Gym Leaders
           </h2>
 
@@ -256,11 +256,11 @@ export default function SaaSLandingPage() {
                   />
                 </div>
                 <div className="text-left">
-                  <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground font-medium leading-relaxed mb-4 md:mb-6">
+                  <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground font-medium leading-relaxed mb-4 md:mb-6 italic">
                     "GymPilotPro changed everything. The automated WhatsApp reminders alone recovered ₦1.2M in expired memberships in the first 3 months. No more chasing payments — now I focus on growth at Klimarx Space Gym."
                   </p>
                   <div>
-                    <h4 className="text-xl sm:text-2xl font-black uppercase text-orange-500">
+                    <h4 className="text-xl sm:text-2xl font-black uppercase text-orange-500 italic">
                       Nere Emiko
                     </h4>
                     <p className="text-muted-foreground font-bold text-xs sm:text-sm mt-1">
@@ -276,7 +276,7 @@ export default function SaaSLandingPage() {
             </p>
 
             <div className="mt-12 md:mt-16 h-16 sm:h-20 border-y border-border flex items-center justify-center opacity-30">
-              <p className="text-xs sm:text-sm tracking-[0.5em]">More Industry Leaders Coming Soon</p>
+              <p className="text-xs sm:text-sm tracking-[0.5em] italic">More Industry Leaders Coming Soon</p>
             </div>
           </div>
         </div>
@@ -287,7 +287,7 @@ export default function SaaSLandingPage() {
         <div className="container mx-auto px-5 sm:px-6 md:px-8 lg:px-10 relative z-10">
           <div className="text-center mb-12 md:mb-16">
             <SectionTag>// Pricing Plans</SectionTag>
-            <h2 className="text-2xl md:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter mb-4 md:mb-6">Scale Your Empire</h2>
+            <h2 className="text-2xl md:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter mb-4 md:mb-6 italic">Scale Your Empire</h2>
 
             <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mt-8 md:mt-12 mb-6 md:mb-8">
               {DURATIONS.map((d) => (
@@ -390,7 +390,7 @@ export default function SaaSLandingPage() {
       {/* Footer */}
       <footer className="py-16 md:py-24 border-t border-border bg-[#080808]">
         <div className="container mx-auto px-5 sm:px-6 md:px-8 lg:px-10 text-center">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tighter mb-8 md:mb-12">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tighter mb-8 md:mb-12 italic">
             Ready to fly <span className="text-orange-500 text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-orange-300">Pro?</span>
           </h2>
           <Button
@@ -408,11 +408,11 @@ export default function SaaSLandingPage() {
                 height={30} 
                 className="h-6 sm:h-8 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity"
               />
-              <span className="text-xl sm:text-2xl font-black uppercase tracking-tighter">
+              <span className="text-xl sm:text-2xl font-black uppercase tracking-tighter italic">
                 GymPilot<span className="text-orange-500">Pro</span>
               </span>
             </Link>
-            <p className="text-xs sm:text-[10px] font-black tracking-[0.2em] text-muted-foreground">
+            <p className="text-xs sm:text-[10px] font-black tracking-[0.2em] text-muted-foreground italic">
               © 2026 GYMPILOTPRO SYSTEMS. RUN LIKE A PRO.
             </p>
           </div>

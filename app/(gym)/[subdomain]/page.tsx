@@ -118,7 +118,7 @@ export default function GymLandingPage() {
                 initials
               )}
             </div>
-            <span className="text-2xl font-black tracking-tighter uppercase">
+            <span className="text-2xl font-black tracking-tighter uppercase italic">
               {gymName.split(' ')[0]}
               <span style={{ color: accent }}>{gymName.split(' ').slice(1).join(' ')}</span>
             </span>     
@@ -172,7 +172,7 @@ export default function GymLandingPage() {
         <div className="absolute inset-0 z-10 bg-card/50" />
 
         <div className="container relative z-20 mx-auto px-6 text-center">
-          <h1 className="mb-6 text-6xl font-black uppercase tracking-tighter md:text-8xl lg:text-9xl animate-in slide-in-from-bottom-8 duration-700">
+          <h1 className="mb-6 text-6xl font-black uppercase tracking-tighter md:text-8xl lg:text-9xl animate-in slide-in-from-bottom-8 duration-700 italic">
             {heroTitle.split(' ')[0]} <span style={{ color: accent }}>{heroTitle.split(' ').slice(1).join(' ')}</span>
           </h1>
           <p className="mx-auto mb-10 max-w-2xl text-lg text-muted-foreground md:text-xl font-light">
@@ -206,7 +206,7 @@ export default function GymLandingPage() {
               </div>
             </div>
             <div className="space-y-8">
-              <h2 className="text-2xl md:text-4xl font-black uppercase md:text-5xl leading-tight">
+              <h2 className="text-2xl md:text-4xl font-black uppercase md:text-5xl leading-tight italic">
                 World-Class <span style={{ color: accent }}>Sanctuary</span> For Athletes
               </h2>
               <div className="space-y-6">
@@ -219,7 +219,7 @@ export default function GymLandingPage() {
                       {item.icon}
                     </div>
                     <div>
-                      <h3 className="text-xl font-bold uppercase">{item.title}</h3>
+                      <h3 className="text-xl font-bold uppercase italic">{item.title}</h3>
                       <p className="text-muted-foreground">{item.desc}</p>
                     </div>
                   </div>
@@ -234,7 +234,7 @@ export default function GymLandingPage() {
       <section id="membership" className="py-24 bg-background">
         <div className="container mx-auto px-6">
           <div className="mb-16 text-center">
-            <h2 className="text-2xl md:text-4xl md:text-7xl font-black uppercase tracking-tighter leading-none">
+            <h2 className="text-2xl md:text-4xl md:text-7xl font-black uppercase tracking-tighter leading-none italic">
               Choose Your <span style={{ color: accent }}>Tier</span>
             </h2>
           </div>
@@ -253,7 +253,7 @@ export default function GymLandingPage() {
                 {pkg.popular && <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-background text-[10px] font-black px-6 py-1 rounded-full" style={{ color: accent }}>Top Choice</span>}
                 <h3 className={`text-2xl font-black uppercase italic ${pkg.popular ? '' : 'text-foreground'}`}>{pkg.name}</h3>
                 <div className="my-8">
-                  <span className="text-3xl md:text-5xl font-black">₦{pkg.price}</span>
+                  <span className="text-3xl md:text-5xl font-black italic">₦{pkg.price}</span>
                   <span className={`text-sm ml-2 font-bold ${pkg.popular ? 'opacity-70' : 'text-muted-foreground'}`}>/ {pkg.duration}</span>
                 </div>
                 <ul className="space-y-4 mb-10">
@@ -273,7 +273,7 @@ export default function GymLandingPage() {
           </div>
 
           <div className="mt-16 flex justify-center">
-            <button onClick={() => setShowAll(!showAll)} className="flex items-center gap-4 font-black group" style={{ color: accent }}>
+            <button onClick={() => setShowAll(!showAll)} className="flex items-center gap-4 font-black group italic" style={{ color: accent }}>
               {showAll ? <><ChevronUp /> Show Less</> : <>View All Tiers <ChevronDown className="animate-bounce" /></>}
             </button>
           </div>
@@ -283,7 +283,7 @@ export default function GymLandingPage() {
       {/* Footer */}
       <footer className="border-t border-border bg-card py-20 px-6">
         <div className="container mx-auto flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6 md:gap-10">
-          <div className="text-2xl md:text-4xl font-black uppercase tracking-tighter text-foreground">
+          <div className="text-2xl md:text-4xl font-black uppercase tracking-tighter text-foreground italic">
             {gymName.split(' ')[0]}<span style={{ color: accent }}>{gymName.split(' ').slice(1).join(' ')}</span>
           </div>
           <div className="flex gap-12 font-bold text-xs text-muted-foreground">
@@ -291,7 +291,7 @@ export default function GymLandingPage() {
             <span className="hover:text-foreground transition-colors cursor-pointer">Twitter</span>
             <span className="hover:text-foreground transition-colors cursor-pointer">Facebook</span>
           </div>
-          <p className="text-xs text-muted-foreground font-bold">© 2026 {gymName.toUpperCase()}. ELITE ONLY.</p>
+          <p className="text-xs text-muted-foreground font-bold italic">© 2026 {gymName.toUpperCase()}. ELITE ONLY.</p>
         </div>
       </footer>
     </main>
