@@ -156,7 +156,7 @@ export function GymSettingsForm() {
         <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-[#daa857]/5 blur-[100px]" />
         
         <div className="relative z-10 flex items-center gap-4 md:gap-6">
-          <div className="h-16 w-16 md:h-20 md:w-20 rounded-full border border-border overflow-hidden flex items-center justify-center bg-background shadow-xl">
+          <div className="h-16 w-16 md:h-20 md:w-20 rounded-full border border-border overflow-hidden flex items-center justify-center bg-white shadow-xl">
             {gymData?.logo ? (
               <img src={gymData.logo} alt="Logo" className="w-full h-full object-contain p-2" />
             ) : (
