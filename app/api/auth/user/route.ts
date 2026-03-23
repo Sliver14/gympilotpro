@@ -41,6 +41,9 @@ export async function GET(request: NextRequest) {
         customDomain: gym.customDomain,
         domainVerified: gym.domainVerified,
         qrCodeUrl: gym.qrCodeUrl,
+        bankName: gym.bankName,
+        accountNumber: gym.accountNumber,
+        accountName: gym.accountName,
       }
     })
   } catch (error) {
