@@ -106,7 +106,7 @@ export default function GymLandingPage() {
       <nav className="fixed top-0 z-50 w-full border-b border-border bg-card/50 backdrop-blur-lg transition-all duration-300">
         <div className="container mx-auto flex h-16 md:h-20 items-center justify-between px-6">
           <div className="flex items-center gap-3">
-            <div className="relative h-12 w-12 overflow-hidden rounded-full border flex items-center justify-center font-bold text-xl" style={{ borderColor: `${accent}80`, backgroundColor: dark, color: accent }}>
+            <div className="relative h-12 w-12 overflow-hidden rounded-full border flex items-center justify-center font-bold text-xl" style={{ borderColor: `${accent}80`, backgroundColor: 'white', color: accent }}>
               {logoUrl ? (
                 <Image
                   src={logoUrl}
