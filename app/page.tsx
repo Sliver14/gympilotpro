@@ -93,7 +93,7 @@ export default function SaaSLandingPage() {
       </nav>
 
       {/* Hero */}
-      <section className="relative min-h-[80vh] sm:min-h-screen flex items-center pt-20 sm:pt-24 pb-16 sm:pb-0 overflow-hidden">
+      <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
             src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop"
@@ -105,7 +105,7 @@ export default function SaaSLandingPage() {
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#080808]" />
         </div>
 
-        <div className="container mx-auto px-5 sm:px-6 md:px-8 lg:px-10 relative z-10 flex flex-col items-center lg:items-start text-center lg:text-left">
+        <div className="container mx-auto px-5 sm:px-6 md:px-8 lg:px-10 relative z-10 flex flex-col items-center lg:items-start text-center lg:text-left pt-20 lg:pt-0">
           <div className="max-w-4xl lg:max-w-5xl">
             <SectionTag>// Performance Infrastructure</SectionTag>
             <h1 className="text-3xl md:text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black uppercase leading-[0.9] mb-6 sm:mb-8 tracking-tighter italic">
