@@ -98,40 +98,40 @@ export default function RevenueAnalytics() {
         </div>
 
         {/* Chart */}
-        <div className="p-4 md:p-6 rounded-[2rem] bg-card/30 border border-border shadow-sm overflow-hidden">
+        <div className="p-4 md:p-6 rounded-[2rem] bg-card/30 border border-border shadow-sm overflow-hidden text-muted-foreground">
           {data.length > 0 ? (
             <ResponsiveContainer width="100%" height={350}>
               <BarChart data={data} margin={{ top: 20, right: 0, left: -20, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} opacity={0.5} />
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} opacity={0.5} />
                 <XAxis 
                   dataKey="month" 
-                  stroke="hsl(var(--muted-foreground))" 
+                  stroke="var(--muted-foreground)" 
                   fontSize={10} 
                   tickLine={false} 
                   axisLine={false}
-                  tick={{ fill: 'hsl(var(--muted-foreground))', fontWeight: '700' }}
+                  tick={{ fill: 'var(--muted-foreground)', fontWeight: '700' }}
                 />
                 <YAxis 
-                  stroke="hsl(var(--muted-foreground))" 
+                  stroke="var(--muted-foreground)" 
                   fontSize={10} 
                   tickLine={false} 
                   axisLine={false}
                   tickFormatter={(value) => `₦${(value / 1000).toFixed(0)}k`}
-                  tick={{ fill: 'hsl(var(--muted-foreground))', fontWeight: '700' }}
+                  tick={{ fill: 'var(--muted-foreground)', fontWeight: '700' }}
                 />
                 <Tooltip
-                  cursor={{ fill: 'hsl(var(--muted))', opacity: 0.1 }}
+                  cursor={{ fill: 'var(--muted)', opacity: 0.1 }}
                   contentStyle={{ 
-                    backgroundColor: 'hsl(var(--card))', 
-                    borderColor: 'hsl(var(--border))',
+                    backgroundColor: 'var(--card)', 
+                    borderColor: 'var(--border)',
                     borderRadius: '1.25rem',
                     fontSize: '11px',
                     fontWeight: '800',
-                    color: 'hsl(var(--foreground))',
+                    color: 'var(--foreground)',
                     boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)'
                   }}
                   itemStyle={{ color: '#daa857' }}
-                  labelStyle={{ color: 'hsl(var(--muted-foreground))', marginBottom: '4px' }}
+                  labelStyle={{ color: 'var(--muted-foreground)', marginBottom: '4px' }}
                 />
                 <Bar 
                   dataKey="revenue" 
@@ -142,7 +142,7 @@ export default function RevenueAnalytics() {
                 />
                 <Bar 
                   dataKey="payments" 
-                  fill="hsl(var(--primary))" 
+                  fill="var(--primary)" 
                   fillOpacity={0.2}
                   name="TRANSACTIONS" 
                   radius={[6, 6, 0, 0]}

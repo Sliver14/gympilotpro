@@ -86,7 +86,7 @@ export default function AnalyticsView() {
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-bold text-muted-foreground uppercase flex items-center gap-2">
               <TrendingUp className="h-4 w-4 text-primary" />
-              Projected MRR
+              Projected Monthly Revenue Report
             </CardTitle>
           </CardHeader>
           <CardContent>
