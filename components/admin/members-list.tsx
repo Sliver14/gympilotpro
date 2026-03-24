@@ -6,10 +6,11 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { useToast } from '@/hooks/use-toast'
-import { Download, RefreshCw, User, Users, Search } from 'lucide-react'
+import { Download, RefreshCw, User, Users, Search, Filter } from 'lucide-react'
 import RegisterMemberDialog from './register-member-dialog'
 import { Spinner } from '@/components/ui/spinner'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
 import { useGym } from '@/components/gym-provider'
 import { PLAN_LIMITS } from '@/lib/plans'
@@ -21,6 +22,7 @@ interface Member {
   email: string
   phoneNumber: string
   profileImage: string | null
+  createdAt: string
   memberProfile: {
     expiryDate: string
     membership: {
@@ -35,6 +37,8 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
   const [filteredMembers, setFilteredMembers] = useState<Member[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
+  const [statusFilter, setStatusFilter] = useState('all')
+  const [dateFilter, setDateFilter] = useState('all')
   const { toast } = useToast()
 
   const currentPlan = gymData?.subscriptions?.[0]?.plan || 'starter'
@@ -64,25 +68,59 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
     fetchMembers()
   }, [toast])
 
+  const getMembershipStatus = (expiryDate: string) => {
+    const days = Math.floor((new Date(expiryDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
+    if (days < 0) return 'expired'
+    if (days <= 7) return 'expiring'
+    return 'active'
+  }
+
   useEffect(() => {
-    const filtered = members.filter(
-      (member) =>
-        member.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        member.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        member.email.toLowerCase().includes(searchTerm.toLowerCase())
-    )
+    let filtered = members
+
+    // Name/Email search filter
+    if (searchTerm) {
+      filtered = filtered.filter(
+        (member) =>
+          member.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          member.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          member.email.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    }
+
+    // Status filter
+    if (statusFilter !== 'all') {
+      filtered = filtered.filter((member) => getMembershipStatus(member.memberProfile.expiryDate) === statusFilter)
+    }
+
+    // Date filter (Join Date)
+    if (dateFilter !== 'all') {
+      const now = new Date()
+      filtered = filtered.filter((member) => {
+        const joinDate = new Date(member.createdAt)
+        const diffTime = Math.abs(now.getTime() - joinDate.getTime())
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+
+        if (dateFilter === 'today') return diffDays <= 1
+        if (dateFilter === '7days') return diffDays <= 7
+        if (dateFilter === '30days') return diffDays <= 30
+        return true
+      })
+    }
+
     setFilteredMembers(filtered)
-  }, [searchTerm, members])
+  }, [searchTerm, statusFilter, dateFilter, members])
 
   const handleExport = () => {
     const csv = [
-      ['First Name', 'Last Name', 'Email', 'Phone', 'Membership', 'Expiry Date'],
+      ['First Name', 'Last Name', 'Email', 'Phone', 'Membership', 'Join Date', 'Expiry Date'],
       ...filteredMembers.map((m) => [
         m.firstName,
         m.lastName,
         m.email,
         m.phoneNumber,
         m.memberProfile.membership.name,
+        new Date(m.createdAt).toLocaleDateString(),
         new Date(m.memberProfile.expiryDate).toLocaleDateString(),
       ]),
     ]
@@ -102,13 +140,6 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
       title: 'Exported',
       description: 'Members list exported to CSV',
     })
-  }
-
-  const getMembershipStatus = (expiryDate: string) => {
-    const days = Math.floor((new Date(expiryDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
-    if (days < 0) return 'expired'
-    if (days <= 7) return 'expiring'
-    return 'active'
   }
 
   if (isLoading) {
@@ -181,14 +212,42 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
         </div>
       </CardHeader>
       <CardContent className="space-y-8">
-        <div className="relative group">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground transition-colors group-focus-within:text-[#daa857]" />
-          <Input
-            placeholder="Filter members by name or email..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="h-14 pl-12 bg-background border-border rounded-2xl focus:border-[#daa857] font-bold text-sm"
-          />
+        <div className="flex flex-col md:flex-row gap-4">
+          <div className="relative group flex-1">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground transition-colors group-focus-within:text-[#daa857]" />
+            <Input
+              placeholder="Filter members by name or email..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="h-14 pl-12 bg-background border-border rounded-2xl focus:border-[#daa857] font-bold text-sm w-full"
+            />
+          </div>
+          
+          <div className="flex gap-4">
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger className="h-14 w-full md:w-[160px] bg-background border-border rounded-2xl font-bold text-xs">
+                <SelectValue placeholder="Status" />
+              </SelectTrigger>
+              <SelectContent className="rounded-xl border-border">
+                <SelectItem value="all" className="font-bold text-xs">All Statuses</SelectItem>
+                <SelectItem value="active" className="font-bold text-xs">Active</SelectItem>
+                <SelectItem value="expiring" className="font-bold text-xs">Expiring Soon</SelectItem>
+                <SelectItem value="expired" className="font-bold text-xs">Expired</SelectItem>
+              </SelectContent>
+            </Select>
+
+            <Select value={dateFilter} onValueChange={setDateFilter}>
+              <SelectTrigger className="h-14 w-full md:w-[160px] bg-background border-border rounded-2xl font-bold text-xs">
+                <SelectValue placeholder="Join Date" />
+              </SelectTrigger>
+              <SelectContent className="rounded-xl border-border">
+                <SelectItem value="all" className="font-bold text-xs">All Time</SelectItem>
+                <SelectItem value="today" className="font-bold text-xs">Joined Today</SelectItem>
+                <SelectItem value="7days" className="font-bold text-xs">Last 7 Days</SelectItem>
+                <SelectItem value="30days" className="font-bold text-xs">Last 30 Days</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
 
         {filteredMembers.length === 0 ? (
@@ -231,10 +290,17 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
                       <p className="text-xs font-black text-foreground">{member.memberProfile.membership.name}</p>
                     </div>
                     
+                    <div className="text-left md:text-right hidden sm:block">
+                      <p className="text-[8px] font-black text-muted-foreground mb-1">Join Date</p>
+                      <p className="text-xs font-bold text-muted-foreground">
+                        {new Date(member.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
+                      </p>
+                    </div>
+
                     <div className="text-left md:text-right">
                       <p className="text-[8px] font-black text-muted-foreground mb-1">Expiry Date</p>
                       <p className="text-xs font-bold text-muted-foreground">
-                        {new Date(member.memberProfile.expiryDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).toUpperCase()}
+                        {new Date(member.memberProfile.expiryDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
                       </p>
                     </div>
 

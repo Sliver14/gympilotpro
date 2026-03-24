@@ -43,6 +43,7 @@ export async function GET(request: NextRequest) {
         email: true,
         phoneNumber: true,
         profileImage: true,
+        createdAt: true,
         memberProfile: {
           select: {
             expiryDate: true,
