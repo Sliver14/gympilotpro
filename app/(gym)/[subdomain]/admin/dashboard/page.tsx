@@ -20,6 +20,7 @@ import RevenueAnalytics from '@/components/admin/revenue-analytics'
 import AttendanceOverview from '@/components/admin/attendance-overview'
 import CheckInPanel from '@/components/admin/check-in-panel'
 import PackagesList from '@/components/admin/packages-list'
+import AnalyticsView from '@/components/admin/analytics-view'
 import { GymQRCode } from '@/components/gym-qr-code'
 import { Spinner } from '@/components/ui/spinner'
 import { AlertTriangle, ShieldCheck } from 'lucide-react'
@@ -227,6 +228,10 @@ function AdminDashboardContent() {
 
             <div className={currentTab === 'packages' ? 'block' : 'hidden'}>
               <PackagesList onPackageUpdate={refreshDashboard} />
+            </div>
+
+            <div className={currentTab === 'analytics' ? 'block' : 'hidden'}>
+              <AnalyticsView />
             </div>
           </div>
         </div>

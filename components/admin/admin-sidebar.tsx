@@ -19,7 +19,7 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { QrCode, TrendingUp, Users, Calendar, CreditCard, LogOut, Settings, UserCheck, Wallet, Globe, Package, Lock } from 'lucide-react'
+import { QrCode, TrendingUp, Users, Calendar, CreditCard, LogOut, Settings, UserCheck, Wallet, Globe, Package, Lock, LayoutDashboard } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { hasPremiumAccess } from '@/lib/plans'
 import { ModeToggle } from '@/components/mode-toggle'
@@ -55,8 +55,15 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
     {
       title: 'Overview',
       url: `/${role}/dashboard?tab=overview`,
-      icon: TrendingUp,
+      icon: LayoutDashboard,
       active: currentTab === 'overview',
+    },
+    {
+      title: 'Analytics',
+      url: `/${role}/dashboard?tab=analytics`,
+      icon: TrendingUp,
+      active: currentTab === 'analytics',
+      adminOnly: true,
     },
     {
       title: 'Check-in',

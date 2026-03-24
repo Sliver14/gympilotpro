@@ -4,7 +4,7 @@ import { Suspense, useState } from 'react'
 import Link from 'next/link'
 import { usePathname, useSearchParams } from 'next/navigation'
 import { useGym } from '@/components/gym-provider'
-import { QrCode, TrendingUp, Users, Calendar, CreditCard, UserCheck, Wallet, Menu, Package } from 'lucide-react'
+import { QrCode, TrendingUp, Users, Calendar, CreditCard, UserCheck, Wallet, Menu, Package, LayoutDashboard } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import {
   Drawer,
@@ -29,7 +29,8 @@ function AdminMobileNavContent({ className, role = 'admin' }: AdminMobileNavProp
   const accent = gymData?.primaryColor || '#daa857'
 
   const allNavItems = [
-    { title: 'Overview', tab: 'overview', icon: TrendingUp },
+    { title: 'Overview', tab: 'overview', icon: LayoutDashboard },
+    { title: 'Analytics', tab: 'analytics', icon: TrendingUp, adminOnly: true },
     { title: 'Check-in', tab: 'check-in', icon: QrCode },
     { title: 'Members', tab: 'members', icon: Users },
     { title: 'Staff', tab: 'staff', icon: UserCheck, adminOnly: true },
