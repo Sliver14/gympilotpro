@@ -51,6 +51,12 @@ export async function GET(request: NextRequest) {
     twelveMonthsAgo.setDate(1)
     twelveMonthsAgo.setHours(0, 0, 0, 0)
 
+    const next7Days = new Date(now)
+    next7Days.setDate(now.getDate() + 7)
+
+    const sevenDaysAgo = new Date(now)
+    sevenDaysAgo.setDate(now.getDate() - 7)
+
     // Execute all queries in parallel
     const [
       totalMembers,
@@ -60,6 +66,9 @@ export async function GET(request: NextRequest) {
       monthlyRevenueResult,
       payments,
       attendance,
+      expiringSoon,
+      newSignups,
+      currentOccupancy,
     ] = await Promise.all([
       // Total members
       prisma.user.count({
@@ -130,6 +139,38 @@ export async function GET(request: NextRequest) {
         select: {
           checkInTime: true,
           checkOutTime: true,
+        },
+      }),
+      // Expiring soon
+      prisma.memberProfile.count({
+        where: {
+          gymId: gym.id,
+          expiryDate: {
+            gt: now,
+            lte: next7Days,
+          },
+        },
+      }),
+      // New signups
+      prisma.user.count({
+        where: {
+          gymId: gym.id,
+          role: 'member',
+          deletedAt: null,
+          createdAt: {
+            gte: sevenDaysAgo,
+          },
+        },
+      }),
+      // Current occupancy (checked in today, not checked out)
+      prisma.attendance.count({
+        where: {
+          gymId: gym.id,
+          checkInTime: {
+            gte: todayStart,
+            lte: todayEnd,
+          },
+          checkOutTime: null,
         },
       }),
     ])
@@ -209,6 +250,9 @@ export async function GET(request: NextRequest) {
         todayCheckins,
         pendingPayments: pendingPaymentsCount,
         monthlyRevenue: monthlyRevenueResult._sum.amount || 0,
+        expiringSoon,
+        newSignups,
+        currentOccupancy,
       },
       revenueData,
       attendanceData,

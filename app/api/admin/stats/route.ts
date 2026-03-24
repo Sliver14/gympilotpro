@@ -30,11 +30,40 @@ export async function GET(request: NextRequest) {
 
     // Active members (valid membership)
     const now = new Date()
+    const next7Days = new Date(now)
+    next7Days.setDate(now.getDate() + 7)
+
+    const sevenDaysAgo = new Date(now)
+    sevenDaysAgo.setDate(now.getDate() - 7)
+
     const activeMembers = await prisma.memberProfile.count({
       where: {
         gymId: gym.id,
         expiryDate: {
           gt: now,
+        },
+      },
+    })
+
+    // Expiring soon
+    const expiringSoon = await prisma.memberProfile.count({
+      where: {
+        gymId: gym.id,
+        expiryDate: {
+          gt: now,
+          lte: next7Days,
+        },
+      },
+    })
+
+    // New signups
+    const newSignups = await prisma.user.count({
+      where: {
+        gymId: gym.id,
+        role: 'member',
+        deletedAt: null,
+        createdAt: {
+          gte: sevenDaysAgo,
         },
       },
     })
@@ -52,6 +81,18 @@ export async function GET(request: NextRequest) {
           gte: todayStart,
           lte: todayEnd,
         },
+      },
+    })
+
+    // Current occupancy
+    const currentOccupancy = await prisma.attendance.count({
+      where: {
+        gymId: gym.id,
+        checkInTime: {
+          gte: todayStart,
+          lte: todayEnd,
+        },
+        checkOutTime: null,
       },
     })
 
@@ -86,6 +127,9 @@ export async function GET(request: NextRequest) {
       activeMembers,
       todayCheckins,
       monthlyRevenue,
+      expiringSoon,
+      newSignups,
+      currentOccupancy,
     })
   } catch (error) {
     console.error('Admin stats error:', error)

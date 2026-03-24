@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useToast } from '@/hooks/use-toast'
-import { Users, TrendingUp, Calendar, Clock, Wallet } from 'lucide-react'
+import { Users, TrendingUp, Calendar, Clock, Wallet, AlertCircle, UserPlus } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface Stats {
@@ -12,6 +12,9 @@ interface Stats {
   todayCheckins: number
   pendingPayments: number
   monthlyRevenue: number
+  expiringSoon?: number
+  newSignups?: number
+  currentOccupancy?: number
 }
 
 // Reusable Naira formatter
@@ -36,6 +39,9 @@ export default function AdminStats({
     todayCheckins: 0,
     pendingPayments: 0,
     monthlyRevenue: 0,
+    expiringSoon: 0,
+    newSignups: 0,
+    currentOccupancy: 0,
   })
   const [isLoading, setIsLoading] = useState(true)
   const { toast } = useToast()
@@ -85,9 +91,10 @@ export default function AdminStats({
   return (
     <div className={cn("grid gap-4 md:gap-6", hideRevenue ? "grid-cols-2 md:grid-cols-4" : "grid-cols-2 md:grid-cols-5")}>
       {[
-        { label: 'Total Members', value: stats.totalMembers, sub: 'All registered', icon: Users },
+        { label: 'Expiring Soon', value: stats.expiringSoon || 0, sub: 'Next 7 days', icon: AlertCircle, warning: (stats.expiringSoon || 0) > 0 },
         { label: 'Active Members', value: stats.activeMembers, sub: 'Valid memberships', icon: TrendingUp, accent: true },
-        { label: 'Today Check-ins', value: stats.todayCheckins, sub: 'Live activity', icon: Calendar },
+        { label: 'New Signups', value: stats.newSignups || 0, sub: 'Last 7 days', icon: UserPlus },
+        { label: 'Current Occupancy', value: stats.currentOccupancy || 0, sub: 'Members inside', icon: Users, accent: true },
         { 
           label: 'Pending Payments', 
           value: stats.pendingPayments, 
