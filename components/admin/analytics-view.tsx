@@ -39,7 +39,6 @@ const formatCurrency = (value: number) =>
 export default function AnalyticsView() {
   const [data, setData] = useState<AnalyticsData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const [searchQuery, setSearchQuery] = useState('')
   const { toast } = useToast()
 
   useEffect(() => {
@@ -67,40 +66,6 @@ export default function AnalyticsView() {
     fetchAnalytics()
   }, [toast])
 
-  const handleExportCSV = () => {
-    if (!data || data.members.length === 0) return
-
-    // Define CSV headers
-    const headers = ['Name', 'Email', 'Status', 'Package', 'Join Date', 'Expiry Date', 'Total Paid (NGN)']
-    
-    // Map rows
-    const rows = filteredMembers.map(m => [
-      `"${m.name}"`,
-      `"${m.email}"`,
-      `"${m.status}"`,
-      `"${m.package}"`,
-      `"${new Date(m.joinDate).toLocaleDateString()}"`,
-      `"${new Date(m.expiryDate).toLocaleDateString()}"`,
-      m.totalPaid
-    ])
-
-    // Combine headers and rows
-    const csvContent = [
-      headers.join(','),
-      ...rows.map(r => r.join(','))
-    ].join('\n')
-
-    // Create a Blob and trigger download
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
-    const url = URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.setAttribute('href', url)
-    link.setAttribute('download', `gym_analytics_export_${new Date().toISOString().split('T')[0]}.csv`)
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-  }
-
   if (isLoading) {
     return (
       <div className="flex h-[60vh] items-center justify-center">
@@ -110,12 +75,6 @@ export default function AnalyticsView() {
   }
 
   if (!data) return null
-
-  const filteredMembers = data.members.filter(m => 
-    m.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    m.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    m.package.toLowerCase().includes(searchQuery.toLowerCase())
-  )
 
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
@@ -171,9 +130,9 @@ export default function AnalyticsView() {
         </Card>
       </div>
 
-      <div className="grid gap-4 md:gap-6 grid-cols-1 lg:grid-cols-3">
+      <div className="grid gap-4 md:gap-6 grid-cols-1 lg:grid-cols-2">
         {/* Package Popularity Breakdown */}
-        <Card className="lg:col-span-1 border-border shadow-md">
+        <Card className="border-border shadow-md">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-lg">
               <PieChart className="h-5 w-5 text-primary" />
@@ -181,7 +140,7 @@ export default function AnalyticsView() {
             </CardTitle>
             <CardDescription>Revenue distribution by active memberships</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-6 pb-10">
             {data.packageBreakdown.length === 0 ? (
               <p className="text-sm text-muted-foreground text-center py-10">No active package data</p>
             ) : (
@@ -210,82 +169,34 @@ export default function AnalyticsView() {
             )}
           </CardContent>
         </Card>
-
-        {/* Detailed Data Table */}
-        <Card className="lg:col-span-2 border-border shadow-md flex flex-col">
-          <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-border/50">
-            <div>
-              <CardTitle className="text-lg">Detailed Member Data</CardTitle>
-              <CardDescription>Customizable search and data extraction</CardDescription>
-            </div>
-            <div className="flex flex-col sm:flex-row w-full sm:w-auto items-center gap-3">
-              <div className="relative w-full sm:w-64">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Search members..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-9 bg-background border-border h-10 w-full"
-                />
-              </div>
-              <Button 
-                onClick={handleExportCSV}
-                variant="outline" 
-                className="w-full sm:w-auto h-10 border-primary text-primary hover:bg-primary hover:text-primary-foreground gap-2 font-bold"
-              >
-                <Download className="h-4 w-4" /> Export CSV
-              </Button>
-            </div>
+        
+        {/* Retention Summary */}
+        <Card className="border-border shadow-md">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-lg">
+              <Activity className="h-5 w-5 text-primary" />
+              Growth Summary
+            </CardTitle>
+            <CardDescription>Key health indicators for your gym</CardDescription>
           </CardHeader>
-          <CardContent className="flex-1 p-0 overflow-hidden relative min-h-[400px]">
-            <div className="overflow-x-auto h-full">
-              <table className="w-full text-sm text-left">
-                <thead className="text-xs text-muted-foreground bg-muted/30 sticky top-0 backdrop-blur-md z-10 border-b border-border/50">
-                  <tr>
-                    <th className="px-6 py-4 font-bold uppercase tracking-wider">Member</th>
-                    <th className="px-6 py-4 font-bold uppercase tracking-wider">Status</th>
-                    <th className="px-6 py-4 font-bold uppercase tracking-wider">Package</th>
-                    <th className="px-6 py-4 font-bold uppercase tracking-wider">Join Date</th>
-                    <th className="px-6 py-4 font-bold uppercase tracking-wider text-right">Lifetime Value</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border/50">
-                  {filteredMembers.length === 0 ? (
-                    <tr>
-                      <td colSpan={5} className="px-6 py-12 text-center text-muted-foreground">
-                        No members found matching your search.
-                      </td>
-                    </tr>
-                  ) : (
-                    filteredMembers.map((member) => (
-                      <tr key={member.id} className="hover:bg-muted/20 transition-colors">
-                        <td className="px-6 py-4">
-                          <div className="font-bold text-foreground">{member.name}</div>
-                          <div className="text-xs text-muted-foreground">{member.email}</div>
-                        </td>
-                        <td className="px-6 py-4">
-                          <span className={cn(
-                            "px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-full",
-                            member.status === 'active' ? "bg-primary/10 text-primary border border-primary/20" :
-                            member.status === 'expiring' ? "bg-yellow-500/10 text-yellow-600 border border-yellow-500/20" :
-                            "bg-destructive/10 text-destructive border border-destructive/20"
-                          )}>
-                            {member.status}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 font-medium">{member.package}</td>
-                        <td className="px-6 py-4 text-muted-foreground">
-                          {new Date(member.joinDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
-                        </td>
-                        <td className="px-6 py-4 font-bold text-right text-foreground">
-                          {formatCurrency(member.totalPaid)}
-                        </td>
-                      </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
-            </div>
+          <CardContent className="space-y-6 pb-10">
+             <div className="p-4 rounded-2xl bg-muted/30 border border-border space-y-4">
+                <div className="flex justify-between items-center">
+                   <p className="text-xs font-bold text-muted-foreground">Active Memberships</p>
+                   <p className="text-sm font-black text-foreground">{data.members.filter(m => m.status !== 'expired').length}</p>
+                </div>
+                <div className="flex justify-between items-center">
+                   <p className="text-xs font-bold text-muted-foreground">Total Revenue Collected</p>
+                   <p className="text-sm font-black text-foreground">{formatCurrency(data.members.reduce((sum, m) => sum + m.totalPaid, 0))}</p>
+                </div>
+                <div className="flex justify-between items-center">
+                   <p className="text-xs font-bold text-muted-foreground">Avg. Lifetime Value (LTV)</p>
+                   <p className="text-sm font-black text-foreground">{formatCurrency(data.members.length > 0 ? data.members.reduce((sum, m) => sum + m.totalPaid, 0) / data.members.length : 0)}</p>
+                </div>
+             </div>
+             <p className="text-[10px] text-muted-foreground leading-relaxed italic">
+                Analytics are calculated based on rolling 30-day windows and active subscription normalization.
+             </p>
           </CardContent>
         </Card>
       </div>

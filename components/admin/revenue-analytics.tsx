@@ -98,18 +98,18 @@ export default function RevenueAnalytics() {
         </div>
 
         {/* Chart */}
-        <div className="p-4 md:p-6 rounded-[2rem] bg-card/50 border border-border shadow-sm">
+        <div className="p-4 md:p-6 rounded-[2rem] bg-card/30 border border-border shadow-sm overflow-hidden">
           {data.length > 0 ? (
             <ResponsiveContainer width="100%" height={350}>
-              <BarChart data={data}>
-                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
+              <BarChart data={data} margin={{ top: 20, right: 0, left: -20, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} opacity={0.5} />
                 <XAxis 
                   dataKey="month" 
                   stroke="hsl(var(--muted-foreground))" 
                   fontSize={10} 
                   tickLine={false} 
                   axisLine={false}
-                  tick={{ fill: 'hsl(var(--muted-foreground))', fontWeight: '900' }}
+                  tick={{ fill: 'hsl(var(--muted-foreground))', fontWeight: '700' }}
                 />
                 <YAxis 
                   stroke="hsl(var(--muted-foreground))" 
@@ -117,34 +117,36 @@ export default function RevenueAnalytics() {
                   tickLine={false} 
                   axisLine={false}
                   tickFormatter={(value) => `₦${(value / 1000).toFixed(0)}k`}
-                  tick={{ fill: 'hsl(var(--muted-foreground))', fontWeight: '900' }}
+                  tick={{ fill: 'hsl(var(--muted-foreground))', fontWeight: '700' }}
                 />
                 <Tooltip
-                  cursor={{ fill: 'hsl(var(--accent))' }}
+                  cursor={{ fill: 'hsl(var(--muted))', opacity: 0.1 }}
                   contentStyle={{ 
-                    backgroundColor: 'hsl(var(--popover))', 
+                    backgroundColor: 'hsl(var(--card))', 
                     borderColor: 'hsl(var(--border))',
-                    borderRadius: '1rem',
-                    fontSize: '10px',
-                    fontWeight: '900',
-                    textTransform: 'uppercase',
-                    color: 'hsl(var(--popover-foreground))'
+                    borderRadius: '1.25rem',
+                    fontSize: '11px',
+                    fontWeight: '800',
+                    color: 'hsl(var(--foreground))',
+                    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)'
                   }}
                   itemStyle={{ color: '#daa857' }}
+                  labelStyle={{ color: 'hsl(var(--muted-foreground))', marginBottom: '4px' }}
                 />
                 <Bar 
                   dataKey="revenue" 
                   fill="#daa857" 
-                  name="REVENUE (₦)" 
-                  radius={[4, 4, 0, 0]}
-                  barSize={30}
+                  name="REVENUE" 
+                  radius={[6, 6, 0, 0]}
+                  barSize={24}
                 />
                 <Bar 
                   dataKey="payments" 
-                  fill="hsl(var(--muted))" 
+                  fill="hsl(var(--primary))" 
+                  fillOpacity={0.2}
                   name="TRANSACTIONS" 
-                  radius={[4, 4, 0, 0]}
-                  barSize={30}
+                  radius={[6, 6, 0, 0]}
+                  barSize={24}
                 />
               </BarChart>
             </ResponsiveContainer>
