@@ -215,26 +215,24 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
                     <p className="text-[10px] font-bold text-muted-foreground">{adminData.email}</p>
                   </div>
                 </DropdownMenuItem>
+                <DropdownMenuItem asChild className="rounded-xl focus:bg-accent cursor-pointer py-3 px-4 text-foreground focus:text-accent-foreground" onClick={() => setOpenMobile(false)}>
+                  <Link href="/admin/settings" className="flex items-center gap-3 font-black text-[10px]">
+                    <Settings className="size-4" style={{ color: accent }} />
+                    Gym Settings
+                  </Link>
+                </DropdownMenuItem>
                 {role === 'admin' && (
-                  <>
-                    <DropdownMenuItem asChild className="rounded-xl focus:bg-accent cursor-pointer py-3 px-4 text-foreground focus:text-accent-foreground" onClick={() => setOpenMobile(false)}>
-                      <Link href="/admin/settings" className="flex items-center gap-3 font-black text-[10px]">
-                        <Settings className="size-4" style={{ color: accent }} />
-                        Gym Settings
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild className="rounded-xl focus:bg-accent cursor-pointer py-3 px-4 text-foreground focus:text-accent-foreground" onClick={() => setOpenMobile(false)}>
-                      <Link href="/admin/domain" className="flex items-center gap-3 font-black text-[10px] w-full justify-between">
-                        <div className="flex items-center gap-3">
-                          <Globe className="size-4" style={{ color: accent }} />
-                          Domain Setup
-                        </div>
-                        {!hasPremiumAccess(gymData?.subscriptions?.[0]?.plan || 'starter', 'pro') && (
-                          <Lock className="size-3 text-muted-foreground" />
-                        )}
-                      </Link>
-                    </DropdownMenuItem>
-                  </>
+                  <DropdownMenuItem asChild className="rounded-xl focus:bg-accent cursor-pointer py-3 px-4 text-foreground focus:text-accent-foreground" onClick={() => setOpenMobile(false)}>
+                    <Link href="/admin/domain" className="flex items-center gap-3 font-black text-[10px] w-full justify-between">
+                      <div className="flex items-center gap-3">
+                        <Globe className="size-4" style={{ color: accent }} />
+                        Domain Setup
+                      </div>
+                      {!hasPremiumAccess(gymData?.subscriptions?.[0]?.plan || 'starter', 'pro') && (
+                        <Lock className="size-3 text-muted-foreground" />
+                      )}
+                    </Link>
+                  </DropdownMenuItem>
                 )}
                 <DropdownMenuItem onClick={onLogout} className="rounded-xl focus:bg-accent cursor-pointer py-3 px-4 text-foreground focus:text-accent-foreground">
                   <div className="flex items-center gap-3 font-black text-[10px]">
