@@ -293,3 +293,120 @@ export async function sendMemberPaymentEmail(params: {
     console.error('Failed to send member payment emails:', err);
   }
 }
+
+// ---------------------------------------------------------------------------
+// CRON JOB AUTOMATED REMINDER EMAILS
+// ---------------------------------------------------------------------------
+
+export async function sendGymMemberReminderEmail(params: {
+  email: string;
+  firstName: string;
+  gymName: string;
+  daysRemaining: number;
+  expiryDate: string;
+  renewalUrl: string;
+}) {
+  const { email, firstName, gymName, daysRemaining, expiryDate, renewalUrl } = params;
+  
+  let subject = '';
+  let heading = '';
+  let message = '';
+  let color = '#f97316'; // Orange for warnings
+
+  if (daysRemaining === 0) {
+    subject = `Action Required: Your membership at ${gymName} has expired`;
+    heading = 'Membership Expired';
+    message = `Your gym access expired today (${expiryDate}). Please renew your membership to regain access to the terminal and continue your fitness journey.`;
+    color = '#ef4444'; // Red for expired
+  } else if (daysRemaining === 1) {
+    subject = `Last Day! Your ${gymName} membership expires tomorrow`;
+    heading = 'Expires Tomorrow';
+    message = `This is a friendly reminder that your gym membership will expire tomorrow (${expiryDate}). Renew today to avoid any interruption in your access.`;
+  } else {
+    subject = `Reminder: Your ${gymName} membership expires in ${daysRemaining} days`;
+    heading = 'Expiring Soon';
+    message = `Your gym access will expire on ${expiryDate} (${daysRemaining} days remaining). Extend your plan now to maintain uninterrupted access.`;
+  }
+
+  try {
+    await resend.emails.send({
+      from: fromEmail,
+      to: email,
+      subject,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 12px;">
+          <h2 style="color: ${color}; margin-top: 0;">${heading}</h2>
+          <p>Hi ${firstName},</p>
+          <p>${message}</p>
+          
+          <div style="text-align: center; margin: 35px 0;">
+            <a href="${renewalUrl}" style="background-color: ${color}; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">
+              Renew Membership Now
+            </a>
+          </div>
+          
+          <p style="color: #6b7280; font-size: 12px; border-top: 1px solid #e5e7eb; padding-top: 20px; text-align: center;">
+            Sent automatically by GymPilotPro on behalf of ${gymName}
+          </p>
+        </div>
+      `,
+    });
+    console.log(`Sent ${daysRemaining}-day reminder to gym member ${email}`);
+  } catch (err) {
+    console.error(`Failed to send gym member reminder to ${email}:`, err);
+  }
+}
+
+export async function sendSaaSReminderEmail(params: {
+  email: string;
+  gymName: string;
+  daysRemaining: number;
+  expiryDate: string;
+  billingUrl: string;
+}) {
+  const { email, gymName, daysRemaining, expiryDate, billingUrl } = params;
+  
+  let subject = '';
+  let heading = '';
+  let message = '';
+  let color = '#f97316';
+
+  if (daysRemaining === 0) {
+    subject = `URGENT: GymPilotPro Subscription Expired for ${gymName}`;
+    heading = 'Subscription Expired';
+    message = `Your GymPilotPro SaaS subscription has expired as of today (${expiryDate}). Your gym's online services and member terminals may be restricted. Please update your billing immediately to restore full service.`;
+    color = '#ef4444';
+  } else {
+    subject = `Action Required: GymPilotPro plan for ${gymName} renews in ${daysRemaining} days`;
+    heading = 'Subscription Renewing Soon';
+    message = `Your GymPilotPro plan for ${gymName} is set to renew or expire on ${expiryDate} (${daysRemaining} days remaining). Please ensure your billing information is up to date to avoid any service interruptions.`;
+  }
+
+  try {
+    await resend.emails.send({
+      from: fromEmail,
+      to: email,
+      subject,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 12px;">
+          <h2 style="color: ${color}; margin-top: 0;">${heading}</h2>
+          <p>Hello,</p>
+          <p>${message}</p>
+          
+          <div style="text-align: center; margin: 35px 0;">
+            <a href="${billingUrl}" style="background-color: ${color}; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">
+              Manage Billing & Subscription
+            </a>
+          </div>
+          
+          <p style="color: #6b7280; font-size: 12px; border-top: 1px solid #e5e7eb; padding-top: 20px; text-align: center;">
+            GymPilotPro Administration
+          </p>
+        </div>
+      `,
+    });
+    console.log(`Sent ${daysRemaining}-day SaaS reminder to gym owner ${email}`);
+  } catch (err) {
+    console.error(`Failed to send SaaS reminder to ${email}:`, err);
+  }
+}
