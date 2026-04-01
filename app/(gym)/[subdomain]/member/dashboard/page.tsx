@@ -19,6 +19,7 @@ import MemberProfile from '@/components/member/member-profile'
 import AttendanceHistory from '@/components/member/attendance-history'
 import ProgressNotes from '@/components/member/progress-notes'
 import QRCodeDisplay from '@/components/member/qr-code-display'
+import CommunityLeaderboard from '@/components/member/community-leaderboard'
 import { Spinner } from '@/components/ui/spinner'
 
 interface MemberData {
@@ -53,6 +54,7 @@ interface AttendanceData {
 function MemberDashboardContent() {
   const [memberData, setMemberData] = useState<MemberData | null>(null)
   const [attendanceHistory, setAttendanceHistory] = useState<AttendanceData[]>([])
+  const [communityData, setCommunityData] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [membershipStatus, setMembershipStatus] = useState<'active' | 'expiring' | 'expired' | 'pending'>('active')
@@ -65,8 +67,12 @@ function MemberDashboardContent() {
     if (!silent) setIsLoading(true)
     setError(null)
     try {
-      // Single aggregated API call instead of 3 separate calls
-      const response = await fetch('/api/member/dashboard')
+      // Fetch member dashboard and community data in parallel
+      const [response, communityResponse] = await Promise.all([
+        fetch('/api/member/dashboard'),
+        fetch('/api/member/community')
+      ])
+      
       if (!response.ok) {
         if (response.status === 401) {
           router.push('/login')
@@ -96,6 +102,11 @@ function MemberDashboardContent() {
       const data = await response.json()
       setMemberData(data.member)
       setAttendanceHistory(data.attendance)
+
+      if (communityResponse.ok) {
+        const cData = await communityResponse.json()
+        setCommunityData(cData)
+      }
 
       // Check membership status
       const paymentStatus = data.member.memberProfile.paymentStatus
@@ -286,6 +297,19 @@ function MemberDashboardContent() {
                   <MemberProfile memberData={memberData} onUpdate={refreshDashboard} />
                 </div>
               </div>
+            </div>
+
+            <div className={cn("animate-in fade-in slide-in-from-bottom-4 duration-500", currentTab === 'community' ? 'block' : 'hidden')}>
+              {communityData ? (
+                <CommunityLeaderboard 
+                  leaderboard={communityData.leaderboard} 
+                  currentUserStats={communityData.currentUser} 
+                />
+              ) : (
+                <div className="flex h-40 items-center justify-center">
+                  <Spinner className="h-6 w-6 text-primary" />
+                </div>
+              )}
             </div>
 
             <div className={cn("animate-in fade-in slide-in-from-bottom-4 duration-500", currentTab === 'qr-code' ? 'block' : 'hidden')}>

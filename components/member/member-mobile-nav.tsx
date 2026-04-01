@@ -4,7 +4,7 @@ import { Suspense, useState } from 'react'
 import Link from 'next/link'
 import { usePathname, useSearchParams } from 'next/navigation'
 import { useGym } from '@/components/gym-provider'
-import { User, QrCode, Calendar, TrendingUp, Menu, Settings } from 'lucide-react'
+import { User, QrCode, Calendar, TrendingUp, Menu, Settings, Trophy } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import {
   Drawer,
@@ -28,6 +28,7 @@ function MemberMobileNavContent({ className }: MemberMobileNavProps) {
 
   const allNavItems = [
     { title: 'Overview', tab: 'overview', icon: User },
+    { title: 'Community', tab: 'community', icon: Trophy },
     { title: 'QR Code', tab: 'qr-code', icon: QrCode },
     { title: 'Attendance', tab: 'attendance', icon: Calendar },
     { title: 'Progress', tab: 'progress', icon: TrendingUp },

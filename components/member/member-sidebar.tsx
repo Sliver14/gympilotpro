@@ -19,7 +19,7 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { User, QrCode, Calendar, TrendingUp, LogOut, Settings } from 'lucide-react'
+import { User, QrCode, Calendar, TrendingUp, LogOut, Settings, Trophy } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { ModeToggle } from '@/components/mode-toggle'
 import {
@@ -54,6 +54,12 @@ function MemberSidebarContent({ memberData, onLogout }: MemberSidebarProps) {
       url: `/member/dashboard?tab=overview`,
       icon: User,
       active: currentTab === 'overview',
+    },
+    {
+      title: 'Community',
+      url: `/member/dashboard?tab=community`,
+      icon: Trophy,
+      active: currentTab === 'community',
     },
     {
       title: 'QR Code',
