@@ -32,30 +32,19 @@ export async function GET(request: NextRequest) {
 
     // Calculate all date ranges upfront
     const now = new Date()
-    const todayStart = new Date(now)
-    todayStart.setHours(0, 0, 0, 0)
-    const todayEnd = new Date(now)
-    todayEnd.setHours(23, 59, 59, 999)
+    
+    // Explicit Local Time Bounds to avoid wrapping issues
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0)
+    const todayEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999)
 
-    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1)
-    monthStart.setHours(0, 0, 0, 0)
-    const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0)
-    monthEnd.setHours(23, 59, 59, 999)
+    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0, 0)
+    const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999)
 
-    const thirtyDaysAgo = new Date(now)
-    thirtyDaysAgo.setDate(now.getDate() - 29)
-    thirtyDaysAgo.setHours(0, 0, 0, 0)
+    const thirtyDaysAgo = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 30, 0, 0, 0, 0)
 
-    const twelveMonthsAgo = new Date(now)
-    twelveMonthsAgo.setMonth(now.getMonth() - 11)
-    twelveMonthsAgo.setDate(1)
-    twelveMonthsAgo.setHours(0, 0, 0, 0)
+    const twelveMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 11, 1, 0, 0, 0, 0)
 
-    const next7Days = new Date(now)
-    next7Days.setDate(now.getDate() + 7)
-
-    const sevenDaysAgo = new Date(now)
-    sevenDaysAgo.setDate(now.getDate() - 7)
+    const sevenDaysAgo = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7, 0, 0, 0, 0)
 
     // Execute all queries in parallel
     const [
@@ -79,8 +68,12 @@ export async function GET(request: NextRequest) {
         where: {
           gymId: gym.id,
           expiryDate: {
-            gt: now,
+            gte: now,
           },
+          user: {
+            deletedAt: null,
+            role: 'member'
+          }
         },
       }),
       // Today's check-ins
@@ -100,7 +93,7 @@ export async function GET(request: NextRequest) {
           status: 'pending',
         },
       }),
-      // Monthly revenue (aggregate)
+      // Monthly revenue (aggregate for current month)
       prisma.payment.aggregate({
         where: {
           gymId: gym.id,
@@ -148,6 +141,10 @@ export async function GET(request: NextRequest) {
           expiryDate: {
             lt: now,
           },
+          user: {
+            deletedAt: null,
+            role: 'member'
+          }
         },
       }),
       // New signups

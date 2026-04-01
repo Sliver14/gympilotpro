@@ -38,6 +38,10 @@ export async function GET(request: NextRequest) {
         expiryDate: {
           lt: now,
         },
+        user: {
+          deletedAt: null,
+          role: 'member'
+        }
       },
     })
 
@@ -48,8 +52,12 @@ export async function GET(request: NextRequest) {
       where: {
         gymId: gym.id,
         expiryDate: {
-          gt: now,
+          gte: now,
         },
+        user: {
+          deletedAt: null,
+          role: 'member'
+        }
       },
     })
 
@@ -66,10 +74,8 @@ export async function GET(request: NextRequest) {
     })
 
     // Today's check-ins
-    const todayStart = new Date()
-    todayStart.setHours(0, 0, 0, 0)
-    const todayEnd = new Date()
-    todayEnd.setHours(23, 59, 59, 999)
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0)
+    const todayEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999)
 
     const todayCheckins = await prisma.attendance.count({
       where: {
@@ -93,11 +99,10 @@ export async function GET(request: NextRequest) {
       },
     })
 
-    // Monthly revenue
-    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1)
-    monthStart.setHours(0, 0, 0, 0)
-    const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0)
-    monthEnd.setHours(23, 59, 59, 999)
+    // Monthly revenue (Total for the current calendar month)
+    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0, 0)
+    // The next month at index 0 is the LAST day of the current month
+    const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999)
 
     // Optimize: Use aggregate instead of fetching all payments
     const monthlyRevenueResult = await prisma.payment.aggregate({
