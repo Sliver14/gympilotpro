@@ -66,7 +66,7 @@ export async function POST(req: NextRequest) {
     let membershipStatus: 'active' | 'expiring' | 'expired' = 'active'
     if (daysRemaining < 0) {
       membershipStatus = 'expired'
-    } else if (daysRemaining <= 7) {
+    } else if (daysRemaining <= 3) {
       membershipStatus = 'expiring'
     }
 

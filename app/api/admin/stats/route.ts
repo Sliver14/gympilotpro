@@ -30,8 +30,8 @@ export async function GET(request: NextRequest) {
 
     // Active members (valid membership)
     const now = new Date()
-    const next7Days = new Date(now)
-    next7Days.setDate(now.getDate() + 7)
+    const next3Days = new Date(now)
+    next3Days.setDate(now.getDate() + 3)
 
     const sevenDaysAgo = new Date(now)
     sevenDaysAgo.setDate(now.getDate() - 7)
@@ -51,7 +51,7 @@ export async function GET(request: NextRequest) {
         gymId: gym.id,
         expiryDate: {
           gt: now,
-          lte: next7Days,
+          lte: next3Days,
         },
       },
     })

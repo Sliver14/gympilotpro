@@ -94,7 +94,7 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
   const getMembershipStatus = (expiryDate: string) => {
     const days = Math.floor((new Date(expiryDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
     if (days < 0) return 'expired'
-    if (days <= 7) return 'expiring'
+    if (days <= 3) return 'expiring'
     return 'active'
   }
 

@@ -63,8 +63,8 @@ export async function GET(request: NextRequest) {
         const timeDiff = new Date(profile.expiryDate).getTime() - now.getTime()
         const daysToExpiry = Math.ceil(timeDiff / (1000 * 3600 * 24))
         
-        if (daysToExpiry > 7) status = 'active'
-        else if (daysToExpiry > 0 && daysToExpiry <= 7) status = 'expiring'
+        if (daysToExpiry > 3) status = 'active'
+        else if (daysToExpiry > 0 && daysToExpiry <= 3) status = 'expiring'
       }
 
       const totalPaid = m.payments.reduce((sum, p) => sum + p.amount, 0)

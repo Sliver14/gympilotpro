@@ -107,7 +107,7 @@ function MemberDashboardContent() {
         setMembershipStatus('pending')
       } else if (daysUntilExpiry < 0) {
         setMembershipStatus('expired')
-      } else if (daysUntilExpiry <= 7) {
+      } else if (daysUntilExpiry <= 3) {
         setMembershipStatus('expiring')
       } else {
         setMembershipStatus('active')
