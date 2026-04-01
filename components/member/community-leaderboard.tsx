@@ -26,13 +26,14 @@ interface RecentActivityItem {
 
 interface CommunityLeaderboardProps {
   leaderboard: LeaderboardMember[]
-  currentUserStats: LeaderboardMember & { streak?: number } | null
+  currentUserStats: LeaderboardMember & { streak?: number, unranked?: boolean } | null
   recentActivity?: RecentActivityItem[]
 }
 
 export default function CommunityLeaderboard({ leaderboard, currentUserStats, recentActivity = [] }: CommunityLeaderboardProps) {
   // Helpers for ranking styling
-  const getRankStyle = (rank: number) => {
+  const getRankStyle = (rank: number, unranked?: boolean) => {
+    if (unranked) return { color: 'text-muted-foreground', bg: 'bg-accent/50', border: 'border-dashed border-border', icon: null }
     switch (rank) {
       case 1: return { color: 'text-yellow-500', bg: 'bg-yellow-500/10', border: 'border-yellow-500/50', icon: Trophy }
       case 2: return { color: 'text-gray-400', bg: 'bg-gray-400/10', border: 'border-gray-400/50', icon: Medal }
@@ -66,11 +67,15 @@ export default function CommunityLeaderboard({ leaderboard, currentUserStats, re
             </CardHeader>
             <CardContent>
               <div className="flex items-end gap-2">
-                <span className="text-5xl font-black text-foreground">#{currentUserStats.rank}</span>
-                <span className="text-sm font-bold text-muted-foreground mb-1">in the gym</span>
+                <span className="text-5xl font-black text-foreground">
+                  {currentUserStats.unranked && currentUserStats.visits === 0 ? "---" : `#${currentUserStats.rank}`}
+                </span>
+                <span className="text-sm font-bold text-muted-foreground mb-1">
+                  {currentUserStats.unranked && currentUserStats.visits === 0 ? "inactive" : "in the gym"}
+                </span>
               </div>
               <p className="text-xs font-bold text-muted-foreground mt-2">
-                Based on {currentUserStats.visits} visits this month
+                Based on {currentUserStats.visits} visits in the last 30 days
               </p>
             </CardContent>
           </Card>
@@ -102,17 +107,19 @@ export default function CommunityLeaderboard({ leaderboard, currentUserStats, re
           <Card className="border-border/50 shadow-xl overflow-hidden h-full">
             <CardHeader className="bg-muted/30 border-b border-border">
               <CardTitle className="flex items-center gap-3">
-                <Trophy className="h-5 w-5 text-primary" /> Monthly Leaderboard
+                <Trophy className="h-5 w-5 text-primary" /> Activity Leaderboard
               </CardTitle>
               <CardDescription>
-                The most active members this month. Names are hidden for privacy.
+                Top members by check-ins over the last 30 days.
               </CardDescription>
             </CardHeader>
             <CardContent className="p-0">
               <div className="divide-y divide-border/50">
                 {leaderboard.length === 0 ? (
-                  <div className="p-8 text-center text-muted-foreground font-bold text-sm">
-                    No activity yet this month. Be the first to check in!
+                  <div className="p-12 text-center flex flex-col items-center justify-center">
+                    <Activity className="h-10 w-10 text-muted-foreground/20 mb-4" />
+                    <p className="text-muted-foreground font-bold text-sm">No activity recorded in the last 30 days.</p>
+                    <p className="text-muted-foreground/60 text-xs mt-1">Be the first to break the ice!</p>
                   </div>
                 ) : (
                   leaderboard.map((member) => {
@@ -155,7 +162,7 @@ export default function CommunityLeaderboard({ leaderboard, currentUserStats, re
 
                         <div className="text-right shrink-0">
                           <Badge variant="secondary" className="font-bold text-xs bg-background border border-border">
-                            {member.visits} <span className="text-muted-foreground ml-1 font-medium">visits</span>
+                            {member.visits} <span className="text-muted-foreground ml-1 font-medium text-[10px]">visits</span>
                           </Badge>
                         </div>
                       </div>
@@ -164,7 +171,7 @@ export default function CommunityLeaderboard({ leaderboard, currentUserStats, re
                 )}
 
                 {/* Show current user at bottom if they aren't in the top 10 */}
-                {currentUserStats && currentUserStats.rank > 10 && (
+                {currentUserStats && (currentUserStats.rank > 10 || currentUserStats.unranked) && currentUserStats.visits > 0 && (
                   <div className="flex items-center gap-4 p-4 bg-primary/5 border-t-2 border-primary/20 mt-2">
                     <div className="flex items-center justify-center w-8 h-8 rounded-full font-black text-sm shrink-0 bg-accent text-muted-foreground border border-border">
                       {currentUserStats.rank}
@@ -185,7 +192,7 @@ export default function CommunityLeaderboard({ leaderboard, currentUserStats, re
 
                     <div className="text-right shrink-0">
                       <Badge variant="secondary" className="font-bold text-xs bg-background border border-border">
-                        {currentUserStats.visits} <span className="text-muted-foreground ml-1 font-medium">visits</span>
+                        {currentUserStats.visits} <span className="text-muted-foreground ml-1 font-medium text-[10px]">visits</span>
                       </Badge>
                     </div>
                   </div>
@@ -204,7 +211,7 @@ export default function CommunityLeaderboard({ leaderboard, currentUserStats, re
             </CardHeader>
             <CardContent className="p-0 flex-1 relative min-h-[300px]">
               <div className="absolute inset-0 overflow-hidden">
-                <div className="animate-fade-in-up divide-y divide-border/50 h-full overflow-y-auto custom-scrollbar p-2">
+                <div className="divide-y divide-border/50 h-full overflow-y-auto custom-scrollbar p-2">
                   {recentActivity.length === 0 ? (
                     <div className="p-8 text-center text-muted-foreground font-bold text-xs">
                       No recent check-ins.

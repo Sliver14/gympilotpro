@@ -17,20 +17,19 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
     }
 
-    // Define the time window (current month)
+    // Define the time window (Last 30 days for a more stable/active leaderboard)
     const now = new Date()
-    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1)
-    const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59)
+    const thirtyDaysAgo = new Date(now)
+    thirtyDaysAgo.setDate(now.getDate() - 30)
 
-    // 1. Fetch all attendances for the gym this month to calculate the leaderboard
-    // Group by user and count
+    // 1. Fetch all attendances for the gym in the last 30 days
     const attendanceGroups = await prisma.attendance.groupBy({
       by: ['userId'],
       where: {
         gymId: gym.id,
         checkInTime: {
-          gte: monthStart,
-          lte: monthEnd,
+          gte: thirtyDaysAgo,
+          lte: now,
         },
       },
       _count: {
@@ -43,7 +42,7 @@ export async function GET(req: NextRequest) {
       },
     })
 
-    // Rank them in memory to handle ties and avoid Prisma 'having' issues
+    // Rank them in memory to handle ties
     let currentRank = 1
     let previousVisits = -1
 
@@ -63,6 +62,11 @@ export async function GET(req: NextRequest) {
     const top10 = rankedGroups.slice(0, 10)
     const currentUserGroup = rankedGroups.find(g => g.userId === user.id)
     
+    // Get total member count to show a realistic rank for inactive users
+    const totalGymMembers = await prisma.user.count({
+      where: { gymId: gym.id, role: 'member', deletedAt: null }
+    })
+
     // Create a Set of user IDs we need to fetch details for
     const userIdsToFetch = new Set(top10.map(g => g.userId))
     userIdsToFetch.add(user.id)
@@ -83,7 +87,6 @@ export async function GET(req: NextRequest) {
       return {
         id: group.userId,
         rank: group.rank,
-        // Privacy: Only show First Name and Last Initial
         name: u ? `${u.firstName} ${u.lastName?.[0] || ''}.` : 'Anonymous Member',
         profileImage: u?.profileImage || null,
         visits: group.visits,
@@ -105,11 +108,13 @@ export async function GET(req: NextRequest) {
     } else {
       currentUserStats = {
         id: user.id,
+        // If they have 0 visits, they are ranked at the bottom
         rank: rankedGroups.length + 1,
         name: `${user.firstName} ${user.lastName?.[0] || ''}.`,
         profileImage: user.profileImage,
         visits: 0,
-        isCurrentUser: true
+        isCurrentUser: true,
+        unranked: true
       }
     }
 
