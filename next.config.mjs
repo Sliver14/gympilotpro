@@ -1,17 +1,3 @@
-// /** @type {import('next').NextConfig} */
-// const nextConfig = {
-//   typescript: {
-//     ignoreBuildErrors: true,
-//   },
-//   images: {
-//     unoptimized: true,
-//   },
-//   reactStrictMode: true,
-// }
-
-// export default nextConfig
-
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   typescript: {
@@ -21,15 +7,12 @@ const nextConfig = {
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: '**' },
+      { protocol: 'https', hostname: 'images.unsplash.com' },
+      { protocol: 'https', hostname: 'res.cloudinary.com' },
     ],
-    domains: ["images.unsplash.com", "res.cloudinary.com"],
   },
 
   reactStrictMode: process.env.NODE_ENV === 'development',
-
-  experimental: {
-    allowedDevOrigins: ['klimarx.lvh.me', '*.lvh.me', 'lvh.me', 'localhost:3000', '*.lvh.me:3000'],
-  },
 
   compress: true,
   poweredByHeader: false,
