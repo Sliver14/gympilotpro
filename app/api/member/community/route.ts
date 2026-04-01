@@ -177,13 +177,42 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    // Return the top 10 for the community board, and the current user's specific stats
+    // 4. Fetch Recent Activity Feed (Last 10 check-ins across the gym)
+    const recentAttendancesRaw = await prisma.attendance.findMany({
+      where: { gymId: gym.id },
+      orderBy: { checkInTime: 'desc' },
+      take: 10,
+      select: {
+        id: true,
+        checkInTime: true,
+        user: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            profileImage: true,
+          }
+        }
+      }
+    })
+
+    const recentActivity = recentAttendancesRaw.map(a => ({
+      id: a.id,
+      name: a.user ? `${a.user.firstName} ${a.user.lastName?.[0] || ''}.` : 'Anonymous Member',
+      profileImage: a.user?.profileImage || null,
+      time: a.checkInTime.toISOString(),
+      type: 'check-in',
+      isCurrentUser: a.user?.id === user.id
+    }))
+
+    // Return the top 10 for the community board, the current user's specific stats, and recent activity
     return NextResponse.json({
       leaderboard: leaderboard.slice(0, 10),
       currentUser: {
         ...currentUserStats,
         streak: currentStreak
-      }
+      },
+      recentActivity
     })
 
   } catch (error) {

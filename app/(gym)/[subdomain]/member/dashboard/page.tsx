@@ -271,24 +271,25 @@ function MemberDashboardContent() {
             <div className={currentTab === 'overview' ? 'block' : 'hidden'}>
               <div className="space-y-10">
                 {/* Stats Grid */}
-                <div className="grid gap-4 md:gap-6 md:grid-cols-3">
+                <div className="grid gap-4 md:gap-6 grid-cols-2 lg:grid-cols-4">
                   {[
                     { label: 'Current Tier', value: memberData.memberProfile.membership.name, sub: membershipStatus === 'pending' ? 'PENDING VERIFICATION' : membershipStatus.toUpperCase(), accent: true },
-                    { label: 'Active Days', value: membershipStatus === 'pending' ? '...' : Math.max(0, daysUntilExpiry), sub: membershipStatus === 'pending' ? 'VERIFICATION IN PROGRESS' : `Until ${expiryDate.toLocaleDateString()}` },
-                    { label: 'Monthly Visits', value: memberData?.monthlyVisits ?? attendanceHistory.filter((a) => {
+                    { label: 'Monthly Visits', value: communityData?.currentUser?.visits ?? memberData?.monthlyVisits ?? attendanceHistory.filter((a) => {
                       const date = new Date(a.checkInTime);
                       const now = new Date();
                       return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear();
-                    }).length, sub: 'TRAINING SESSIONS' }
+                    }).length, sub: 'TRAINING SESSIONS' },
+                    { label: 'Gym Rank 🏆', value: communityData ? `#${communityData.currentUser?.rank}` : '...', sub: 'CURRENT STANDING', accent: true },
+                    { label: 'Workout Streak 🔥', value: communityData ? `${communityData.currentUser?.streak}` : '...', sub: 'CONSECUTIVE DAYS' }
                   ].map((stat, i) => (
-                    <div key={i} className="bg-card border border-border/50 rounded-3xl p-4 md:p-8 shadow-xl relative overflow-hidden group hover:border-primary/30 transition-colors">
-                      <p className="text-[10px] font-black tracking-[0.3em] text-muted-foreground mb-4">{stat.label}</p>
+                    <div key={i} className="bg-card border border-border/50 rounded-3xl p-4 md:p-6 shadow-xl relative overflow-hidden group hover:border-primary/30 transition-colors">
+                      <p className="text-[10px] font-black tracking-[0.2em] text-muted-foreground mb-4 uppercase">{stat.label}</p>
                       <div className="flex items-baseline gap-2">
-                        <p className={cn("text-2xl md:text-4xl font-black tracking-tighter", stat.accent ? "text-primary" : "text-foreground")}>
+                        <p className={cn("text-2xl md:text-3xl font-black tracking-tighter", stat.accent ? "text-primary" : "text-foreground")}>
                           {stat.value}
                         </p>
                       </div>
-                      <p className="text-[10px] font-black text-muted-foreground/60 mt-2">{stat.sub}</p>
+                      <p className="text-[9px] font-black text-muted-foreground/60 mt-2 uppercase">{stat.sub}</p>
                     </div>
                   ))}
                 </div>
@@ -303,7 +304,8 @@ function MemberDashboardContent() {
               {communityData ? (
                 <CommunityLeaderboard 
                   leaderboard={communityData.leaderboard} 
-                  currentUserStats={communityData.currentUser} 
+                  currentUserStats={communityData.currentUser}
+                  recentActivity={communityData.recentActivity} 
                 />
               ) : (
                 <div className="flex h-40 items-center justify-center">
