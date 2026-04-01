@@ -235,13 +235,16 @@ export async function GET(request: NextRequest) {
         return aDate.getTime() - bDate.getTime()
       })
 
+    const currentMonthKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`
+    const currentMonthRevenue = monthMap.get(currentMonthKey)?.revenue || 0
+
     return NextResponse.json({
       stats: {
         totalMembers,
         activeMembers,
         todayCheckins,
         pendingPayments: pendingPaymentsCount,
-        monthlyRevenue: monthlyRevenueResult._sum.amount || 0,
+        monthlyRevenue: currentMonthRevenue,
         expiredMembers: expiringSoon, // Alias for ease of frontend migration
         newSignups,
         currentOccupancy,

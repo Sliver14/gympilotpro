@@ -104,8 +104,8 @@ export async function GET(request: NextRequest) {
     // The next month at index 0 is the LAST day of the current month
     const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999)
 
-    // Optimize: Use aggregate instead of fetching all payments
-    const monthlyRevenueResult = await prisma.payment.aggregate({
+    // Match the dashboard chart logic exactly: fetch payments for the month bounds, then sum using JS Date matching
+    const currentMonthPayments = await prisma.payment.findMany({
       where: {
         gymId: gym.id,
         status: 'approved',
@@ -114,12 +114,22 @@ export async function GET(request: NextRequest) {
           lte: monthEnd,
         },
       },
-      _sum: {
+      select: {
         amount: true,
-      },
+        createdAt: true
+      }
     })
 
-    const monthlyRevenue = monthlyRevenueResult._sum.amount || 0
+    const currentMonthKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`
+    let monthlyRevenue = 0
+
+    currentMonthPayments.forEach(payment => {
+      const date = new Date(payment.createdAt)
+      const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`
+      if (key === currentMonthKey) {
+        monthlyRevenue += payment.amount
+      }
+    })
 
     return NextResponse.json({
       totalMembers,
