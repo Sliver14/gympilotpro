@@ -44,12 +44,34 @@ export async function GET(request: NextRequest) {
         phoneNumber: true,
         profileImage: true,
         createdAt: true,
+        _count: {
+          select: {
+            payments: {
+              where: { status: 'approved' }
+            }
+          }
+        },
         memberProfile: {
           select: {
+            id: true,
+            membershipId: true,
+            joinDate: true,
             expiryDate: true,
+            gender: true,
+            birthday: true,
+            hearAboutUs: true,
+            fitnessGoals: true,
+            fitnessGoalsDetails: true,
+            paymentMethod: true,
+            emergencyContact: true,
+            emergencyPhone: true,
+            verified: true,
+            paymentStatus: true,
             membership: {
               select: {
                 name: true,
+                price: true,
+                duration: true,
               },
             },
           },
