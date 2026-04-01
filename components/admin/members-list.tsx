@@ -366,7 +366,7 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
 
       {/* Member Details Sidebar (Sheet) */}
       <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-        <SheetContent className="w-full sm:max-w-md md:max-w-lg border-l border-border bg-card p-0 flex flex-col h-full rounded-l-[2.5rem] overflow-hidden">
+        <SheetContent className="w-full sm:max-w-md md:max-w-lg border-l border-border bg-card p-0 flex flex-col h-full rounded-l-[2.5rem] overflow-hidden [&>button:last-child]:left-4 [&>button:last-child]:right-auto">
           {selectedMember && (() => {
             const status = getMembershipStatus(selectedMember.memberProfile.expiryDate)
             const initials = `${selectedMember.firstName?.[0] ?? ''}${selectedMember.lastName?.[0] ?? ''}`.toUpperCase()
