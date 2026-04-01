@@ -400,7 +400,7 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
                     <Avatar className="h-24 w-24 border-4 border-background shadow-2xl mb-4 relative z-10">
                       <AvatarImage src={selectedMember.profileImage || undefined} className="object-cover" />
                       <AvatarFallback className="bg-accent text-[#daa857] font-black text-2xl">
-                        {initials || <UserIcon className="h-10 w-10" />}
+                        {initials || <User className="h-10 w-10" />}
                       </AvatarFallback>
                     </Avatar>
                     
@@ -418,7 +418,7 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
                   {/* Personal Information */}
                   <div className="space-y-4">
                     <h3 className="text-[10px] font-black tracking-[0.2em] text-muted-foreground flex items-center gap-2 uppercase">
-                      <UserIcon className="h-4 w-4 text-[#daa857]" /> Personal Info
+                      <User className="h-4 w-4 text-[#daa857]" /> Personal Info
                     </h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-background/30 rounded-2xl p-4 border border-border">
                       <div className="flex items-center gap-3">
@@ -443,7 +443,7 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <UserIcon className="h-4 w-4 text-muted-foreground" />
+                        <User className="h-4 w-4 text-muted-foreground" />
                         <div>
                           <p className="text-[9px] text-muted-foreground font-black uppercase">Gender</p>
                           <p className="text-xs font-bold capitalize">{selectedMember.memberProfile.gender || 'N/A'}</p>
