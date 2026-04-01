@@ -141,13 +141,12 @@ export async function GET(request: NextRequest) {
           checkOutTime: true,
         },
       }),
-      // Expiring soon
+      // Expired members
       prisma.memberProfile.count({
         where: {
           gymId: gym.id,
           expiryDate: {
-            gt: now,
-            lte: next7Days,
+            lt: now,
           },
         },
       }),
@@ -178,8 +177,7 @@ export async function GET(request: NextRequest) {
     // Process revenue data by month
     const monthMap = new Map<string, { revenue: number; payments: number; monthName: string }>()
     for (let i = 11; i >= 0; i--) {
-      const date = new Date()
-      date.setMonth(now.getMonth() - i)
+      const date = new Date(now.getFullYear(), now.getMonth() - i, 1) // Day 1 prevents month wrapping bug
       const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`
       const monthName = date.toLocaleString('default', { month: 'short', year: '2-digit' })
       monthMap.set(monthKey, { revenue: 0, payments: 0, monthName })
@@ -210,9 +208,7 @@ export async function GET(request: NextRequest) {
     // Process attendance data by day
     const dayMap = new Map<string, { checkins: number; checkouts: number; dateLabel: string }>()
     for (let i = 29; i >= 0; i--) {
-      const date = new Date()
-      date.setDate(now.getDate() - i)
-      date.setHours(0, 0, 0, 0)
+      const date = new Date(now.getFullYear(), now.getMonth(), now.getDate() - i)
       const dayKey = date.toISOString().split('T')[0]
       const dateLabel = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
       dayMap.set(dayKey, { checkins: 0, checkouts: 0, dateLabel })
@@ -220,7 +216,6 @@ export async function GET(request: NextRequest) {
 
     attendance.forEach((record: { checkInTime: Date; checkOutTime: Date | null }) => {
       const date = new Date(record.checkInTime)
-      date.setHours(0, 0, 0, 0)
       const dayKey = date.toISOString().split('T')[0]
       const dayData = dayMap.get(dayKey)
       if (dayData) {
@@ -250,7 +245,7 @@ export async function GET(request: NextRequest) {
         todayCheckins,
         pendingPayments: pendingPaymentsCount,
         monthlyRevenue: monthlyRevenueResult._sum.amount || 0,
-        expiringSoon,
+        expiredMembers: expiringSoon, // Alias for ease of frontend migration
         newSignups,
         currentOccupancy,
       },

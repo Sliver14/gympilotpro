@@ -50,8 +50,7 @@ export async function GET(request: NextRequest) {
 
     // Initialize all 12 months
     for (let i = 11; i >= 0; i--) {
-      const date = new Date()
-      date.setMonth(now.getMonth() - i)
+      const date = new Date(now.getFullYear(), now.getMonth() - i, 1) // Day 1 prevents month wrapping bug
       const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`
       const monthName = date.toLocaleString('default', { month: 'short', year: '2-digit' })
       monthMap.set(monthKey, { revenue: 0, payments: 0, monthName })

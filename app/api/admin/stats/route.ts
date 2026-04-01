@@ -30,8 +30,16 @@ export async function GET(request: NextRequest) {
 
     // Active members (valid membership)
     const now = new Date()
-    const next3Days = new Date(now)
-    next3Days.setDate(now.getDate() + 3)
+
+    // Expired members
+    const expiredMembers = await prisma.memberProfile.count({
+      where: {
+        gymId: gym.id,
+        expiryDate: {
+          lt: now,
+        },
+      },
+    })
 
     const sevenDaysAgo = new Date(now)
     sevenDaysAgo.setDate(now.getDate() - 7)
@@ -41,17 +49,6 @@ export async function GET(request: NextRequest) {
         gymId: gym.id,
         expiryDate: {
           gt: now,
-        },
-      },
-    })
-
-    // Expiring soon
-    const expiringSoon = await prisma.memberProfile.count({
-      where: {
-        gymId: gym.id,
-        expiryDate: {
-          gt: now,
-          lte: next3Days,
         },
       },
     })
@@ -97,12 +94,9 @@ export async function GET(request: NextRequest) {
     })
 
     // Monthly revenue
-    const monthStart = new Date()
-    monthStart.setDate(1)
+    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1)
     monthStart.setHours(0, 0, 0, 0)
-    const monthEnd = new Date()
-    monthEnd.setMonth(monthEnd.getMonth() + 1)
-    monthEnd.setDate(0)
+    const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0)
     monthEnd.setHours(23, 59, 59, 999)
 
     // Optimize: Use aggregate instead of fetching all payments
@@ -127,7 +121,7 @@ export async function GET(request: NextRequest) {
       activeMembers,
       todayCheckins,
       monthlyRevenue,
-      expiringSoon,
+      expiredMembers,
       newSignups,
       currentOccupancy,
     })
