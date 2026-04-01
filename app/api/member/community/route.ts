@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
     const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59)
 
     // 1. Fetch all attendances for the gym this month to calculate the leaderboard
-    // We use groupBy to count visits per user efficiently
+    // Group by user and count
     const attendanceGroups = await prisma.attendance.groupBy({
       by: ['userId'],
       where: {
@@ -41,13 +41,34 @@ export async function GET(req: NextRequest) {
           id: 'desc',
         },
       },
-      take: 100, // Top 100 members to rank
     })
 
-    // Fetch user details for the top members (to get names/avatars)
-    const userIds = attendanceGroups.map(g => g.userId)
+    // Rank them in memory to handle ties and avoid Prisma 'having' issues
+    let currentRank = 1
+    let previousVisits = -1
+
+    const rankedGroups = attendanceGroups.map((group, index) => {
+      if (group._count.id !== previousVisits) {
+        currentRank = index + 1
+        previousVisits = group._count.id
+      }
+      return {
+        userId: group.userId,
+        visits: group._count.id,
+        rank: currentRank
+      }
+    })
+
+    // Find the top 10 users plus the current user
+    const top10 = rankedGroups.slice(0, 10)
+    const currentUserGroup = rankedGroups.find(g => g.userId === user.id)
+    
+    // Create a Set of user IDs we need to fetch details for
+    const userIdsToFetch = new Set(top10.map(g => g.userId))
+    userIdsToFetch.add(user.id)
+
     const users = await prisma.user.findMany({
-      where: { id: { in: userIds } },
+      where: { id: { in: Array.from(userIdsToFetch) } },
       select: {
         id: true,
         firstName: true,
@@ -56,61 +77,38 @@ export async function GET(req: NextRequest) {
       }
     })
 
-    // Map the aggregated data to the user details
-    const leaderboard = attendanceGroups.map((group, index) => {
-      const u = users.find(user => user.id === group.userId)
+    // Build the Top 10 Leaderboard
+    const leaderboard = top10.map(group => {
+      const u = users.find(u => u.id === group.userId)
       return {
         id: group.userId,
-        rank: index + 1,
+        rank: group.rank,
         // Privacy: Only show First Name and Last Initial
         name: u ? `${u.firstName} ${u.lastName?.[0] || ''}.` : 'Anonymous Member',
-        profileImage: u?.profileImage,
-        visits: group._count.id,
+        profileImage: u?.profileImage || null,
+        visits: group.visits,
         isCurrentUser: group.userId === user.id
       }
     })
 
-    // 2. Find Current User's Stats
-    let currentUserStats = leaderboard.find(l => l.id === user.id)
-    
-    // If the user hasn't visited this month or isn't in the top 100, calculate their stats specifically
-    if (!currentUserStats) {
-      const userVisits = await prisma.attendance.count({
-        where: {
-          userId: user.id,
-          gymId: gym.id,
-          checkInTime: {
-            gte: monthStart,
-            lte: monthEnd,
-          },
-        }
-      })
-      
-      // Calculate rank based on where their visit count would fall (rough estimate if outside top 100)
-      const usersWithMoreVisits = await prisma.attendance.groupBy({
-        by: ['userId'],
-        where: {
-          gymId: gym.id,
-          checkInTime: {
-            gte: monthStart,
-            lte: monthEnd,
-          },
-        },
-        having: {
-          id: {
-            _count: {
-              gt: userVisits
-            }
-          }
-        }
-      })
-
+    // Calculate current user's monthly stats
+    let currentUserStats
+    if (currentUserGroup) {
       currentUserStats = {
         id: user.id,
-        rank: usersWithMoreVisits.length + 1,
+        rank: currentUserGroup.rank,
         name: `${user.firstName} ${user.lastName?.[0] || ''}.`,
         profileImage: user.profileImage,
-        visits: userVisits,
+        visits: currentUserGroup.visits,
+        isCurrentUser: true
+      }
+    } else {
+      currentUserStats = {
+        id: user.id,
+        rank: rankedGroups.length + 1,
+        name: `${user.firstName} ${user.lastName?.[0] || ''}.`,
+        profileImage: user.profileImage,
+        visits: 0,
         isCurrentUser: true
       }
     }
@@ -123,56 +121,39 @@ export async function GET(req: NextRequest) {
       orderBy: { checkInTime: 'desc' },
     })
 
-    let currentStreak = 0
-    let checkDate = new Date()
-    checkDate.setHours(0, 0, 0, 0)
-
-    // Check if they visited today
-    const visitedToday = allUserAttendances.some(a => {
-      const d = new Date(a.checkInTime)
-      d.setHours(0,0,0,0)
-      return d.getTime() === checkDate.getTime()
-    })
-
-    // If not visited today, check if they visited yesterday to see if streak is still alive
-    let streakAlive = true
-    if (!visitedToday) {
-      checkDate.setDate(checkDate.getDate() - 1)
-      const visitedYesterday = allUserAttendances.some(a => {
-        const d = new Date(a.checkInTime)
-        d.setHours(0,0,0,0)
-        return d.getTime() === checkDate.getTime()
+    // Extract unique days (YYYY-MM-DD)
+    const uniqueVisitDays = Array.from(new Set(
+      allUserAttendances.map(a => {
+        // Adjust for locale / simple UTC date string
+        const date = new Date(a.checkInTime)
+        // using local date elements to match how the user experiences their days
+        return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
       })
+    )).sort((a, b) => b.localeCompare(a)) // Sort Descending YYYY-MM-DD
+
+    let currentStreak = 0
+
+    if (uniqueVisitDays.length > 0) {
+      const today = new Date()
+      const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
       
-      if (!visitedYesterday) {
-        // Streak is dead (0) if they didn't visit today OR yesterday
-        streakAlive = false
-      }
-    }
+      const yesterday = new Date(today)
+      yesterday.setDate(yesterday.getDate() - 1)
+      const yesterdayStr = `${yesterday.getFullYear()}-${String(yesterday.getMonth() + 1).padStart(2, '0')}-${String(yesterday.getDate()).padStart(2, '0')}`
 
-    // If streak might be alive, calculate it
-    if (streakAlive) {
-      // Create a Set of all unique date strings the user visited (YYYY-MM-DD)
-      const uniqueVisitDays = new Set(
-        allUserAttendances.map(a => {
-          const d = new Date(a.checkInTime)
-          return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
-        })
-      )
+      if (uniqueVisitDays[0] === todayStr || uniqueVisitDays[0] === yesterdayStr) {
+        currentStreak = 1
+        let currentDate = new Date(uniqueVisitDays[0] + 'T12:00:00') // Add noon to avoid timezone shift on parsing
 
-      // Start counting backwards from today (or yesterday if they haven't visited today yet)
-      let countDate = new Date()
-      if (!visitedToday) {
-        countDate.setDate(countDate.getDate() - 1)
-      }
-
-      while (true) {
-        const dateString = `${countDate.getFullYear()}-${String(countDate.getMonth() + 1).padStart(2, '0')}-${String(countDate.getDate()).padStart(2, '0')}`
-        if (uniqueVisitDays.has(dateString)) {
-          currentStreak++
-          countDate.setDate(countDate.getDate() - 1) // Move back one day
-        } else {
-          break // Gap found, streak ends
+        for (let i = 1; i < uniqueVisitDays.length; i++) {
+          currentDate.setDate(currentDate.getDate() - 1)
+          const expectedDateStr = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}`
+          
+          if (uniqueVisitDays[i] === expectedDateStr) {
+            currentStreak++
+          } else {
+            break // Gap found, streak ends
+          }
         }
       }
     }
