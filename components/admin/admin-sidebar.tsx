@@ -141,7 +141,7 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
                   )}
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight ml-2">
-                  <span className="truncate font-black uppercase tracking-tighter text-lg">{gymName}<span style={{ color: accent }}>Space</span></span>
+                  <span className="truncate font-black uppercase tracking-tighter text-lg">{gymName}</span>
                   <span className="truncate text-[8px] font-bold tracking-[0.4em] text-muted-foreground mt-0.5 capitalize">{role} Dashboard</span>
                 </div>
               </Link>
