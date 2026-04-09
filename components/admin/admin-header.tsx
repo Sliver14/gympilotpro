@@ -42,7 +42,7 @@ export default function AdminHeader({ adminData, onLogout, title, description }:
                 <span className="font-black text-xs" style={{ color: accent }}>{gymInitials}</span>
               )}
             </div>
-            <span className="text-xl font-black uppercase tracking-tighter text-foreground">{gymName}<span style={{ color: accent }}>Space</span></span>
+            <span className="text-xl font-black uppercase tracking-tighter text-foreground">{gymName}</span>
           </Link>
           
           {(title || description) && (
