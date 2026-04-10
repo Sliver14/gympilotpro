@@ -36,6 +36,11 @@ export async function GET(request: NextRequest) {
             lastName: true,
             email: true,
             phoneNumber: true,
+            memberProfile: {
+              select: {
+                membershipId: true
+              }
+            }
           }
         }
       },
@@ -44,7 +49,29 @@ export async function GET(request: NextRequest) {
       },
     })
 
-    return NextResponse.json(pendingPayments)
+    // Fetch the current prices for the memberships associated with these payments
+    const memberships = await prisma.membershipPackage.findMany({
+      where: { gymId: gym.id }
+    })
+
+    const paymentsWithCurrentPrice = pendingPayments.map(payment => {
+      let targetMembershipId = payment.user?.memberProfile?.membershipId
+      
+      // Try to extract membershipId from description for renewals: "Renewal: Name (ID)"
+      const match = payment.description?.match(/\(([^)]+)\)$/) 
+      if (match && match[1]) {
+        targetMembershipId = match[1]
+      }
+
+      const currentPackage = memberships.find(m => m.id === targetMembershipId)
+
+      return {
+        ...payment,
+        currentPackagePrice: currentPackage?.price || payment.amount
+      }
+    })
+
+    return NextResponse.json(paymentsWithCurrentPrice)
   } catch (error) {
     console.error('Pending payments fetch error:', error)
     return NextResponse.json(

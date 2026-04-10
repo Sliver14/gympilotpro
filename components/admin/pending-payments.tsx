@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { useToast } from '@/hooks/use-toast'
-import { CreditCard, CheckCircle, RefreshCw, AlertCircle, Phone, Mail, Calendar as CalendarIcon, Loader2 } from 'lucide-react'
+import { CreditCard, CheckCircle, RefreshCw, AlertCircle, Phone, Mail, Calendar as CalendarIcon, Loader2, XCircle } from 'lucide-react'
 import { Spinner } from '@/components/ui/spinner'
 import { cn } from '@/lib/utils'
 import {
@@ -22,6 +22,7 @@ import { Label } from '@/components/ui/label'
 interface PendingPayment {
   id: string
   amount: number
+  currentPackagePrice?: number
   paymentMethod: string
   description: string
   reference: string
@@ -40,6 +41,7 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
   const [isLoading, setIsLoading] = useState(true)
   const [processingId, setProcessingId] = useState<string | null>(null)
   const [selectedPayment, setSelectedPayment] = useState<PendingPayment | null>(null)
+  const [paymentToReject, setPaymentToReject] = useState<PendingPayment | null>(null)
   const [startDate, setStartDate] = useState<string>(new Date().toISOString().split('T')[0])
   const { toast } = useToast()
   const today = new Date().toISOString().split('T')[0]
@@ -97,6 +99,36 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
       toast({
         title: 'Error',
         description: error.message || 'Failed to approve payment',
+        variant: 'destructive',
+      })
+    } finally {
+      setProcessingId(null)
+    }
+  }
+
+  const handleReject = async (id: string) => {
+    setProcessingId(id)
+    try {
+      const response = await fetch(`/api/admin/payments/reject/${id}`, {
+        method: 'POST',
+      })
+      const data = await response.json()
+
+      if (response.ok) {
+        toast({
+          title: 'Declined',
+          description: data.message || 'Payment rejected successfully',
+        })
+        setPaymentToReject(null)
+        fetchPayments()
+        if (onPaymentProcessed) onPaymentProcessed()
+      } else {
+        throw new Error(data.error || 'Failed to reject payment')
+      }
+    } catch (error: any) {
+      toast({
+        title: 'Error',
+        description: error.message || 'Failed to reject payment',
         variant: 'destructive',
       })
     } finally {
@@ -166,6 +198,15 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
                     </p>
                   </div>
 
+                  {payment.currentPackagePrice !== undefined && payment.currentPackagePrice !== payment.amount && (
+                    <div className="bg-orange-500/10 border border-orange-500/20 rounded-lg p-2.5 flex items-start gap-2">
+                      <AlertCircle className="h-4 w-4 text-orange-500 shrink-0 mt-0.5" />
+                      <p className="text-[10px] font-bold text-orange-500/90 leading-tight">
+                        Warning: Plan price has changed since this request. Current price is <span className="font-black">₦{payment.currentPackagePrice.toLocaleString('en-NG')}</span>.
+                      </p>
+                    </div>
+                  )}
+
                   <div className="flex flex-wrap gap-x-6 gap-y-2 pt-2 border-t border-border">
                     <div className="flex items-center gap-2 text-[8px] font-black text-muted-foreground">
                       <Mail className="h-3 w-3 text-[#daa857]/50" />
@@ -182,10 +223,19 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 mt-6 md:mt-0 relative z-10">
+                <div className="flex flex-col sm:flex-row items-center gap-3 mt-6 md:mt-0 relative z-10 w-full md:w-auto">
                   <Button 
                     disabled={!!processingId}
-                    className="flex-1 md:flex-none h-14 px-8 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black rounded-xl transition-all hover:scale-105 shadow-xl shadow-[#daa857]/10"
+                    variant="outline"
+                    className="w-full sm:w-auto h-14 px-6 border-destructive/20 hover:bg-destructive/10 text-destructive hover:text-destructive font-black rounded-xl transition-all"
+                    onClick={() => setPaymentToReject(payment)}
+                  >
+                    <XCircle className="h-4 w-4 mr-2" />
+                    Decline
+                  </Button>
+                  <Button 
+                    disabled={!!processingId}
+                    className="w-full sm:w-auto h-14 px-8 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black rounded-xl transition-all hover:scale-105 shadow-xl shadow-[#daa857]/10"
                     onClick={() => {
                       setSelectedPayment(payment)
                       setStartDate(new Date().toISOString().split('T')[0])
@@ -204,6 +254,7 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
           </div>
         )}
 
+        {/* Approval Dialog */}
         <Dialog open={!!selectedPayment} onOpenChange={(open) => !open && setSelectedPayment(null)}>
           <DialogContent className="bg-card border-border text-foreground rounded-[2.5rem] p-5 md:p-10 max-w-lg">
             <DialogHeader className="space-y-4">
@@ -263,7 +314,48 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
             </DialogFooter>
           </DialogContent>
         </Dialog>
+
+        {/* Rejection Dialog */}
+        <Dialog open={!!paymentToReject} onOpenChange={(open) => !open && setPaymentToReject(null)}>
+          <DialogContent className="bg-card border-destructive/20 text-foreground rounded-[2.5rem] p-5 md:p-10 max-w-lg">
+            <DialogHeader className="space-y-4">
+              <DialogTitle className="text-3xl font-black uppercase tracking-tighter text-destructive">
+                Decline <span className="text-foreground">Payment</span>
+              </DialogTitle>
+              <DialogDescription className="text-muted-foreground font-medium text-[10px] leading-relaxed">
+                Are you sure you want to decline this payment for <span className="text-foreground font-black">{paymentToReject?.user.firstName} {paymentToReject?.user.lastName}</span>?
+                <br />This will mark the transaction as rejected, and the member's subscription will not be extended.
+              </DialogDescription>
+            </DialogHeader>
+
+            <DialogFooter className="gap-3 sm:gap-0 mt-8">
+              <Button 
+                variant="outline" 
+                onClick={() => setPaymentToReject(null)}
+                className="h-14 px-8 border-border hover:bg-accent rounded-xl text-[10px] font-black text-muted-foreground"
+              >
+                Cancel
+              </Button>
+              <Button 
+                onClick={() => paymentToReject && handleReject(paymentToReject.id)}
+                disabled={!!processingId}
+                variant="destructive"
+                className="flex-1 h-14 font-black rounded-xl transition-all shadow-xl"
+              >
+                {processingId === paymentToReject?.id ? (
+                  <>
+                    <RefreshCw className="h-4 w-4 animate-spin mr-2" />
+                    Processing...
+                  </>
+                ) : (
+                  'Yes, Decline Payment'
+                )}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </CardContent>
     </Card>
   )
 }
+
