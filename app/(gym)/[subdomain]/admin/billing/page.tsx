@@ -44,18 +44,8 @@ function AdminBillingContent() {
   const currentPlan = gymData.subscriptions?.[0]?.plan || 'starter'
 
   return (
-    <div className="min-h-screen bg-background relative">
-      <div className="p-4 md:p-6 md:p-8">
-        <Button 
-          variant="ghost" 
-          onClick={() => router.back()}
-          className="text-muted-foreground hover:text-foreground focus:text-foreground text-[10px] font-black gap-2 p-0 h-auto mb-4"
-        >
-          <ChevronLeft size={14} /> Back to Dashboard
-        </Button>
-      </div>
-
-      <div className="relative flex-1">
+    <div className="min-h-screen bg-background">
+      <div className="flex-1">
         <SubscriptionLockScreen 
           role={adminData.role}
           gymId={gymData.id}

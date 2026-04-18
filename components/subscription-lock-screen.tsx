@@ -112,13 +112,13 @@ export function SubscriptionLockScreen({
 
   return (
     <div className={cn(
-      "z-[100] flex min-h-screen flex-col items-center justify-center bg-background text-foreground p-4 font-sans overflow-y-auto",
+      "z-[100] flex min-h-screen flex-col items-center justify-center bg-background text-foreground p-2 md:p-4 font-sans overflow-y-auto",
       !isUpgradeMode && "fixed inset-0"
     )}>
-      <div className="max-w-4xl w-full grid md:grid-cols-5 gap-0 border border-border bg-card rounded-[2.5rem] shadow-2xl overflow-hidden my-8">
+      <div className="max-w-4xl w-full grid grid-cols-1 md:grid-cols-5 gap-0 border border-border bg-card rounded-[1.5rem] md:rounded-[2.5rem] shadow-2xl overflow-hidden my-4 md:my-8">
         
         {/* Left Panel: Info & Selection */}
-        <div className="md:col-span-3 p-4 md:p-8 space-y-8 relative">
+        <div className="md:col-span-3 p-6 md:p-8 space-y-8 relative">
           <div className="absolute inset-0 bg-[#daa857]/5 opacity-10 pointer-events-none" style={{ backgroundColor: `${accent}0D` }} />
           
           <div className="relative z-10">
@@ -131,15 +131,15 @@ export function SubscriptionLockScreen({
                 <ChevronLeft size={14} /> Back
               </Button>
             )}
-            <div className="h-16 w-16 bg-background rounded-2xl flex items-center justify-center mb-6 border border-border shadow-xl">
-              {isUpgradeMode ? <CreditCard className="h-8 w-8" style={{ color: accent }} /> : <AlertCircle className="h-8 w-8 text-red-500" />}
+            <div className="h-12 w-12 md:h-16 md:w-16 bg-background rounded-2xl flex items-center justify-center mb-6 border border-border shadow-xl">
+              {isUpgradeMode ? <CreditCard className="h-6 w-6 md:h-8 md:w-8" style={{ color: accent }} /> : <AlertCircle className="h-6 w-6 md:h-8 md:w-8 text-red-500" />}
             </div>
             
             <h1 className="text-3xl md:text-5xl font-black text-gray-200 uppercase tracking-tighter leading-none mb-4">
               {isUpgradeMode ? "Upgrade Your" : (isPending ? "Complete Your" : "Subscription")} <span className={cn(!isUpgradeMode && "text-red-500")} style={isUpgradeMode ? { color: accent } : {}}>{isUpgradeMode ? "Plan" : (isPending ? "Setup" : "Expired")}</span>
             </h1>
             
-            <p className="text-muted-foreground font-medium leading-relaxed max-w-md">
+            <p className="text-muted-foreground font-medium leading-relaxed max-w-md text-sm md:text-base">
               {isUpgradeMode 
                 ? "Scale your gym with more members and premium features. Your remaining current plan balance will be applied as credit."
                 : (isPending 
@@ -156,8 +156,8 @@ export function SubscriptionLockScreen({
             <div className="space-y-6 relative z-10">
               {/* Plan Selection */}
               <div>
-                <label className="text-[10px] font-black text-muted-foreground mb-3 block">Choose Plan</label>
-                <div className="grid grid-cols-3 gap-3">
+                <label className="text-[10px] font-black text-muted-foreground mb-3 block uppercase tracking-widest">Choose Plan</label>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   {(Object.keys(PLANS) as PlanKey[]).map((key) => {
                     const plan = PLANS[key];
                     const isCurrent = key === currentPlanKey;
@@ -191,7 +191,7 @@ export function SubscriptionLockScreen({
 
               {/* Duration Selection */}
               <div>
-                <label className="text-[10px] font-black text-muted-foreground mb-3 block">Duration</label>
+                <label className="text-[10px] font-black text-muted-foreground mb-3 block uppercase tracking-widest">Duration</label>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   {DURATIONS.map((d) => (
                     <button
@@ -216,7 +216,7 @@ export function SubscriptionLockScreen({
         </div>
 
         {/* Right Panel: Checkout */}
-        <div className="md:col-span-2 bg-card/40 p-4 md:p-8 border-l border-border flex flex-col justify-between">
+        <div className="md:col-span-2 bg-card/40 p-6 md:p-8 border-t md:border-t-0 md:border-l border-border flex flex-col justify-between">
           <div className="space-y-6">
             <h3 className="text-xl font-black uppercase tracking-tighter">Summary</h3>
             
@@ -258,9 +258,9 @@ export function SubscriptionLockScreen({
             </div>
           </div>
 
-          <div className="mt-12 space-y-6">
+          <div className="mt-8 md:mt-12 space-y-6">
             <div className="flex justify-between items-end">
-              <span className="text-[10px] font-black text-muted-foreground">Total Payable</span>
+              <span className="text-[10px] font-black text-muted-foreground uppercase">Total Payable</span>
               <span className="text-2xl md:text-4xl font-black text-orange-500" style={{ color: accent }}>
                 ₦{pricing.total.toLocaleString()}
               </span>
@@ -271,7 +271,7 @@ export function SubscriptionLockScreen({
                 <Button 
                   onClick={handleRenew} 
                   disabled={loading}
-                  className="w-full h-16 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black rounded-xl transition-all shadow-xl shadow-[#daa857]/10"
+                  className="w-full h-14 md:h-16 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black rounded-xl transition-all shadow-xl shadow-[#daa857]/10"
                   style={{ backgroundColor: accent }}
                 >
                   {loading ? <Loader2 className="h-6 w-6 animate-spin" /> : <><CreditCard className="h-5 w-5 mr-2" /> Pay with Paystack</>}
@@ -282,7 +282,7 @@ export function SubscriptionLockScreen({
                 <Button 
                   onClick={handleLogout} 
                   variant="outline"
-                  className="w-full h-14 border-border bg-transparent hover:bg-white/5 text-muted-foreground font-black rounded-xl"
+                  className="w-full h-12 md:h-14 border-border bg-transparent hover:bg-white/5 text-muted-foreground font-black rounded-xl"
                 >
                   <LogOut className="h-5 w-5 mr-2" /> Logout
                 </Button>
