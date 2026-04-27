@@ -9,6 +9,10 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 
+    if (!user.gymId) {
+      return NextResponse.json({ error: 'User does not belong to a gym' }, { status: 400 });
+    }
+
     const gym = await prisma.gym.findUnique({
       where: { id: user.gymId },
       include: {
@@ -37,6 +41,10 @@ export async function PUT(req: NextRequest) {
     const user = await getCurrentUser();
     if (!user || !['admin', 'owner'].includes(user.role)) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+    }
+
+    if (!user.gymId) {
+      return NextResponse.json({ error: 'User does not belong to a gym' }, { status: 400 });
     }
 
     const data = await req.json();

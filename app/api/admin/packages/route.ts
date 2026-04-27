@@ -18,8 +18,14 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 
+    if (!user.gymId) {
+      return NextResponse.json({ error: 'User does not belong to a gym' }, { status: 400 });
+    }
+
+    const gymId = user.gymId;
+
     let packages = await prisma.membershipPackage.findMany({
-      where: { gymId: user.gymId },
+      where: { gymId },
       orderBy: { price: 'asc' },
     });
 
@@ -28,13 +34,13 @@ export async function GET(req: NextRequest) {
       await prisma.membershipPackage.createMany({
         data: DEFAULT_PACKAGES.map(pkg => ({
           ...pkg,
-          name: `${pkg.name} - ${user.gymId.slice(0, 4)}`, // Workaround for global @unique name
-          gymId: user.gymId,
+          name: `${pkg.name} - ${gymId.slice(0, 4)}`, // Workaround for global @unique name
+          gymId: gymId,
         }))
       });
 
       packages = await prisma.membershipPackage.findMany({
-        where: { gymId: user.gymId },
+        where: { gymId },
         orderBy: { price: 'asc' },
       });
     }
@@ -53,6 +59,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 
+    if (!user.gymId) {
+      return NextResponse.json({ error: 'User does not belong to a gym' }, { status: 400 });
+    }
+
+    const gymId = user.gymId;
+
     const { name, duration, price, description } = await req.json();
 
     if (!name || !duration || !price || !description) {
@@ -61,11 +73,11 @@ export async function POST(req: NextRequest) {
 
     const newPackage = await prisma.membershipPackage.create({
       data: {
-        name: `${name} - ${user.gymId.slice(0, 4)}`, // Workaround for global @unique name
+        name: `${name} - ${gymId.slice(0, 4)}`, // Workaround for global @unique name
         duration: parseInt(duration),
         price: parseFloat(price),
         description,
-        gymId: user.gymId,
+        gymId: gymId,
       },
     });
 

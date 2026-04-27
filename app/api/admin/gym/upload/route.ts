@@ -16,6 +16,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 
+    if (!user.gymId) {
+      return NextResponse.json({ error: 'User does not belong to a gym' }, { status: 400 });
+    }
+
     const formData = await req.formData();
     const file = formData.get('file');
     const fieldName = formData.get('field') as string;
