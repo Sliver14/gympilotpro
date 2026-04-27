@@ -86,7 +86,7 @@ model User {
   updatedAt        DateTime       @updatedAt
   deletedAt        DateTime?
   profileImage     String?
-  gymId            String
+  gymId            String?
   status           String         @default("inactive")
   attendance       Attendance[]
   memberProfile    MemberProfile? @relation("MemberProfile")
@@ -96,7 +96,7 @@ model User {
   trainerNotes     ProgressNote[] @relation("TrainerNotes")
   sessions         Session[]
   staffProfile     StaffProfile?
-  gym              Gym            @relation(fields: [gymId], references: [id], onDelete: Cascade)
+  gym              Gym?            @relation(fields: [gymId], references: [id], onDelete: Cascade)
 
   @@index([email])
   @@index([role])

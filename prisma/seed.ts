@@ -109,6 +109,32 @@ async function main() {
 
     console.log(`✓ Demo admin account created (email: ${adminEmail}, password: admin123)`)
   }
+
+  // 4. Create a Super Admin account (Global SaaS Admin)
+  const superAdminEmail = 'superadmin@gympilotpro.com'
+  const existingSuperAdmin = await prisma.user.findFirst({
+    where: { 
+      email: superAdminEmail,
+      role: 'superadmin'
+    },
+  })
+
+  if (!existingSuperAdmin) {
+    const hashedPassword = await bcrypt.hash('superadmin123', 10)
+
+    await prisma.user.create({
+      data: {
+        email: superAdminEmail,
+        password: hashedPassword,
+        firstName: 'SaaS',
+        lastName: 'Admin',
+        role: 'superadmin',
+        gymId: null, // Global admin
+      },
+    })
+
+    console.log(`✓ Super Admin account created (email: ${superAdminEmail}, password: superadmin123)`)
+  }
 }
 
 main()
