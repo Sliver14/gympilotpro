@@ -12,3 +12,4 @@ prisma/.env
 .vercel
 .env
 .env
+*.tsbuildinfo
