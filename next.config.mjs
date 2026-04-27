@@ -1,5 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  experimental: {
+    turbo: {
+      root: process.cwd(),
+    },
+  },
+
   typescript: {
     ignoreBuildErrors: process.env.NODE_ENV === 'development',
   },
