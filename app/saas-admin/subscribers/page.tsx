@@ -28,83 +28,83 @@ export default async function SubscribersPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Subscription Management</h1>
-        <p className="text-gray-500">Track and manage gym platform subscriptions.</p>
+        <h1 className="text-3xl font-bold text-zinc-100 tracking-tight">Subscription Management</h1>
+        <p className="text-zinc-400 mt-1">Track and manage gym platform subscriptions.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card>
+        <Card className="shadow-sm bg-zinc-950/50 border-zinc-800">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-gray-500">Active Subscriptions</CardTitle>
-            <Activity className="w-4 h-4 text-green-600" />
+            <CardTitle className="text-sm font-medium text-zinc-400">Active Subscriptions</CardTitle>
+            <Activity className="w-4 h-4 text-emerald-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{activeCount}</div>
+            <div className="text-2xl font-bold text-zinc-100">{activeCount}</div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="shadow-sm bg-zinc-950/50 border-zinc-800">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-gray-500">Expiring Soon (7 Days)</CardTitle>
-            <Clock className="w-4 h-4 text-orange-600" />
+            <CardTitle className="text-sm font-medium text-zinc-400">Expiring Soon (7 Days)</CardTitle>
+            <Clock className="w-4 h-4 text-orange-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{expiringSoonCount}</div>
+            <div className="text-2xl font-bold text-zinc-100">{expiringSoonCount}</div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="shadow-sm bg-zinc-950/50 border-zinc-800">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-gray-500">Expired/Inactive</CardTitle>
-            <AlertTriangle className="w-4 h-4 text-red-600" />
+            <CardTitle className="text-sm font-medium text-zinc-400">Expired/Inactive</CardTitle>
+            <AlertTriangle className="w-4 h-4 text-red-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{subscriptions.length - activeCount}</div>
+            <div className="text-2xl font-bold text-zinc-100">{subscriptions.length - activeCount}</div>
           </CardContent>
         </Card>
       </div>
 
-      <Card>
+      <Card className="shadow-sm bg-zinc-950/50 border-zinc-800">
         <CardHeader>
-          <CardTitle>All Subscriptions</CardTitle>
+          <CardTitle className="text-zinc-100">All Subscriptions</CardTitle>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
-              <TableRow>
-                <TableHead>Gym</TableHead>
-                <TableHead>Plan</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Start Date</TableHead>
-                <TableHead>End Date</TableHead>
-                <TableHead>Days Remaining</TableHead>
+              <TableRow className="border-zinc-800 hover:bg-zinc-900/50">
+                <TableHead className="text-zinc-400">Gym</TableHead>
+                <TableHead className="text-zinc-400">Plan</TableHead>
+                <TableHead className="text-zinc-400">Status</TableHead>
+                <TableHead className="text-zinc-400">Start Date</TableHead>
+                <TableHead className="text-zinc-400">End Date</TableHead>
+                <TableHead className="text-zinc-400">Days Remaining</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {subscriptions.map((sub) => {
                 const daysLeft = Math.ceil((new Date(sub.endDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
                 return (
-                  <TableRow key={sub.id}>
-                    <TableCell className="font-medium text-gray-900">{sub.gym.name}</TableCell>
+                  <TableRow key={sub.id} className="border-zinc-800 hover:bg-zinc-900/50">
+                    <TableCell className="font-medium text-zinc-100">{sub.gym.name}</TableCell>
                     <TableCell>
-                      <Badge variant="outline" className="capitalize">
+                      <Badge variant="outline" className="capitalize bg-zinc-900 border-zinc-700 text-zinc-300">
                         {sub.plan}
                       </Badge>
                     </TableCell>
                     <TableCell>
                       <Badge variant={sub.status === 'active' ? 'default' : 'destructive'} className={
-                        sub.status === 'active' ? 'bg-green-100 text-green-700 hover:bg-green-100' : 'bg-red-100 text-red-700 hover:bg-red-100'
+                        sub.status === 'active' ? 'bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 border border-emerald-500/20' : 'bg-red-500/10 text-red-400 hover:bg-red-500/20 border border-red-500/20'
                       }>
                         {sub.status}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-sm">
+                    <TableCell className="text-sm text-zinc-400">
                       {new Date(sub.startDate).toLocaleDateString()}
                     </TableCell>
-                    <TableCell className="text-sm">
+                    <TableCell className="text-sm text-zinc-400">
                       {new Date(sub.endDate).toLocaleDateString()}
                     </TableCell>
                     <TableCell>
                       <span className={`text-sm font-bold ${
-                        daysLeft < 0 ? 'text-red-600' : daysLeft <= 7 ? 'text-orange-600' : 'text-green-600'
+                        daysLeft < 0 ? 'text-red-500' : daysLeft <= 7 ? 'text-orange-500' : 'text-emerald-500'
                       }`}>
                         {daysLeft < 0 ? 'Expired' : `${daysLeft} days`}
                       </span>

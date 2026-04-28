@@ -26,10 +26,10 @@ export default async function SaaSAdminDashboard() {
   ])
 
   const stats = [
-    { name: 'Total Gyms', value: gymCount, icon: Building2, color: 'text-blue-600', bg: 'bg-blue-50' },
-    { name: 'Total Members', value: memberCount, icon: Users, color: 'text-green-600', bg: 'bg-green-50' },
-    { name: 'Active Subscriptions', value: activeSubs, icon: Activity, color: 'text-orange-600', bg: 'bg-orange-50' },
-    { name: 'Total Revenue', value: `₦${(totalRevenue._sum.amount || 0).toLocaleString()}`, icon: CreditCard, color: 'text-purple-600', bg: 'bg-purple-50' },
+    { name: 'Total Gyms', value: gymCount, icon: Building2, color: 'text-blue-400', bg: 'bg-blue-500/10 border border-blue-500/20' },
+    { name: 'Total Members', value: memberCount, icon: Users, color: 'text-emerald-400', bg: 'bg-emerald-500/10 border border-emerald-500/20' },
+    { name: 'Active Subscriptions', value: activeSubs, icon: Activity, color: 'text-orange-400', bg: 'bg-orange-500/10 border border-orange-500/20' },
+    { name: 'Total Revenue', value: `₦${(totalRevenue._sum.amount || 0).toLocaleString()}`, icon: CreditCard, color: 'text-purple-400', bg: 'bg-purple-500/10 border border-purple-500/20' },
   ]
 
   const recentGyms = await prisma.gym.findMany({
@@ -40,62 +40,62 @@ export default async function SaaSAdminDashboard() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Platform Overview</h1>
-        <p className="text-gray-500 mt-1">Manage all gyms and monitor platform performance.</p>
+        <h1 className="text-3xl font-bold text-zinc-100 tracking-tight">Platform Overview</h1>
+        <p className="text-zinc-400 mt-1">Manage all gyms and monitor platform performance.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat) => (
-          <Card key={stat.name} className="shadow-sm">
+          <Card key={stat.name} className="shadow-sm bg-zinc-950/50 border-zinc-800">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-gray-500">{stat.name}</CardTitle>
+              <CardTitle className="text-sm font-medium text-zinc-400">{stat.name}</CardTitle>
               <div className={`${stat.bg} p-2 rounded-lg`}>
                 <stat.icon className={`w-5 h-5 ${stat.color}`} />
               </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-gray-900">{stat.value}</div>
+              <div className="text-2xl font-bold text-zinc-100">{stat.value}</div>
             </CardContent>
           </Card>
         ))}
       </div>
 
       {/* Recent Gyms */}
-      <Card className="shadow-sm">
+      <Card className="shadow-sm bg-zinc-950/50 border-zinc-800">
         <CardHeader>
-          <CardTitle>Recently Registered Gyms</CardTitle>
+          <CardTitle className="text-zinc-100">Recently Registered Gyms</CardTitle>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
-              <TableRow>
-                <TableHead>Gym Name</TableHead>
-                <TableHead>Slug</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="text-right">Joined Date</TableHead>
+              <TableRow className="border-zinc-800 hover:bg-zinc-900/50">
+                <TableHead className="text-zinc-400">Gym Name</TableHead>
+                <TableHead className="text-zinc-400">Slug</TableHead>
+                <TableHead className="text-zinc-400">Status</TableHead>
+                <TableHead className="text-right text-zinc-400">Joined Date</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {recentGyms.length > 0 ? (
                 recentGyms.map((gym) => (
-                  <TableRow key={gym.id}>
-                    <TableCell className="font-medium text-gray-900">{gym.name}</TableCell>
-                    <TableCell className="text-gray-500">{gym.slug}</TableCell>
+                  <TableRow key={gym.id} className="border-zinc-800 hover:bg-zinc-900/50">
+                    <TableCell className="font-medium text-zinc-100">{gym.name}</TableCell>
+                    <TableCell className="text-zinc-400">{gym.slug}</TableCell>
                     <TableCell>
                       <Badge variant={gym.status === 'active' ? 'default' : 'secondary'} className={
-                        gym.status === 'active' ? 'bg-green-100 text-green-700 hover:bg-green-100' : 'bg-yellow-100 text-yellow-700 hover:bg-yellow-100'
+                        gym.status === 'active' ? 'bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 border border-emerald-500/20' : 'bg-yellow-500/10 text-yellow-400 hover:bg-yellow-500/20 border border-yellow-500/20'
                       }>
                         {gym.status}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-right text-sm text-gray-500">
+                    <TableCell className="text-right text-sm text-zinc-400">
                       {new Date(gym.createdAt).toLocaleDateString()}
                     </TableCell>
                   </TableRow>
                 ))
               ) : (
-                <TableRow>
-                  <TableCell colSpan={4} className="text-center py-6 text-gray-500 italic">
+                <TableRow className="border-zinc-800 hover:bg-zinc-900/50">
+                  <TableCell colSpan={4} className="text-center py-6 text-zinc-500 italic">
                     No gyms registered yet.
                   </TableCell>
                 </TableRow>

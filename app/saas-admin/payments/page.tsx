@@ -33,70 +33,70 @@ export default async function PaymentsPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Platform Revenue</h1>
-        <p className="text-gray-500">Monitor all SaaS subscription payments.</p>
+        <h1 className="text-3xl font-bold text-zinc-100 tracking-tight">Platform Revenue</h1>
+        <p className="text-zinc-400 mt-1">Monitor all SaaS subscription payments.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card>
+        <Card className="shadow-sm bg-zinc-950/50 border-zinc-800">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-gray-500">Total Revenue</CardTitle>
-            <TrendingUp className="w-4 h-4 text-purple-600" />
+            <CardTitle className="text-sm font-medium text-zinc-400">Total Revenue</CardTitle>
+            <TrendingUp className="w-4 h-4 text-purple-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-purple-600">₦{totalRevenue.toLocaleString()}</div>
+            <div className="text-3xl font-bold text-purple-500">₦{totalRevenue.toLocaleString()}</div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="shadow-sm bg-zinc-950/50 border-zinc-800">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-gray-500">Revenue This Month</CardTitle>
-            <Calendar className="w-4 h-4 text-blue-600" />
+            <CardTitle className="text-sm font-medium text-zinc-400">Revenue This Month</CardTitle>
+            <Calendar className="w-4 h-4 text-blue-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-blue-600">₦{thisMonthRevenue.toLocaleString()}</div>
+            <div className="text-3xl font-bold text-blue-500">₦{thisMonthRevenue.toLocaleString()}</div>
           </CardContent>
         </Card>
       </div>
 
-      <Card>
+      <Card className="shadow-sm bg-zinc-950/50 border-zinc-800">
         <CardHeader>
-          <CardTitle>Recent Transactions</CardTitle>
+          <CardTitle className="text-zinc-100">Recent Transactions</CardTitle>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
-              <TableRow>
-                <TableHead>Reference</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Plan</TableHead>
-                <TableHead>Amount</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Date</TableHead>
+              <TableRow className="border-zinc-800 hover:bg-zinc-900/50">
+                <TableHead className="text-zinc-400">Reference</TableHead>
+                <TableHead className="text-zinc-400">Email</TableHead>
+                <TableHead className="text-zinc-400">Plan</TableHead>
+                <TableHead className="text-zinc-400">Amount</TableHead>
+                <TableHead className="text-zinc-400">Status</TableHead>
+                <TableHead className="text-zinc-400">Date</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {payments.length > 0 ? (
                 payments.map((payment) => (
-                  <TableRow key={payment.id}>
-                    <TableCell className="font-mono text-xs">{payment.reference}</TableCell>
-                    <TableCell className="text-sm">{payment.email}</TableCell>
-                    <TableCell className="capitalize text-sm">{payment.plan}</TableCell>
-                    <TableCell className="font-medium">₦{payment.amount.toLocaleString()}</TableCell>
+                  <TableRow key={payment.id} className="border-zinc-800 hover:bg-zinc-900/50">
+                    <TableCell className="font-mono text-xs text-zinc-500">{payment.reference}</TableCell>
+                    <TableCell className="text-sm text-zinc-300">{payment.email}</TableCell>
+                    <TableCell className="capitalize text-sm text-zinc-300">{payment.plan}</TableCell>
+                    <TableCell className="font-medium text-zinc-100">₦{payment.amount.toLocaleString()}</TableCell>
                     <TableCell>
                       <Badge variant={payment.status === 'success' ? 'default' : 'secondary'} className={
-                        payment.status === 'success' ? 'bg-green-100 text-green-700 hover:bg-green-100' : 'bg-yellow-100 text-yellow-700 hover:bg-yellow-100'
+                        payment.status === 'success' ? 'bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 border border-emerald-500/20' : 'bg-yellow-500/10 text-yellow-400 hover:bg-yellow-500/20 border border-yellow-500/20'
                       }>
                         {payment.status}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-sm">
+                    <TableCell className="text-sm text-zinc-400">
                       {new Date(payment.createdAt).toLocaleDateString()}
                     </TableCell>
                   </TableRow>
                 ))
               ) : (
-                <TableRow>
-                  <TableCell colSpan={6} className="text-center py-8 text-gray-500 italic">
+                <TableRow className="border-zinc-800 hover:bg-zinc-900/50">
+                  <TableCell colSpan={6} className="text-center py-8 text-zinc-500 italic">
                     No transactions found.
                   </TableCell>
                 </TableRow>
