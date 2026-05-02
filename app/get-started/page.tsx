@@ -10,7 +10,18 @@ export default async function GetStartedPage() {
 
   if (user) {
     const redirectPath = getDashboardRedirectPath(user)
+    
     if (redirectPath) {
+      // If gym user on root domain, redirect to their subdomain
+      if (user.role !== 'superadmin' && user.gym?.slug) {
+        const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
+        const domain = process.env.NEXT_PUBLIC_ROOT_DOMAIN || 'gympilotpro.com';
+        const port = process.env.NODE_ENV === 'production' ? '' : ':3000';
+        
+        const host = user.gym.customDomain || `${user.gym.slug}.${domain}`;
+        redirect(`${protocol}://${host}${port}${redirectPath}`);
+      }
+      
       redirect(redirectPath)
     }
   }

@@ -89,7 +89,7 @@ export function getDashboardRedirectPath(user: any) {
       rolePath = 'member/dashboard';
   }
 
-  return `/${gymSlug}/${rolePath}`;
+  return `/${rolePath}`;
 }
 
 export async function getCurrentUser() {
