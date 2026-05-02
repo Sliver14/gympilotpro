@@ -35,6 +35,7 @@ export async function verifySession(token: string) {
         include: {
           memberProfile: true, // Include member profile for expiry check
           staffProfile: true,  // Include staff profile
+          gym: true,           // Include gym for redirection logic
         },
       },
     },
@@ -63,6 +64,32 @@ export async function verifySession(token: string) {
   }
 
   return user
+}
+
+export function getDashboardRedirectPath(user: any) {
+  if (user.role === 'superadmin') {
+    return '/saas-admin/dashboard';
+  }
+
+  const gymSlug = user.gym?.slug;
+  if (!gymSlug) return null;
+
+  let rolePath = '';
+  switch (user.role) {
+    case 'admin':
+      rolePath = 'admin/dashboard';
+      break;
+    case 'secretary':
+      rolePath = 'secretary/dashboard';
+      break;
+    case 'trainer':
+      rolePath = 'trainer/dashboard';
+      break;
+    default:
+      rolePath = 'member/dashboard';
+  }
+
+  return `/${gymSlug}/${rolePath}`;
 }
 
 export async function getCurrentUser() {
