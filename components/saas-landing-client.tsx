@@ -250,7 +250,7 @@ export default function SaaSLandingClient() {
               <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6 md:gap-8">
                 <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden border-4 border-orange-500/40 flex-shrink-0">
                   <img
-                    src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800&auto=format&fit=crop"
+                    src="https://scontent-ams2-1.xx.fbcdn.net/v/t51.82787-15/610751846_18392849944198542_3473965281649504635_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=13d280&_nc_eui2=AeGdqwPfdCXlJV6dGu3AmTdiBcJAqDJOKegFwkCoMk4p6M20Zzrf2OugEbYaj7S14BVB4Xp605r7qT9RJb47XTD1&_nc_ohc=mwMuZMyTYK4Q7kNvwHEdlCM&_nc_oc=Adpr6JJokv0oq_gDZZ35sqxRkZ8czxBkIm4AhI5rqHPM5P73DpVofhVKCFUNXtEYGW0&_nc_zt=23&_nc_ht=scontent-ams2-1.xx&_nc_gid=JH8u3g9N0YBGrzlSYY7p0w&_nc_ss=7b2a8&oh=00_Af7Xpo7qPhuadpaauH6iQMPaET3gJMdoioE1a4xX0mfEig&oe=69FBDBE4"
                     alt="Nere Emiko - Klimarx Space Gym"
                     className="w-full h-full object-cover"
                   />
@@ -264,7 +264,7 @@ export default function SaaSLandingClient() {
                       Nere Emiko
                     </h4>
                     <p className="text-muted-foreground font-bold text-xs sm:text-sm mt-1">
-                      Owner, Klimarx Space Gym – Lagos
+                      Owner, Klimarx Space Gym – Ijebu-Ode
                     </p>
                   </div>
                 </div>

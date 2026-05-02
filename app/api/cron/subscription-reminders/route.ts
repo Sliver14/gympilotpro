@@ -108,25 +108,38 @@ export async function GET(request: Request) {
           }
         },
         include: {
-          gym: true
+          gym: {
+            include: {
+              users: {
+                where: { role: 'admin' },
+                take: 1
+              }
+            }
+          }
         }
       });
 
       for (const sub of expiringGyms) {
-        if (!sub.gym.email) continue; // Skip if no gym email is configured
+        // Fallback: use gym email first, then first admin's email
+        const targetEmail = sub.gym.email || sub.gym.users[0]?.email;
+        
+        if (!targetEmail) {
+          console.warn(`No email found for gym ${sub.gym.name} (ID: ${sub.gymId})`);
+          continue;
+        }
 
         try {
           await sendSaaSReminderEmail({
-            email: sub.gym.email,
+            email: targetEmail,
             gymName: sub.gym.name,
             daysRemaining,
             expiryDate: sub.endDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }),
-            billingUrl: `${appUrl}/admin/billing` // Assumes central app handles billing
+            billingUrl: `${appUrl}/admin/billing`
           });
           results.saasOwnersNotified++;
         } catch (error: any) {
-          console.error(`Error notifying SaaS owner ${sub.gym.email}:`, error);
-          results.errors.push(`SaaS Owner ${sub.gym.email}: ${error.message}`);
+          console.error(`Error notifying SaaS owner ${targetEmail}:`, error);
+          results.errors.push(`SaaS Owner ${targetEmail}: ${error.message}`);
         }
       }
     }
