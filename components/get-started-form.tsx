@@ -165,7 +165,7 @@ export default function GetStartedForm() {
                 disabled={loading}
                 value={formData.phone}
                 onChange={handleChange}
-                placeholder="+234 800 000 0000" 
+                placeholder="+234 806 1731 600" 
                 className="w-full bg-transparent border-2 border-border p-4 font-black focus:border-orange-500 outline-none transition-colors text-foreground"
               />
             </div>

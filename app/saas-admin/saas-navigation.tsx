@@ -1,127 +1,44 @@
 'use client'
 
-import { useState } from 'react'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { 
-  LayoutDashboard, 
-  Building2, 
-  Users, 
-  CreditCard, 
-  Settings, 
-  LogOut, 
-  ShieldCheck, 
-  Menu 
-} from 'lucide-react'
-import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet'
-import { Button } from '@/components/ui/button'
-
-const menuItems = [
-  { name: 'Dashboard', icon: LayoutDashboard, href: '/saas-admin/dashboard' },
-  { name: 'Gyms', icon: Building2, href: '/saas-admin/gyms' },
-  { name: 'Subscribers', icon: Users, href: '/saas-admin/subscribers' },
-  { name: 'Payments', icon: CreditCard, href: '/saas-admin/payments' },
-  { name: 'Settings', icon: Settings, href: '/saas-admin/settings' },
-]
+import { SaaSSidebar } from './saas-sidebar'
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from '@/components/ui/sidebar'
+import { ShieldCheck } from 'lucide-react'
 
 export function SaaSNavigation({ 
   user, 
   children 
 }: { 
-  user: { firstName: string, lastName: string, role: string }, 
+  user: { firstName: string, lastName: string, role: string, email?: string }, 
   children: React.ReactNode 
 }) {
-  const pathname = usePathname()
-  const [open, setOpen] = useState(false)
-
-  const UserFooter = () => (
-    <div className="p-4 border-t border-zinc-800 bg-zinc-950">
-      <div className="flex items-center gap-3 px-3 py-2 text-sm text-zinc-400">
-        <div className="w-8 h-8 rounded-full bg-orange-500/20 flex items-center justify-center text-orange-500 font-bold shrink-0">
-          {user.firstName[0]}
-        </div>
-        <div className="flex-1 overflow-hidden">
-          <p className="truncate font-medium text-zinc-100">{user.firstName} {user.lastName}</p>
-          <p className="truncate text-xs text-zinc-500 capitalize">{user.role.replace('_', ' ')}</p>
-        </div>
-      </div>
-      <Link
-        href="/api/auth/logout"
-        className="flex items-center gap-3 px-3 py-2 mt-2 text-sm font-medium text-red-500 rounded-md hover:bg-red-500/10 transition-colors"
-      >
-        <LogOut className="w-5 h-5" />
-        Logout
-      </Link>
-    </div>
-  )
-
-  const NavLinks = () => (
-    <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
-      {menuItems.map((item) => {
-        const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`)
-        return (
-          <Link
-            key={item.name}
-            href={item.href}
-            onClick={() => setOpen(false)}
-            className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md transition-colors ${
-              isActive 
-                ? 'bg-orange-500/10 text-orange-500' 
-                : 'text-zinc-400 hover:bg-zinc-800/50 hover:text-zinc-100'
-            }`}
-          >
-            <item.icon className={`w-5 h-5 ${isActive ? 'text-orange-500' : 'text-zinc-500'}`} />
-            {item.name}
-          </Link>
-        )
-      })}
-    </nav>
-  )
-
   return (
-    <div className="flex h-screen bg-zinc-950 text-zinc-100 overflow-hidden dark">
-      {/* Desktop Sidebar */}
-      <aside className="hidden md:flex w-64 bg-zinc-950 border-r border-zinc-800 flex-col h-full z-10 shadow-sm">
-        <div className="p-6 border-b border-zinc-800 flex items-center gap-2">
-          <ShieldCheck className="w-7 h-7 text-orange-500" />
-          <span className="font-bold text-xl text-zinc-100 tracking-tight">GymPilotPro</span>
-        </div>
-        <NavLinks />
-        <UserFooter />
-      </aside>
-
-      {/* Mobile Top Nav & Drawer */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        <header className="md:hidden bg-zinc-950 border-b border-zinc-800 flex items-center justify-between p-4 z-10 shadow-sm">
-          <div className="flex items-center gap-2">
-            <ShieldCheck className="w-6 h-6 text-orange-500" />
-            <span className="font-bold text-lg text-zinc-100">GymPilotPro</span>
-          </div>
-          <Sheet open={open} onOpenChange={setOpen}>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="-mr-2 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800">
-                <Menu className="w-6 h-6" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left" className="w-72 p-0 flex flex-col bg-zinc-950 border-r border-zinc-800 text-zinc-100 dark">
-              <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
-              <div className="p-6 border-b border-zinc-800 flex items-center gap-2">
-                <ShieldCheck className="w-7 h-7 text-orange-500" />
-                <span className="font-bold text-xl text-zinc-100">GymPilotPro</span>
+    <SidebarProvider>
+      <div className="flex min-h-screen w-full bg-zinc-950 text-zinc-100 dark">
+        <SaaSSidebar user={user} />
+        <SidebarInset className="bg-zinc-900/50">
+          <header className="flex h-16 shrink-0 items-center gap-2 border-b border-zinc-800 px-6 sticky top-0 z-30 bg-zinc-950/50 backdrop-blur-md md:h-20">
+            <SidebarTrigger className="-ml-1" />
+            <div className="flex items-center justify-between w-full">
+              <div className="flex items-center gap-2">
+                <ShieldCheck className="w-5 h-5 text-orange-500 md:hidden" />
+                <h1 className="text-xs font-black tracking-[0.2em] text-zinc-500 uppercase">
+                  Super <span className="text-orange-500">Admin</span> Dashboard
+                </h1>
               </div>
-              <NavLinks />
-              <UserFooter />
-            </SheetContent>
-          </Sheet>
-        </header>
+            </div>
+          </header>
 
-        {/* Main Content Area */}
-        <main className="flex-1 overflow-auto p-4 md:p-8 bg-zinc-900/50">
-          <div className="max-w-7xl mx-auto">
-            {children}
-          </div>
-        </main>
+          <main className="flex-1 overflow-auto p-4 md:p-8">
+            <div className="max-w-7xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-700">
+              {children}
+            </div>
+          </main>
+        </SidebarInset>
       </div>
-    </div>
+    </SidebarProvider>
   )
 }
