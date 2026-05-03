@@ -18,61 +18,55 @@ const jetbrains = JetBrains_Mono({
 // Metadata – optimized for GymPilotPro SaaS
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://gympilotpro.com'),
+
   title: {
-    default: 'GymPilotPro | Run Your Gym Like A Pro',
+    default: 'GymPilotPro | Stop Revenue Loss. Run Your Gym Like A Pro',
     template: '%s | GymPilotPro',
   },
+
   description:
-    'GymPilotPro is the ultimate management platform for modern fitness centers. Automate your gym with WhatsApp reminders, QR check-ins, member tracking, and instant billing.',
+    'Stop losing money from expired gym members. GymPilotPro automates member tracking, WhatsApp reminders, QR check-ins, and billing—so you can run your gym like a pro.',
+
   keywords: [
-    'gym management software',
-    'fitness SaaS',
-    'gym automation',
-    'gym member tracking',
-    'gym analytics',
+    'gym revenue management',
+    'gym automation software',
     'fitness business software',
-    'gym billing software',
-    'whatsapp gym reminders',
+    'gym member tracking system',
+    'QR gym check-in system',
+    'gym payment automation',
+    'whatsapp reminders for gyms',
     'GymPilotPro',
   ],
+
   authors: [{ name: 'GymPilotPro Team', url: 'https://gympilotpro.com' }],
   creator: 'GymPilotPro',
   publisher: 'GymPilotPro Systems',
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
+
   openGraph: {
-    title: 'GymPilotPro | Run Your Gym Like A Pro',
+    title: 'Stop Revenue Loss. Run Your Gym Like A Pro',
     description:
-      'Premium infrastructure for gym owners. Automate billing, track attendance, and eliminate revenue loss with GymPilotPro.',
+      'Recover lost revenue from expired memberships with automated tracking, reminders, and access control.',
     url: 'https://gympilotpro.com',
     siteName: 'GymPilotPro',
     images: [
       {
-        url: '/og-image.jpg', // Ensure you eventually add this image to your public folder
+        url: '/og-image.jpg',
         width: 1200,
         height: 630,
         alt: 'GymPilotPro Dashboard',
       },
     ],
-    locale: 'en_US',
     type: 'website',
   },
+
   twitter: {
     card: 'summary_large_image',
-    title: 'GymPilotPro | Run Your Gym Like A Pro',
+    title: 'Stop Revenue Loss. Run Your Gym Like A Pro',
     description:
-      'Stop losing money on expired memberships. Automate your fitness business today.',
+      'Automate your gym operations, recover missed payments, and scale like a pro.',
     images: ['/og-image.jpg'],
   },
+
   icons: {
     icon: [
       { url: '/favicon-16x16.png', sizes: 'any' },
@@ -83,6 +77,7 @@ export const metadata: Metadata = {
       { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
     ],
   },
+
   manifest: '/site.webmanifest',
 }
 

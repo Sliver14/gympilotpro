@@ -77,7 +77,6 @@ export default function PlansPage() {
           <div className="hidden md:flex items-center gap-8 lg:gap-10 text-sm font-black tracking-widest">
             <Link href="/#features" className="hover:text-orange-500 transition-colors">Platform</Link>
             <button onClick={openModal} className="hover:text-orange-500 transition-colors">Book Demo</button>
-            <Link href="/plans" className="text-orange-500">Pricing</Link>
             <Button
               onClick={openModal}
               className="bg-orange-500 hover:bg-orange-600 text-white font-black rounded-none px-8 py-6 shadow-[0_0_20px_rgba(249,115,22,0.3)]"

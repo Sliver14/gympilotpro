@@ -90,7 +90,6 @@ export default function SaaSLandingClient() {
             <Link href="#features" className="hover:text-orange-500 transition-colors">Revenue System</Link>
             <Link href="#how-it-works" className="hover:text-orange-500 transition-colors">How It Works</Link>
             <Link href="#testimonials" className="hover:text-orange-500 transition-colors">Testimonials</Link>
-            <Link href="/plans" className="hover:text-orange-500 transition-colors">Pricing</Link>
             <Button
               onClick={openModal}
               className="bg-orange-500 hover:bg-orange-600 text-white font-black rounded-none px-8 py-6 shadow-[0_0_20px_rgba(249,115,22,0.3)] text-xs tracking-widest"
@@ -134,9 +133,7 @@ export default function SaaSLandingClient() {
                 <Link href="#features" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-orange-500 transition-colors">Revenue System</Link>
                 <Link href="#how-it-works" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-orange-500 transition-colors">How It Works</Link>
                 <Link href="#testimonials" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-orange-500 transition-colors">Testimonials</Link>
-                <Link href="/plans" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-orange-500 transition-colors">Pricing</Link>
-              </div>
-
+                </div>
               <div className="mt-auto p-8 pb-12">
                 <Button
                   onClick={openModal}
