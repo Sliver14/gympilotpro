@@ -184,11 +184,13 @@ export default function SaaSLandingClient() {
 
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center lg:justify-start">
               <Button
-                onClick={openModal}
+                asChild
                 className="h-16 sm:h-20 px-10 sm:px-12 bg-orange-500 text-white hover:bg-orange-600 text-lg sm:text-xl font-black uppercase rounded-none group shadow-[0_0_30px_rgba(249,115,22,0.3)]"
               >
-                Start 30-Day Free Trial
-                <ChevronRight className="ml-3 group-hover:translate-x-2 transition-transform" />
+                <Link href="/plans">
+                  Start 30-Day Free Trial
+                  <ChevronRight className="ml-3 group-hover:translate-x-2 transition-transform" />
+                </Link>
               </Button>
 
               <Button
@@ -292,10 +294,10 @@ export default function SaaSLandingClient() {
             </p>
             <div className="flex flex-col sm:flex-row items-center gap-8">
               <Button
-                onClick={openModal}
+                asChild
                 className="h-16 sm:h-20 px-10 sm:px-16 bg-orange-500 text-white hover:bg-orange-600 text-lg sm:text-2xl font-black uppercase rounded-none shadow-[0_20px_40px_rgba(249,115,22,0.2)]"
               >
-                Start My Free Trial
+                <Link href="/plans">Start My Free Trial</Link>
               </Button>
               <div className="flex flex-col">
                 <span className="text-emerald-500 font-black uppercase italic tracking-tighter text-xl">₦0.00 Setup Fee</span>
@@ -436,10 +438,10 @@ export default function SaaSLandingClient() {
             Ready to Stop <br />Revenue Loss?
           </h2>
           <Button
-            onClick={openModal}
+            asChild
             className="h-16 sm:h-24 px-12 sm:px-20 bg-white text-black hover:bg-black hover:text-white text-xl sm:text-3xl font-black uppercase rounded-none transition-all shadow-2xl"
           >
-            Start Your Free Trial
+            <Link href="/plans">Start Your Free Trial</Link>
           </Button>
           <p className="mt-8 text-white/90 font-bold uppercase tracking-[0.2em] italic">
             $0 Setup Fee + 30 Days Free Access. Instant Activation.
