@@ -215,7 +215,7 @@ export default function PlansPage() {
                     <div className="p-5 bg-white/5 border border-border group-hover:border-orange-500/30 transition-colors">
                       <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1">One-Time Setup Fee</p>
                       <div className="flex items-center gap-2">
-                        <span className="text-xl font-black tracking-tighter line-through opacity-30 text-white">₦150,000</span>
+                        <span className="text-xl font-black tracking-tighter line-through opacity-30 text-white">₦{p.originalSetupFee.toLocaleString()}</span>
                         <span className="text-3xl font-black tracking-tighter italic text-emerald-500">FREE</span>
                       </div>
                     </div>

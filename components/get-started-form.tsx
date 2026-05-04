@@ -225,7 +225,7 @@ export default function GetStartedForm() {
               <div className="flex justify-between text-xs font-bold text-muted-foreground">
                 <span>Setup Fee</span>
                 <div className="flex items-center gap-2">
-                  <span className="line-through opacity-50">₦150,000</span>
+                  <span className="line-through opacity-50">₦{PLANS[formData.plan].originalSetupFee.toLocaleString()}</span>
                   <span className="text-emerald-500 font-black uppercase tracking-widest italic">FREE</span>
                 </div>
               </div>
