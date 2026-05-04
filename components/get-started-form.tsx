@@ -26,11 +26,12 @@ export default function GetStartedForm() {
 
   useEffect(() => {
     const planParam = searchParams.get('plan')?.toLowerCase() as PlanKey;
-    const monthsParam = parseInt(searchParams.get('months') || '1');
+    // We strictly ignore the 'months' param for trial onboarding to ensure it's always 1 month (30 days)
+    const monthsParam = 1;
 
     if (planParam && PLANS[planParam]) {
-      setFormData(prev => ({ ...prev, plan: planParam, months: monthsParam || 1 }));
-    } else if (monthsParam) {
+      setFormData(prev => ({ ...prev, plan: planParam, months: monthsParam }));
+    } else {
       setFormData(prev => ({ ...prev, months: monthsParam }));
     }
   }, [searchParams]);

@@ -149,29 +149,6 @@ export default function PlansPage() {
             Choose the revenue protection plan that fits your gym's growth stage. 
             <span className="text-emerald-500 font-bold ml-1">Limited Time: $0 Setup Fee + 30-Day Free Trial.</span>
           </p>
-
-          {/* Duration Toggles */}
-          <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mb-16">
-            {DURATIONS.map((d) => (
-              <button
-                key={d.months}
-                onClick={() => setSelectedMonths(d.months)}
-                className={cn(
-                  "px-8 py-4 font-black text-sm uppercase tracking-widest border-2 transition-all duration-300 rounded-none",
-                  selectedMonths === d.months
-                    ? "bg-orange-500 border-orange-500 text-white shadow-[0_0_30px_rgba(249,115,22,0.3)] scale-105"
-                    : "bg-transparent border-border text-muted-foreground hover:border-orange-500/50"
-                )}
-              >
-                {d.label}
-                {d.discount > 0 && (
-                  <span className="ml-3 px-2 py-0.5 bg-white text-orange-500 text-[10px] font-black">
-                    -{d.discount * 100}% OFF
-                  </span>
-                )}
-              </button>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -182,8 +159,8 @@ export default function PlansPage() {
             {(Object.keys(PLANS) as PlanKey[]).map((key) => {
               const p = PLANS[key]
               const isPopular = key === 'pro'
-              const discountedMonthly = p.monthlyFee * (1 - currentDuration.discount)
-              const totalSetupAndMonthly = p.setupFee + (discountedMonthly * selectedMonths)
+              const selectedMonths = 1 // Force 1 month for trial onboarding
+              const totalSetupAndMonthly = 0 // Everything is 0 during trial
 
               const Icon = key === 'starter' ? Zap : key === 'pro' ? Star : Trophy
 
@@ -222,16 +199,16 @@ export default function PlansPage() {
                     
                     <div className="p-5 bg-orange-500/5 border border-orange-500/20">
                       <p className="text-[10px] font-black text-orange-500 uppercase tracking-widest mb-1">
-                        Access ({selectedMonths} Mo)
+                        First 30 Days (Trial)
                       </p>
                       <div className="flex items-baseline gap-2">
                         <span className="text-4xl font-black tracking-tighter text-orange-500 italic">
                           ₦0
                         </span>
-                        <span className="text-muted-foreground font-bold text-xs uppercase tracking-widest italic">30-Day Trial</span>
+                        <span className="text-muted-foreground font-bold text-xs uppercase tracking-widest italic">Free Access</span>
                       </div>
                       <p className="text-[10px] font-black text-zinc-500 mt-2 uppercase tracking-widest">
-                        Then ₦{(discountedMonthly * selectedMonths).toLocaleString()} / {selectedMonths}mo
+                        Then ₦{p.monthlyFee.toLocaleString()} / Month
                       </p>
                     </div>
                   </div>
