@@ -485,7 +485,7 @@ export default function SaaSLandingClient() {
                 <ul className="space-y-2 text-sm font-bold text-muted-foreground">
                   <li>Lagos, Nigeria</li>
                   <li>
-                    <a href="mailto:silverchristopher12@gmail.com" className="hover:text-white transition-colors">
+                    <a href="mailto:silverchristopher12@gmail.com" className="hover:text-white transition-colors break-all">
                       silverchristopher12@gmail.com
                     </a>
                   </li>
