@@ -475,7 +475,7 @@ export default function SaaSLandingClient() {
               <div className="space-y-4">
                 <h4 className="font-black uppercase italic text-orange-500">Platform</h4>
                 <ul className="space-y-2 text-sm font-bold text-muted-foreground">
-                  <li><button onClick={openModal} className="hover:text-white transition-colors">Start Trial</button></li>
+                  <li><Link href="/plans" className="hover:text-white transition-colors">Start Trial</Link></li>
                   <li><Link href="#features" className="hover:text-white transition-colors">Features</Link></li>
                   <li><Link href="#how-it-works" className="hover:text-white transition-colors">Operations</Link></li>
                 </ul>
