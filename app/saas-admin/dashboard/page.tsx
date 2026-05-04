@@ -9,34 +9,75 @@ import {
   TableHeader, 
   TableRow 
 } from '@/components/ui/table'
-import { Building2, Users, CreditCard, Activity, PhoneCall } from 'lucide-react'
+import { Building2, Users, CreditCard, Activity, PhoneCall, AlertCircle } from 'lucide-react'
 
 export default async function SaaSAdminDashboard() {
+  const now = new Date()
+
   // Fetch platform-wide stats
-  const [gymCount, memberCount, totalRevenue, activeSubs, leadCount] = await Promise.all([
+  const [
+    gymCount, 
+    memberCount, 
+    totalRevenue, 
+    activeGymCount, 
+    expiredGymCount,
+    leadCount
+  ] = await Promise.all([
     prisma.gym.count(),
     prisma.memberProfile.count(),
     prisma.saaSPayment.aggregate({
       _sum: { amount: true },
       where: { status: 'success' }
     }),
-    prisma.gymSubscription.count({
-      where: { status: 'active' }
+    prisma.gym.count({
+      where: {
+        subscriptions: {
+          some: {
+            status: 'active',
+            endDate: { gt: now }
+          }
+        }
+      }
+    }),
+    prisma.gym.count({
+      where: {
+        AND: [
+          {
+            subscriptions: {
+              some: { endDate: { lte: now } }
+            }
+          },
+          {
+            subscriptions: {
+              none: {
+                status: 'active',
+                endDate: { gt: now }
+              }
+            }
+          }
+        ]
+      }
     }),
     prisma.lead.count()
   ])
 
   const stats = [
     { name: 'Total Gyms', value: gymCount, icon: Building2, color: 'text-blue-400', bg: 'bg-blue-500/10 border border-blue-500/20' },
-    { name: 'Total Members', value: memberCount, icon: Users, color: 'text-emerald-400', bg: 'bg-emerald-500/10 border border-emerald-500/20' },
-    { name: 'Active Subscriptions', value: activeSubs, icon: Activity, color: 'text-orange-400', bg: 'bg-orange-500/10 border border-orange-500/20' },
+    { name: 'Active Gyms', value: activeGymCount, icon: Activity, color: 'text-emerald-400', bg: 'bg-emerald-500/10 border border-emerald-500/20' },
+    { name: 'Expired/Inactive', value: expiredGymCount, icon: AlertCircle, color: 'text-red-400', bg: 'bg-red-500/10 border border-red-500/20' },
     { name: 'Total Revenue', value: `₦${(totalRevenue._sum.amount || 0).toLocaleString()}`, icon: CreditCard, color: 'text-purple-400', bg: 'bg-purple-500/10 border border-purple-500/20' },
     { name: 'Demo Leads', value: leadCount, icon: PhoneCall, color: 'text-pink-400', bg: 'bg-pink-500/10 border border-pink-500/20' },
   ]
 
   const recentGyms = await prisma.gym.findMany({
     orderBy: { createdAt: 'desc' },
-    take: 5
+    take: 5,
+    include: {
+      subscriptions: {
+        orderBy: { endDate: 'desc' },
+        take: 1
+      }
+    }
   })
 
   const recentLeads = await prisma.lead.findMany({
@@ -88,17 +129,36 @@ export default async function SaaSAdminDashboard() {
                     <TableRow key={gym.id} className="border-zinc-800 hover:bg-zinc-900/50">
                       <TableCell className="font-medium text-zinc-100 text-white">{gym.name}</TableCell>
                       <TableCell>
-                        <Badge variant={gym.status === 'active' ? 'default' : 'secondary'} className={
-                          gym.status === 'active' ? 'bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 border border-emerald-500/20' : 'bg-yellow-500/10 text-yellow-400 hover:bg-yellow-500/20 border border-yellow-500/20'
-                        }>
-                          {gym.status}
-                        </Badge>
+                        {(() => {
+                          const activeSub = gym.subscriptions.find(s => s.status === 'active' && new Date(s.endDate) > now)
+                          if (activeSub) {
+                            return (
+                              <Badge className="bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 border border-emerald-500/20 uppercase text-[10px] font-black">
+                                Active
+                              </Badge>
+                            )
+                          }
+
+                          const hasExpired = gym.subscriptions.some(s => new Date(s.endDate) <= now)
+                          if (hasExpired) {
+                            return (
+                              <Badge className="bg-red-500/10 text-red-400 hover:bg-red-500/20 border border-red-500/20 uppercase text-[10px] font-black">
+                                Expired
+                              </Badge>
+                            )
+                          }
+
+                          return (
+                            <Badge className="bg-zinc-800 text-zinc-400 border-zinc-700 uppercase text-[10px] font-black">
+                              {gym.status}
+                            </Badge>
+                          )
+                        })()}
                       </TableCell>
                       <TableCell className="text-right text-sm text-zinc-400">
                         {new Date(gym.createdAt).toLocaleDateString()}
                       </TableCell>
-                    </TableRow>
-                  ))
+                    </TableRow>                  ))
                 ) : (
                   <TableRow className="border-zinc-800 hover:bg-zinc-900/50">
                     <TableCell colSpan={3} className="text-center py-6 text-zinc-500 italic">

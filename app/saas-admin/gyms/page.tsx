@@ -14,6 +14,7 @@ import { Building2, ExternalLink, Mail, Phone, MapPin } from 'lucide-react'
 import Link from 'next/link'
 
 export default async function GymsPage() {
+  const now = new Date()
   const gyms = await prisma.gym.findMany({
     orderBy: { createdAt: 'desc' },
     include: {
@@ -34,14 +35,14 @@ export default async function GymsPage() {
     <div className="space-y-8">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-zinc-100 tracking-tight">Gym Management</h1>
+          <h1 className="text-3xl font-bold text-zinc-100 tracking-tight text-white">Gym Management</h1>
           <p className="text-zinc-400 mt-1">Monitor and manage all gym tenants on the platform.</p>
         </div>
       </div>
 
       <Card className="shadow-sm bg-zinc-950/50 border-zinc-800">
         <CardHeader>
-          <CardTitle className="text-zinc-100">All Registered Gyms ({gyms.length})</CardTitle>
+          <CardTitle className="text-zinc-100 text-white">All Registered Gyms ({gyms.length})</CardTitle>
         </CardHeader>
         <CardContent>
           <Table>
@@ -60,7 +61,7 @@ export default async function GymsPage() {
                 <TableRow key={gym.id} className="border-zinc-800 hover:bg-zinc-900/50">
                   <TableCell>
                     <div className="flex flex-col">
-                      <span className="font-bold text-zinc-100">{gym.name}</span>
+                      <span className="font-bold text-zinc-100 text-white">{gym.name}</span>
                       <span className="text-xs text-zinc-500">{gym.slug}.gympilotpro.com</span>
                       <div className="flex gap-2 mt-1">
                         {gym.email && (
@@ -79,11 +80,31 @@ export default async function GymsPage() {
                     </div>
                   </TableCell>
                   <TableCell>
-                    <Badge variant={gym.status === 'active' ? 'default' : 'secondary'} className={
-                      gym.status === 'active' ? 'bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 border border-emerald-500/20' : 'bg-yellow-500/10 text-yellow-400 hover:bg-yellow-500/20 border border-yellow-500/20'
-                    }>
-                      {gym.status}
-                    </Badge>
+                    {(() => {
+                      const activeSub = gym.subscriptions.find(s => s.status === 'active' && new Date(s.endDate) > now)
+                      if (activeSub) {
+                        return (
+                          <Badge className="bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 border border-emerald-500/20 uppercase text-[10px] font-black">
+                            Active
+                          </Badge>
+                        )
+                      }
+                      
+                      const hasExpired = gym.subscriptions.some(s => new Date(s.endDate) <= now)
+                      if (hasExpired) {
+                        return (
+                          <Badge className="bg-red-500/10 text-red-400 hover:bg-red-500/20 border border-red-500/20 uppercase text-[10px] font-black">
+                            Expired
+                          </Badge>
+                        )
+                      }
+
+                      return (
+                        <Badge className="bg-zinc-800 text-zinc-400 border-zinc-700 uppercase text-[10px] font-black">
+                          {gym.status}
+                        </Badge>
+                      )
+                    })()}
                   </TableCell>
                   <TableCell>
                     <div className="text-sm text-zinc-300">
