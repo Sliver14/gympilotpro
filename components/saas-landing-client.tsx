@@ -87,9 +87,9 @@ export default function SaaSLandingClient() {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-8 lg:gap-10 text-[11px] font-black tracking-[0.2em] uppercase">
-            <Link href="#features" className="hover:text-orange-500 transition-colors">Revenue System</Link>
-            <Link href="#how-it-works" className="hover:text-orange-500 transition-colors">How It Works</Link>
-            <Link href="#testimonials" className="hover:text-orange-500 transition-colors">Testimonials</Link>
+            <Link href="#features" className="hover:text-orange-500 transition-colors text-white">Revenue System</Link>
+            <Link href="#how-it-works" className="hover:text-orange-500 transition-colors text-white">How It Works</Link>
+            <Link href="#testimonials" className="hover:text-orange-500 transition-colors text-white">Testimonials</Link>
             <Button
               onClick={openModal}
               className="bg-orange-500 hover:bg-orange-600 text-white font-black rounded-none px-8 py-6 shadow-[0_0_20px_rgba(249,115,22,0.3)] text-xs tracking-widest"
@@ -164,6 +164,13 @@ export default function SaaSLandingClient() {
           <div className="max-w-4xl lg:max-w-5xl pt-8 lg:pt-0">
             <SectionTag>// Revenue Protection Infrastructure</SectionTag>
 
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-none mb-6 animate-pulse">
+              <Zap size={14} className="text-emerald-500 fill-emerald-500" />
+              <span className="text-[10px] font-black uppercase tracking-widest text-emerald-500 italic">
+                Limited Offer: $0 Setup + 30-Day Free Trial
+              </span>
+            </div>
+
             <h1 className="text-[2.75rem] sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black uppercase leading-[0.92] tracking-tight italic mb-6 sm:mb-8 px-1 text-white">
               Stop Losing Money <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-orange-500/50 border-t-2 border-b-2 border-border pr-2">
@@ -180,7 +187,7 @@ export default function SaaSLandingClient() {
                 onClick={openModal}
                 className="h-16 sm:h-20 px-10 sm:px-12 bg-orange-500 text-white hover:bg-orange-600 text-lg sm:text-xl font-black uppercase rounded-none group shadow-[0_0_30px_rgba(249,115,22,0.3)]"
               >
-                Book a 5-Minute Demo
+                Start 30-Day Free Trial
                 <ChevronRight className="ml-3 group-hover:translate-x-2 transition-transform" />
               </Button>
 
@@ -283,12 +290,18 @@ export default function SaaSLandingClient() {
             <p className="text-xl md:text-3xl text-foreground font-medium leading-tight mb-12">
               GymPilot Pro is your gym’s revenue protection system. It tracks every member, automates reminders, and ensures only active members can access your gym.
             </p>
-            <Button
-              onClick={openModal}
-              className="h-16 sm:h-20 px-10 sm:px-16 bg-orange-500 text-white hover:bg-orange-600 text-lg sm:text-2xl font-black uppercase rounded-none"
-            >
-              Protect My Revenue
-            </Button>
+            <div className="flex flex-col sm:flex-row items-center gap-8">
+              <Button
+                onClick={openModal}
+                className="h-16 sm:h-20 px-10 sm:px-16 bg-orange-500 text-white hover:bg-orange-600 text-lg sm:text-2xl font-black uppercase rounded-none shadow-[0_20px_40px_rgba(249,115,22,0.2)]"
+              >
+                Start My Free Trial
+              </Button>
+              <div className="flex flex-col">
+                <span className="text-emerald-500 font-black uppercase italic tracking-tighter text-xl">₦0.00 Setup Fee</span>
+                <span className="text-muted-foreground text-sm font-bold uppercase tracking-widest">Next 5 Gyms Only</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -426,10 +439,10 @@ export default function SaaSLandingClient() {
             onClick={openModal}
             className="h-16 sm:h-24 px-12 sm:px-20 bg-white text-black hover:bg-black hover:text-white text-xl sm:text-3xl font-black uppercase rounded-none transition-all shadow-2xl"
           >
-            Book a 5-Minute Demo
+            Start Your Free Trial
           </Button>
           <p className="mt-8 text-white/90 font-bold uppercase tracking-[0.2em] italic">
-            We’ll walk you through everything and show how it fits your gym.
+            $0 Setup Fee + 30 Days Free Access. Instant Activation.
           </p>
         </div>
       </section>
@@ -460,7 +473,7 @@ export default function SaaSLandingClient() {
               <div className="space-y-4">
                 <h4 className="font-black uppercase italic text-orange-500">Platform</h4>
                 <ul className="space-y-2 text-sm font-bold text-muted-foreground">
-                  <li><button onClick={openModal} className="hover:text-white transition-colors">Book Demo</button></li>
+                  <li><button onClick={openModal} className="hover:text-white transition-colors">Start Trial</button></li>
                   <li><Link href="#features" className="hover:text-white transition-colors">Features</Link></li>
                   <li><Link href="#how-it-works" className="hover:text-white transition-colors">Operations</Link></li>
                 </ul>

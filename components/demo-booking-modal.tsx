@@ -102,6 +102,9 @@ export default function DemoBookingModal({ isOpen, onClose }: DemoBookingModalPr
                 <p className="text-muted-foreground font-medium">
                   Tell us a bit about your gym so we can tailor the demo for you.
                 </p>
+                <div className="mt-3 inline-block px-2 py-1 bg-emerald-500/10 border border-emerald-500/20 text-[9px] font-black text-emerald-500 uppercase tracking-widest italic">
+                  ✓ $0 Setup Fee + 30-Day Free Trial Available
+                </div>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-5">

@@ -119,7 +119,6 @@ export default function PlansPage() {
               <div className="flex flex-col gap-8 p-10 text-2xl font-black uppercase tracking-tight italic text-white">
                 <Link href="/#features" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-orange-500 transition-colors">Platform</Link>
                 <button onClick={openModal} className="text-left hover:text-orange-500 transition-colors">Book Demo</button>
-                <Link href="/plans" onClick={() => setIsMobileMenuOpen(false)} className="text-orange-500">Pricing</Link>
               </div>
 
               <div className="mt-auto p-8 pb-12">
@@ -148,7 +147,7 @@ export default function PlansPage() {
           </h1>
           <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto font-medium leading-relaxed mb-12">
             Choose the revenue protection plan that fits your gym's growth stage. 
-            No hidden fees. No long-term contracts. Just pro results.
+            <span className="text-emerald-500 font-bold ml-1">Limited Time: $0 Setup Fee + 30-Day Free Trial.</span>
           </p>
 
           {/* Duration Toggles */}
@@ -215,24 +214,25 @@ export default function PlansPage() {
                   <div className="space-y-6 mb-10">
                     <div className="p-5 bg-white/5 border border-border group-hover:border-orange-500/30 transition-colors">
                       <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1">One-Time Setup Fee</p>
-                      <p className="text-3xl font-black tracking-tighter italic text-white">₦{p.setupFee.toLocaleString()}</p>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xl font-black tracking-tighter line-through opacity-30 text-white">₦150,000</span>
+                        <span className="text-3xl font-black tracking-tighter italic text-emerald-500">FREE</span>
+                      </div>
                     </div>
                     
                     <div className="p-5 bg-orange-500/5 border border-orange-500/20">
                       <p className="text-[10px] font-black text-orange-500 uppercase tracking-widest mb-1">
-                        Access Fee ({selectedMonths} Mo)
+                        Access ({selectedMonths} Mo)
                       </p>
                       <div className="flex items-baseline gap-2">
                         <span className="text-4xl font-black tracking-tighter text-orange-500 italic">
-                          ₦{(discountedMonthly * selectedMonths).toLocaleString()}
+                          ₦0
                         </span>
-                        <span className="text-muted-foreground font-bold text-xs uppercase tracking-widest">Total</span>
+                        <span className="text-muted-foreground font-bold text-xs uppercase tracking-widest italic">30-Day Trial</span>
                       </div>
-                      {currentDuration.discount > 0 && (
-                        <p className="text-[10px] font-black text-green-500 mt-2 uppercase tracking-widest">
-                          ✓ Multi-month discount applied
-                        </p>
-                      )}
+                      <p className="text-[10px] font-black text-zinc-500 mt-2 uppercase tracking-widest">
+                        Then ₦{(discountedMonthly * selectedMonths).toLocaleString()} / {selectedMonths}mo
+                      </p>
                     </div>
                   </div>
 
@@ -240,14 +240,14 @@ export default function PlansPage() {
                     {p.features.map((f, j) => (
                       <li key={j} className="flex items-start gap-4 text-sm font-bold text-muted-foreground group-hover:text-foreground transition-colors">
                         <Check size={18} className="text-orange-500 shrink-0 mt-0.5" /> 
-                        <span className="leading-tight">{f}</span>
+                        <span className="leading-tight text-zinc-300 group-hover:text-white">{f}</span>
                       </li>
                     ))}
                   </ul>
 
                   <div className="pt-8 border-t border-border mb-8">
                     <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1">Due today</p>
-                    <p className="text-2xl font-black tracking-tighter text-white italic">₦{totalSetupAndMonthly.toLocaleString()}</p>
+                    <p className="text-2xl font-black tracking-tighter text-white italic">₦0.00</p>
                   </div>
 
                   <Button
@@ -262,7 +262,7 @@ export default function PlansPage() {
                   >
                     {loadingPlan === key ? (
                       <span className="flex items-center gap-2"><Loader2 className="animate-spin" /> Processing...</span>
-                    ) : "Select Plan"}
+                    ) : "Activate Free Trial"}
                   </Button>
                 </div>
               )

@@ -2,23 +2,43 @@ export const PLANS = {
   starter: {
     id: 'starter',
     name: "Starter",
-    setupFee: 150000,
-    monthlyFee: 12000,
-    features: ["Up to 200 Members", "WhatsApp Reminders", "Basic Gym Dashboard", "QR Check-in"],
+    setupFee: 0, // Free setup for now (key for adoption)
+    monthlyFee: 15000,
+    features: [
+      "Up to 200 Members",
+      "Automated WhatsApp Reminders",
+      "Revenue Tracking Dashboard",
+      "QR Check-in Access Control",
+    ],
   },
+
   pro: {
     id: 'pro',
     name: "Pro",
-    setupFee: 210000,
-    monthlyFee: 18000,
-    features: ["Up to 500 Members", "Custom Subdomain", "Full Automation Features", "Detailed Analytics"],
+    setupFee: 0,
+    monthlyFee: 25000,
+    features: [
+      "Up to 500 Members",
+      "Custom Subdomain",
+      "Full Automation Suite",
+      "Advanced Revenue Analytics",
+      "Priority Support",
+    ],
   },
+
   elite: {
     id: 'elite',
     name: "Elite",
-    setupFee: 450000,
-    monthlyFee: 35000,
-    features: ["Unlimited Members", "Custom Domain", "Priority Support", "Multi-branch Support", "Advanced Analytics"],
+    setupFee: 0,
+    monthlyFee: 45000,
+    features: [
+      "Unlimited Members",
+      "Custom Domain",
+      "Multi-Branch Support",
+      "Advanced Analytics + Insights",
+      "Priority Support",
+      "Dedicated Onboarding Support",
+    ],
   }
 };
 

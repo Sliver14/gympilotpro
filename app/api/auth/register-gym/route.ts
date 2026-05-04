@@ -53,19 +53,19 @@ export async function POST(req: Request) {
 
     // Create the Gym and User in a transaction
     const result = await prisma.$transaction(async (tx) => {
-      // 1. Create the pending Gym
+      // 1. Create the active Gym
       const gym = await tx.gym.create({
         data: {
           name: gymName,
           slug: slug,
           email: email,
           phone: phone,
-          status: 'pending',
+          status: 'active',
           qrCodeUrl: qrCodeUrl,
         },
       });
 
-      // 2. Create the inactive User
+      // 2. Create the active User
       const user = await tx.user.create({
         data: {
           email,
@@ -74,9 +74,24 @@ export async function POST(req: Request) {
           lastName,
           phoneNumber: phone,
           role: 'admin',
-          status: 'inactive',
+          status: 'active',
           gymId: gym.id,
         },
+      });
+
+      // 3. Create initial 30-day trial subscription
+      const now = new Date();
+      const trialEndDate = new Date(now);
+      trialEndDate.setDate(trialEndDate.getDate() + 30);
+
+      await tx.gymSubscription.create({
+        data: {
+          gymId: gym.id,
+          plan: plan,
+          status: 'active',
+          startDate: now,
+          endDate: trialEndDate,
+        }
       });
 
       return { gym, user };
@@ -86,14 +101,15 @@ export async function POST(req: Request) {
     resend.emails.send({
       from: 'GymPilotPro <noreply@klimarsspace.com>',
       to: email,
-      subject: `Welcome to GymPilotPro, ${firstName}!`,
+      subject: `Your 30-Day Free Trial is Live, ${firstName}!`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
           <h2 style="color: #f97316;">Welcome to GymPilotPro!</h2>
           <p>Hi ${firstName},</p>
-          <p>We've successfully received your registration for <strong>${gymName}</strong>.</p>
-          <p>To finalize your setup and activate your gym's dashboard, please complete your payment on the next screen.</p>
-          <p>If you have any questions, feel free to reply to this email.</p>
+          <p>Your 30-day free trial for <strong>${gymName}</strong> is now active!</p>
+          <p>We've waived the setup fee ($0) and activated your dashboard immediately so you can start protecting your revenue today.</p>
+          <p><strong>Dashboard Login:</strong> <a href="https://${slug}.gympilotpro.com/login">https://${slug}.gympilotpro.com/login</a></p>
+          <p>Your temporary password is: <code>ChangeMe123!</code> (Please change this after your first login).</p>
           <br/>
           <p>Best regards,<br/>The GymPilotPro Team</p>
         </div>
@@ -104,7 +120,8 @@ export async function POST(req: Request) {
       success: true, 
       gymId: result.gym.id, 
       userId: result.user.id,
-      message: 'Account created pending payment'
+      slug: slug,
+      message: 'Account created and 30-day trial activated'
     });
 
   } catch (error: any) {
