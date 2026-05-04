@@ -484,8 +484,16 @@ export default function SaaSLandingClient() {
                 <h4 className="font-black uppercase italic text-orange-500">Contact</h4>
                 <ul className="space-y-2 text-sm font-bold text-muted-foreground">
                   <li>Lagos, Nigeria</li>
-                  <li>hello@gympilotpro.com</li>
-                  <li>+234 806 1731 600</li>
+                  <li>
+                    <a href="mailto:silverchristopher12@gmail.com" className="hover:text-white transition-colors">
+                      silverchristopher12@gmail.com
+                    </a>
+                  </li>
+                  <li>
+                    <a href="tel:+2348061731600" className="hover:text-white transition-colors">
+                      +234 806 1731 600
+                    </a>
+                  </li>
                 </ul>
               </div>
             </div>
