@@ -10,7 +10,8 @@ import {
   CreditCard, 
   Settings, 
   LogOut, 
-  ShieldCheck
+  ShieldCheck,
+  PhoneCall
 } from 'lucide-react'
 import {
   Sidebar,
@@ -38,6 +39,7 @@ import {
 const menuItems = [
   { name: 'Dashboard', icon: LayoutDashboard, href: '/saas-admin/dashboard' },
   { name: 'Gyms', icon: Building2, href: '/saas-admin/gyms' },
+  { name: 'Leads', icon: PhoneCall, href: '/saas-admin/leads' },
   { name: 'Subscribers', icon: Users, href: '/saas-admin/subscribers' },
   { name: 'Payments', icon: CreditCard, href: '/saas-admin/payments' },
   { name: 'Settings', icon: Settings, href: '/saas-admin/settings' },
