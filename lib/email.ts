@@ -298,7 +298,7 @@ export async function sendMemberPaymentEmail(params: {
 // CRON JOB AUTOMATED REMINDER EMAILS
 // ---------------------------------------------------------------------------
 
-export async function sendGymMemberReminderEmail(params: {
+export function getGymMemberReminderEmailContent(params: {
   email: string;
   firstName: string;
   gymName: string;
@@ -328,36 +328,48 @@ export async function sendGymMemberReminderEmail(params: {
     message = `Your gym access will expire on ${expiryDate} (${daysRemaining} days remaining). Extend your plan now to maintain uninterrupted access.`;
   }
 
-  try {
-    await resend.emails.send({
-      from: fromEmail,
-      to: email,
-      subject,
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 12px;">
-          <h2 style="color: ${color}; margin-top: 0;">${heading}</h2>
-          <p>Hi ${firstName},</p>
-          <p>${message}</p>
-          
-          <div style="text-align: center; margin: 35px 0;">
-            <a href="${renewalUrl}" style="background-color: ${color}; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">
-              Renew Membership Now
-            </a>
-          </div>
-          
-          <p style="color: #6b7280; font-size: 12px; border-top: 1px solid #e5e7eb; padding-top: 20px; text-align: center;">
-            Sent automatically by GymPilotPro on behalf of ${gymName}
-          </p>
+  return {
+    from: fromEmail,
+    to: email,
+    subject,
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 12px;">
+        <h2 style="color: ${color}; margin-top: 0;">${heading}</h2>
+        <p>Hi ${firstName},</p>
+        <p>${message}</p>
+        
+        <div style="text-align: center; margin: 35px 0;">
+          <a href="${renewalUrl}" style="background-color: ${color}; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">
+            Renew Membership Now
+          </a>
         </div>
-      `,
-    });
-    console.log(`Sent ${daysRemaining}-day reminder to gym member ${email}`);
+        
+        <p style="color: #6b7280; font-size: 12px; border-top: 1px solid #e5e7eb; padding-top: 20px; text-align: center;">
+          Sent automatically by GymPilotPro on behalf of ${gymName}
+        </p>
+      </div>
+    `,
+  };
+}
+
+export async function sendGymMemberReminderEmail(params: {
+  email: string;
+  firstName: string;
+  gymName: string;
+  daysRemaining: number;
+  expiryDate: string;
+  renewalUrl: string;
+}) {
+  try {
+    const content = getGymMemberReminderEmailContent(params);
+    await resend.emails.send(content);
+    console.log(`Sent ${params.daysRemaining}-day reminder to gym member ${params.email}`);
   } catch (err) {
-    console.error(`Failed to send gym member reminder to ${email}:`, err);
+    console.error(`Failed to send gym member reminder to ${params.email}:`, err);
   }
 }
 
-export async function sendSaaSReminderEmail(params: {
+export function getSaaSReminderEmailContent(params: {
   email: string;
   gymName: string;
   daysRemaining: number;
@@ -382,31 +394,71 @@ export async function sendSaaSReminderEmail(params: {
     message = `Your GymPilotPro plan for ${gymName} is set to renew or expire on ${expiryDate} (${daysRemaining} days remaining). Please ensure your billing information is up to date to avoid any service interruptions.`;
   }
 
-  try {
-    await resend.emails.send({
-      from: fromEmail,
-      to: email,
-      subject,
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 12px;">
-          <h2 style="color: ${color}; margin-top: 0;">${heading}</h2>
-          <p>Hello,</p>
-          <p>${message}</p>
-          
-          <div style="text-align: center; margin: 35px 0;">
-            <a href="${billingUrl}" style="background-color: ${color}; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">
-              Manage Billing & Subscription
-            </a>
-          </div>
-          
-          <p style="color: #6b7280; font-size: 12px; border-top: 1px solid #e5e7eb; padding-top: 20px; text-align: center;">
-            GymPilotPro Administration
-          </p>
+  return {
+    from: fromEmail,
+    to: email,
+    subject,
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 12px;">
+        <h2 style="color: ${color}; margin-top: 0;">${heading}</h2>
+        <p>Hello,</p>
+        <p>${message}</p>
+        
+        <div style="text-align: center; margin: 35px 0;">
+          <a href="${billingUrl}" style="background-color: ${color}; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">
+            Manage Billing & Subscription
+          </a>
         </div>
-      `,
-    });
-    console.log(`Sent ${daysRemaining}-day SaaS reminder to gym owner ${email}`);
+        
+        <p style="color: #6b7280; font-size: 12px; border-top: 1px solid #e5e7eb; padding-top: 20px; text-align: center;">
+          GymPilotPro Administration
+        </p>
+      </div>
+    `,
+  };
+}
+
+export async function sendSaaSReminderEmail(params: {
+  email: string;
+  gymName: string;
+  daysRemaining: number;
+  expiryDate: string;
+  billingUrl: string;
+}) {
+  try {
+    const content = getSaaSReminderEmailContent(params);
+    await resend.emails.send(content);
+    console.log(`Sent ${params.daysRemaining}-day SaaS reminder to gym owner ${params.email}`);
   } catch (err) {
-    console.error(`Failed to send SaaS reminder to ${email}:`, err);
+    console.error(`Failed to send SaaS reminder to ${params.email}:`, err);
   }
 }
+
+export async function sendBatchEmails(emails: {
+  from?: string;
+  to: string | string[];
+  subject: string;
+  html: string;
+}[]) {
+  if (emails.length === 0) return;
+
+  try {
+    // Resend batch limit is 100
+    const chunks = [];
+    for (let i = 0; i < emails.length; i += 100) {
+      chunks.push(emails.slice(i, i + 100));
+    }
+
+    for (const chunk of chunks) {
+      await resend.batch.send(chunk.map(email => ({
+        from: email.from || fromEmail,
+        ...email
+      })));
+    }
+    console.log(`Successfully sent batch of ${emails.length} emails`);
+  } catch (err) {
+    console.error('Failed to send batch emails:', err);
+    throw err;
+  }
+}
+

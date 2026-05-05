@@ -1,6 +1,10 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { sendGymMemberReminderEmail, sendSaaSReminderEmail } from '@/lib/email';
+import { 
+  getGymMemberReminderEmailContent, 
+  getSaaSReminderEmailContent, 
+  sendBatchEmails 
+} from '@/lib/email';
 
 // The days we want to trigger emails for Gym Members
 const MEMBER_REMINDER_DAYS = [3, 1, 0];
@@ -10,14 +14,12 @@ const SAAS_REMINDER_DAYS = [7, 3, 0];
 export async function GET(request: Request) {
   try {
     // 1. Verify Authorization
-    // Vercel sends a specific header for cron jobs. If you are testing locally, you can pass a bearer token.
     const authHeader = request.headers.get('authorization');
-    const vercelCronHeader = request.headers.get('x-vercel-cron'); // Optional: check if from vercel
+    const vercelCronHeader = request.headers.get('x-vercel-cron'); 
     
-    // Check against a secret environment variable
     if (
       authHeader !== `Bearer ${process.env.CRON_SECRET}` && 
-      (!vercelCronHeader || process.env.NODE_ENV === 'development') // allow local testing with just the token
+      (!vercelCronHeader || process.env.NODE_ENV === 'development') 
     ) {
       if (process.env.NODE_ENV !== 'development' || !authHeader) {
          return new NextResponse('Unauthorized', { status: 401 });
@@ -25,7 +27,6 @@ export async function GET(request: Request) {
     }
 
     const now = new Date();
-    // Start of current day (midnight)
     const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     
     const results = {
@@ -35,12 +36,12 @@ export async function GET(request: Request) {
     };
 
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://gympilotpro.com';
+    const emailBatch: any[] = [];
 
     // ---------------------------------------------------------
     // PROCESS GYM MEMBERS
     // ---------------------------------------------------------
     for (const daysRemaining of MEMBER_REMINDER_DAYS) {
-      // Calculate target expiry date: today + daysRemaining
       const targetDateStart = new Date(todayStart);
       targetDateStart.setDate(todayStart.getDate() + daysRemaining);
       
@@ -54,7 +55,7 @@ export async function GET(request: Request) {
             lt: targetDateEnd,
           },
           user: {
-            deletedAt: null, // Ensure user isn't deleted
+            deletedAt: null,
           }
         },
         include: {
@@ -69,9 +70,9 @@ export async function GET(request: Request) {
         try {
           const gymDomain = profile.gym.customDomain 
             ? `https://${profile.gym.customDomain}`
-            : `https://${profile.gym.slug}.gympilotpro.com`; // Fallback to a subdomain structure if you use it
+            : `https://${profile.gym.slug}.gympilotpro.com`;
 
-          await sendGymMemberReminderEmail({
+          const emailContent = getGymMemberReminderEmailContent({
             email: profile.user.email,
             firstName: profile.user.firstName,
             gymName: profile.gym.name,
@@ -79,9 +80,11 @@ export async function GET(request: Request) {
             expiryDate: profile.expiryDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }),
             renewalUrl: `${gymDomain}/member/renew-membership`
           });
+          
+          emailBatch.push(emailContent);
           results.membersNotified++;
         } catch (error: any) {
-          console.error(`Error notifying member ${profile.user.email}:`, error);
+          console.error(`Error preparing member notification ${profile.user.email}:`, error);
           results.errors.push(`Member ${profile.user.email}: ${error.message}`);
         }
       }
@@ -104,7 +107,7 @@ export async function GET(request: Request) {
             lt: targetDateEnd,
           },
           status: {
-            not: 'cancelled' // Don't remind cancelled subscriptions
+            not: 'cancelled'
           }
         },
         include: {
@@ -120,7 +123,6 @@ export async function GET(request: Request) {
       });
 
       for (const sub of expiringGyms) {
-        // Fallback: use gym email first, then first admin's email
         const targetEmail = sub.gym.email || sub.gym.users[0]?.email;
         
         if (!targetEmail) {
@@ -129,24 +131,38 @@ export async function GET(request: Request) {
         }
 
         try {
-          await sendSaaSReminderEmail({
+          const emailContent = getSaaSReminderEmailContent({
             email: targetEmail,
             gymName: sub.gym.name,
             daysRemaining,
             expiryDate: sub.endDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }),
             billingUrl: `${appUrl}/admin/billing`
           });
+          
+          emailBatch.push(emailContent);
           results.saasOwnersNotified++;
         } catch (error: any) {
-          console.error(`Error notifying SaaS owner ${targetEmail}:`, error);
+          console.error(`Error preparing SaaS owner notification ${targetEmail}:`, error);
           results.errors.push(`SaaS Owner ${targetEmail}: ${error.message}`);
         }
       }
     }
 
+    // ---------------------------------------------------------
+    // SEND ALL EMAILS IN BATCHES
+    // ---------------------------------------------------------
+    if (emailBatch.length > 0) {
+      try {
+        await sendBatchEmails(emailBatch);
+      } catch (error: any) {
+        console.error('Failed to send email batch:', error);
+        results.errors.push(`Batch send error: ${error.message}`);
+      }
+    }
+
     return NextResponse.json({
       success: true,
-      message: 'Cron job executed successfully',
+      message: `Cron job executed successfully. Sent ${emailBatch.length} emails.`,
       results
     });
 
@@ -158,3 +174,4 @@ export async function GET(request: Request) {
     });
   }
 }
+
