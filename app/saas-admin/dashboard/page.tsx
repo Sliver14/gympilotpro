@@ -20,7 +20,6 @@ export default async function SaaSAdminDashboard() {
     memberCount, 
     totalRevenue, 
     activeGymCount, 
-    expiredGymCount,
     leadCount
   ] = await Promise.all([
     prisma.gym.count(),
@@ -39,27 +38,10 @@ export default async function SaaSAdminDashboard() {
         }
       }
     }),
-    prisma.gym.count({
-      where: {
-        AND: [
-          {
-            subscriptions: {
-              some: { endDate: { lte: now } }
-            }
-          },
-          {
-            subscriptions: {
-              none: {
-                status: 'active',
-                endDate: { gt: now }
-              }
-            }
-          }
-        ]
-      }
-    }),
     prisma.lead.count()
   ])
+
+  const expiredGymCount = gymCount - activeGymCount
 
   const stats = [
     { name: 'Total Gyms', value: gymCount, icon: Building2, color: 'text-blue-400', bg: 'bg-blue-500/10 border border-blue-500/20' },
