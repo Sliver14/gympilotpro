@@ -44,7 +44,10 @@ export async function POST(req: NextRequest) {
     // 2. Check if user exists (scoped by gymId)
     const user = await prisma.user.findFirst({
       where: { 
-        email: normalizedEmail,
+        email: {
+          equals: normalizedEmail,
+          mode: 'insensitive'
+        },
         gymId: gym.id
       },
     })

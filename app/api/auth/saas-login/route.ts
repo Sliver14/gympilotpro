@@ -19,12 +19,16 @@ export async function POST(req: NextRequest) {
     // Find the user without gymId filter, but must have superadmin role
     const user = await prisma.user.findFirst({
       where: { 
-        email: normalizedEmail,
+        email: {
+          equals: normalizedEmail,
+          mode: 'insensitive'
+        },
         role: 'superadmin'
       },
     })
 
     if (!user) {
+      console.log(`[AUTH] SaaS login failed: User not found or not superadmin (${normalizedEmail})`)
       return NextResponse.json(
         { error: 'Invalid email or password' },
         { status: 401 }
@@ -34,6 +38,7 @@ export async function POST(req: NextRequest) {
     const passwordValid = await verifyPassword(password, user.password)
 
     if (!passwordValid) {
+      console.log(`[AUTH] SaaS login failed: Invalid password for ${normalizedEmail}`)
       return NextResponse.json(
         { error: 'Invalid email or password' },
         { status: 401 }
