@@ -1,7 +1,18 @@
 import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const fromEmail = 'GymPilotPro <noreply@klimarsspace.com>';
+
+// IMPORTANT: Change this to your verified domain in Resend (e.g., 'gympilotpro.com')
+// If not verified, Resend will return a 400 error.
+const SENDING_DOMAIN = 'klimarsspace.com'; 
+
+/**
+ * Helper to generate a professional, dynamic "From" address
+ */
+function getFromAddress(gymName?: string) {
+  const name = gymName ? `${gymName} via GymPilotPro` : 'GymPilotPro';
+  return `${name} <noreply@${SENDING_DOMAIN}>`;
+}
 
 export async function sendSignupEmail(params: {
   email: string;
@@ -30,7 +41,7 @@ export async function sendSignupEmail(params: {
 
   try {
     await resend.emails.send({
-      from: fromEmail,
+      from: getFromAddress(gymName),
       to: email,
       subject: `Welcome to GymPilotPro! (${gymName})`,
       html: `
@@ -66,7 +77,7 @@ export async function sendRenewalEmail(params: {
   
   try {
     await resend.emails.send({
-      from: fromEmail,
+      from: getFromAddress(gymName),
       to: email,
       subject: "Subscription Renewed Successfully",
       html: `
@@ -100,7 +111,7 @@ export async function sendUpgradeEmail(params: {
   
   try {
     await resend.emails.send({
-      from: fromEmail,
+      from: getFromAddress(gymName),
       to: email,
       subject: "Your Plan Has Been Upgraded",
       html: `
@@ -149,7 +160,7 @@ export async function sendWelcomeEmail(params: {
 
   try {
     await resend.emails.send({
-      from: fromEmail,
+      from: getFromAddress(gymName),
       to: email,
       subject: `Welcome to ${gymName}!`,
       html: `
@@ -205,7 +216,7 @@ export async function sendMemberWelcomeEmail(params: {
 
   try {
     await resend.emails.send({
-      from: fromEmail,
+      from: getFromAddress(gymName),
       to: email,
       subject: `Your Membership at ${gymName} is Ready!`,
       html: `
@@ -251,7 +262,7 @@ export async function sendMemberPaymentEmail(params: {
     // Send to member
     if (memberEmail) {
       await resend.emails.send({
-        from: fromEmail,
+        from: getFromAddress(gymName),
         to: memberEmail,
         subject: "Membership Renewed Successfully",
         html: `
@@ -272,7 +283,7 @@ export async function sendMemberPaymentEmail(params: {
     // Send to admin
     if (adminEmail) {
       await resend.emails.send({
-        from: fromEmail,
+        from: getFromAddress(gymName),
         to: adminEmail,
         subject: "Member Payment Received",
         html: `
@@ -329,7 +340,7 @@ export function getGymMemberReminderEmailContent(params: {
   }
 
   return {
-    from: fromEmail,
+    from: getFromAddress(gymName),
     to: email,
     subject,
     html: `
@@ -395,7 +406,7 @@ export function getSaaSReminderEmailContent(params: {
   }
 
   return {
-    from: fromEmail,
+    from: getFromAddress('GymPilotPro'),
     to: email,
     subject,
     html: `
@@ -434,6 +445,83 @@ export async function sendSaaSReminderEmail(params: {
   }
 }
 
+export async function sendPasswordResetEmail(params: {
+  email: string;
+  firstName: string;
+  gymName: string;
+  resetLink: string;
+}) {
+  const { email, firstName, gymName, resetLink } = params;
+  
+  try {
+    await resend.emails.send({
+      from: getFromAddress(gymName),
+      to: email,
+      subject: `Reset Your ${gymName} Password`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <h2 style="color: #10b981;">Password Reset Request</h2>
+          <p>Hello ${firstName || 'Member'},</p>
+          <p>We received a request to reset your password for your ${gymName} account.</p>
+          <p>Click the button below to set a new password:</p>
+          
+          <div style="text-align: center; margin: 30px 0;">
+            <a href="${resetLink}" 
+               style="background-color: #10b981; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">
+              Reset Password
+            </a>
+          </div>
+          
+          <p style="color: #666; font-size: 14px;">
+            This link will expire in 1 hour for security reasons.<br>
+            If you did not request a password reset, please ignore this email or contact support immediately.
+          </p>
+          
+          <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+          <p style="color: #888; font-size: 12px; text-align: center;">
+            ${gymName}
+          </p>
+        </div>
+      `,
+    });
+    console.log(`Password reset email sent to ${email}`);
+  } catch (err) {
+    console.error('Failed to send password reset email:', err);
+  }
+}
+
+export async function sendGymRegistrationTrialEmail(params: {
+  email: string;
+  firstName: string;
+  gymName: string;
+  loginUrl: string;
+}) {
+  const { email, firstName, gymName, loginUrl } = params;
+  
+  try {
+    await resend.emails.send({
+      from: getFromAddress('GymPilotPro'),
+      to: email,
+      subject: `Your 30-Day Free Trial is Live, ${firstName}!`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <h2 style="color: #f97316;">Welcome to GymPilotPro!</h2>
+          <p>Hi ${firstName},</p>
+          <p>Your 30-day free trial for <strong>${gymName}</strong> is now active!</p>
+          <p>We've waived the setup fee ($0) and activated your dashboard immediately so you can start protecting your revenue today.</p>
+          <p><strong>Dashboard Login:</strong> <a href="${loginUrl}">${loginUrl}</a></p>
+          <p>Your temporary password is: <code>ChangeMe123!</code> (Please change this after your first login).</p>
+          <br/>
+          <p>Best regards,<br/>The GymPilotPro Team</p>
+        </div>
+      `,
+    });
+    console.log(`Gym registration trial email sent to ${email}`);
+  } catch (err) {
+    console.error('Failed to send gym registration trial email:', err);
+  }
+}
+
 export async function sendBatchEmails(emails: {
   from?: string;
   to: string | string[];
@@ -451,7 +539,7 @@ export async function sendBatchEmails(emails: {
 
     for (const chunk of chunks) {
       await resend.batch.send(chunk.map(email => ({
-        from: email.from || fromEmail,
+        from: email.from || getFromAddress(),
         ...email
       })));
     }
@@ -461,4 +549,5 @@ export async function sendBatchEmails(emails: {
     throw err;
   }
 }
+
 

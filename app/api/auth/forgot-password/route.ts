@@ -1,12 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import crypto from 'crypto'
-import { Resend } from 'resend'
 import { getGymFromRequest } from '@/lib/gym-context'
 import { rateLimit, getClientIP } from '@/lib/rate-limit'
-
-// Initialize Resend (do this once at module level)
-const resend = new Resend(process.env.RESEND_API_KEY)
+import { sendPasswordResetEmail } from '@/lib/email'
 
 export async function POST(req: NextRequest) {
   try {
@@ -38,8 +35,6 @@ export async function POST(req: NextRequest) {
     // Limit by Email: Max 3 requests per hour
     const emailLimit = await rateLimit(`forgot-password:email:${normalizedEmail}`, 3, 3600)
     if (!emailLimit.success) {
-      // For security, we might want to return 200 but not send an email
-      // However, usually 429 is fine for forgot-password
       return NextResponse.json(
         { error: 'Too many reset requests for this email. Please check your inbox or try again later.' },
         { status: 429 }
@@ -83,51 +78,13 @@ export async function POST(req: NextRequest) {
     // 5. Build reset link (use gym-specific URL)
     const resetLink = `${process.env.NEXT_PUBLIC_APP_URL}/${gym.slug}/reset-password?token=${token}`
 
-    // 6. Send email via Resend
-    const { data, error } = await resend.emails.send({
-      from: `${gym.name} <noreply@klimarsspace.com>`,
-      to: normalizedEmail,
-      subject: `Reset Your ${gym.name} Password`,
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-          <h2 style="color: #10b981;">Password Reset Request</h2>
-          <p>Hello ${user.firstName || 'Member'},</p>
-          <p>We received a request to reset your password for your ${gym.name} account.</p>
-          <p>Click the button below to set a new password:</p>
-          
-          <div style="text-align: center; margin: 30px 0;">
-            <a href="${resetLink}" 
-               style="background-color: #10b981; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">
-              Reset Password
-            </a>
-          </div>
-          
-          <p style="color: #666; font-size: 14px;">
-            This link will expire in 1 hour for security reasons.<br>
-            If you did not request a password reset, please ignore this email or contact support immediately.
-          </p>
-          
-          <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
-          <p style="color: #888; font-size: 12px; text-align: center;">
-            ${gym.name}<br>
-            ${gym.address || ''}
-          </p>
-        </div>
-      `,
-      text: `Password Reset Request\n\nHello ${user.firstName || 'Member'},\n\nClick here to reset your password for ${gym.name}: ${resetLink}\n\nThis link expires in 1 hour.\n\nIf you didn't request this, ignore this email.\n\n${gym.name} Team`,
-    })
-
-    if (error) {
-      console.error('Resend error:', error)
-      // Still return success to user (security)
-      return NextResponse.json({
-        success: true,
-        message: 'If an account exists with this email, you will receive a reset link shortly.',
-      })
-    }
-
-    // Log success (optional)
-    console.log(`Password reset email sent to ${normalizedEmail}`)
+    // 6. Send email via centralized helper
+    await sendPasswordResetEmail({
+      email: normalizedEmail,
+      firstName: user.firstName || 'Member',
+      gymName: gym.name,
+      resetLink,
+    });
 
     return NextResponse.json({
       success: true,

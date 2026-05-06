@@ -1,10 +1,8 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
-import { Resend } from 'resend';
 import QRCode from 'qrcode';
-
-const resend = new Resend(process.env.RESEND_API_KEY);
+import { sendGymRegistrationTrialEmail } from '@/lib/email';
 
 export async function POST(req: Request) {
   try {
@@ -97,24 +95,13 @@ export async function POST(req: Request) {
       return { gym, user };
     });
 
-    // Send a welcome email (async so it doesn't block the response)
-    resend.emails.send({
-      from: 'GymPilotPro <noreply@klimarsspace.com>',
-      to: email,
-      subject: `Your 30-Day Free Trial is Live, ${firstName}!`,
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-          <h2 style="color: #f97316;">Welcome to GymPilotPro!</h2>
-          <p>Hi ${firstName},</p>
-          <p>Your 30-day free trial for <strong>${gymName}</strong> is now active!</p>
-          <p>We've waived the setup fee ($0) and activated your dashboard immediately so you can start protecting your revenue today.</p>
-          <p><strong>Dashboard Login:</strong> <a href="https://${slug}.gympilotpro.com/login">https://${slug}.gympilotpro.com/login</a></p>
-          <p>Your temporary password is: <code>ChangeMe123!</code> (Please change this after your first login).</p>
-          <br/>
-          <p>Best regards,<br/>The GymPilotPro Team</p>
-        </div>
-      `,
-    }).catch(err => console.error('Failed to send welcome email:', err));
+    // Send a welcome email (centralized helper)
+    await sendGymRegistrationTrialEmail({
+      email,
+      firstName,
+      gymName,
+      loginUrl: `https://${slug}.gympilotpro.com/login`,
+    });
 
     return NextResponse.json({ 
       success: true, 
@@ -132,3 +119,4 @@ export async function POST(req: Request) {
     );
   }
 }
+
