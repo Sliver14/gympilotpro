@@ -59,5 +59,34 @@ export async function getGymFromRequest(request: NextRequest) {
     if (gym) return gym
   }
 
+  // Fallback: If we're on the root domain, localhost, or vercel domain, 
+  // try to get the gym from the referer's path (e.g. gympilotpro.com/slug/reset-password)
+  if (hostname === ROOT_DOMAIN || hostname === 'localhost' || hostname.endsWith(VERCEL_DOMAIN)) {
+    const referer = request.headers.get('referer')
+    if (referer) {
+      try {
+        const refererUrl = new URL(referer)
+        const pathParts = refererUrl.pathname.split('/').filter(Boolean)
+        
+        // The first part of the path is usually the slug in path-based routing
+        if (pathParts.length > 0) {
+          const pathSlug = pathParts[0]
+          
+          // Only attempt if it's not a reserved word (optional optimization)
+          const reserved = ['api', 'plans', 'get-started', 'saas-admin', 'saas-login']
+          if (!reserved.includes(pathSlug)) {
+            const gym = await prisma.gym.findFirst({
+              where: { slug: pathSlug }
+            })
+            if (gym) return gym
+          }
+        }
+      } catch (e) {
+        // Ignore errors
+      }
+    }
+  }
+
   return null
 }
+
