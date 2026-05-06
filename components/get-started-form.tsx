@@ -22,6 +22,7 @@ export default function GetStartedForm() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [agreed, setAgreed] = useState(false);
   const [success, setSuccess] = useState<{ slug: string, gymName: string } | null>(null);
 
   useEffect(() => {
@@ -246,9 +247,18 @@ export default function GetStartedForm() {
               </div>
             )}
 
+            <div className="flex items-start gap-3 mb-6 group cursor-pointer" onClick={() => setAgreed(!agreed)}>
+              <div className={`h-5 w-5 rounded border-2 shrink-0 flex items-center justify-center transition-colors ${agreed ? 'bg-orange-500 border-orange-500' : 'border-border'}`}>
+                {agreed && <Check className="text-white h-3 w-3" strokeWidth={4} />}
+              </div>
+              <p className="text-[10px] font-bold text-muted-foreground leading-snug">
+                I agree to the <Link href="/terms" target="_blank" className="text-orange-500 hover:underline" onClick={(e) => e.stopPropagation()}>Service Terms</Link> and <Link href="/privacy" target="_blank" className="text-orange-500 hover:underline" onClick={(e) => e.stopPropagation()}>Privacy Protocol</Link>. I understand my data will be processed to activate my trial.
+              </p>
+            </div>
+
             <Button 
               type="submit"
-              disabled={loading}
+              disabled={loading || !agreed}
               className="w-full h-16 bg-orange-500 hover:bg-orange-600 text-white font-black uppercase text-lg rounded-none disabled:opacity-70 flex items-center justify-center transition-all active:scale-95 shadow-[0_10px_20px_rgba(249,115,22,0.2)] group"
             >
               {loading ? <Loader2 className="animate-spin" /> : (

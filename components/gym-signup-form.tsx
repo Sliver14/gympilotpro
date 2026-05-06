@@ -672,7 +672,7 @@ export default function GymSignupForm() {
                        <div className="space-y-2">
                           <h3 className="font-black text-sm">Deployment Confirmation</h3>
                           <p className="text-[10px] text-muted-foreground font-bold leading-relaxed">
-                            I verify that all provided data is accurate and I acknowledge the payment policy for the selected membership tier.
+                            I verify that all provided data is accurate and I acknowledge the <Link href="/terms" target="_blank" className="text-orange-500 hover:underline">Service Terms</Link> and <Link href="/privacy" target="_blank" className="text-orange-500 hover:underline">Privacy Protocol</Link> for the selected membership tier.
                           </p>
                        </div>
                     </div>
