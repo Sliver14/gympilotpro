@@ -74,7 +74,7 @@ const HEAR_ABOUT_US_OPTIONS = [
 import { useGym } from '@/components/gym-provider'
 
 export default function GymSignupForm() {
-  const { gymData, isLoading: gymLoading } = useGym()
+  const { gymData, isLoading: gymLoading, tenantPath } = useGym()
   const { step, formData, isLoading: hookIsLoading, updateFormData, nextStep, prevStep } = useSignup()
   const { toast } = useToast()
   const [memberships, setMemberships] = useState<Membership[]>([])
@@ -276,7 +276,7 @@ export default function GymSignupForm() {
         
         {/* Header */}
         <div className="mb-12 flex flex-col items-center justify-center gap-4 md:gap-6">
-          <Link href="/" className="group flex flex-col items-center gap-3">
+          <Link href={tenantPath('/')} className="group flex flex-col items-center gap-3">
              <div className="relative h-16 w-16 overflow-hidden rounded-full border-2 flex items-center justify-center p-1 transition-transform group-hover:scale-110" style={{ borderColor: `${accent}80`, backgroundColor: logoUrl  ? 'white' : 'hsl(var(--card))' }}>
               {logoUrl ? (
                 <Image 
@@ -744,7 +744,7 @@ export default function GymSignupForm() {
                         }
 
                         toast({ title: 'Application Transmitted', description: 'Redirecting to secure login...', duration: 5000 })
-                        setTimeout(() => window.location.href = '/login', 3000)
+                        setTimeout(() => window.location.href = tenantPath('/login'), 3000)
                       } catch (err: any) {
                         toast({ title: 'Application Error', description: err.message, variant: 'destructive' })
                         setIsSubmitting(false)
@@ -765,7 +765,7 @@ export default function GymSignupForm() {
         <div className="mt-10 text-center">
           <p className="text-sm text-muted-foreground font-medium tracking-tight">
             Already authenticated?{' '}
-            <Link href="/login" className="font-black text-[#daa857] hover:underline ml-1">
+            <Link href={tenantPath('/login')} className="font-black text-[#daa857] hover:underline ml-1">
               Login
             </Link>
           </p>

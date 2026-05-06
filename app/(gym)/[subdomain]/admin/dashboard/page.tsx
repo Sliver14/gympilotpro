@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/sidebar'
 import { AdminSidebar } from '@/components/admin/admin-sidebar'
 import { AdminMobileNav } from '@/components/admin/admin-mobile-nav'
+import { useGym } from '@/components/gym-provider'
 import AdminStats from '@/components/admin/admin-stats'
 import MembersList from '@/components/admin/members-list'
 import StaffList from '@/components/admin/staff-list'
@@ -27,6 +28,7 @@ import { AlertTriangle, ShieldCheck } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 function AdminDashboardContent() {
+  const { gymData, tenantPath } = useGym()
   const [adminData, setAdminData] = useState<any>(null)
   const [hasPackages, setHasPackages] = useState<boolean>(true)
   const [isLoading, setIsLoading] = useState(true)
@@ -41,7 +43,7 @@ function AdminDashboardContent() {
       const userResponse = await fetch('/api/auth/user')
 
       if (!userResponse.ok) {
-        router.push('/login')
+        router.push(tenantPath('/login'))
         return
       }
 
@@ -49,7 +51,7 @@ function AdminDashboardContent() {
       
       // Ensure only authorized roles can access
       if (!['admin', 'secretary', 'trainer'].includes(userData.role)) {
-        router.push(userData.role === 'member' ? '/member/dashboard' : '/login')
+        router.push(userData.role === 'member' ? tenantPath('/member/dashboard') : tenantPath('/login'))
         toast({ title: 'Access Denied', description: 'You do not have permission to view this page.', variant: 'destructive' })
         return
       }
@@ -80,7 +82,7 @@ function AdminDashboardContent() {
   const handleLogout = async () => {
     try {
       await fetch('/api/auth/logout', { method: 'POST' })
-      router.push('/login')
+      router.push(tenantPath('/login'))
     } catch (error) {
       toast({
         title: 'Error',

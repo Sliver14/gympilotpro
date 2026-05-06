@@ -37,7 +37,7 @@ interface AdminSidebarProps {
 
 function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
   const pathname = usePathname()
-  const { gymSlug, gymData } = useGym()
+  const { gymSlug, gymData, tenantPath } = useGym()
   const { setOpenMobile } = useSidebar()
   const initials = `${adminData.firstName?.[0] ?? ''}${adminData.lastName?.[0] ?? ''}`.toUpperCase()
   const profileImage = adminData.profileImage || adminData.memberProfile?.profileImage
@@ -54,58 +54,58 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
   const allMenuItems = [
     {
       title: 'Overview',
-      url: `/${role}/dashboard?tab=overview`,
+      url: tenantPath(`/${role}/dashboard?tab=overview`),
       icon: LayoutDashboard,
       active: currentTab === 'overview',
     },
     {
       title: 'Analytics',
-      url: `/${role}/dashboard?tab=analytics`,
+      url: tenantPath(`/${role}/dashboard?tab=analytics`),
       icon: TrendingUp,
       active: currentTab === 'analytics',
       adminOnly: true,
     },
     {
       title: 'Check-in',
-      url: `/${role}/dashboard?tab=check-in`,
+      url: tenantPath(`/${role}/dashboard?tab=check-in`),
       icon: QrCode,
       active: currentTab === 'check-in',
     },
     {
       title: 'Members',
-      url: `/${role}/dashboard?tab=members`,
+      url: tenantPath(`/${role}/dashboard?tab=members`),
       icon: Users,
       active: currentTab === 'members',
     },
     {
       title: 'Staff',
-      url: `/${role}/dashboard?tab=staff`,
+      url: tenantPath(`/${role}/dashboard?tab=staff`),
       icon: UserCheck,
       active: currentTab === 'staff',
       adminOnly: true,
     },
     {
       title: 'Payments',
-      url: `/${role}/dashboard?tab=payments`,
+      url: tenantPath(`/${role}/dashboard?tab=payments`),
       icon: Wallet,
       active: currentTab === 'payments',
     },
     {
       title: 'Attendance',
-      url: `/${role}/dashboard?tab=attendance`,
+      url: tenantPath(`/${role}/dashboard?tab=attendance`),
       icon: Calendar,
       active: currentTab === 'attendance',
     },
     {
       title: 'Revenue',
-      url: `/${role}/dashboard?tab=revenue`,
+      url: tenantPath(`/${role}/dashboard?tab=revenue`),
       icon: CreditCard,
       active: currentTab === 'revenue',
       adminOnly: true,
     },
     {
       title: 'Packages',
-      url: `/${role}/dashboard?tab=packages`,
+      url: tenantPath(`/${role}/dashboard?tab=packages`),
       icon: Package,
       active: currentTab === 'packages',
       adminOnly: true,
@@ -120,7 +120,7 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild size="lg" className="hover:bg-transparent active:bg-transparent">
-              <Link href={`/${role}/dashboard`}>
+              <Link href={tenantPath(`/${role}/dashboard`)}>
                 <div 
                   className={cn(
                     "flex aspect-square size-10 items-center justify-center rounded-xl p-1.5 shadow-sm dark:shadow-[0_0_20px_rgba(255,255,255,0.1)] border transition-transform group-hover:scale-110 overflow-hidden",
@@ -223,14 +223,14 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
                   </div>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild className="rounded-xl focus:bg-accent cursor-pointer py-3 px-4 text-foreground focus:text-accent-foreground" onClick={() => setOpenMobile(false)}>
-                  <Link href="/admin/settings" className="flex items-center gap-3 font-black text-[10px]">
+                  <Link href={tenantPath('/admin/settings')} className="flex items-center gap-3 font-black text-[10px]">
                     <Settings className="size-4" style={{ color: accent }} />
                     Gym Settings
                   </Link>
                 </DropdownMenuItem>
                 {role === 'admin' && (
                   <DropdownMenuItem asChild className="rounded-xl focus:bg-accent cursor-pointer py-3 px-4 text-foreground focus:text-accent-foreground" onClick={() => setOpenMobile(false)}>
-                    <Link href="/admin/domain" className="flex items-center gap-3 font-black text-[10px] w-full justify-between">
+                    <Link href={tenantPath('/admin/domain')} className="flex items-center gap-3 font-black text-[10px] w-full justify-between">
                       <div className="flex items-center gap-3">
                         <Globe className="size-4" style={{ color: accent }} />
                         Domain Setup

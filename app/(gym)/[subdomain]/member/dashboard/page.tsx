@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/sidebar'
 import { MemberSidebar } from '@/components/member/member-sidebar'
 import { MemberMobileNav } from '@/components/member/member-mobile-nav'
+import { useGym } from '@/components/gym-provider'
 import MemberProfile from '@/components/member/member-profile'
 import AttendanceHistory from '@/components/member/attendance-history'
 import ProgressNotes from '@/components/member/progress-notes'
@@ -52,6 +53,7 @@ interface AttendanceData {
 }
 
 function MemberDashboardContent() {
+  const { gymData, tenantPath } = useGym()
   const [memberData, setMemberData] = useState<MemberData | null>(null)
   const [attendanceHistory, setAttendanceHistory] = useState<AttendanceData[]>([])
   const [communityData, setCommunityData] = useState<any>(null)
@@ -75,7 +77,7 @@ function MemberDashboardContent() {
       
       if (!response.ok) {
         if (response.status === 401) {
-          router.push('/login')
+          router.push(tenantPath('/login'))
           return
         }
         
@@ -86,7 +88,7 @@ function MemberDashboardContent() {
             if (userRes.ok) {
               const userData = await userRes.json()
               if (userData.role !== 'member') {
-                router.push(`/${userData.role}/dashboard`)
+                router.push(tenantPath(`/${userData.role}/dashboard`))
                 return
               }
             }
@@ -150,7 +152,7 @@ function MemberDashboardContent() {
   const handleLogout = async () => {
     try {
       await fetch('/api/auth/logout', { method: 'POST' })
-      router.push('/login')
+      router.push(tenantPath('/login'))
     } catch (error) {
       toast({
         title: 'Error',
@@ -234,7 +236,7 @@ function MemberDashboardContent() {
                   <p className="text-sm font-medium text-muted-foreground max-w-xl">
                     Your membership expired on <span className="text-destructive font-bold">{expiryDate.toLocaleDateString()}</span>. The terminal is locked until renewal is processed.
                   </p>
-                  <Link href="/member/renew-membership">
+                  <Link href={tenantPath("/member/renew-membership")}>
                     <Button className="mt-6 h-12 px-8 bg-destructive hover:bg-destructive/80 text-destructive-foreground font-black rounded-xl transition-all hover:scale-[1.02]">
                       Initiate Renewal
                     </Button>
@@ -256,7 +258,7 @@ function MemberDashboardContent() {
                   <p className="text-sm font-medium text-muted-foreground max-w-xl">
                     Gym access expires in <span className="text-primary font-bold">{daysUntilExpiry} days</span> ({expiryDate.toLocaleDateString()}). Extend plan now to maintain uninterrupted access.
                   </p>
-                  <Link href="/member/renew-membership">
+                  <Link href={tenantPath("/member/renew-membership")}>
                     <Button className="mt-6 h-12 px-8 bg-primary hover:bg-primary/80 text-primary-foreground font-black rounded-xl transition-all hover:scale-[1.02]">
                       Extend Plan
                     </Button>

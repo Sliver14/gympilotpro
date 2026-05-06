@@ -19,7 +19,7 @@ interface MemberMobileNavProps {
 }
 
 function MemberMobileNavContent({ className }: MemberMobileNavProps) {
-  const { gymData } = useGym()
+  const { gymData, tenantPath } = useGym()
   const searchParams = useSearchParams()
   const currentTab = searchParams.get('tab') || 'overview'
   const [open, setOpen] = useState(false)
@@ -59,7 +59,7 @@ function MemberMobileNavContent({ className }: MemberMobileNavProps) {
           return (
             <Link
               key={item.tab}
-              href={`/member/dashboard?tab=${item.tab}`}
+              href={tenantPath(`/member/dashboard?tab=${item.tab}`)}
               className="flex flex-1 flex-col items-center justify-center gap-1 transition-all duration-300 h-full"
             >
               <div
@@ -105,7 +105,7 @@ function MemberMobileNavContent({ className }: MemberMobileNavProps) {
             <div className="grid grid-cols-2 gap-3 p-4 pt-0 pb-8">
               {secondaryNavItems.map((item) => {
                 const isActive = item.isPath ? window.location.pathname.includes(item.tab) : currentTab === item.tab
-                const href = item.isPath ? `/member/${item.tab}` : `/member/dashboard?tab=${item.tab}`
+                const href = item.isPath ? tenantPath(`/member/${item.tab}`) : tenantPath(`/member/dashboard?tab=${item.tab}`)
                 return (
                   <Link
                     key={item.tab}

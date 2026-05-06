@@ -79,7 +79,7 @@ export default function GetStartedForm() {
   };
 
   if (success) {
-    const dashboardUrl = `https://${success.slug}.gympilotpro.com/login`;
+    const dashboardUrl = `/${success.slug}/login`;
     
     return (
       <div className="flex-1 flex items-center justify-center p-4 md:p-6 py-24">

@@ -13,7 +13,7 @@ import { cn } from '@/lib/utils'
 import { useGym } from '@/components/gym-provider'
 
 export default function GymLoginForm() {
-  const { gymData, isLoading: gymLoading } = useGym()
+  const { gymData, isLoading: gymLoading, tenantPath } = useGym()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -96,13 +96,13 @@ export default function GymLoginForm() {
 
       // Redirect based on role
       if (data.user.role === 'admin') {
-        router.push('/admin/dashboard')
+        router.push(tenantPath('/admin/dashboard'))
       } else if (data.user.role === 'secretary') {
-        router.push('/secretary/dashboard')
+        router.push(tenantPath('/secretary/dashboard'))
       } else if (data.user.role === 'trainer') {
-        router.push('/trainer/dashboard')
+        router.push(tenantPath('/trainer/dashboard'))
       } else {
-        router.push('/member/dashboard')
+        router.push(tenantPath('/member/dashboard'))
       }
     } catch (error) {
       const errorMessage = 'Network error. Please check your connection and try again.'
@@ -133,7 +133,7 @@ export default function GymLoginForm() {
       `}</style>
       <div className="w-full max-w-md">
         {/* Logo */}
-        <Link href="/" className="mb-12 flex flex-col items-center justify-center gap-4 group">
+        <Link href={tenantPath('/')} className="mb-12 flex flex-col items-center justify-center gap-4 group">
           <div className="relative h-16 md:h-20 w-20 overflow-hidden rounded-full border-2 flex items-center justify-center transition-transform group-hover:scale-110" style={{ borderColor: `${accent}80`, backgroundColor: logoUrl  ? 'white' : 'hsl(var(--card))' }}>
             {logoUrl ? (
               <Image 
@@ -238,7 +238,7 @@ export default function GymLoginForm() {
 
               <div className="flex justify-end pr-2">
                 <Link
-                  href="/forgot-password"
+                  href={tenantPath('/forgot-password')}
                   className="text-xs text-muted-foreground hover:text-foreground transition-colors font-bold"
                   style={{ color: `${accent}cc` }}
                 >
@@ -265,7 +265,7 @@ export default function GymLoginForm() {
             <div className="mt-10 text-center">
               <p className="text-sm text-muted-foreground font-medium">
                 New to the space?{' '}
-                <Link href="/signup" className="font-black hover:underline ml-1" style={{ color: accent }}>
+                <Link href={tenantPath('/signup')} className="font-black hover:underline ml-1" style={{ color: accent }}>
                   Apply for Membership
                 </Link>
               </p>

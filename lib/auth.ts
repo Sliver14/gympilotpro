@@ -66,6 +66,13 @@ export async function verifySession(token: string) {
   return user
 }
 
+export function getBaseUrl() {
+  const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
+  const domain = process.env.NEXT_PUBLIC_ROOT_DOMAIN || 'gympilotpro.com';
+  const port = process.env.NODE_ENV === 'production' ? '' : ':3000';
+  return `${protocol}://${domain}${port}`;
+}
+
 export function getDashboardRedirectPath(user: any) {
   if (user.role === 'superadmin') {
     return '/saas-admin/dashboard';
@@ -90,6 +97,22 @@ export function getDashboardRedirectPath(user: any) {
   }
 
   return `/${rolePath}`;
+}
+
+export function getAbsoluteRedirectPath(user: any) {
+  const redirectPath = getDashboardRedirectPath(user);
+  if (!redirectPath) return null;
+
+  if (user.role === 'superadmin') {
+    return `${getBaseUrl()}${redirectPath}`;
+  }
+
+  const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
+  const domain = process.env.NEXT_PUBLIC_ROOT_DOMAIN || 'gympilotpro.com';
+  const port = process.env.NODE_ENV === 'production' ? '' : ':3000';
+  
+  const host = user.gym.customDomain || `${user.gym.slug}.${domain}`;
+  return `${protocol}://${host}${port}${redirectPath}`;
 }
 
 export async function getCurrentUser() {

@@ -9,7 +9,10 @@ import { useToast } from '@/hooks/use-toast'
 import { ArrowLeft, Mail, Loader2, Send, AlertCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
+import { useGym } from '@/components/gym-provider'
+
 export default function ForgotPasswordPage() {
+  const { tenantPath } = useGym()
   const [email, setEmail] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
@@ -68,7 +71,7 @@ export default function ForgotPasswordPage() {
     <div className="flex min-h-screen items-center justify-center bg-background text-foreground selection:bg-[#daa857]/30 px-4">
       <div className="w-full max-w-md">
         {/* Logo */}
-        <Link href="/" className="mb-12 flex flex-col items-center justify-center gap-4 group">
+        <Link href={tenantPath('/')} className="mb-12 flex flex-col items-center justify-center gap-4 group">
           <div className="relative h-16 md:h-20 w-20 overflow-hidden rounded-full border-2 transition-transform group-hover:scale-110" style={{ borderColor: `${accent}80` }}>
             <Image 
               src="/WhatsApp_Image_2026-02-25_at_9.54.33_AM-removebg-preview.png" 
@@ -91,7 +94,7 @@ export default function ForgotPasswordPage() {
 
           <div className="relative z-10">
             <div className="mb-2">
-              <Link href="/login" className="inline-flex items-center gap-2 text-[10px] font-black tracking-[0.2em] text-muted-foreground hover:text-[#daa857] transition-colors">
+              <Link href={tenantPath('/login')} className="inline-flex items-center gap-2 text-[10px] font-black tracking-[0.2em] text-muted-foreground hover:text-[#daa857] transition-colors">
                 <ArrowLeft className="h-3 w-3" /> Back to Login
               </Link>
             </div>

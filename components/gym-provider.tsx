@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, ReactNode, useEffect, useState } from 'react';
+import { createContext, useContext, ReactNode, useEffect, useState, useCallback } from 'react';
 import { useParams, usePathname } from 'next/navigation';
 import { SubscriptionLockScreen } from './subscription-lock-screen';
 
@@ -8,12 +8,14 @@ interface GymContextType {
   gymSlug: string | null;
   gymData: any | null;
   isLoading: boolean;
+  tenantPath: (path: string) => string;
 }
 
 const GymContext = createContext<GymContextType>({ 
   gymSlug: null, 
   gymData: null, 
-  isLoading: true 
+  isLoading: true,
+  tenantPath: (path: string) => path
 });
 
 interface GymProviderProps {
@@ -45,6 +47,27 @@ export function GymProvider({
   const [isExpired, setIsExpired] = useState(initialIsExpired);
 
   const isPublicRoute = PUBLIC_ROUTES.some(route => pathname?.includes(route));
+
+  // Helper to build tenant-aware paths
+  const tenantPath = useCallback((path: string) => {
+    if (typeof window === 'undefined') return path;
+    
+    const hostname = window.location.hostname;
+    const ROOT_DOMAIN = 'gympilotpro.com';
+    const isRoot = hostname === ROOT_DOMAIN || 
+                   hostname === `www.${ROOT_DOMAIN}` || 
+                   hostname === 'localhost' || 
+                   hostname === '127.0.0.1' ||
+                   hostname.endsWith('.vercel.app');
+
+    // If we're on the root domain and have a slug, prefix the path
+    if (isRoot && gymSlug) {
+      const cleanPath = path.startsWith('/') ? path : `/${path}`;
+      return `/${gymSlug}${cleanPath}`;
+    }
+
+    return path;
+  }, [gymSlug]);
 
   useEffect(() => {
     let slug = (params.subdomain || params.domain) as string;
@@ -112,7 +135,7 @@ export function GymProvider({
   }
 
   return (
-    <GymContext.Provider value={{ gymSlug, gymData, isLoading }}>
+    <GymContext.Provider value={{ gymSlug, gymData, isLoading, tenantPath }}>
       {children}
     </GymContext.Provider>
   );

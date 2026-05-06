@@ -10,7 +10,10 @@ import { useToast } from '@/hooks/use-toast'
 import { CheckCircle, AlertCircle, Lock, Loader2, ArrowRight, Eye, EyeOff } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
+import { useGym } from '@/components/gym-provider'
+
 function ResetPasswordContent() {
+  const { tenantPath } = useGym()
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -71,7 +74,7 @@ function ResetPasswordContent() {
           description: 'Your password has been reset successfully.',
         })
         setTimeout(() => {
-          router.push('/login')
+          router.push(tenantPath('/login'))
         }, 3000)
       } else {
         throw new Error(data.error || 'Failed to reset password')
@@ -99,7 +102,7 @@ function ResetPasswordContent() {
             <h2 className="text-3xl font-black uppercase tracking-tighter">Invalid <span className="text-red-500">Link</span></h2>
             <p className="text-muted-foreground text-sm font-medium">{error}</p>
           </div>
-          <Link href="/forgot-password">
+          <Link href={tenantPath('/forgot-password')}>
             <Button className="w-full h-14 bg-red-500 hover:bg-red-600 text-white font-black tracking-[0.2em] rounded-2xl">
               Request New Link
             </Button>
@@ -126,7 +129,7 @@ function ResetPasswordContent() {
                 Your password has been updated. Redirecting to login terminal...
               </p>
             </div>
-            <Link href="/login">
+            <Link href={tenantPath('/login')}>
               <Button className="w-full h-14 bg-green-600 hover:bg-green-700 text-white font-black tracking-[0.2em] rounded-2xl mt-4">
                 Login Now
               </Button>

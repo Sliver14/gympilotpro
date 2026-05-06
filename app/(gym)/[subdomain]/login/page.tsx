@@ -1,4 +1,4 @@
-import { getCurrentUser, getDashboardRedirectPath } from '@/lib/auth'
+import { getCurrentUser, getDashboardRedirectPath, getAbsoluteRedirectPath } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 import GymLoginForm from '@/components/gym-login-form'
 
@@ -7,9 +7,10 @@ export default async function LoginPage({ params }: { params: { subdomain: strin
   const user = await getCurrentUser()
 
   if (user) {
-    // If it's a superadmin, redirect to saas dashboard
+    // If it's a superadmin, redirect to saas dashboard (Absolute URL)
     if (user.role === 'superadmin') {
-      redirect('/saas-admin/dashboard')
+      const redirectUrl = getAbsoluteRedirectPath(user)
+      if (redirectUrl) redirect(redirectUrl)
     }
 
     // Comprehensive check: match by slug OR custom domain

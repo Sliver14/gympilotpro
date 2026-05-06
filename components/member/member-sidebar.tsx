@@ -36,7 +36,7 @@ interface MemberSidebarProps {
 
 function MemberSidebarContent({ memberData, onLogout }: MemberSidebarProps) {
   const pathname = usePathname()
-  const { gymSlug, gymData } = useGym()
+  const { gymSlug, gymData, tenantPath } = useGym()
   const { setOpenMobile } = useSidebar()
   const searchParams = useSearchParams()
   const currentTab = searchParams.get('tab') || 'overview'
@@ -51,31 +51,31 @@ function MemberSidebarContent({ memberData, onLogout }: MemberSidebarProps) {
   const menuItems = [
     {
       title: 'Overview',
-      url: `/member/dashboard?tab=overview`,
+      url: tenantPath(`/member/dashboard?tab=overview`),
       icon: User,
       active: currentTab === 'overview',
     },
     {
       title: 'Community',
-      url: `/member/dashboard?tab=community`,
+      url: tenantPath(`/member/dashboard?tab=community`),
       icon: Trophy,
       active: currentTab === 'community',
     },
     {
       title: 'QR Code',
-      url: `/member/dashboard?tab=qr-code`,
+      url: tenantPath(`/member/dashboard?tab=qr-code`),
       icon: QrCode,
       active: currentTab === 'qr-code',
     },
     {
       title: 'Attendance',
-      url: `/member/dashboard?tab=attendance`,
+      url: tenantPath(`/member/dashboard?tab=attendance`),
       icon: Calendar,
       active: currentTab === 'attendance',
     },
     {
       title: 'Progress',
-      url: `/member/dashboard?tab=progress`,
+      url: tenantPath(`/member/dashboard?tab=progress`),
       icon: TrendingUp,
       active: currentTab === 'progress',
     },
@@ -87,7 +87,7 @@ function MemberSidebarContent({ memberData, onLogout }: MemberSidebarProps) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild size="lg" className="hover:bg-transparent active:bg-transparent">
-              <Link href={`/member/dashboard`}>
+              <Link href={tenantPath(`/member/dashboard`)}>
                 <div 
                   className={cn(
                     "flex aspect-square size-10 items-center justify-center rounded-xl p-1.5 shadow-sm dark:shadow-[0_0_20px_rgba(255,255,255,0.1)] border transition-transform group-hover:scale-110 overflow-hidden",
@@ -190,7 +190,7 @@ function MemberSidebarContent({ memberData, onLogout }: MemberSidebarProps) {
                   </div>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild className="rounded-xl focus:bg-accent cursor-pointer py-3 px-4 text-foreground focus:text-accent-foreground" onClick={() => setOpenMobile(false)}>
-                  <Link href="/member/profile" className="flex items-center gap-3 font-black text-[10px]">
+                  <Link href={tenantPath('/member/profile')} className="flex items-center gap-3 font-black text-[10px]">
                     <Settings className="size-4" style={{ color: accent }} />
                     Profile Settings
                   </Link>

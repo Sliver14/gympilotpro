@@ -16,7 +16,7 @@ interface AdminHeaderProps {
 }
 
 export default function AdminHeader({ adminData, onLogout, title, description }: AdminHeaderProps) {
-  const { gymSlug, gymData } = useGym()
+  const { gymSlug, gymData, tenantPath } = useGym()
   const initials = `${adminData.firstName?.[0] ?? ''}${adminData.lastName?.[0] ?? ''}`.toUpperCase()
   const profileImage = adminData.profileImage || adminData.memberProfile?.profileImage
 
@@ -29,7 +29,7 @@ export default function AdminHeader({ adminData, onLogout, title, description }:
     <header className="border-b border-border bg-card/50 backdrop-blur-md sticky top-0 z-30">
       <div className="container mx-auto flex h-14 md:h-16 items-center justify-between px-4 md:px-6">
         <div className="flex items-center gap-4">
-          <Link href={`/admin/dashboard`} className="flex items-center gap-2 group">
+          <Link href={tenantPath(`/admin/dashboard`)} className="flex items-center gap-2 group">
             <div className="relative h-8 w-8 overflow-hidden rounded-full border flex items-center justify-center transition-transform group-hover:scale-110" style={{ borderColor: `${accent}4d`, backgroundColor: logo  ? 'white' : 'hsl(var(--card))' }}>
               {logo ? (
                 <Image 
@@ -72,7 +72,7 @@ export default function AdminHeader({ adminData, onLogout, title, description }:
                 </div>
               </DropdownMenuItem>
               <DropdownMenuItem asChild className="focus:bg-accent cursor-pointer">
-                <Link href="/admin/settings" className="flex items-center gap-2 font-bold text-[10px]">
+                <Link href={tenantPath("/admin/settings")} className="flex items-center gap-2 font-bold text-[10px]">
                   <Settings className="h-3.5 w-3.5" style={{ color: accent }} />
                   Admin Settings
                 </Link>

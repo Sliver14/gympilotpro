@@ -21,7 +21,7 @@ interface AdminMobileNavProps {
 }
 
 function AdminMobileNavContent({ className, role = 'admin' }: AdminMobileNavProps) {
-  const { gymData } = useGym()
+  const { gymData, tenantPath } = useGym()
   const searchParams = useSearchParams()
   const currentTab = searchParams.get('tab') || 'overview'
   const [open, setOpen] = useState(false)
@@ -66,7 +66,7 @@ function AdminMobileNavContent({ className, role = 'admin' }: AdminMobileNavProp
           return (
             <Link
               key={item.tab}
-              href={`/${role}/dashboard?tab=${item.tab}`}
+              href={tenantPath(`/${role}/dashboard?tab=${item.tab}`)}
               className="flex flex-1 flex-col items-center justify-center gap-1 transition-all duration-300 h-full"
             >
               <div
@@ -116,7 +116,7 @@ function AdminMobileNavContent({ className, role = 'admin' }: AdminMobileNavProp
                   return (
                     <Link
                       key={item.tab}
-                      href={`/${role}/dashboard?tab=${item.tab}`}
+                      href={tenantPath(`/${role}/dashboard?tab=${item.tab}`)}
                       onClick={handleTabClick}
                       className={cn(
                         "flex flex-col items-center justify-center gap-3 p-4 rounded-2xl border transition-all duration-300",

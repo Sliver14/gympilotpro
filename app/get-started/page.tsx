@@ -1,4 +1,4 @@
-import { getCurrentUser, getDashboardRedirectPath } from '@/lib/auth'
+import { getCurrentUser, getAbsoluteRedirectPath } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 import GetStartedForm from '@/components/get-started-form'
 import { Suspense } from 'react'
@@ -9,20 +9,9 @@ export default async function GetStartedPage() {
   const user = await getCurrentUser()
 
   if (user) {
-    const redirectPath = getDashboardRedirectPath(user)
-    
-    if (redirectPath) {
-      // If gym user on root domain, redirect to their subdomain
-      if (user.role !== 'superadmin' && user.gym?.slug) {
-        const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
-        const domain = process.env.NEXT_PUBLIC_ROOT_DOMAIN || 'gympilotpro.com';
-        const port = process.env.NODE_ENV === 'production' ? '' : ':3000';
-        
-        const host = user.gym.customDomain || `${user.gym.slug}.${domain}`;
-        redirect(`${protocol}://${host}${port}${redirectPath}`);
-      }
-      
-      redirect(redirectPath)
+    const redirectUrl = getAbsoluteRedirectPath(user)
+    if (redirectUrl) {
+      redirect(redirectUrl)
     }
   }
 
