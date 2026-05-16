@@ -54,6 +54,18 @@ export async function POST(req: NextRequest) {
       }
     })
 
+    // 1b. If the user is an admin or owner, update the gym's contact details as well
+    // This ensures notifications (like reminders) use the updated admin email
+    if (['admin', 'owner'].includes(user.role)) {
+      await prisma.gym.update({
+        where: { id: gym.id },
+        data: { 
+          ...(email && { email }),
+          ...(phoneNumber && { phone: phoneNumber })
+        }
+      })
+    }
+
     // Fetch the updated user to return it
     const updatedUser = await prisma.user.findUnique({
       where: { id: user.id }
