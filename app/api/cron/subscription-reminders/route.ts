@@ -9,7 +9,7 @@ import {
 // The days we want to trigger emails for Gym Members
 const MEMBER_REMINDER_DAYS = [3, 1, 0];
 // The days we want to trigger emails for SaaS Owners
-const SAAS_REMINDER_DAYS = [7, 3, 0];
+const SAAS_REMINDER_DAYS = [3, 2, 1, 0];
 
 export async function GET(request: Request) {
   try {
