@@ -46,17 +46,19 @@ export function GymProvider({
   const [isLoading, setIsLoading] = useState(true);
   const [isExpired, setIsExpired] = useState(initialIsExpired);
   const [currentRole, setCurrentRole] = useState(userRole);
+  const [isUserChecking, setIsUserChecking] = useState(userRole === 'guest');
 
   const isPublicRoute = PUBLIC_ROUTES.some(route => pathname?.includes(route));
 
   // Sync prop changes to state
   useEffect(() => {
     setCurrentRole(userRole);
+    setIsUserChecking(userRole === 'guest');
   }, [userRole]);
 
   // Fetch user role if guest to ensure it's not a stale session
   useEffect(() => {
-    if (currentRole === 'guest') {
+    if (userRole === 'guest') {
       const fetchUser = async () => {
         try {
           const res = await fetch('/api/auth/user');
@@ -66,11 +68,15 @@ export function GymProvider({
           }
         } catch (e) {
           console.error('Failed to fetch user role:', e);
+        } finally {
+          setIsUserChecking(false);
         }
       };
       fetchUser();
+    } else {
+      setIsUserChecking(false);
     }
-  }, [currentRole]);
+  }, [userRole]);
 
   // Helper to build tenant-aware paths
   const tenantPath = useCallback((path: string) => {
@@ -147,6 +153,15 @@ export function GymProvider({
 
   // Atomic check to prevent flashing
   if (!isPublicRoute && isExpired) {
+    // If we're still verifying who the user is, show a clean loader instead of a "restricted" screen
+    if (isUserChecking) {
+      return (
+        <div className="fixed inset-0 z-[110] flex items-center justify-center bg-background">
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#daa857] border-t-transparent" />
+        </div>
+      );
+    }
+
     return (
       <SubscriptionLockScreen 
         role={currentRole} 
