@@ -1,13 +1,12 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { AlertCircle, Loader2, LogOut, CreditCard, Check, ChevronDown } from 'lucide-react'
+import { AlertCircle, Loader2, LogOut, CreditCard, Check, ChevronDown, ChevronLeft } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/hooks/use-toast'
 import { PLANS, DURATIONS, calculatePrice, calculateUpgradePrice, PlanKey, PLAN_WEIGHTS } from '@/lib/plans'
 import { cn } from '@/lib/utils'
-import { ChevronLeft } from 'lucide-react'
 
 interface SubscriptionLockScreenProps {
   role: string
@@ -36,7 +35,11 @@ export function SubscriptionLockScreen({
   const [selectedPlan, setSelectedPlan] = useState<PlanKey>(currentPlanKey)
   const [selectedMonths, setSelectedMonths] = useState(1)
   
-  const isAdmin = role === 'admin' || role === 'owner'
+  const isAdmins = role === 'admin' || role === 'owner'
+  const isStaff = role === 'secretary' || role === 'trainer'
+  const isManagement = isAdmins || isStaff
+  const isMember = role === 'member'
+  
   const isPending = gymStatus === 'pending'
 
   const pricing = useMemo(() => {
@@ -110,6 +113,46 @@ export function SubscriptionLockScreen({
     }
   }
 
+  // --- Member Generic Notice View ---
+  if (isMember && !isUpgradeMode) {
+    return (
+      <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background p-4 font-sans">
+        <div className="max-w-md w-full bg-card border border-border p-8 md:p-10 rounded-[2rem] md:rounded-[2.5rem] shadow-2xl text-center space-y-8 relative overflow-hidden">
+          <div className="absolute inset-0 bg-[#daa857]/5 opacity-10 pointer-events-none" style={{ backgroundColor: `${accent}0D` }} />
+          
+          <div className="relative z-10 space-y-6">
+            <div className="h-16 w-16 md:h-20 md:w-20 bg-red-500/10 rounded-[1.5rem] flex items-center justify-center mx-auto border border-red-500/20 shadow-xl">
+              <AlertCircle className="h-8 w-8 md:h-10 md:w-10 text-red-500" />
+            </div>
+            
+            <div className="space-y-3">
+              <h1 className="text-2xl md:text-3xl font-black uppercase tracking-tighter text-gray-200 leading-tight">
+                Gym Access <span className="text-red-500">Restricted</span>
+              </h1>
+              <p className="text-muted-foreground font-medium text-sm md:text-base leading-relaxed">
+                This gym’s subscription has expired. Please contact the gym administrator for assistance.
+              </p>
+            </div>
+            
+            <div className="pt-4">
+              <Button 
+                onClick={handleLogout} 
+                variant="outline"
+                className="w-full h-14 border-border bg-transparent hover:bg-white/5 text-muted-foreground font-black rounded-2xl uppercase tracking-widest text-xs transition-all"
+              >
+                <LogOut className="h-4 w-4 mr-2" /> Sign Out
+              </Button>
+            </div>
+          </div>
+          
+          <div className="relative z-10 pt-4 opacity-30 grayscale contrast-200">
+             <img src="https://paystack.com/assets/img/v3/common/paystack-logo.svg" alt="Paystack" className="h-3 mx-auto" />
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className={cn(
       "w-full bg-background text-foreground font-sans min-h-[100dvh] flex flex-col",
@@ -145,7 +188,7 @@ export function SubscriptionLockScreen({
                   ? "Scale your gym with premium features. Current balance applied as credit."
                   : (isPending 
                     ? "Complete payment to unlock your dashboard."
-                    : isAdmin 
+                    : isAdmins 
                       ? "Subscription expired. Renew to restore access."
                       : "Subscription expired. Contact gym admin."
                   )
@@ -153,7 +196,7 @@ export function SubscriptionLockScreen({
               </p>
             </div>
 
-            {isAdmin && (
+            {isAdmins && (
               <div className="space-y-4 md:space-y-8 relative z-10">
                 {/* Plan Selection */}
                 <div>
@@ -268,7 +311,7 @@ export function SubscriptionLockScreen({
               </div>
 
               <div className="flex flex-col gap-2 md:gap-4">
-                {isAdmin && (
+                {isAdmins && (
                   <Button 
                     onClick={handleRenew} 
                     disabled={loading}
