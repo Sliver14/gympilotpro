@@ -112,10 +112,10 @@ export function SubscriptionLockScreen({
 
   return (
     <div className={cn(
-      "z-[100] flex flex-col items-center bg-background text-foreground p-4 md:p-8 font-sans min-h-screen",
+      "z-[100] flex flex-col items-center bg-background text-foreground p-4 md:p-8 font-sans min-h-screen w-full",
       !isUpgradeMode ? "fixed inset-0 overflow-y-auto" : "relative"
     )}>
-      <div className="max-w-4xl w-full grid grid-cols-1 md:grid-cols-5 gap-0 border border-border bg-card rounded-[2rem] md:rounded-[2.5rem] shadow-2xl overflow-hidden my-auto">
+      <div className="max-w-4xl w-full grid grid-cols-1 md:grid-cols-5 gap-0 border border-border bg-card rounded-[2rem] md:rounded-[2.5rem] shadow-2xl overflow-hidden my-10 md:my-auto">
         
         {/* Left Panel: Info & Selection */}
         <div className="md:col-span-3 p-6 md:p-10 space-y-8 relative">

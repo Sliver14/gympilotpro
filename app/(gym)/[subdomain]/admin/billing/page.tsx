@@ -44,17 +44,15 @@ function AdminBillingContent() {
   const currentPlan = gymData.subscriptions?.[0]?.plan || 'starter'
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="flex-1">
-        <SubscriptionLockScreen 
-          role={adminData.role}
-          gymId={gymData.id}
-          gymStatus={gymData.status}
-          currentPlan={currentPlan}
-          accent={gymData.primaryColor}
-          isUpgradeMode={true}
-        />
-      </div>
+    <div className="min-h-screen bg-background flex flex-col">
+      <SubscriptionLockScreen 
+        role={adminData.role}
+        gymId={gymData.id}
+        gymStatus={gymData.status}
+        currentPlan={currentPlan}
+        accent={gymData.primaryColor}
+        isUpgradeMode={true}
+      />
     </div>
   )
 }
