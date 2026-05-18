@@ -45,8 +45,32 @@ export function GymProvider({
   const [gymData, setGymData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isExpired, setIsExpired] = useState(initialIsExpired);
+  const [currentRole, setCurrentRole] = useState(userRole);
 
   const isPublicRoute = PUBLIC_ROUTES.some(route => pathname?.includes(route));
+
+  // Sync prop changes to state
+  useEffect(() => {
+    setCurrentRole(userRole);
+  }, [userRole]);
+
+  // Fetch user role if guest to ensure it's not a stale session
+  useEffect(() => {
+    if (currentRole === 'guest') {
+      const fetchUser = async () => {
+        try {
+          const res = await fetch('/api/auth/user');
+          if (res.ok) {
+            const data = await res.json();
+            if (data.role) setCurrentRole(data.role);
+          }
+        } catch (e) {
+          console.error('Failed to fetch user role:', e);
+        }
+      };
+      fetchUser();
+    }
+  }, [currentRole]);
 
   // Helper to build tenant-aware paths
   const tenantPath = useCallback((path: string) => {
@@ -125,7 +149,7 @@ export function GymProvider({
   if (!isPublicRoute && isExpired) {
     return (
       <SubscriptionLockScreen 
-        role={userRole} 
+        role={currentRole} 
         gymId={gymData?.id || initialGymId} 
         gymStatus={gymData?.status || initialGymStatus}
         currentPlan={gymData?.subscriptions?.[0]?.plan || initialCurrentPlan}

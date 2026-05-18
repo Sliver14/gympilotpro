@@ -112,14 +112,14 @@ export function SubscriptionLockScreen({
 
   return (
     <div className={cn(
-      "w-full bg-background text-foreground font-sans min-h-screen flex flex-col",
+      "w-full bg-background text-foreground font-sans min-h-[100dvh] flex flex-col",
       !isUpgradeMode && "fixed inset-0 z-[100] overflow-y-auto"
     )}>
-      <div className="flex-1 flex flex-col items-center justify-start p-2 md:p-8 lg:p-12">
-        <div className="max-w-4xl w-full grid grid-cols-1 md:grid-cols-5 gap-0 border border-border bg-card rounded-[1rem] md:rounded-[2.5rem] shadow-2xl my-2 md:my-auto overflow-hidden">
+      <div className="flex-1 flex flex-col items-center justify-start p-2 md:p-8 lg:p-12 pb-24 md:pb-8">
+        <div className="max-w-4xl w-full grid grid-cols-1 md:grid-cols-5 gap-0 border border-border bg-card rounded-[1rem] md:rounded-[2.5rem] shadow-2xl my-2 md:my-auto overflow-visible">
           
           {/* Left Panel: Info & Selection */}
-          <div className="md:col-span-3 p-4 md:p-10 space-y-4 md:space-y-8 relative border-b md:border-b-0 md:border-r border-border">
+          <div className="md:col-span-3 p-4 md:p-10 space-y-4 md:space-y-8 relative border-b md:border-b-0 md:border-r border-border rounded-t-[1rem] md:rounded-l-[2.5rem] md:rounded-tr-none overflow-hidden">
             <div className="absolute inset-0 bg-[#daa857]/5 opacity-10 pointer-events-none" style={{ backgroundColor: `${accent}0D` }} />
             
             <div className="relative z-10">
