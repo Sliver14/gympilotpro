@@ -218,7 +218,7 @@ export default function SaaSLandingClient() {
               <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12 relative z-10">
                 <div className="w-32 h-32 sm:w-48 sm:h-48 rounded-none overflow-hidden border-4 border-orange-500/40 flex-shrink-0 rotate-3">
                   <img
-                    src="alex-emiko.jpeg?_nc_cat=108&ccb=1-7&_nc_sid=13d280&_nc_eui2=AeGdqwPfdCXlJV6dGu3AmTdiBcJAqDJOKegFwkCoMk4p6M20Zzrf2OugEbYaj7S14BVB4Xp605r7qT9RJb47XTD1&_nc_ohc=mwMuZMyTYK4Q7kNvwHEdlCM&_nc_oc=Adpr6JJokv0oq_gDZZ35sqxRkZ8czxBkIm4AhI5rqHPM5P73DpVofhVKCFUNXtEYGW0&_nc_zt=23&_nc_ht=scontent-ams2-1.xx&_nc_gid=JH8u3g9N0YBGrzlSYY7p0w&_nc_ss=7b2a8&oh=00_Af7Xpo7qPhuadpaauH6iQMPaET3gJMdoioE1a4xX0mfEig&oe=69FBDBE4"
+                    src="alex-emiko.jpg?_nc_cat=108&ccb=1-7&_nc_sid=13d280&_nc_eui2=AeGdqwPfdCXlJV6dGu3AmTdiBcJAqDJOKegFwkCoMk4p6M20Zzrf2OugEbYaj7S14BVB4Xp605r7qT9RJb47XTD1&_nc_ohc=mwMuZMyTYK4Q7kNvwHEdlCM&_nc_oc=Adpr6JJokv0oq_gDZZ35sqxRkZ8czxBkIm4AhI5rqHPM5P73DpVofhVKCFUNXtEYGW0&_nc_zt=23&_nc_ht=scontent-ams2-1.xx&_nc_gid=JH8u3g9N0YBGrzlSYY7p0w&_nc_ss=7b2a8&oh=00_Af7Xpo7qPhuadpaauH6iQMPaET3gJMdoioE1a4xX0mfEig&oe=69FBDBE4"
                     alt="Nere Emiko - Klimarx Space Gym"
                     className="w-full h-full object-cover"
                   />
