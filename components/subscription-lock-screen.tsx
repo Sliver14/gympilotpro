@@ -249,7 +249,9 @@ export function SubscriptionLockScreen({
                         )}
                         style={selectedMonths === d.months ? { borderColor: accent } : {}}
                       >
-                        <p className="text-[8px] md:text-[10px] font-black uppercase tracking-wider">{d.label.split(' ')[0]}</p>
+                        <p className="text-[8px] md:text-[10px] font-black uppercase tracking-wider">
+                          {d.months} {d.months === 1 ? "Month" : "Months"}
+                        </p>
                         {d.discount > 0 && <p className="text-[6px] md:text-[8px] font-black text-green-500 mt-0.5 uppercase tracking-tighter">{(d.discount * 100)}% OFF</p>}
                       </button>
                     ))}
@@ -271,7 +273,7 @@ export function SubscriptionLockScreen({
                 </div>
                 <div className="flex justify-between items-center py-2 md:py-4 border-b border-border/50">
                   <span className="text-muted-foreground font-black uppercase tracking-wider">Duration</span>
-                  <span className="font-black">{selectedMonths} Mo.</span>
+                  <span className="font-black">{selectedMonths} Month</span>
                 </div>
                 
                 {pricing.setupFeeCharge > 0 && (
