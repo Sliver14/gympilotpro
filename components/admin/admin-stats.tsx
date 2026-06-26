@@ -26,13 +26,19 @@ const formatNaira = (value: number) =>
     maximumFractionDigits: 0,
   }).format(value)
 
-export default function AdminStats({ 
+interface AdminStatsProps {
+  hideRevenue?: boolean;
+  refreshTrigger?: number;
+  branchFilter?: {
+    branchId?: string;
+  };
+}
+
+export default function AdminStats({
   hideRevenue = false,
-  refreshTrigger = 0 
-}: { 
-  hideRevenue?: boolean,
-  refreshTrigger?: number
-}) {
+  refreshTrigger = 0,
+  branchFilter,
+}: AdminStatsProps) {
   const [stats, setStats] = useState<Stats>({
     totalMembers: 0,
     activeMembers: 0,
@@ -51,10 +57,11 @@ export default function AdminStats({
       // setIsLoading(true) // Optional: show loading state on refresh
       try {
         // Try aggregated endpoint first, fallback to individual endpoint
-        const response = await fetch('/api/admin/dashboard')
+        const query = branchFilter?.branchId ? `?branchId=${branchFilter.branchId}` : '';
+        const response = await fetch(`/api/admin/dashboard${query}`)
         if (!response.ok) {
           // Fallback to individual stats endpoint
-          const fallbackResponse = await fetch('/api/admin/stats')
+          const fallbackResponse = await fetch(`/api/admin/stats${query}`)
           const data = await fallbackResponse.json()
           setStats(data)
         } else {
@@ -74,7 +81,7 @@ export default function AdminStats({
     }
 
     fetchStats()
-  }, [toast, refreshTrigger])
+  }, [toast, refreshTrigger, branchFilter])
 
   if (isLoading) {
     return (

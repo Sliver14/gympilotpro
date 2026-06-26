@@ -10,6 +10,10 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Gym not found' }, { status: 404 })
     }
 
+    const { searchParams } = new URL(request.url)
+    const branchId = searchParams.get('branchId')
+    const branchWhere = branchId && branchId !== 'all' ? { branchId } : {}
+
     const user = await getCurrentUser()
 
     if (!user || !['admin', 'secretary', 'trainer'].includes(user.role)) {
@@ -25,7 +29,7 @@ export async function GET(request: NextRequest) {
 
     // Total members
     const totalMembers = await prisma.user.count({
-      where: { role: 'member', deletedAt: null, gymId: gym.id },
+      where: { role: 'member', deletedAt: null, gymId: gym.id, ...branchWhere },
     })
 
     // Active members (valid membership)
@@ -35,6 +39,7 @@ export async function GET(request: NextRequest) {
     const expiredMembers = await prisma.memberProfile.count({
       where: {
         gymId: gym.id,
+        ...branchWhere,
         expiryDate: {
           lt: now,
         },
@@ -51,6 +56,7 @@ export async function GET(request: NextRequest) {
     const activeMembers = await prisma.memberProfile.count({
       where: {
         gymId: gym.id,
+        ...branchWhere,
         expiryDate: {
           gte: now,
         },
@@ -65,6 +71,7 @@ export async function GET(request: NextRequest) {
     const newSignups = await prisma.user.count({
       where: {
         gymId: gym.id,
+        ...branchWhere,
         role: 'member',
         deletedAt: null,
         createdAt: {
@@ -80,6 +87,7 @@ export async function GET(request: NextRequest) {
     const todayCheckins = await prisma.attendance.count({
       where: {
         gymId: gym.id,
+        ...branchWhere,
         checkInTime: {
           gte: todayStart,
           lte: todayEnd,
@@ -91,6 +99,7 @@ export async function GET(request: NextRequest) {
     const currentOccupancy = await prisma.attendance.count({
       where: {
         gymId: gym.id,
+        ...branchWhere,
         checkInTime: {
           gte: todayStart,
           lte: todayEnd,
@@ -108,6 +117,7 @@ export async function GET(request: NextRequest) {
     const currentMonthPayments = await prisma.payment.findMany({
       where: {
         gymId: gym.id,
+        ...branchWhere,
         status: 'approved',
         createdAt: {
           gte: monthStart,
