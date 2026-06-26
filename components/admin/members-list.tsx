@@ -53,7 +53,7 @@ interface Member {
 }
 
 export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => void }) {
-  const { gymData } = useGym()
+  const { gymData, selectedBranch } = useGym()
   const [members, setMembers] = useState<Member[]>([])
   const [filteredMembers, setFilteredMembers] = useState<Member[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -71,7 +71,8 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
   const fetchMembers = async () => {
     setIsLoading(true)
     try {
-      const response = await fetch('/api/admin/members')
+      const query = selectedBranch && selectedBranch !== 'all' ? `?branchId=${selectedBranch}` : ''
+      const response = await fetch(`/api/admin/members${query}`)
       const data = await response.json()
       setMembers(data)
       setFilteredMembers(data)
@@ -89,7 +90,7 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
 
   useEffect(() => {
     fetchMembers()
-  }, [toast])
+  }, [selectedBranch, toast])
 
   const getMembershipStatus = (expiryDate: string) => {
     const days = Math.floor((new Date(expiryDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24))

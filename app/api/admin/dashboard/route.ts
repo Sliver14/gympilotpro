@@ -30,6 +30,11 @@ export async function GET(request: NextRequest) {
       )
     }
 
+    // Parse branch filter from query params
+    const { searchParams } = new URL(request.url)
+    const branchId = searchParams.get('branchId')
+    const branchFilter = branchId && branchId !== 'all' ? { branchId } : {}
+
     // Calculate all date ranges upfront
     const now = new Date()
     
@@ -61,7 +66,7 @@ export async function GET(request: NextRequest) {
     ] = await Promise.all([
       // Total members
       prisma.user.count({
-        where: { gymId: gym.id, role: 'member', deletedAt: null },
+        where: { gymId: gym.id, role: 'member', deletedAt: null, ...branchFilter },
       }),
       // Active members
       prisma.memberProfile.count({
@@ -72,7 +77,8 @@ export async function GET(request: NextRequest) {
           },
           user: {
             deletedAt: null,
-            role: 'member'
+            role: 'member',
+            ...branchFilter
           }
         },
       }),
@@ -84,6 +90,7 @@ export async function GET(request: NextRequest) {
             gte: todayStart,
             lte: todayEnd,
           },
+          ...branchFilter
         },
       }),
       // Pending payments
@@ -91,6 +98,7 @@ export async function GET(request: NextRequest) {
         where: {
           gymId: gym.id,
           status: 'pending',
+          ...branchFilter
         },
       }),
       // Monthly revenue (aggregate for current month)
@@ -102,6 +110,7 @@ export async function GET(request: NextRequest) {
             gte: monthStart,
             lte: monthEnd,
           },
+          ...branchFilter
         },
         _sum: {
           amount: true,
@@ -115,6 +124,7 @@ export async function GET(request: NextRequest) {
           createdAt: {
             gte: twelveMonthsAgo,
           },
+          ...branchFilter
         },
         select: {
           amount: true,
@@ -128,6 +138,7 @@ export async function GET(request: NextRequest) {
           checkInTime: {
             gte: thirtyDaysAgo,
           },
+          ...branchFilter
         },
         select: {
           checkInTime: true,
@@ -143,7 +154,8 @@ export async function GET(request: NextRequest) {
           },
           user: {
             deletedAt: null,
-            role: 'member'
+            role: 'member',
+            ...branchFilter
           }
         },
       }),
@@ -156,6 +168,7 @@ export async function GET(request: NextRequest) {
           createdAt: {
             gte: sevenDaysAgo,
           },
+          ...branchFilter
         },
       }),
       // Current occupancy (checked in today, not checked out)
@@ -167,6 +180,7 @@ export async function GET(request: NextRequest) {
             lte: todayEnd,
           },
           checkOutTime: null,
+          ...branchFilter
         },
       }),
     ])

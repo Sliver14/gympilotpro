@@ -18,6 +18,7 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { useGym } from '@/components/gym-provider'
 
 interface PendingPayment {
   id: string
@@ -44,12 +45,14 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
   const [paymentToReject, setPaymentToReject] = useState<PendingPayment | null>(null)
   const [startDate, setStartDate] = useState<string>(new Date().toISOString().split('T')[0])
   const { toast } = useToast()
+  const { selectedBranch } = useGym()
   const today = new Date().toISOString().split('T')[0]
 
   const fetchPayments = async () => {
     setIsLoading(true)
     try {
-      const response = await fetch('/api/admin/pending-payments')
+      const query = selectedBranch && selectedBranch !== 'all' ? `?branchId=${selectedBranch}` : ''
+      const response = await fetch(`/api/admin/pending-payments${query}`)
       const data = await response.json()
       if (response.ok) {
         setPayments(data)
@@ -70,7 +73,7 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
 
   useEffect(() => {
     fetchPayments()
-  }, [toast])
+  }, [selectedBranch, toast])
 
   const handleApprove = async (id: string) => {
     setProcessingId(id)

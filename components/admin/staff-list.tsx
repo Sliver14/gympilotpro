@@ -11,6 +11,7 @@ import RegisterStaffDialog from './register-staff-dialog'
 import { Spinner } from '@/components/ui/spinner'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { cn } from '@/lib/utils'
+import { useGym } from '@/components/gym-provider'
 
 interface Staff {
   id: string
@@ -33,11 +34,13 @@ export default function StaffList() {
   const [isLoading, setIsLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
   const { toast } = useToast()
+  const { selectedBranch } = useGym()
 
   const fetchStaff = async () => {
     setIsLoading(true)
     try {
-      const response = await fetch('/api/admin/staff')
+      const query = selectedBranch && selectedBranch !== 'all' ? `?branchId=${selectedBranch}` : ''
+      const response = await fetch(`/api/admin/staff${query}`)
       const data = await response.json()
       if (response.ok) {
         setStaff(data)
@@ -59,7 +62,7 @@ export default function StaffList() {
 
   useEffect(() => {
     fetchStaff()
-  }, [toast])
+  }, [selectedBranch, toast])
 
   useEffect(() => {
     const filtered = staff.filter(

@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
 
     // 2. Parse request body
     const body = await req.json()
-    const { qrCodeData, memberId } = body
+    const { qrCodeData, memberId, branchId } = body
 
     if (!qrCodeData && !memberId) {
       return NextResponse.json(
@@ -58,6 +58,7 @@ export async function POST(req: NextRequest) {
               firstName: true,
               lastName: true,
               profileImage: true,
+              branchId: true,
             },
           },
         },
@@ -76,6 +77,7 @@ export async function POST(req: NextRequest) {
               firstName: true,
               lastName: true,
               profileImage: true,
+              branchId: true,
             },
           },
         },
@@ -160,11 +162,17 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    // Determine final branch assignment
+    const finalBranchId = (branchId && branchId !== 'all') 
+      ? branchId 
+      : (staff.branchId || memberProfile.user.branchId)
+
     // 6. Log new attendance (only if all checks pass)
     await prisma.attendance.create({
       data: {
         userId: memberProfile.userId,
         gymId: gym.id,
+        branchId: finalBranchId,
         checkInTime: now,
         method: qrCodeData ? 'qr' : 'manual', // differentiate method
       },

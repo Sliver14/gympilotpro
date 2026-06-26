@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input'
 import ManualRenewalDialog from './manual-renewal-dialog'
 import { Spinner } from '@/components/ui/spinner'
 import { cn } from '@/lib/utils'
+import { useGym } from '@/components/gym-provider'
 
 interface ExpiredMember {
   id: string
@@ -28,6 +29,7 @@ interface ExpiredMember {
 }
 
 export default function ExpiredMembersList({ onMemberRenewed }: { onMemberRenewed?: () => void }) {
+  const { selectedBranch } = useGym()
   const [members, setMembers] = useState<ExpiredMember[]>([])
   const [filteredMembers, setFilteredMembers] = useState<ExpiredMember[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -37,7 +39,8 @@ export default function ExpiredMembersList({ onMemberRenewed }: { onMemberRenewe
   const fetchExpiredMembers = async () => {
     setIsLoading(true)
     try {
-      const response = await fetch('/api/admin/expired-members')
+      const query = selectedBranch && selectedBranch !== 'all' ? `?branchId=${selectedBranch}` : ''
+      const response = await fetch(`/api/admin/expired-members${query}`)
       const data = await response.json()
       if (response.ok) {
         setMembers(data)
@@ -59,7 +62,7 @@ export default function ExpiredMembersList({ onMemberRenewed }: { onMemberRenewe
 
   useEffect(() => {
     fetchExpiredMembers()
-  }, [toast])
+  }, [selectedBranch, toast])
 
   useEffect(() => {
     const filtered = members.filter(

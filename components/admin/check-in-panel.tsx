@@ -11,6 +11,7 @@ import { Label } from '@/components/ui/label'
 import { AlertCircle, CheckCircle, Camera, RefreshCw, Clock, Search, User, Loader2 } from 'lucide-react'
 import { Spinner } from '@/components/ui/spinner'
 import { cn } from '@/lib/utils'
+import { useGym } from '@/components/gym-provider'
 
 interface MemberInfo {
   id: string
@@ -27,6 +28,7 @@ interface ValidationResult {
 
 export default function CheckInPanel() {
   const { toast } = useToast()
+  const { selectedBranch } = useGym()
   const [isScanning, setIsScanning] = useState(false)
   const [isValidating, setIsValidating] = useState(false)
   const [result, setResult] = useState<ValidationResult | null>(null)
@@ -114,7 +116,10 @@ export default function CheckInPanel() {
             const res = await fetch('/api/checkin/validate-qr', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ qrCodeData: decodedText.trim() }),
+              body: JSON.stringify({ 
+                qrCodeData: decodedText.trim(),
+                branchId: selectedBranch && selectedBranch !== 'all' ? selectedBranch : undefined
+              }),
             })
 
             const data: ValidationResult = await res.json()
@@ -190,7 +195,10 @@ export default function CheckInPanel() {
       const res = await fetch('/api/checkin/validate-qr', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ memberId: member.id }), // backend accepts memberId
+        body: JSON.stringify({ 
+          memberId: member.id,
+          branchId: selectedBranch && selectedBranch !== 'all' ? selectedBranch : undefined
+        }), // backend accepts memberId
       })
 
       const data: ValidationResult = await res.json()

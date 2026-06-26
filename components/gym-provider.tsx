@@ -22,6 +22,8 @@ interface GymContextType {
   // Branch support
   activeBranchId: BranchSelection;
   setActiveBranchId: (branchId: BranchSelection) => void;
+  selectedBranch: BranchSelection;
+  setSelectedBranch: (branchId: BranchSelection) => void;
   currentBranch: any | null;
 }
 
@@ -33,6 +35,8 @@ const GymContext = createContext<GymContextType>({
 
   activeBranchId: 'all',
   setActiveBranchId: () => {},
+  selectedBranch: 'all',
+  setSelectedBranch: () => {},
   currentBranch: null,
 });
 
@@ -74,8 +78,7 @@ export function GymProvider({
   const [isUserChecking, setIsUserChecking] = useState(userRole === 'guest');
 
   // Branch state
-  const [activeBranchId, setActiveBranchIdState] =
-    useState<BranchSelection>('all');
+  const [selectedBranch, setSelectedBranchState] = useState<BranchSelection>('all');
 
   const isPublicRoute = PUBLIC_ROUTES.some((route) =>
     pathname?.includes(route)
@@ -216,15 +219,41 @@ export function GymProvider({
   useEffect(() => {
     if (!gymData?.id) return;
 
+    const isElite = gymData.subscriptions?.[0]?.plan === 'elite';
+    if (!isElite) {
+      setSelectedBranchState(null);
+      return;
+    }
+
+    const branchesList = gymData.branches || [];
+    if (branchesList.length === 1) {
+      setSelectedBranchState(branchesList[0].id);
+      return;
+    }
+
     const saved = localStorage.getItem(`branch_${gymData.id}`);
 
     if (saved) {
-      setActiveBranchIdState(saved as BranchSelection);
+      setSelectedBranchState(saved as BranchSelection);
+    } else {
+      setSelectedBranchState('all');
     }
-  }, [gymData?.id]);
+  }, [gymData]);
 
-  const setActiveBranchId = (branchId: BranchSelection) => {
-    setActiveBranchIdState(branchId);
+  const setSelectedBranch = useCallback((branchId: BranchSelection) => {
+    const isElite = gymData?.subscriptions?.[0]?.plan === 'elite';
+    if (!isElite) {
+      setSelectedBranchState(null);
+      return;
+    }
+
+    const branchesList = gymData?.branches || [];
+    if (branchesList.length === 1) {
+      setSelectedBranchState(branchesList[0].id);
+      return;
+    }
+
+    setSelectedBranchState(branchId);
 
     if (gymData?.id) {
       localStorage.setItem(
@@ -232,11 +261,14 @@ export function GymProvider({
         branchId ?? 'all'
       );
     }
-  };
+  }, [gymData]);
+
+  const activeBranchId = selectedBranch;
+  const setActiveBranchId = setSelectedBranch;
 
   const currentBranch =
     gymData?.branches?.find(
-      (branch: any) => branch.id === activeBranchId
+      (branch: any) => branch.id === selectedBranch
     ) ?? null;
 
   // Subscription lock
@@ -272,6 +304,8 @@ export function GymProvider({
 
         activeBranchId,
         setActiveBranchId,
+        selectedBranch,
+        setSelectedBranch,
         currentBranch,
       }}
     >

@@ -23,6 +23,7 @@ import { QrCode, TrendingUp, Users, Calendar, CreditCard, LogOut, Settings, User
 import { cn } from '@/lib/utils'
 import { hasPremiumAccess } from '@/lib/plans'
 import { ModeToggle } from '@/components/mode-toggle'
+import { BranchSwitcher } from '@/components/branch-switcher'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -148,6 +149,10 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
+        {/* Mobile/Sidebar Branch Switcher */}
+        <div className="px-3 py-1 group-data-[collapsible=icon]:hidden">
+          <BranchSwitcher />
+        </div>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>

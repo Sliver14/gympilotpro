@@ -25,11 +25,16 @@ export async function GET(request: NextRequest) {
 
     const now = new Date()
 
+    const { searchParams } = new URL(request.url)
+    const branchId = searchParams.get('branchId')
+    const branchFilter = branchId && branchId !== 'all' ? { branchId } : {}
+
     const expiredMembers = await prisma.user.findMany({
       where: {
         gymId: gym.id,
         role: 'member',
         deletedAt: null,
+        ...branchFilter,
         memberProfile: {
           expiryDate: {
             lt: now,

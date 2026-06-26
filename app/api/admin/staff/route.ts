@@ -24,11 +24,16 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 
+    const { searchParams } = new URL(request.url)
+    const branchId = searchParams.get('branchId')
+    const branchFilter = branchId && branchId !== 'all' ? { branchId } : {}
+
     const staff = await prisma.user.findMany({
       where: {
         gymId: gym.id,
         role: { in: ['admin', 'secretary', 'trainer'] },
         deletedAt: null,
+        ...branchFilter
       },
       select: {
         id: true,

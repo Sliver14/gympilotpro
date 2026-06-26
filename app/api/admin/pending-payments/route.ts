@@ -23,10 +23,15 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 
+    const { searchParams } = new URL(request.url)
+    const branchId = searchParams.get('branchId')
+    const branchFilter = branchId && branchId !== 'all' ? { branchId } : {}
+
     const pendingPayments = await prisma.payment.findMany({
       where: {
         gymId: gym.id,
         status: 'pending',
+        ...branchFilter
       },
       include: {
         user: {

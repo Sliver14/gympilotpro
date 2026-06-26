@@ -30,11 +30,16 @@ export async function GET(request: NextRequest) {
       )
     }
 
+    const { searchParams } = new URL(request.url)
+    const branchId = searchParams.get('branchId')
+    const branchFilter = branchId && branchId !== 'all' ? { branchId } : {}
+
     const members = await prisma.user.findMany({
       where: { 
         gymId: gym.id,
         role: 'member', 
-        deletedAt: null 
+        deletedAt: null,
+        ...branchFilter
       },
       select: {
         id: true,

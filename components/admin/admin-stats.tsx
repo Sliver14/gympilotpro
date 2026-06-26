@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useToast } from '@/hooks/use-toast'
 import { Users, TrendingUp, Calendar, Clock, Wallet, AlertCircle, UserPlus } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useGym } from '@/components/gym-provider'
 
 interface Stats {
   totalMembers: number
@@ -29,16 +30,13 @@ const formatNaira = (value: number) =>
 interface AdminStatsProps {
   hideRevenue?: boolean;
   refreshTrigger?: number;
-  branchFilter?: {
-    branchId?: string;
-  };
 }
 
 export default function AdminStats({
   hideRevenue = false,
   refreshTrigger = 0,
-  branchFilter,
 }: AdminStatsProps) {
+  const { selectedBranch } = useGym()
   const [stats, setStats] = useState<Stats>({
     totalMembers: 0,
     activeMembers: 0,
@@ -56,8 +54,7 @@ export default function AdminStats({
     const fetchStats = async () => {
       // setIsLoading(true) // Optional: show loading state on refresh
       try {
-        // Try aggregated endpoint first, fallback to individual endpoint
-        const query = branchFilter?.branchId ? `?branchId=${branchFilter.branchId}` : '';
+        const query = selectedBranch && selectedBranch !== 'all' ? `?branchId=${selectedBranch}` : '';
         const response = await fetch(`/api/admin/dashboard${query}`)
         if (!response.ok) {
           // Fallback to individual stats endpoint
@@ -72,7 +69,7 @@ export default function AdminStats({
         console.error('Error fetching stats:', error)
         toast({
           title: 'Error',
-          description: 'Failed to load statistics',
+          description: 'Failed to load dashboard statistics',
           variant: 'destructive',
         })
       } finally {
@@ -81,7 +78,7 @@ export default function AdminStats({
     }
 
     fetchStats()
-  }, [toast, refreshTrigger, branchFilter])
+  }, [refreshTrigger, selectedBranch, toast])
 
   if (isLoading) {
     return (

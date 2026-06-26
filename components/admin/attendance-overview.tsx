@@ -7,6 +7,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 import { Calendar } from 'lucide-react'
 import { Spinner } from '@/components/ui/spinner'
 import { cn } from '@/lib/utils'
+import { useGym } from '@/components/gym-provider'
 
 interface AttendanceData {
   date: string
@@ -18,15 +19,16 @@ export default function AttendanceOverview() {
   const [data, setData] = useState<AttendanceData[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const { toast } = useToast()
+  const { selectedBranch } = useGym()
 
   useEffect(() => {
     const fetchAttendanceData = async () => {
       try {
-        // Try aggregated endpoint first, fallback to individual endpoint
-        const response = await fetch('/api/admin/dashboard')
+        const query = selectedBranch && selectedBranch !== 'all' ? `?branchId=${selectedBranch}` : '';
+        const response = await fetch(`/api/admin/dashboard${query}`)
         if (!response.ok) {
           // Fallback to individual attendance endpoint
-          const fallbackResponse = await fetch('/api/admin/attendance-chart')
+          const fallbackResponse = await fetch(`/api/admin/attendance-chart${query}`)
           const chartData = await fallbackResponse.json()
           setData(chartData)
         } else {
@@ -46,7 +48,7 @@ export default function AttendanceOverview() {
     }
 
     fetchAttendanceData()
-  }, [toast])
+  }, [toast, selectedBranch])
 
   if (isLoading) {
     return (

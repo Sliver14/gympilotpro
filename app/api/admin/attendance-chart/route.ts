@@ -30,12 +30,17 @@ export async function GET(request: NextRequest) {
     thirtyDaysAgo.setHours(0, 0, 0, 0)
 
     // Single query to get all attendance from last 30 days
+    const { searchParams } = new URL(request.url)
+    const branchId = searchParams.get('branchId')
+    const branchFilter = branchId && branchId !== 'all' ? { branchId } : {}
+
     const attendance = await prisma.attendance.findMany({
       where: {
         gymId: gym.id,
         checkInTime: {
           gte: thirtyDaysAgo,
         },
+        ...branchFilter
       },
       select: {
         checkInTime: true,

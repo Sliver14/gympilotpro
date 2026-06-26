@@ -36,7 +36,7 @@ const GENDER_OPTIONS = [
 ]
 
 export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?: () => void }) {
-  const { gymData } = useGym()
+  const { gymData, selectedBranch } = useGym()
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [memberships, setMemberships] = useState<Membership[]>([])
@@ -102,6 +102,7 @@ export default function RegisterMemberDialog({ onMemberAdded }: { onMemberAdded?
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
+          branchId: selectedBranch && selectedBranch !== 'all' ? selectedBranch : undefined,
           password: '12345678',                    // Default password
           paymentCompleted: formData.paymentCompleted || false,  // Flag for instant verification
         }),

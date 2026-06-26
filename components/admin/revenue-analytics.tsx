@@ -7,6 +7,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 import { CreditCard } from 'lucide-react'
 import { Spinner } from '@/components/ui/spinner'
 import { cn } from '@/lib/utils'
+import { useGym } from '@/components/gym-provider'
 
 interface ChartData {
   month: string
@@ -18,15 +19,16 @@ export default function RevenueAnalytics() {
   const [data, setData] = useState<ChartData[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const { toast } = useToast()
+  const { selectedBranch } = useGym()
 
   useEffect(() => {
     const fetchRevenueData = async () => {
       try {
-        // Try aggregated endpoint first, fallback to individual endpoint
-        const response = await fetch('/api/admin/dashboard')
+        const query = selectedBranch && selectedBranch !== 'all' ? `?branchId=${selectedBranch}` : '';
+        const response = await fetch(`/api/admin/dashboard${query}`)
         if (!response.ok) {
           // Fallback to individual revenue endpoint
-          const fallbackResponse = await fetch('/api/admin/revenue')
+          const fallbackResponse = await fetch(`/api/admin/revenue${query}`)
           const chartData = await fallbackResponse.json()
           setData(chartData)
         } else {
@@ -46,7 +48,7 @@ export default function RevenueAnalytics() {
     }
 
     fetchRevenueData()
-  }, [toast])
+  }, [toast, selectedBranch])
 
   // Format numbers as Nigerian Naira (₦) with commas
   const formatCurrency = (value: number) =>

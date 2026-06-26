@@ -64,6 +64,7 @@ model Branch {
   manager       String?
   capacity      Int?           @default(0)
   isActive      Boolean        @default(true)
+  isDefault     Boolean        @default(false)
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
 

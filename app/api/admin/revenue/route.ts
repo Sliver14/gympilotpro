@@ -31,6 +31,10 @@ export async function GET(request: NextRequest) {
     twelveMonthsAgo.setHours(0, 0, 0, 0)
 
     // Single query to get all payments from last 12 months
+    const { searchParams } = new URL(request.url)
+    const branchId = searchParams.get('branchId')
+    const branchFilter = branchId && branchId !== 'all' ? { branchId } : {}
+
     const payments = await prisma.payment.findMany({
       where: {
         gymId: gym.id,
@@ -38,6 +42,7 @@ export async function GET(request: NextRequest) {
         createdAt: {
           gte: twelveMonthsAgo,
         },
+        ...branchFilter
       },
       select: {
         amount: true,

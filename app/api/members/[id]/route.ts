@@ -127,3 +127,41 @@ export async function GET(
     )
   }
 }
+
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const gym = await getGymFromRequest(request)
+    if (!gym) return NextResponse.json({ error: 'Gym not found' }, { status: 404 })
+
+    const { id } = await params
+    const currentUser = await getCurrentUser()
+
+    if (!currentUser || !['admin', 'secretary'].includes(currentUser.role)) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const { branchId } = await request.json()
+
+    if (branchId) {
+      const branch = await prisma.branch.findFirst({
+        where: { id: branchId, gymId: gym.id }
+      })
+      if (!branch) {
+        return NextResponse.json({ error: 'Invalid branch' }, { status: 400 })
+      }
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: { id, gymId: gym.id },
+      data: { branchId: branchId || null }
+    })
+
+    return NextResponse.json({ success: true, user: updatedUser })
+  } catch (error) {
+    console.error('Update member error:', error)
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+  }
+}

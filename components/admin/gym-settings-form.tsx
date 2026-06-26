@@ -28,6 +28,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { cn } from '@/lib/utils'
+import BranchesTab from './branches-tab'
 
 export function GymSettingsForm() {
   const { toast } = useToast()
@@ -42,6 +43,7 @@ export function GymSettingsForm() {
   const [isMediaModalOpen, setIsMediaModalOpen] = useState(false)
   const [isPaymentsModalOpen, setIsPaymentsModalOpen] = useState(false)
   const [isBankModalOpen, setIsBankModalOpen] = useState(false)
+  const [isBranchesModalOpen, setIsBranchesModalOpen] = useState(false)
 
   // Loading states
   const [savingBranding, setSavingBranding] = useState(false)
@@ -610,6 +612,32 @@ export function GymSettingsForm() {
             </form>
           </DialogContent>
         </Dialog>
+
+        {/* Branches Modal Trigger */}
+        {currentPlan.toLowerCase() === 'elite' && (
+          <Dialog open={isBranchesModalOpen} onOpenChange={setIsBranchesModalOpen}>
+            <DialogTrigger asChild>
+              <div className="group cursor-pointer bg-card border border-border rounded-3xl p-4 md:p-8 hover:border-[#daa857]/30 transition-all duration-500 shadow-xl relative overflow-hidden">
+                <div className="absolute -right-12 -top-12 h-16 md:h-24 w-24 rounded-full bg-[#daa857]/5 blur-2xl group-hover:bg-[#daa857]/10 transition-colors" />
+                <div className="flex items-center justify-between relative z-10">
+                  <div className="flex items-center gap-4 md:gap-6">
+                    <div className="h-14 w-14 rounded-2xl bg-[#daa857]/10 flex items-center justify-center text-[#daa857] group-hover:scale-110 transition-transform">
+                      <Building2 className="h-7 w-7" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-black uppercase tracking-tighter text-foreground mb-1">Branches</h3>
+                      <p className="text-[10px] font-bold text-muted-foreground">Manage Locations</p>
+                    </div>
+                  </div>
+                  <ChevronRight className="h-6 w-6 text-muted-foreground group-hover:text-[#daa857] transition-colors" />
+                </div>
+              </div>
+            </DialogTrigger>
+            <DialogContent className="bg-card border-border text-foreground rounded-[2.5rem] p-5 md:p-10 max-w-5xl max-h-[90vh] overflow-y-auto custom-scrollbar">
+              <BranchesTab />
+            </DialogContent>
+          </Dialog>
+        )}
 
       </div>
     </div>

@@ -19,15 +19,20 @@ interface Branch {
 }
 
 export function BranchSwitcher() {
-  const { gymData, activeBranchId, setActiveBranchId } = useGym() // We'll add these to GymProvider later
+  const { gymData, selectedBranch, setSelectedBranch } = useGym()
   const [branches, setBranches] = useState<Branch[]>([])
   const [loading, setLoading] = useState(true)
 
-  const currentBranch = branches.find(b => b.id === activeBranchId) || branches[0]
+  const isElite = gymData?.subscriptions?.[0]?.plan === 'elite'
+  const currentBranch = branches.find(b => b.id === selectedBranch)
 
   useEffect(() => {
-    fetchBranches()
-  }, [])
+    if (isElite) {
+      fetchBranches()
+    } else {
+      setLoading(false)
+    }
+  }, [isElite])
 
   const fetchBranches = async () => {
     try {
@@ -35,10 +40,10 @@ export function BranchSwitcher() {
       if (res.ok) {
         const data = await res.json()
         setBranches(data.branches || [])
-        
-        // Auto-select first branch if none active
-        if (!activeBranchId && data.branches?.length > 0) {
-          setActiveBranchId(data.branches[0].id)
+
+        // Auto-select first branch if none active and only one exists
+        if (!selectedBranch && data.branches?.length === 1) {
+          setSelectedBranch(data.branches[0].id)
         }
       }
     } catch (error) {
@@ -49,14 +54,18 @@ export function BranchSwitcher() {
   }
 
   const handleBranchChange = (branchId: string) => {
-    setActiveBranchId(branchId)
-    toast.success(`Switched to ${branches.find(b => b.id === branchId)?.name}`)
-    // Refresh dashboard data (you can trigger via context or router.refresh())
-    window.location.reload() // Temporary - better to use SWR or React Query later
+    setSelectedBranch(branchId)
+    if (branchId === 'all') {
+      toast.success('Switched to Combined View')
+    } else {
+      toast.success(`Switched to ${branches.find(b => b.id === branchId)?.name}`)
+    }
+    // Refresh page to load new branch-aware statistics
+    window.location.reload()
   }
 
-  if (loading || branches.length <= 1) {
-    return null // Don't show switcher if only one branch
+  if (!isElite || loading || branches.length <= 1) {
+    return null // Don't show switcher if not Elite or only one branch
   }
 
   return (
@@ -65,14 +74,14 @@ export function BranchSwitcher() {
         <Button variant="outline" className="flex items-center gap-2 border-border hover:bg-accent">
           <Building2 className="h-4 w-4" />
           <span className="font-medium truncate max-w-[180px]">
-            {currentBranch?.name || 'All Branches'}
+            {selectedBranch === 'all' ? 'All Branches' : (currentBranch?.name || 'Select Branch')}
           </span>
           <ChevronDown className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="end" className="w-64">
-        <DropdownMenuItem 
+        <DropdownMenuItem
           onClick={() => handleBranchChange('all')}
           className="font-medium"
         >
@@ -80,13 +89,13 @@ export function BranchSwitcher() {
         </DropdownMenuItem>
 
         {branches.map((branch) => (
-          <DropdownMenuItem 
+          <DropdownMenuItem
             key={branch.id}
             onClick={() => handleBranchChange(branch.id)}
             className="flex items-center justify-between"
           >
             <span>{branch.name}</span>
-            {activeBranchId === branch.id && <Check className="h-4 w-4" />}
+            {selectedBranch === branch.id && <Check className="h-4 w-4" />}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>
