@@ -238,9 +238,10 @@ function AdminDashboardContent() {
             </div>
           </div>
         </div>
+        <BranchSwitcher />
         <AdminMobileNav role={adminData.role} />
       </SidebarInset>
-      <BranchSwitcher />
+      
     </SidebarProvider>
   )
 }
