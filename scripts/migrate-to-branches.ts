@@ -1,5 +1,5 @@
-// scripts/migrate-to-branches.ts
-import { prisma } from '../lib/prisma'   // ← Changed to relative path
+const { PrismaClient } = require('@prisma/client')
+const prisma = new PrismaClient()
 
 async function main() {
   console.log('🚀 Starting branch migration...')

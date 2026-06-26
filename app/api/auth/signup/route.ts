@@ -60,6 +60,7 @@ export async function POST(req: NextRequest) {
       paymentMethod,
       startDate,
       paymentCompleted = false,
+      branchId,
     } = body
 
     // Check if request is from staff + instant approval flag
@@ -149,6 +150,7 @@ export async function POST(req: NextRequest) {
     const user = await prisma.user.create({
       data: {
         gymId: gym.id,
+        branchId: branchId || null,
         email: normalizedEmail,
         password: hashedPassword,
         firstName,
@@ -184,6 +186,7 @@ export async function POST(req: NextRequest) {
     const payment = await prisma.payment.create({
       data: {
         gymId: gym.id,
+        branchId: branchId || null,
         userId: user.id,
         amount: membership.price,
         status: shouldApproveImmediately ? 'approved' : 'pending',

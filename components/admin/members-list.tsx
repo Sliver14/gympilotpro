@@ -12,6 +12,7 @@ import ManualRenewalDialog from './manual-renewal-dialog'
 import { Spinner } from '@/components/ui/spinner'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Label } from '@/components/ui/label'
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet'
 import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
@@ -26,6 +27,7 @@ interface Member {
   phoneNumber: string
   profileImage: string | null
   createdAt: string
+  branchId?: string | null
   _count?: {
     payments: number
   }
@@ -450,6 +452,43 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
                           <p className="text-xs font-bold capitalize">{selectedMember.memberProfile.gender || 'N/A'}</p>
                         </div>
                       </div>
+
+                      {currentPlan === 'elite' && (
+                        <div className="sm:col-span-2 space-y-2 mt-2 pt-2 border-t">
+                          <Label className="text-[9px] text-muted-foreground font-black uppercase">Branch Location</Label>
+                          <Select 
+                            value={selectedMember.branchId || 'none'} 
+                            onValueChange={async (value) => {
+                              try {
+                                const response = await fetch(`/api/members/${selectedMember.id}`, {
+                                  method: 'PATCH',
+                                  headers: { 'Content-Type': 'application/json' },
+                                  body: JSON.stringify({ branchId: value === 'none' ? null : value }),
+                                })
+                                if (response.ok) {
+                                  toast({ title: 'Success', description: 'Member branch updated successfully' })
+                                  setSelectedMember({ ...selectedMember, branchId: value === 'none' ? null : value })
+                                  fetchMembers()
+                                } else {
+                                  toast({ title: 'Error', description: 'Failed to update branch', variant: 'destructive' })
+                                }
+                              } catch (e) {
+                                toast({ title: 'Error', description: 'Something went wrong', variant: 'destructive' })
+                              }
+                            }}
+                          >
+                            <SelectTrigger className="h-10 bg-background border-border rounded-xl">
+                              <SelectValue placeholder="No Branch Assigned" />
+                            </SelectTrigger>
+                            <SelectContent className="bg-card border-border text-foreground">
+                              <SelectItem value="none">No Branch Assigned</SelectItem>
+                              {(gymData?.branches || []).map((b: any) => (
+                                <SelectItem key={b.id} value={b.id}>{b.name}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      )}
                     </div>
                   </div>
 

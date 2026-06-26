@@ -32,6 +32,15 @@ export async function GET(
         subscriptions: {
           orderBy: { endDate: 'desc' },
           take: 1
+        },
+        branches: {
+          select: {
+            id: true,
+            name: true,
+            address: true,
+            isActive: true,
+            isDefault: true,
+          }
         }
       },
     })

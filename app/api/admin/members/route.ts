@@ -49,6 +49,7 @@ export async function GET(request: NextRequest) {
         phoneNumber: true,
         profileImage: true,
         createdAt: true,
+        branchId: true,
         _count: {
           select: {
             payments: {
