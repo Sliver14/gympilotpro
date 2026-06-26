@@ -9,6 +9,7 @@ import {
   SidebarInset,
   SidebarTrigger,
 } from '@/components/ui/sidebar'
+import { BranchSwitcher } from '@/components/branch-switcher'
 import { AdminSidebar } from '@/components/admin/admin-sidebar'
 import { AdminMobileNav } from '@/components/admin/admin-mobile-nav'
 import { useGym } from '@/components/gym-provider'
@@ -239,6 +240,7 @@ function AdminDashboardContent() {
         </div>
         <AdminMobileNav role={adminData.role} />
       </SidebarInset>
+      <BranchSwitcher />
     </SidebarProvider>
   )
 }

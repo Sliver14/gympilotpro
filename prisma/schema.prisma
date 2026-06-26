@@ -34,9 +34,14 @@ model Gym {
   tagline           String?
   paystackPublicKey String?
   paystackSecretKey String?
-  bankName           String?
-  accountNumber      String?
-  accountName        String?
+  bankName          String?
+  accountNumber     String?
+  accountName       String?
+
+  // Multi-Branch fields
+  maxBranches       Int?                @default(5)
+  branches          Branch[]
+
   attendances       Attendance[]
   devices           Device[]
   subscriptions     GymSubscription[]
@@ -48,17 +53,49 @@ model Gym {
   users             User[]
 }
 
+model Branch {
+  id            String         @id @default(cuid())
+  gymId         String
+  name          String
+  address       String?
+  phone         String?
+  coordinates   Json?
+  openingHours  Json?
+  manager       String?
+  capacity      Int?           @default(0)
+  isActive      Boolean        @default(true)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  gym           Gym            @relation(fields: [gymId], references: [id], onDelete: Cascade)
+
+  users         User[]
+  attendances   Attendance[]
+  payments      Payment[]
+  progressNotes ProgressNote[]
+  devices       Device[]
+
+  @@map("branches")
+  @@index([gymId])
+  @@unique([gymId, name])   // ← ADD THIS LINE
+}
+
 model Device {
-  id          String       @id @default(cuid())
+  id          String     @id @default(cuid())
   gymId       String
   name        String
   type        String
   location    String?
-  createdAt   DateTime     @default(now())
+  createdAt   DateTime   @default(now())
+
+  branchId    String?
+  branch      Branch?    @relation(fields: [branchId], references: [id])
+
+  gym         Gym        @relation(fields: [gymId], references: [id], onDelete: Cascade)
   attendances Attendance[]
-  gym         Gym          @relation(fields: [gymId], references: [id], onDelete: Cascade)
 
   @@index([gymId])
+  @@index([branchId])
 }
 
 model GymSubscription {
@@ -69,40 +106,47 @@ model GymSubscription {
   startDate DateTime
   endDate   DateTime
   createdAt DateTime @default(now())
+
   gym       Gym      @relation(fields: [gymId], references: [id], onDelete: Cascade)
 
   @@index([gymId])
 }
 
 model User {
-  id               String         @id @default(cuid())
-  email            String         @unique
-  password         String
-  firstName        String
-  lastName         String
-  phoneNumber      String?
-  role             String         @default("member")
-  createdAt        DateTime       @default(now())
-  updatedAt        DateTime       @updatedAt
-  deletedAt        DateTime?
-  profileImage     String?
-  gymId            String?
-  status           String         @default("inactive")
-  attendance       Attendance[]
-  memberProfile    MemberProfile? @relation("MemberProfile")
-  approvedPayments Payment[]      @relation("PaymentApprovals")
-  payments         Payment[]      @relation("UserPayments")
-  memberNotes      ProgressNote[] @relation("MemberNotes")
-  trainerNotes     ProgressNote[] @relation("TrainerNotes")
-  sessions         Session[]
-  staffProfile     StaffProfile?
-  gym              Gym?            @relation(fields: [gymId], references: [id], onDelete: Cascade)
+  id                String         @id @default(cuid())
+  email             String         @unique
+  password          String
+  firstName         String
+  lastName          String
+  phoneNumber       String?
+  role              String         @default("member")
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  deletedAt         DateTime?
+  profileImage      String?
+  gymId             String?
+  status            String         @default("inactive")
+
+  branchId          String?
+  branch            Branch?        @relation(fields: [branchId], references: [id])
+
+  gym               Gym?           @relation(fields: [gymId], references: [id], onDelete: Cascade)
+
+  attendance        Attendance[]
+  memberProfile     MemberProfile? @relation("MemberProfile")
+  approvedPayments  Payment[]      @relation("PaymentApprovals")
+  payments          Payment[]      @relation("UserPayments")
+  memberNotes       ProgressNote[] @relation("MemberNotes")
+  trainerNotes      ProgressNote[] @relation("TrainerNotes")
+  sessions          Session[]
+  staffProfile      StaffProfile?
 
   @@index([email])
   @@index([role])
   @@index([role, deletedAt, createdAt])
   @@index([gymId])
   @@index([gymId, createdAt])
+  @@index([branchId])
 }
 
 model Session {
@@ -111,6 +155,7 @@ model Session {
   token     String   @unique
   expiresAt DateTime
   createdAt DateTime @default(now())
+
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
@@ -118,29 +163,30 @@ model Session {
 }
 
 model MemberProfile {
-  id                  String            @id @default(cuid())
-  userId              String            @unique
-  membershipId        String
-  joinDate            DateTime          @default(now())
-  expiryDate          DateTime
-  gender              String?
-  hearAboutUs         String?
-  fitnessGoals        String?
+  id                 String            @id @default(cuid())
+  userId             String            @unique
+  membershipId       String
+  joinDate           DateTime          @default(now())
+  expiryDate         DateTime
+  gender             String?
+  hearAboutUs        String?
+  fitnessGoals       String?
   fitnessGoalsDetails String?
-  paymentMethod       String?
-  fingerprint         String?
-  emergencyContact    String?
-  emergencyPhone      String?
-  qrCode              String?           @unique
-  createdAt           DateTime          @default(now())
-  updatedAt           DateTime          @updatedAt
-  paymentStatus       String            @default("pending")
-  verified            Boolean           @default(false)
-  birthday            String?
-  gymId               String
-  gym                 Gym               @relation(fields: [gymId], references: [id], onDelete: Cascade)
-  membership          MembershipPackage @relation(fields: [membershipId], references: [id])
-  user                User              @relation("MemberProfile", fields: [userId], references: [id], onDelete: Cascade)
+  paymentMethod      String?
+  fingerprint        String?
+  emergencyContact   String?
+  emergencyPhone     String?
+  qrCode             String?           @unique
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+  paymentStatus      String            @default("pending")
+  verified           Boolean           @default(false)
+  birthday           String?
+  gymId              String
+
+  gym                Gym               @relation(fields: [gymId], references: [id], onDelete: Cascade)
+  membership         MembershipPackage @relation(fields: [membershipId], references: [id])
+  user               User              @relation("MemberProfile", fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([membershipId])
@@ -152,15 +198,16 @@ model MemberProfile {
 }
 
 model StaffProfile {
-  id             String   @id @default(cuid())
-  userId         String   @unique
+  id          String   @id @default(cuid())
+  userId      String   @unique
   specialization String?
-  joinDate       DateTime @default(now())
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  gymId          String
-  gym            Gym      @relation(fields: [gymId], references: [id], onDelete: Cascade)
-  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  joinDate    DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  gymId       String
+
+  gym         Gym      @relation(fields: [gymId], references: [id], onDelete: Cascade)
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([gymId])
@@ -175,6 +222,7 @@ model MembershipPackage {
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
   gymId       String
+
   members     MemberProfile[]
   gym         Gym             @relation(fields: [gymId], references: [id], onDelete: Cascade)
 
@@ -191,6 +239,9 @@ model Attendance {
   createdAt    DateTime  @default(now())
   deviceId     String?
   gymId        String
+  branchId     String?
+
+  branch       Branch?   @relation(fields: [branchId], references: [id])
   device       Device?   @relation(fields: [deviceId], references: [id])
   gym          Gym       @relation(fields: [gymId], references: [id], onDelete: Cascade)
   user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -200,42 +251,50 @@ model Attendance {
   @@index([createdAt])
   @@index([gymId])
   @@index([gymId, createdAt])
+  @@index([branchId])
 }
 
 model ProgressNote {
-  id        String   @id @default(cuid())
-  memberId  String
-  trainerId String
-  note      String
-  weight    Float?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  gymId     String
-  gym       Gym      @relation(fields: [gymId], references: [id], onDelete: Cascade)
-  member    User     @relation("MemberNotes", fields: [memberId], references: [id], onDelete: Cascade)
-  trainer   User     @relation("TrainerNotes", fields: [trainerId], references: [id], onDelete: Cascade)
+  id         String   @id @default(cuid())
+  memberId   String
+  trainerId  String
+  note       String
+  weight     Float?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  gymId      String
+  branchId   String?
+
+  branch     Branch?  @relation(fields: [branchId], references: [id])
+  gym        Gym      @relation(fields: [gymId], references: [id], onDelete: Cascade)
+  member     User     @relation("MemberNotes", fields: [memberId], references: [id], onDelete: Cascade)
+  trainer    User     @relation("TrainerNotes", fields: [trainerId], references: [id], onDelete: Cascade)
 
   @@index([memberId])
   @@index([trainerId])
   @@index([gymId])
+  @@index([branchId])
 }
 
 model Payment {
-  id            String    @id @default(cuid())
+  id            String   @id @default(cuid())
   userId        String
   amount        Float
-  status        String    @default("pending")
+  status        String   @default("pending")
   paymentMethod String
-  reference     String?   @unique
+  reference     String?  @unique
   description   String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
   approvedAt    DateTime?
   approvedById  String?
   gymId         String
-  approvedBy    User?     @relation("PaymentApprovals", fields: [approvedById], references: [id])
-  gym           Gym       @relation(fields: [gymId], references: [id], onDelete: Cascade)
-  user          User      @relation("UserPayments", fields: [userId], references: [id], onDelete: Cascade)
+  branchId      String?
+
+  branch        Branch?  @relation(fields: [branchId], references: [id])
+  approvedBy    User?    @relation("PaymentApprovals", fields: [approvedById], references: [id])
+  gym           Gym      @relation(fields: [gymId], references: [id], onDelete: Cascade)
+  user          User     @relation("UserPayments", fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([status])
@@ -244,6 +303,7 @@ model Payment {
   @@index([status, createdAt])
   @@index([gymId])
   @@index([gymId, createdAt])
+  @@index([branchId])
 }
 
 model PasswordResetToken {
@@ -257,10 +317,10 @@ model PasswordResetToken {
 }
 
 model RateLimit {
-  id        String   @id @default(cuid())
-  key       String   @unique
-  count     Int      @default(0)
-  resetAt   DateTime
+  id      String   @id @default(cuid())
+  key     String   @unique
+  count   Int      @default(0)
+  resetAt DateTime
 }
 
 model SaaSPayment {
