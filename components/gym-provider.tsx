@@ -1,21 +1,39 @@
 'use client'
 
-import { createContext, useContext, ReactNode, useEffect, useState, useCallback } from 'react';
+import {
+  createContext,
+  useContext,
+  ReactNode,
+  useEffect,
+  useState,
+  useCallback,
+} from 'react';
 import { useParams, usePathname } from 'next/navigation';
 import { SubscriptionLockScreen } from './subscription-lock-screen';
+
+type BranchSelection = string | 'all' | null;
 
 interface GymContextType {
   gymSlug: string | null;
   gymData: any | null;
   isLoading: boolean;
   tenantPath: (path: string) => string;
+
+  // Branch support
+  activeBranchId: BranchSelection;
+  setActiveBranchId: (branchId: BranchSelection) => void;
+  currentBranch: any | null;
 }
 
-const GymContext = createContext<GymContextType>({ 
-  gymSlug: null, 
-  gymData: null, 
+const GymContext = createContext<GymContextType>({
+  gymSlug: null,
+  gymData: null,
   isLoading: true,
-  tenantPath: (path: string) => path
+  tenantPath: (path: string) => path,
+
+  activeBranchId: 'all',
+  setActiveBranchId: () => {},
+  currentBranch: null,
 });
 
 interface GymProviderProps {
@@ -28,19 +46,26 @@ interface GymProviderProps {
   userRole?: string;
 }
 
-const PUBLIC_ROUTES = ['/login', '/signup', '/forgot-password', '/reset-password', '/setup'];
+const PUBLIC_ROUTES = [
+  '/login',
+  '/signup',
+  '/forgot-password',
+  '/reset-password',
+  '/setup',
+];
 
-export function GymProvider({ 
-  children, 
+export function GymProvider({
+  children,
   initialIsExpired = false,
   initialGymStatus = 'active',
   initialCurrentPlan = 'starter',
   initialGymId = '',
   initialAccent = '#daa857',
-  userRole = 'guest'
+  userRole = 'guest',
 }: GymProviderProps) {
   const params = useParams();
   const pathname = usePathname();
+
   const [gymSlug, setGymSlug] = useState<string | null>(null);
   const [gymData, setGymData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -48,112 +73,174 @@ export function GymProvider({
   const [currentRole, setCurrentRole] = useState(userRole);
   const [isUserChecking, setIsUserChecking] = useState(userRole === 'guest');
 
-  const isPublicRoute = PUBLIC_ROUTES.some(route => pathname?.includes(route));
+  // Branch state
+  const [activeBranchId, setActiveBranchIdState] =
+    useState<BranchSelection>('all');
 
-  // Sync prop changes to state
+  const isPublicRoute = PUBLIC_ROUTES.some((route) =>
+    pathname?.includes(route)
+  );
+
+  // Sync prop changes
   useEffect(() => {
     setCurrentRole(userRole);
     setIsUserChecking(userRole === 'guest');
   }, [userRole]);
 
-  // Fetch user role if guest to ensure it's not a stale session
+  // Fetch authenticated user
   useEffect(() => {
     if (userRole === 'guest') {
       const fetchUser = async () => {
         try {
           const res = await fetch('/api/auth/user');
+
           if (res.ok) {
             const data = await res.json();
-            if (data.role) setCurrentRole(data.role);
+
+            if (data.role) {
+              setCurrentRole(data.role);
+            }
           }
-        } catch (e) {
-          console.error('Failed to fetch user role:', e);
+        } catch (error) {
+          console.error('Failed to fetch user role:', error);
         } finally {
           setIsUserChecking(false);
         }
       };
+
       fetchUser();
     } else {
       setIsUserChecking(false);
     }
   }, [userRole]);
 
-  // Helper to build tenant-aware paths
-  const tenantPath = useCallback((path: string) => {
-    if (typeof window === 'undefined') return path;
-    
-    const hostname = window.location.hostname;
-    const ROOT_DOMAIN = 'gympilotpro.com';
-    const isRoot = hostname === ROOT_DOMAIN || 
-                   hostname === `www.${ROOT_DOMAIN}` || 
-                   hostname === 'localhost' || 
-                   hostname === '127.0.0.1' ||
-                   hostname.endsWith('.vercel.app');
+  // Tenant-aware URLs
+  const tenantPath = useCallback(
+    (path: string) => {
+      if (typeof window === 'undefined') return path;
 
-    // If we're on the root domain and have a slug, prefix the path
-    if (isRoot && gymSlug) {
-      const cleanPath = path.startsWith('/') ? path : `/${path}`;
-      return `/${gymSlug}${cleanPath}`;
-    }
+      const hostname = window.location.hostname;
+      const ROOT_DOMAIN = 'gympilotpro.com';
 
-    return path;
-  }, [gymSlug]);
+      const isRoot =
+        hostname === ROOT_DOMAIN ||
+        hostname === `www.${ROOT_DOMAIN}` ||
+        hostname === 'localhost' ||
+        hostname === '127.0.0.1' ||
+        hostname.endsWith('.vercel.app');
 
+      if (isRoot && gymSlug) {
+        const cleanPath = path.startsWith('/') ? path : `/${path}`;
+        return `/${gymSlug}${cleanPath}`;
+      }
+
+      return path;
+    },
+    [gymSlug]
+  );
+
+  // Load gym
   useEffect(() => {
     let slug = (params.subdomain || params.domain) as string;
-    
+
     if (!slug && typeof window !== 'undefined') {
       const hostname = window.location.hostname;
+
       if (hostname.includes('gympilotpro.com')) {
         slug = hostname.replace('.gympilotpro.com', '');
-        if (slug === 'gympilotpro.com' || slug === 'www') slug = '';
+
+        if (slug === 'gympilotpro.com' || slug === 'www') {
+          slug = '';
+        }
       } else if (!hostname.includes('localhost')) {
-        slug = hostname.startsWith('www.') ? hostname.replace('www.', '') : hostname;
+        slug = hostname.startsWith('www.')
+          ? hostname.replace('www.', '')
+          : hostname;
       }
     }
 
     if (slug) {
       setGymSlug(slug);
+
       const fetchGymData = async () => {
         try {
           const response = await fetch(`/api/gyms/${slug}`);
+
           if (response.ok) {
             const data = await response.json();
+
             setGymData(data);
-            
-            // Re-verify expiration client-side
-            if (data.subscriptions && data.subscriptions.length > 0) {
-               const latestSub = data.subscriptions[0];
-               const now = new Date();
-               const endDate = new Date(latestSub.endDate);
-               const expired = endDate < now || latestSub.status === 'expired';
-               setIsExpired(expired);
+
+            // Verify subscription
+            if (data.subscriptions?.length > 0) {
+              const latest = data.subscriptions[0];
+
+              const expired =
+                new Date(latest.endDate) < new Date() ||
+                latest.status === 'expired';
+
+              setIsExpired(expired);
             } else {
-               setIsExpired(true);
+              setIsExpired(true);
             }
 
+            // Theme
             if (data.primaryColor) {
-              document.documentElement.style.setProperty('--primary-gym', data.primaryColor);
+              document.documentElement.style.setProperty(
+                '--primary-gym',
+                data.primaryColor
+              );
             }
+
             if (data.secondaryColor) {
-              document.documentElement.style.setProperty('--secondary-gym', data.secondaryColor);
+              document.documentElement.style.setProperty(
+                '--secondary-gym',
+                data.secondaryColor
+              );
             }
           }
         } catch (error) {
-          console.error('Failed to fetch gym data:', error);
+          console.error('Failed to fetch gym:', error);
         } finally {
           setIsLoading(false);
         }
       };
+
       fetchGymData();
     } else {
       setIsLoading(false);
     }
   }, [params.subdomain, params.domain]);
 
-  // Atomic check to prevent flashing
+  // Restore selected branch
+  useEffect(() => {
+    if (!gymData?.id) return;
+
+    const saved = localStorage.getItem(`branch_${gymData.id}`);
+
+    if (saved) {
+      setActiveBranchIdState(saved as BranchSelection);
+    }
+  }, [gymData?.id]);
+
+  const setActiveBranchId = (branchId: BranchSelection) => {
+    setActiveBranchIdState(branchId);
+
+    if (gymData?.id) {
+      localStorage.setItem(
+        `branch_${gymData.id}`,
+        branchId ?? 'all'
+      );
+    }
+  };
+
+  const currentBranch =
+    gymData?.branches?.find(
+      (branch: any) => branch.id === activeBranchId
+    ) ?? null;
+
+  // Subscription lock
   if (!isPublicRoute && isExpired) {
-    // If we're still verifying who the user is, show a clean loader instead of a "restricted" screen
     if (isUserChecking) {
       return (
         <div className="fixed inset-0 z-[110] flex items-center justify-center bg-background">
@@ -163,18 +250,31 @@ export function GymProvider({
     }
 
     return (
-      <SubscriptionLockScreen 
-        role={currentRole} 
-        gymId={gymData?.id || initialGymId} 
+      <SubscriptionLockScreen
+        role={currentRole}
+        gymId={gymData?.id || initialGymId}
         gymStatus={gymData?.status || initialGymStatus}
-        currentPlan={gymData?.subscriptions?.[0]?.plan || initialCurrentPlan}
-        accent={gymData?.primaryColor || initialAccent} 
+        currentPlan={
+          gymData?.subscriptions?.[0]?.plan || initialCurrentPlan
+        }
+        accent={gymData?.primaryColor || initialAccent}
       />
     );
   }
 
   return (
-    <GymContext.Provider value={{ gymSlug, gymData, isLoading, tenantPath }}>
+    <GymContext.Provider
+      value={{
+        gymSlug,
+        gymData,
+        isLoading,
+        tenantPath,
+
+        activeBranchId,
+        setActiveBranchId,
+        currentBranch,
+      }}
+    >
       {children}
     </GymContext.Provider>
   );
