@@ -61,7 +61,25 @@ export async function POST(req: NextRequest) {
       startDate,
       paymentCompleted = false,
       branchId,
+      branch,
     } = body
+
+    // Resolve branch slug → branchId
+    let resolvedBranchId: string | null = null;
+    if (branch) {
+      const branches = await prisma.branch.findMany({
+        where: { gymId: gym.id }
+      });
+      const matchedBranch = branches.find(b => {
+        const slug = b.name.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        return slug === branch;
+      });
+      if (matchedBranch) {
+        resolvedBranchId = matchedBranch.id;
+      }
+    } else if (branchId) {
+      resolvedBranchId = branchId;
+    }
 
     // Check if request is from staff + instant approval flag
     const currentUser = await getCurrentUser()
@@ -150,7 +168,7 @@ export async function POST(req: NextRequest) {
     const user = await prisma.user.create({
       data: {
         gymId: gym.id,
-        branchId: branchId || null,
+        branchId: resolvedBranchId || null,
         email: normalizedEmail,
         password: hashedPassword,
         firstName,
@@ -186,7 +204,7 @@ export async function POST(req: NextRequest) {
     const payment = await prisma.payment.create({
       data: {
         gymId: gym.id,
-        branchId: branchId || null,
+        branchId: resolvedBranchId || null,
         userId: user.id,
         amount: membership.price,
         status: shouldApproveImmediately ? 'approved' : 'pending',

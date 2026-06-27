@@ -17,7 +17,7 @@ import {
 } from 'lucide-react'
 
 export default function GymLandingClient() {
-  const { gymData, isLoading } = useGym()
+  const { gymData, isLoading, tenantPath } = useGym()
   const [showAll, setShowAll] = useState(false)
   const [isFullscreen, setIsFullscreen] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -101,13 +101,13 @@ export default function GymLandingClient() {
             <Link href="#features" className="hover:text-foreground transition-colors" style={{ color: accent }}>Experience</Link>
             <Link href="#membership" className="hover:text-foreground transition-colors" style={{ color: accent }}>Memberships</Link>
             <Link
-              href="/login"
+              href={tenantPath('/login')}
               className="hover:text-foreground transition-colors font-bold"
               style={{ color: accent }}
             >
               Login
             </Link>
-            <Link href="/signup">
+            <Link href={tenantPath('/signup')}>
               <Button
                 className="px-8 rounded-none transition-transform hover:scale-105 font-bold"
                 style={{ backgroundColor: accent, color: dark }}
@@ -120,7 +120,7 @@ export default function GymLandingClient() {
           {/* Mobile Login Trigger */}
           <div className="flex md:hidden items-center gap-4">
             <Link
-              href="/login"
+              href={tenantPath('/login')}
               className="text-[10px] font-black tracking-[0.2em] border px-4 py-2 rounded-full backdrop-blur-sm bg-card/50"
               style={{ color: accent, borderColor: `${accent}4d` }}
             >
@@ -153,7 +153,7 @@ export default function GymLandingClient() {
             {heroSubtitle}
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Link href="/signup">
+            <Link href={tenantPath('/signup')}>
               <Button size="lg" className="h-16 px-10 text-lg font-black uppercase group" style={{ backgroundColor: accent, color: dark }}>
                 Start Transformation <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
@@ -237,7 +237,7 @@ export default function GymLandingClient() {
                     </li>
                   ))}
                 </ul>
-                <Link href="/signup">
+                <Link href={tenantPath('/signup')}>
                   <Button className={`w-full py-8 font-black uppercase tracking-widest rounded-xl ${pkg.popular ? 'bg-background text-foreground hover:bg-foreground hover:text-background' : 'text-black hover:opacity-90'}`} style={!pkg.popular ? { backgroundColor: accent, color: dark } : {}}>
                     Join Now
                   </Button>

@@ -22,11 +22,12 @@ export function BranchQRCode({ branchId, branchName, gymSlug, gymData }: BranchQ
     ? gymData.customDomain 
     : `${gymSlug || 'klimarx'}.gympilotpro.com`;
     
-  // The attendance URL for this branch
-  const attendanceUrl = `${protocol}${domain}/admin/dashboard?tab=check-in&branchId=${branchId}`;
+  const branchSlug = branchName.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  // The signup URL for this branch
+  const signupUrl = `${protocol}${domain}/signup?branch=${branchSlug}`;
   
   // Use public qrserver API to render the QR code
-  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(attendanceUrl)}&refresh=${refreshKey}`;
+  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(signupUrl)}&refresh=${refreshKey}`;
 
   const handleDownload = async () => {
     try {
@@ -51,8 +52,8 @@ export function BranchQRCode({ branchId, branchName, gymSlug, gymData }: BranchQ
   };
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(attendanceUrl);
-    toast.success('Attendance URL copied to clipboard');
+    navigator.clipboard.writeText(signupUrl);
+    toast.success('Registration URL copied to clipboard');
   };
 
   const handlePrint = () => {
@@ -101,7 +102,7 @@ export function BranchQRCode({ branchId, branchName, gymSlug, gymData }: BranchQ
           <div class="container">
             <img src="${qrCodeUrl}" alt="QR Code" />
             <h1>${branchName}</h1>
-            <p>Scan to Check-in</p>
+            <p>Scan to Register</p>
           </div>
           <script>
             window.onload = function() {
@@ -123,8 +124,8 @@ export function BranchQRCode({ branchId, branchName, gymSlug, gymData }: BranchQ
   return (
     <Card className="border border-border rounded-3xl overflow-hidden shadow-lg bg-card">
       <CardHeader className="pb-4">
-        <CardTitle className="text-lg font-black uppercase tracking-tight">Branch Attendance QR</CardTitle>
-        <CardDescription className="text-xs">Scan this QR code to access attendance check-in for {branchName}.</CardDescription>
+        <CardTitle className="text-lg font-black uppercase tracking-tight">Branch Registration QR</CardTitle>
+        <CardDescription className="text-xs">Scan this QR code to access registration for {branchName}.</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col items-center space-y-4">
         <div className="relative h-48 w-48 overflow-hidden rounded-2xl border bg-white p-3 flex items-center justify-center shadow-md">
@@ -139,7 +140,7 @@ export function BranchQRCode({ branchId, branchName, gymSlug, gymData }: BranchQ
           <div className="flex w-full items-center space-x-2 rounded-xl border p-2 bg-muted/30">
             <LinkIcon className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
             <span className="text-xs font-semibold truncate flex-1 text-center select-all font-mono">
-              {attendanceUrl}
+              {signupUrl}
             </span>
           </div>
           

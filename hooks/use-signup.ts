@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useToast } from './use-toast'
 
 // --- 1. CORRECTED AND EXPANDED INTERFACE ---
@@ -52,6 +52,8 @@ export function useSignup() {
   })
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const branchSlug = searchParams.get('branch') || undefined
   const { toast } = useToast()
 
   const updateFormData = (data: Partial<SignupFormData>) => {
@@ -126,6 +128,9 @@ export function useSignup() {
 
           // Step 4
           password: formData.password,
+
+          // Branch Slug
+          branch: branchSlug,
         }),
       })
 

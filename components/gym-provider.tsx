@@ -132,12 +132,27 @@ export function GymProvider({
         hostname === '127.0.0.1' ||
         hostname.endsWith('.vercel.app');
 
+      let resolved = path;
       if (isRoot && gymSlug) {
         const cleanPath = path.startsWith('/') ? path : `/${path}`;
-        return `/${gymSlug}${cleanPath}`;
+        resolved = `/${gymSlug}${cleanPath}`;
       }
 
-      return path;
+      // Preserve branch search param if it exists in current URL
+      const searchParams = new URLSearchParams(window.location.search);
+      const branch = searchParams.get('branch');
+      if (branch) {
+        try {
+          const urlObj = new URL(resolved, window.location.origin);
+          urlObj.searchParams.set('branch', branch);
+          resolved = urlObj.pathname + urlObj.search + urlObj.hash;
+        } catch (e) {
+          const separator = resolved.includes('?') ? '&' : '?';
+          resolved = `${resolved}${separator}branch=${encodeURIComponent(branch)}`;
+        }
+      }
+
+      return resolved;
     },
     [gymSlug]
   );
