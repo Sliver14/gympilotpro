@@ -39,6 +39,7 @@ export async function GET(request: NextRequest) {
       return {
         id: b.id,
         name: b.name,
+        slug: b.name.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
         address: b.address,
         phone: b.phone,
         manager: b.manager,

@@ -7,13 +7,13 @@ import { Download, Link as LinkIcon, Printer, RefreshCw } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface BranchQRCodeProps {
-  branchId: string;
+  branchSlug: string;
   branchName: string;
   gymSlug: string | null;
   gymData: any | null;
 }
 
-export function BranchQRCode({ branchId, branchName, gymSlug, gymData }: BranchQRCodeProps) {
+export function BranchQRCode({ branchSlug, branchName, gymSlug, gymData }: BranchQRCodeProps) {
   const [refreshKey, setRefreshKey] = useState(0);
   const [downloading, setDownloading] = useState(false);
 
@@ -22,7 +22,6 @@ export function BranchQRCode({ branchId, branchName, gymSlug, gymData }: BranchQ
     ? gymData.customDomain 
     : `${gymSlug || 'klimarx'}.gympilotpro.com`;
     
-  const branchSlug = branchName.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
   // The signup URL for this branch
   const signupUrl = `${protocol}${domain}/signup?branch=${branchSlug}`;
   

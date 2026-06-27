@@ -52,7 +52,13 @@ export async function GET(
       )
     }
 
+    const branchesWithSlug = gym.branches.map(b => ({
+      ...b,
+      slug: b.name.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
+    }));
+
     const { paystackSecretKey, ...safeGymData } = gym;
+    safeGymData.branches = branchesWithSlug;
 
     return NextResponse.json({
       ...safeGymData,

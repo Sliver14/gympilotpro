@@ -16,6 +16,7 @@ import { BranchQRCode } from '@/components/branch-qr-code'
 interface Branch {
   id: string
   name: string
+  slug: string
   address?: string
   phone?: string
   manager?: string
@@ -373,7 +374,7 @@ export default function BranchesTab() {
         <DialogContent className="max-w-md rounded-[2.5rem] bg-card border-border text-foreground p-0 overflow-hidden">
           {qrModalBranch && (
             <BranchQRCode 
-              branchId={qrModalBranch.id} 
+              branchSlug={qrModalBranch.slug} 
               branchName={qrModalBranch.name} 
               gymSlug={gymSlug}
               gymData={gymData}
