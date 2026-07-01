@@ -112,6 +112,11 @@ function AdminDashboardContent() {
   const hasBankDetails = !!(adminData.gym?.bankName && adminData.gym?.accountNumber && adminData.gym?.accountName)
   const isConfigComplete = hasBankDetails && hasPackages
 
+  const latestSub = gymData?.subscriptions?.[0]
+  const daysUntilExpiry = latestSub 
+    ? Math.ceil((new Date(latestSub.endDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)) 
+    : undefined
+
   return (
     <SidebarProvider>
       <AdminSidebar adminData={adminData} onLogout={handleLogout} />
@@ -138,6 +143,31 @@ function AdminDashboardContent() {
             )}
           </div>
         </header>
+
+        {daysUntilExpiry !== undefined && daysUntilExpiry <= 7 && daysUntilExpiry > 0 && adminData.role === 'admin' && (
+          <div className="p-4 md:p-6 pb-0">
+            <div className="bg-gradient-to-r from-orange-500/20 to-transparent border border-orange-500/30 rounded-[2rem] p-4 md:p-8 relative overflow-hidden group">
+              <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-orange-500/10 blur-[100px] group-hover:bg-orange-500/20 transition-all duration-1000" />
+              <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-4 md:gap-8">
+                <div className="space-y-4 text-center md:text-left">
+                  <div className="flex items-center justify-center md:justify-start gap-3 text-orange-500">
+                    <AlertTriangle className="h-6 w-6" />
+                    <h2 className="text-2xl font-black uppercase tracking-tighter">Subscription Expiring Soon</h2>
+                  </div>
+                  <p className="text-xs font-bold text-muted-foreground leading-relaxed max-w-xl">
+                    Your GymPilotPro subscription will expire in <span className="text-orange-500">{daysUntilExpiry} {daysUntilExpiry === 1 ? 'day' : 'days'}</span>. Extend your plan now to ensure uninterrupted access.
+                  </p>
+                </div>
+                <Button 
+                  onClick={() => router.push('/admin/billing')}
+                  className="h-14 px-10 bg-orange-500 hover:bg-orange-600 text-white font-black rounded-xl shadow-xl shadow-orange-500/10 transition-all hover:scale-105 active:scale-95"
+                >
+                  Extend Subscription
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {!isConfigComplete && adminData.role === 'admin' && (
           <div className="p-4 md:p-6 pb-0">
