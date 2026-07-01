@@ -88,58 +88,62 @@ export default function AttendanceOverview() {
           ))}
         </div>
 
-        <div className="p-4 md:p-6 rounded-[2rem] bg-card/50 border border-border">
+        <div className="p-4 md:p-6 rounded-[2rem] bg-card/50 border border-border overflow-hidden">
           {data.length > 0 ? (
-            <ResponsiveContainer width="100%" height={350}>
-              <LineChart data={data}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#ffffff05" vertical={false} />
-                <XAxis 
-                  dataKey="date" 
-                  stroke="#4b5563" 
-                  fontSize={10} 
-                  tickLine={false} 
-                  axisLine={false}
-                  tick={{ fill: '#4b5563', fontWeight: '900' }}
-                />
-                <YAxis 
-                  stroke="#4b5563" 
-                  fontSize={10} 
-                  tickLine={false} 
-                  axisLine={false}
-                  tick={{ fill: '#4b5563', fontWeight: '900' }}
-                />
-                <Tooltip
-                  contentStyle={{ 
-                    backgroundColor: 'hsl(var(--card))', 
-                    border: '1px solid rgba(218,168,87,0.2)',
-                    borderRadius: '1rem',
-                    fontSize: '10px',
-                    fontWeight: '900',
-                    textTransform: 'uppercase'
-                  }}
-                  itemStyle={{ color: '#daa857' }}
-                />
-                <Line 
-                  type="monotone" 
-                  dataKey="checkins" 
-                  stroke="#daa857" 
-                  strokeWidth={3}
-                  dot={{ r: 4, fill: '#daa857', strokeWidth: 0 }}
-                  activeDot={{ r: 6, stroke: '#daa857', strokeWidth: 2, fill: '#000' }}
-                  name="ACCESS" 
-                />
-                <Line
-                  type="monotone"
-                  dataKey="checkouts"
-                  stroke="#ffffff10"
-                  strokeWidth={2}
-                  strokeDasharray="5 5"
-                  dot={false}
-                  name="CHECK-OUT"
-                />
-                </LineChart>
+            <div className="w-full overflow-x-auto scrollbar-thin">
+              <div className="min-w-[600px] h-[350px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={data}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#ffffff05" vertical={false} />
+                    <XAxis 
+                      dataKey="date" 
+                      stroke="#4b5563" 
+                      fontSize={10} 
+                      tickLine={false} 
+                      axisLine={false}
+                      tick={{ fill: '#4b5563', fontWeight: '900' }}
+                    />
+                    <YAxis 
+                      stroke="#4b5563" 
+                      fontSize={10} 
+                      tickLine={false} 
+                      axisLine={false}
+                      tick={{ fill: '#4b5563', fontWeight: '900' }}
+                    />
+                    <Tooltip
+                      contentStyle={{ 
+                        backgroundColor: 'hsl(var(--card))', 
+                        border: '1px solid rgba(218,168,87,0.2)',
+                        borderRadius: '1rem',
+                        fontSize: '10px',
+                        fontWeight: '900',
+                        textTransform: 'uppercase'
+                      }}
+                      itemStyle={{ color: '#daa857' }}
+                    />
+                    <Line 
+                      type="monotone" 
+                      dataKey="checkins" 
+                      stroke="#daa857" 
+                      strokeWidth={3}
+                      dot={{ r: 4, fill: '#daa857', strokeWidth: 0 }}
+                      activeDot={{ r: 6, stroke: '#daa857', strokeWidth: 2, fill: '#000' }}
+                      name="ACCESS" 
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="checkouts"
+                      stroke="#ffffff10"
+                      strokeWidth={2}
+                      strokeDasharray="5 5"
+                      dot={false}
+                      name="CHECK-OUT"
+                    />
+                  </LineChart>
                 </ResponsiveContainer>
-                ) : (
+              </div>
+            </div>
+          ) : (
                 <div className="h-80 flex flex-col items-center justify-center text-muted-foreground">
                 <Calendar className="h-12 w-12 mb-4 opacity-10" />
                 <p className="text-xs font-black">No attendance data available</p>

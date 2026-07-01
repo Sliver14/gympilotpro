@@ -102,56 +102,60 @@ export default function RevenueAnalytics() {
         {/* Chart */}
         <div className="p-4 md:p-6 rounded-[2rem] bg-card/30 border border-border shadow-sm overflow-hidden text-muted-foreground">
           {data.length > 0 ? (
-            <ResponsiveContainer width="100%" height={350}>
-              <BarChart data={data} margin={{ top: 20, right: 0, left: -20, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} opacity={0.5} />
-                <XAxis 
-                  dataKey="month" 
-                  stroke="var(--muted-foreground)" 
-                  fontSize={10} 
-                  tickLine={false} 
-                  axisLine={false}
-                  tick={{ fill: 'var(--muted-foreground)', fontWeight: '700' }}
-                />
-                <YAxis 
-                  stroke="var(--muted-foreground)" 
-                  fontSize={10} 
-                  tickLine={false} 
-                  axisLine={false}
-                  tickFormatter={(value) => `₦${(value / 1000).toFixed(0)}k`}
-                  tick={{ fill: 'var(--muted-foreground)', fontWeight: '700' }}
-                />
-                <Tooltip
-                  cursor={{ fill: 'var(--muted)', opacity: 0.1 }}
-                  contentStyle={{ 
-                    backgroundColor: 'var(--card)', 
-                    borderColor: 'var(--border)',
-                    borderRadius: '1.25rem',
-                    fontSize: '11px',
-                    fontWeight: '800',
-                    color: 'var(--foreground)',
-                    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)'
-                  }}
-                  itemStyle={{ color: '#daa857' }}
-                  labelStyle={{ color: 'var(--muted-foreground)', marginBottom: '4px' }}
-                />
-                <Bar 
-                  dataKey="revenue" 
-                  fill="#daa857" 
-                  name="REVENUE" 
-                  radius={[6, 6, 0, 0]}
-                  barSize={24}
-                />
-                <Bar 
-                  dataKey="payments" 
-                  fill="var(--primary)" 
-                  fillOpacity={0.2}
-                  name="TRANSACTIONS" 
-                  radius={[6, 6, 0, 0]}
-                  barSize={24}
-                />
-              </BarChart>
-            </ResponsiveContainer>
+            <div className="w-full overflow-x-auto scrollbar-thin">
+              <div className="min-w-[600px] h-[350px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={data} margin={{ top: 20, right: 0, left: -20, bottom: 0 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} opacity={0.5} />
+                    <XAxis 
+                      dataKey="month" 
+                      stroke="var(--muted-foreground)" 
+                      fontSize={10} 
+                      tickLine={false} 
+                      axisLine={false}
+                      tick={{ fill: 'var(--muted-foreground)', fontWeight: '700' }}
+                    />
+                    <YAxis 
+                      stroke="var(--muted-foreground)" 
+                      fontSize={10} 
+                      tickLine={false} 
+                      axisLine={false}
+                      tickFormatter={(value) => `₦${(value / 1000).toFixed(0)}k`}
+                      tick={{ fill: 'var(--muted-foreground)', fontWeight: '700' }}
+                    />
+                    <Tooltip
+                      cursor={{ fill: 'var(--muted)', opacity: 0.1 }}
+                      contentStyle={{ 
+                        backgroundColor: 'var(--card)', 
+                        borderColor: 'var(--border)',
+                        borderRadius: '1.25rem',
+                        fontSize: '11px',
+                        fontWeight: '800',
+                        color: 'var(--foreground)',
+                        boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)'
+                      }}
+                      itemStyle={{ color: '#daa857' }}
+                      labelStyle={{ color: 'var(--muted-foreground)', marginBottom: '4px' }}
+                    />
+                    <Bar 
+                      dataKey="revenue" 
+                      fill="#daa857" 
+                      name="REVENUE" 
+                      radius={[6, 6, 0, 0]}
+                      barSize={24}
+                    />
+                    <Bar 
+                      dataKey="payments" 
+                      fill="var(--primary)" 
+                      fillOpacity={0.2}
+                      name="TRANSACTIONS" 
+                      radius={[6, 6, 0, 0]}
+                      barSize={24}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
           ) : (
             <div className="h-80 flex flex-col items-center justify-center text-muted-foreground">
               <CreditCard className="h-12 w-12 mb-4 opacity-10" />
