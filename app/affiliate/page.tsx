@@ -68,7 +68,7 @@ export default function AffiliateLandingPage() {
         <div className="container mx-auto px-5 sm:px-6 md:px-8 lg:px-10 h-20 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
             <span className="text-2xl font-black uppercase tracking-tighter">
-              Insight<span className="text-orange-500">Gym</span> <span className="text-[10px] font-black uppercase text-orange-500 border border-orange-500/20 px-1.5 py-0.5 ml-1">PARTNER</span>
+              Gympilot<span className="text-orange-500">Pro</span> <span className="text-[10px] font-black uppercase text-orange-500 border border-orange-500/20 px-1.5 py-0.5 ml-1">PARTNER</span>
             </span>
           </Link>
           <div className="flex items-center gap-4">
@@ -334,7 +334,7 @@ export default function AffiliateLandingPage() {
         <div className="container mx-auto px-5 sm:px-6 md:px-8 lg:px-10 flex flex-col sm:flex-row justify-between items-center gap-6">
           <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
             <span className="text-lg font-black uppercase tracking-tighter text-white">
-              Insight<span className="text-orange-500">Gym</span>
+              Gympilot<span className="text-orange-500">Pro</span>
             </span>
           </Link>
           <p className="text-[10px] text-muted-foreground font-black uppercase tracking-widest">

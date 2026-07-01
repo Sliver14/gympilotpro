@@ -70,10 +70,10 @@ export type PlanKey = keyof typeof PLANS;
 export function calculatePrice(planKey: PlanKey, months: number, isNewGym: boolean, currentPlanKey?: PlanKey) {
   const plan = PLANS[planKey];
   const duration = DURATIONS.find(d => d.months === months) || DURATIONS[0];
-  
+
   let total = 0;
   let setupFeeCharge = 0;
-  
+
   if (isNewGym) {
     // New gym pays full setup fee
     setupFeeCharge = plan.setupFee;
@@ -110,7 +110,7 @@ export function calculateUpgradePrice(
   const now = new Date();
   const timeRemaining = endDate.getTime() - now.getTime();
   const daysRemaining = Math.max(0, Math.ceil(timeRemaining / (1000 * 60 * 60 * 24)));
-  
+
   // Calculate value of remaining time on current plan (assuming 30-day month for simple math)
   const currentDailyRate = currentPlan.monthlyFee / 30;
   const unusedCredit = currentDailyRate * daysRemaining;
@@ -123,7 +123,7 @@ export function calculateUpgradePrice(
 
   // Final total = (New Plan Cost + Setup Diff) - Unused Credit
   // Minimum 1000 NGN to cover transaction costs
-  const total = Math.max(1000, (newPlanTotal + setupFeeDiff) - unusedCredit); 
+  const total = Math.max(1000, (newPlanTotal + setupFeeDiff) - unusedCredit);
 
   return {
     total: Math.round(total),

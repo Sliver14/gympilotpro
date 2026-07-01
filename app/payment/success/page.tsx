@@ -9,7 +9,7 @@ function SuccessContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const reference = searchParams.get('reference');
-  
+
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const [message, setMessage] = useState('Verifying your payment...');
 
@@ -78,7 +78,7 @@ function SuccessContent() {
               Plan Activated
             </p>
           </div>
-          <Button 
+          <Button
             onClick={handleGoHome}
             className="w-full h-16 mt-6 bg-orange-500 hover:bg-orange-600 text-black font-black uppercase text-lg rounded-none"
           >
@@ -98,7 +98,7 @@ function SuccessContent() {
               {message}
             </p>
           </div>
-          <Button 
+          <Button
             onClick={handleGoHome}
             className="w-full h-16 mt-6 bg-white hover:bg-gray-200 text-black font-black uppercase text-lg rounded-none"
           >
@@ -116,7 +116,7 @@ export default function PaymentSuccessPage() {
       <nav className="w-full bg-background/80 backdrop-blur-xl border-b border-border">
         <div className="container mx-auto px-6 h-16 md:h-24 flex items-center justify-center">
           <span className="text-2xl font-black uppercase tracking-tighter">
-            Insight<span className="text-orange-500">Gym</span>
+            Gympilot<span className="text-orange-500">pro</span>
           </span>
         </div>
       </nav>

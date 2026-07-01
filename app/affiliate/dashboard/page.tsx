@@ -40,7 +40,7 @@ export default async function AffiliateDashboard() {
 
   // Calculations
   const referralsCount = affiliate.referrals.length
-  
+
   const totalEarned = affiliate.commissions.reduce((acc, comm) => acc + comm.amount, 0)
   const totalPaid = affiliate.commissions
     .filter(comm => comm.status === 'paid')
@@ -56,7 +56,7 @@ export default async function AffiliateDashboard() {
         <div className="container mx-auto px-6 h-20 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
             <span className="text-xl font-black uppercase tracking-tighter">
-              Insight<span className="text-orange-500">Gym</span> <span className="text-xs font-normal text-muted-foreground ml-1">AFFILIATE</span>
+              Gympilot<span className="text-orange-500">pro</span> <span className="text-xs font-normal text-muted-foreground ml-1">AFFILIATE</span>
             </span>
           </Link>
           <div className="flex items-center gap-4">
@@ -74,7 +74,7 @@ export default async function AffiliateDashboard() {
 
       {/* Main Content */}
       <main className="flex-1 container mx-auto px-6 py-10 space-y-10">
-        
+
         {/* Referral Link & Stat Cards Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Code & Share Link Card */}
@@ -88,7 +88,7 @@ export default async function AffiliateDashboard() {
                   Referred gym owners get premium setup. You earn 20% setup cut + 20% subscription revenue for their first 6 months.
                 </p>
               </div>
-              
+
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
                 <div className="bg-background border-2 border-border px-4 py-3 flex items-center justify-between font-black text-orange-500 tracking-wider">
                   <span>{affiliate.referralCode}</span>
@@ -138,7 +138,7 @@ export default async function AffiliateDashboard() {
 
         {/* Referrals & Commissions Tabs/Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          
+
           {/* Referrals List */}
           <div className="bg-card border border-border p-6 rounded-none flex flex-col justify-between">
             <div>
@@ -225,11 +225,10 @@ export default async function AffiliateDashboard() {
                       </div>
                       <div className="text-right">
                         <p className="font-black text-sm text-emerald-500">₦{comm.amount.toLocaleString()}</p>
-                        <span className={`text-[8px] font-bold uppercase px-1.5 py-0.5 border ${
-                          comm.status === 'paid' 
-                            ? 'text-blue-500 bg-blue-500/10 border-blue-500/20' 
+                        <span className={`text-[8px] font-bold uppercase px-1.5 py-0.5 border ${comm.status === 'paid'
+                            ? 'text-blue-500 bg-blue-500/10 border-blue-500/20'
                             : 'text-yellow-500 bg-yellow-500/10 border-yellow-500/20'
-                        }`}>
+                          }`}>
                           {comm.status}
                         </span>
                       </div>

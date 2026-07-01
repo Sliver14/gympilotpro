@@ -51,7 +51,7 @@ export default function AffiliateLogin() {
         <div className="container mx-auto px-6 h-16 md:h-24 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
             <span className="text-2xl font-black uppercase tracking-tighter">
-              Insight<span className="text-orange-500">Gym</span>
+              Gympilot<span className="text-orange-500">pro</span> <span className="text-xs font-normal text-muted-foreground ml-1">AFFILIATE</span>
             </span>
           </Link>
           <Link
