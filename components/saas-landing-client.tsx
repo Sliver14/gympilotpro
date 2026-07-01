@@ -67,8 +67,8 @@ export default function SaaSLandingClient() {
       {/* Navigation */}
       <nav className="fixed top-0 w-full z-[100] bg-gradient-to-b from-black/95 to-transparent backdrop-blur-md border-b border-white/10">
         <div className="container mx-auto px-5 sm:px-6 md:px-8 lg:px-10 h-20 flex items-center justify-between">
-          <Link 
-            href="/" 
+          <Link
+            href="/"
             className="flex items-center gap-3 group"
             onClick={() => setIsMobileMenuOpen(false)}
           >
@@ -108,8 +108,8 @@ export default function SaaSLandingClient() {
                 <Menu size={28} />
               </button>
             </SheetTrigger>
-            <SheetContent 
-              side="right" 
+            <SheetContent
+              side="right"
               className="w-full sm:max-w-xs bg-black border-l border-zinc-800 p-0 flex flex-col [&>button]:text-white [&>button]:opacity-100 [&>button]:right-8 [&>button]:top-8 [&>button]:scale-125"
             >
               <SheetHeader className="p-8 border-b border-zinc-800">
@@ -128,12 +128,12 @@ export default function SaaSLandingClient() {
                   </div>
                 </SheetTitle>
               </SheetHeader>
-              
+
               <div className="flex flex-col gap-8 p-10 text-2xl font-black uppercase tracking-tight italic text-white">
                 <Link href="#features" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-orange-500 transition-colors">Revenue System</Link>
                 <Link href="#how-it-works" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-orange-500 transition-colors">How It Works</Link>
                 <Link href="#testimonials" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-orange-500 transition-colors">Testimonials</Link>
-                </div>
+              </div>
               <div className="mt-auto p-8 pb-12">
                 <Button
                   onClick={openModal}
@@ -167,7 +167,7 @@ export default function SaaSLandingClient() {
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-orange-500/10 border border-orange-500/20 rounded-none mb-6">
               <Zap size={14} className="text-orange-500 fill-orange-500" />
               <span className="text-[10px] font-black uppercase tracking-widest text-orange-500 italic">
-                Professional Gym Management Infrastructure
+                Run your Gym like a Pro
               </span>
             </div>
 
