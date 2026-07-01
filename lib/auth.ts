@@ -141,7 +141,7 @@ export async function requireActiveGymSubscription(gymId: string) {
   const now = new Date()
   const endDate = latestSub ? new Date(latestSub.endDate) : now
   
-  const isExpired = !latestSub || endDate < now || latestSub.status === 'expired';
+  const isExpired = !latestSub || endDate < now || latestSub.status === 'expired' || gym?.status === 'pending' || latestSub?.status === 'pending';
 
   if (isExpired) {
     throw new Error('Gym subscription expired');

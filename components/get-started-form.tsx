@@ -88,14 +88,14 @@ export default function GetStartedForm() {
           <div className="w-20 h-20 bg-emerald-500/10 border border-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
             <Check className="text-emerald-500 w-10 h-10" strokeWidth={3} />
           </div>
-          <span className="text-emerald-500 font-black tracking-[0.2em] text-sm mb-4 block uppercase italic">
-            // Trial Activated
+          <span className="text-orange-500 font-black tracking-[0.2em] text-sm mb-4 block uppercase italic">
+            // Account Initialized
           </span>
           <h1 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-4 text-foreground italic">
             Welcome, {success.gymName}!
           </h1>
           <p className="text-muted-foreground font-medium mb-8 leading-relaxed">
-            Your 30-day free trial is now live. We've waived the setup fee and activated your dashboard so you can start protecting your revenue immediately.
+            Your gym account has been successfully initialized. You can now log into your dashboard to configure your plans and start protecting your revenue.
           </p>
           
           <div className="space-y-4">
@@ -130,9 +130,9 @@ export default function GetStartedForm() {
             // High-Performance Onboarding
           </span>
           <h1 className="text-2xl md:text-4xl md:text-5xl font-black uppercase tracking-tighter mb-4 text-foreground italic">
-            Start Your <span className="text-orange-500">Trial</span>
+            Set Up Your <span className="text-orange-500">Gym</span>
           </h1>
-          <p className="text-muted-foreground font-medium">30 Days Free Access • $0 Setup Fee • Instant Activation</p>
+          <p className="text-muted-foreground font-medium">Professional Setup • Instant Activation</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -213,10 +213,10 @@ export default function GetStartedForm() {
               </div>
             </div>
             <div>
-              <label className="block text-xs font-bold text-muted-foreground mb-2">Trial Duration</label>
+              <label className="block text-xs font-bold text-zinc-500 mb-2">Initial Period</label>
               <div className="relative">
                 <div className="w-full bg-background border-2 border-border p-4 font-black text-foreground opacity-70">
-                  30 DAYS (FREE)
+                  1 MONTH
                 </div>
               </div>
             </div>
@@ -226,18 +226,15 @@ export default function GetStartedForm() {
             <div className="space-y-2 mb-6">
               <div className="flex justify-between text-xs font-bold text-muted-foreground">
                 <span>Setup Fee</span>
-                <div className="flex items-center gap-2">
-                  <span className="line-through opacity-50">₦{PLANS[formData.plan].originalSetupFee.toLocaleString()}</span>
-                  <span className="text-emerald-500 font-black uppercase tracking-widest italic">FREE</span>
-                </div>
+                <span className="text-white">₦{PLANS[formData.plan].setupFee.toLocaleString()}</span>
               </div>
               <div className="flex justify-between text-xs font-bold text-muted-foreground">
-                <span>First 30 Days</span>
-                <span className="text-emerald-500 font-black uppercase tracking-widest italic underline underline-offset-4 decoration-2">₦0 TRIAL</span>
+                <span>First Month Subscription</span>
+                <span className="text-white">₦{PLANS[formData.plan].monthlyFee.toLocaleString()}</span>
               </div>
               <div className="flex justify-between items-center text-xl font-black uppercase text-foreground pt-4 border-t border-white/5 mt-4">
                 <span>Total Due Today</span>
-                <span className="text-orange-500 italic tracking-tighter text-2xl">₦0.00</span>
+                <span className="text-orange-500 italic tracking-tighter text-2xl">₦{(PLANS[formData.plan].setupFee + PLANS[formData.plan].monthlyFee).toLocaleString()}</span>
               </div>
             </div>
 
@@ -252,7 +249,7 @@ export default function GetStartedForm() {
                 {agreed && <Check className="text-white h-3 w-3" strokeWidth={4} />}
               </div>
               <p className="text-[10px] font-bold text-muted-foreground leading-snug">
-                I agree to the <Link href="/terms" target="_blank" className="text-orange-500 hover:underline" onClick={(e) => e.stopPropagation()}>Service Terms</Link> and <Link href="/privacy" target="_blank" className="text-orange-500 hover:underline" onClick={(e) => e.stopPropagation()}>Privacy Protocol</Link>. I understand my data will be processed to activate my trial.
+                I agree to the <Link href="/terms" target="_blank" className="text-orange-500 hover:underline" onClick={(e) => e.stopPropagation()}>Service Terms</Link> and <Link href="/privacy" target="_blank" className="text-orange-500 hover:underline" onClick={(e) => e.stopPropagation()}>Privacy Protocol</Link>. I understand my data will be processed to activate my account.
               </p>
             </div>
 
@@ -262,11 +259,11 @@ export default function GetStartedForm() {
               className="w-full h-16 bg-orange-500 hover:bg-orange-600 text-white font-black uppercase text-lg rounded-none disabled:opacity-70 flex items-center justify-center transition-all active:scale-95 shadow-[0_10px_20px_rgba(249,115,22,0.2)] group"
             >
               {loading ? <Loader2 className="animate-spin" /> : (
-                <>Activate My Free Trial <ChevronRight className="ml-2 group-hover:translate-x-1 transition-transform" /></>
+                <>Create Gym Account <ChevronRight className="ml-2 group-hover:translate-x-1 transition-transform" /></>
               )}
             </Button>
             <p className="text-center text-[9px] font-black text-muted-foreground mt-4 uppercase tracking-widest italic">
-              No credit card required for trial activation.
+              Instant dashboard access and account setup.
             </p>
           </div>
         </form>

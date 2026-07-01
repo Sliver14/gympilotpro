@@ -147,7 +147,7 @@ export default function PlansPage() {
           </h1>
           <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto font-medium leading-relaxed mb-12">
             Choose the revenue protection plan that fits your gym's growth stage. 
-            <span className="text-emerald-500 font-bold ml-1">Limited Time: $0 Setup Fee + 30-Day Free Trial.</span>
+            <span className="text-orange-500 font-bold ml-1">Professional setup and onboarding support included.</span>
           </p>
         </div>
       </section>
@@ -159,8 +159,8 @@ export default function PlansPage() {
             {(Object.keys(PLANS) as PlanKey[]).map((key) => {
               const p = PLANS[key]
               const isPopular = key === 'pro'
-              const selectedMonths = 1 // Force 1 month for trial onboarding
-              const totalSetupAndMonthly = 0 // Everything is 0 during trial
+              const selectedMonths = 1
+              const totalSetupAndMonthly = p.setupFee + p.monthlyFee
 
               const Icon = key === 'starter' ? Zap : key === 'pro' ? Star : Trophy
 
@@ -192,24 +192,20 @@ export default function PlansPage() {
                     <div className="p-5 bg-white/5 border border-border group-hover:border-orange-500/30 transition-colors">
                       <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1">One-Time Setup Fee</p>
                       <div className="flex items-center gap-2">
-                        <span className="text-xl font-black tracking-tighter line-through opacity-30 text-white">₦{p.originalSetupFee.toLocaleString()}</span>
-                        <span className="text-3xl font-black tracking-tighter italic text-emerald-500">FREE</span>
+                        <span className="text-3xl font-black tracking-tighter italic text-white">₦{p.setupFee.toLocaleString()}</span>
                       </div>
                     </div>
                     
                     <div className="p-5 bg-orange-500/5 border border-orange-500/20">
                       <p className="text-[10px] font-black text-orange-500 uppercase tracking-widest mb-1">
-                        First 30 Days (Trial)
+                        Monthly Subscription
                       </p>
                       <div className="flex items-baseline gap-2">
-                        <span className="text-4xl font-black tracking-tighter text-orange-500 italic">
-                          ₦0
+                        <span className="text-4xl font-black tracking-tighter text-white italic">
+                          ₦{p.monthlyFee.toLocaleString()}
                         </span>
-                        <span className="text-muted-foreground font-bold text-xs uppercase tracking-widest italic">Free Access</span>
+                        <span className="text-muted-foreground font-bold text-xs uppercase tracking-widest italic">/ Month</span>
                       </div>
-                      <p className="text-[10px] font-black text-zinc-500 mt-2 uppercase tracking-widest">
-                        Then ₦{p.monthlyFee.toLocaleString()} / Month
-                      </p>
                     </div>
                   </div>
 
@@ -224,7 +220,7 @@ export default function PlansPage() {
 
                   <div className="pt-8 border-t border-border mb-8">
                     <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1">Due today</p>
-                    <p className="text-2xl font-black tracking-tighter text-white italic">₦0.00</p>
+                    <p className="text-2xl font-black tracking-tighter text-white italic">₦{totalSetupAndMonthly.toLocaleString()}</p>
                   </div>
 
                   <Button
@@ -239,7 +235,7 @@ export default function PlansPage() {
                   >
                     {loadingPlan === key ? (
                       <span className="flex items-center gap-2"><Loader2 className="animate-spin" /> Processing...</span>
-                    ) : "Activate Free Trial"}
+                    ) : "Get Started"}
                   </Button>
                 </div>
               )

@@ -2,7 +2,7 @@ export const PLANS = {
   starter: {
     id: 'starter',
     name: "Starter",
-    setupFee: 0, // Free setup for now (key for adoption)
+    setupFee: 30000,
     originalSetupFee: 30000,
     monthlyFee: 15000,
     features: [
@@ -16,7 +16,7 @@ export const PLANS = {
   pro: {
     id: 'pro',
     name: "Pro",
-    setupFee: 0,
+    setupFee: 50000,
     originalSetupFee: 50000,
     monthlyFee: 25000,
     features: [
@@ -31,7 +31,7 @@ export const PLANS = {
   elite: {
     id: 'elite',
     name: "Elite",
-    setupFee: 0,
+    setupFee: 100000,
     originalSetupFee: 100000,
     monthlyFee: 45000,
     features: [

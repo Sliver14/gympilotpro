@@ -51,19 +51,19 @@ export async function POST(req: Request) {
 
     // Create the Gym and User in a transaction
     const result = await prisma.$transaction(async (tx) => {
-      // 1. Create the active Gym
+      // 1. Create the pending Gym
       const gym = await tx.gym.create({
         data: {
           name: gymName,
           slug: slug,
           email: email,
           phone: phone,
-          status: 'active',
+          status: 'pending',
           qrCodeUrl: qrCodeUrl,
         },
       });
 
-      // 2. Create the active User
+      // 2. Create the pending User
       const user = await tx.user.create({
         data: {
           email,
@@ -72,23 +72,21 @@ export async function POST(req: Request) {
           lastName,
           phoneNumber: phone,
           role: 'admin',
-          status: 'active',
+          status: 'pending',
           gymId: gym.id,
         },
       });
 
-      // 3. Create initial 30-day trial subscription
+      // 3. Create initial pending subscription with no free trial period
       const now = new Date();
-      const trialEndDate = new Date(now);
-      trialEndDate.setDate(trialEndDate.getDate() + 30);
 
       await tx.gymSubscription.create({
         data: {
           gymId: gym.id,
           plan: plan,
-          status: 'active',
+          status: 'pending',
           startDate: now,
-          endDate: trialEndDate,
+          endDate: now,
         }
       });
 
@@ -108,7 +106,7 @@ export async function POST(req: Request) {
       gymId: result.gym.id, 
       userId: result.user.id,
       slug: slug,
-      message: 'Account created and 30-day trial activated'
+      message: 'Account created. Please complete setup by paying.'
     });
 
   } catch (error: any) {

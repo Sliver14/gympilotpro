@@ -103,7 +103,7 @@ export default async function GymSubdomainLayout({
     const latestSub = gym.subscriptions[0];
     const now = new Date()
     const endDate = latestSub ? new Date(latestSub.endDate) : now
-    const isExpired = !latestSub || endDate < now || latestSub.status === 'expired';
+    const isExpired = !latestSub || endDate < now || latestSub.status === 'expired' || gym.status === 'pending' || latestSub?.status === 'pending';
 
     const user = await getCurrentUser()
 

@@ -502,13 +502,13 @@ export async function sendGymRegistrationTrialEmail(params: {
     await resend.emails.send({
       from: getFromAddress('GymPilotPro'),
       to: email,
-      subject: `Your 30-Day Free Trial is Live, ${firstName}!`,
+      subject: `Welcome to GymPilotPro, ${firstName}!`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
           <h2 style="color: #f97316;">Welcome to GymPilotPro!</h2>
           <p>Hi ${firstName},</p>
-          <p>Your 30-day free trial for <strong>${gymName}</strong> is now active!</p>
-          <p>We've waived the setup fee ($0) and activated your dashboard immediately so you can start protecting your revenue today.</p>
+          <p>Your account for <strong>${gymName}</strong> has been successfully created!</p>
+          <p>Please log in to your dashboard to complete your setup by making the payment, so you can start protecting your revenue today.</p>
           <p><strong>Dashboard Login:</strong> <a href="${loginUrl}">${loginUrl}</a></p>
           <p>Your temporary password is: <code>ChangeMe123!</code> (Please change this after your first login).</p>
           <br/>
@@ -516,9 +516,9 @@ export async function sendGymRegistrationTrialEmail(params: {
         </div>
       `,
     });
-    console.log(`Gym registration trial email sent to ${email}`);
+    console.log(`Gym registration email sent to ${email}`);
   } catch (err) {
-    console.error('Failed to send gym registration trial email:', err);
+    console.error('Failed to send gym registration email:', err);
   }
 }
 
