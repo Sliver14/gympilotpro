@@ -180,12 +180,12 @@ export function SubscriptionLockScreen({
               </div>
               
               <h1 className="text-xl md:text-5xl font-black text-gray-200 uppercase tracking-tighter leading-tight mb-2">
-                {isUpgradeMode ? "Upgrade" : (isPending ? "Complete" : "Subscription")} <span className={cn(!isUpgradeMode && "text-red-500")} style={isUpgradeMode ? { color: accent } : {}}>{isUpgradeMode ? "Plan" : (isPending ? "Setup" : "Expired")}</span>
+                {isUpgradeMode ? "Extend / Upgrade" : (isPending ? "Complete" : "Subscription")} <span className={cn(!isUpgradeMode && "text-red-500")} style={isUpgradeMode ? { color: accent } : {}}>{isUpgradeMode ? "Plan" : (isPending ? "Setup" : "Expired")}</span>
               </h1>
               
               <p className="text-muted-foreground font-medium leading-relaxed max-w-md text-[10px] md:text-base">
                 {isUpgradeMode 
-                  ? "Scale your gym with premium features. Current balance applied as credit."
+                  ? "Extend your active subscription or upgrade to a higher tier plan."
                   : (isPending 
                     ? "Complete payment to unlock your dashboard."
                     : isAdmins 
