@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { prisma } from '@/lib/prisma';
 import axios from 'axios';
+import { PLANS, PlanKey } from '@/lib/plans';
 import { sendSignupEmail, sendRenewalEmail, sendUpgradeEmail, sendMemberPaymentEmail } from '@/lib/email';
 
 export async function POST(req: Request) {
@@ -111,6 +112,63 @@ export async function POST(req: Request) {
                   endDate: endDate,
                 },
               });
+
+              // Commission Tracking Logic for Setup & 1st Month Subscription
+              if (activatedGym && activatedGym.referredById) {
+                const planKey = (plan || 'pro').toLowerCase() as PlanKey;
+                const planDetails = PLANS[planKey] || PLANS.pro;
+
+                // Setup fee commission: 20%
+                const setupFee = planDetails.setupFee;
+                const setupCommissionAmount = setupFee * 0.20;
+
+                if (setupCommissionAmount > 0) {
+                  const existingSetupComm = await tx.commission.findFirst({
+                    where: {
+                      gymId,
+                      type: 'setup'
+                    }
+                  });
+                  if (!existingSetupComm) {
+                    await tx.commission.create({
+                      data: {
+                        affiliateId: activatedGym.referredById,
+                        gymId,
+                        type: 'setup',
+                        amount: setupCommissionAmount,
+                        status: 'unpaid'
+                      }
+                    });
+                  }
+                }
+
+                // Monthly fee commission (Month 1): 20%
+                const monthlyFee = planDetails.monthlyFee;
+                const monthlyCommissionAmount = monthlyFee * 0.20;
+                
+                if (monthlyCommissionAmount > 0) {
+                  const existingMonth1Comm = await tx.commission.findFirst({
+                    where: {
+                      gymId,
+                      type: 'monthly',
+                      monthIndex: 1
+                    }
+                  });
+                  if (!existingMonth1Comm) {
+                    await tx.commission.create({
+                      data: {
+                        affiliateId: activatedGym.referredById,
+                        gymId,
+                        type: 'monthly',
+                        amount: monthlyCommissionAmount,
+                        status: 'unpaid',
+                        monthIndex: 1
+                      }
+                    });
+                  }
+                }
+              }
+
               return { activatedGym, activatedUser };
             });
 
@@ -155,6 +213,53 @@ export async function POST(req: Request) {
                     endDate: newEndDate,
                   },
                 });
+              }
+
+              // Commission Tracking Logic for Recurring Subscription (Months 2 to 6)
+              if (gym && gym.referredById) {
+                const planKey = (plan || latestSub?.plan || 'pro').toLowerCase() as PlanKey;
+                const planDetails = PLANS[planKey] || PLANS.pro;
+
+                // Retrieve all existing monthly commissions for this gym
+                const monthlyCommissions = await tx.commission.findMany({
+                  where: {
+                    gymId,
+                    type: 'monthly'
+                  },
+                  orderBy: {
+                    monthIndex: 'asc'
+                  }
+                });
+
+                const count = monthlyCommissions.length;
+                if (count < 6) {
+                  const nextMonthIndex = count + 1;
+                  const monthlyFee = planDetails.monthlyFee;
+                  const monthlyCommissionAmount = monthlyFee * 0.20;
+
+                  if (monthlyCommissionAmount > 0) {
+                    const existingComm = await tx.commission.findFirst({
+                      where: {
+                        gymId,
+                        type: 'monthly',
+                        monthIndex: nextMonthIndex
+                      }
+                    });
+
+                    if (!existingComm) {
+                      await tx.commission.create({
+                        data: {
+                          affiliateId: gym.referredById,
+                          gymId,
+                          type: 'monthly',
+                          amount: monthlyCommissionAmount,
+                          status: 'unpaid',
+                          monthIndex: nextMonthIndex
+                        }
+                      });
+                    }
+                  }
+                }
               }
               
               return { gym, user, newEndDate };

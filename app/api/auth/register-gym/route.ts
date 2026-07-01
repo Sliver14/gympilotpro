@@ -6,10 +6,22 @@ import { sendGymRegistrationTrialEmail } from '@/lib/email';
 
 export async function POST(req: Request) {
   try {
-    const { fullName, gymName, email, phone, plan } = await req.json();
+    const { fullName, gymName, email, phone, plan, referralCode } = await req.json();
 
     if (!fullName || !gymName || !email || !phone || !plan) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    }
+
+    // Validate referral code if provided
+    let affiliateId: string | null = null;
+    if (referralCode) {
+      const affiliate = await prisma.affiliate.findUnique({
+        where: { referralCode: referralCode.trim().toUpperCase() }
+      });
+      if (!affiliate) {
+        return NextResponse.json({ error: 'Invalid referral code' }, { status: 400 });
+      }
+      affiliateId = affiliate.id;
     }
 
     // Check if user already exists
@@ -60,6 +72,7 @@ export async function POST(req: Request) {
           phone: phone,
           status: 'pending',
           qrCodeUrl: qrCodeUrl,
+          referredById: affiliateId || undefined
         },
       });
 

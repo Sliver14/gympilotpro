@@ -18,7 +18,8 @@ export default function GetStartedForm() {
     email: '',
     phone: '',
     plan: 'starter' as PlanKey,
-    months: 1
+    months: 1,
+    referralCode: ''
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -27,14 +28,15 @@ export default function GetStartedForm() {
 
   useEffect(() => {
     const planParam = searchParams.get('plan')?.toLowerCase() as PlanKey;
-    // We strictly ignore the 'months' param for trial onboarding to ensure it's always 1 month (30 days)
+    const refParam = searchParams.get('ref') || '';
     const monthsParam = 1;
 
-    if (planParam && PLANS[planParam]) {
-      setFormData(prev => ({ ...prev, plan: planParam, months: monthsParam }));
-    } else {
-      setFormData(prev => ({ ...prev, months: monthsParam }));
-    }
+    setFormData(prev => ({
+      ...prev,
+      plan: (planParam && PLANS[planParam]) ? planParam : prev.plan,
+      months: monthsParam,
+      referralCode: refParam || prev.referralCode
+    }));
   }, [searchParams]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -50,7 +52,7 @@ export default function GetStartedForm() {
     setError('');
 
     try {
-      // 1. Create Gym and User with 30-Day Trial
+      // 1. Create Gym and User with Onboarding and optional referral code
       const registerRes = await fetch('/api/auth/register-gym', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -59,7 +61,8 @@ export default function GetStartedForm() {
           gymName: formData.gymName,
           email: formData.email,
           phone: formData.phone,
-          plan: formData.plan
+          plan: formData.plan,
+          referralCode: formData.referralCode
         }),
       });
 
@@ -220,6 +223,19 @@ export default function GetStartedForm() {
                 </div>
               </div>
             </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-muted-foreground mb-2">Referral Code (Optional)</label>
+            <input 
+              type="text" 
+              name="referralCode"
+              disabled={loading}
+              value={formData.referralCode}
+              onChange={handleChange}
+              placeholder="e.g. CODE123" 
+              className="w-full bg-transparent border-2 border-border p-4 font-black focus:border-orange-500 outline-none transition-colors text-foreground"
+            />
           </div>
 
           <div className="pt-6 border-t border-border">

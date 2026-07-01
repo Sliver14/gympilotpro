@@ -42,6 +42,7 @@ const menuItems = [
   { name: 'Leads', icon: PhoneCall, href: '/saas-admin/leads' },
   { name: 'Subscribers', icon: Users, href: '/saas-admin/subscribers' },
   { name: 'Payments', icon: CreditCard, href: '/saas-admin/payments' },
+  { name: 'Affiliates', icon: Users, href: '/saas-admin/affiliates' },
   { name: 'Settings', icon: Settings, href: '/saas-admin/settings' },
 ]
 
