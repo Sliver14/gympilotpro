@@ -134,7 +134,7 @@ export default function GymLoginForm() {
       <div className="w-full max-w-md">
         {/* Logo */}
         <Link href={tenantPath('/')} className="mb-12 flex flex-col items-center justify-center gap-4 group">
-          <div className="relative h-16 md:h-20 w-20 overflow-hidden rounded-full border-2 flex items-center justify-center transition-transform group-hover:scale-110" style={{ borderColor: `${accent}80`, backgroundColor: logoUrl  ? 'white' : 'hsl(var(--card))' }}>
+          <div className="relative h-16 w-16 md:h-20 md:w-20 overflow-hidden rounded-full border-2 flex items-center justify-center transition-transform group-hover:scale-110" style={{ borderColor: `${accent}80`, backgroundColor: logoUrl  ? 'white' : 'hsl(var(--card))' }}>
             {logoUrl ? (
               <Image 
                 src={logoUrl} 
@@ -143,7 +143,7 @@ export default function GymLoginForm() {
                 className="object-contain p-2"
               />
             ) : (
-              <span className="font-black text-2xl" style={{ color: accent }}>{gymInitials}</span>
+              <span className="font-black text-xl" style={{ color: accent }}>{gymInitials}</span>
             )}
           </div>
           <div className="text-center">

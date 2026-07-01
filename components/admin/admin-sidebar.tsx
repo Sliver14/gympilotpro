@@ -141,7 +141,7 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
                     <span className="font-black text-lg" style={{ color: accent }}>{gymInitials}</span>
                   )}
                 </div>
-                <div className="grid flex-1 text-left text-sm leading-tight ml-2">
+                <div className="grid flex-1 text-left text-sm leading-tight ml-2 group-data-[collapsible=icon]:hidden">
                   <span className="truncate font-black uppercase tracking-tighter text-lg">{gymName}</span>
                   <span className="truncate text-[8px] font-bold tracking-[0.4em] text-muted-foreground mt-0.5 capitalize">{role} Dashboard</span>
                 </div>
@@ -189,7 +189,7 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <div className="px-4 py-2 border-t border-sidebar-border/50">
+        <div className="px-4 py-2 border-t border-sidebar-border/50 group-data-[collapsible=icon]:hidden">
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-black text-sidebar-foreground/50">Appearance</span>
             <ModeToggle />
@@ -207,7 +207,7 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
                     <AvatarImage src={profileImage || undefined} className="object-cover" />
                     <AvatarFallback className="rounded-lg font-black" style={{ backgroundColor: `${accent}1a`, color: accent }}>{initials || '??'}</AvatarFallback>
                   </Avatar>
-                  <div className="grid flex-1 text-left text-sm leading-tight">
+                  <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
                     <span className="truncate font-black text-foreground">
                       {adminData.firstName} {adminData.lastName}
                     </span>
