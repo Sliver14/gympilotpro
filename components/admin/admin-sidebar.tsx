@@ -47,7 +47,7 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
   const currentTab = searchParams.get('tab') || 'overview'
   const role = adminData.role || 'admin'
 
-  const accent = gymData?.primaryColor || '#daa857'
+  const accent = gymData?.primaryColor || 'var(--primary)'
   const logo = gymData?.logo
   const gymName = gymData?.name || 'Gym'
   const gymInitials = gymName.split(' ').map((n: string) => n[0]).join('').substring(0, 2).toUpperCase()
@@ -178,7 +178,7 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
                     } : {}}
                   >
                     <Link href={item.url} onClick={() => setOpenMobile(false)}>
-                      <item.icon className={cn("size-4", item.active && "text-[#daa857]")} style={item.active ? { color: accent } : {}} />
+                      <item.icon className={cn("size-4", item.active && "text-primary")} style={item.active ? { color: accent } : {}} />
                       <span>{item.title}</span>
                     </Link>
                   </SidebarMenuButton>

@@ -194,8 +194,8 @@ export default function RegisterStaffDialog({ onStaffAdded }: { onStaffAdded?: (
             />
           </div>
 
-          <div className="bg-[#daa857]/5 border border-[#daa857]/20 p-4 rounded-xl">
-             <p className="text-[10px] font-bold text-[#daa857] leading-relaxed">
+          <div className="bg-primary/5 border border-primary/20 p-4 rounded-xl">
+             <p className="text-[10px] font-bold text-primary leading-relaxed">
                A welcome email will be sent to the staff member with their login credentials and the gym's access URL.
              </p>
           </div>

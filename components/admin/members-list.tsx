@@ -195,7 +195,7 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
           <div className="flex flex-col gap-4 md:gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <CardTitle className="flex items-center gap-3">
-                <Users className="h-5 w-5 text-[#daa857]" /> Member <span className="text-[#daa857]">Directory</span>
+                <Users className="h-5 w-5 text-primary" /> Member <span className="text-primary">Directory</span>
               </CardTitle>
               <CardDescription>{members.length} verified members in the gym</CardDescription>
               {maxMembers !== Infinity && (
@@ -206,7 +206,7 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
                   </div>
                   <div className="h-1.5 w-full bg-accent rounded-full overflow-hidden">
                     <div 
-                      className={cn("h-full transition-all duration-500", isAtCapacity ? "bg-red-500" : "bg-[#daa857]")} 
+                      className={cn("h-full transition-all duration-500", isAtCapacity ? "bg-red-500" : "bg-primary")} 
                       style={{ width: `${Math.min((members.length / maxMembers) * 100, 100)}%` }}
                     />
                   </div>
@@ -251,12 +251,12 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
         <CardContent className="space-y-8">
           <div className="flex flex-col md:flex-row gap-4">
             <div className="relative group flex-1">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground transition-colors group-focus-within:text-[#daa857]" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground transition-colors group-focus-within:text-primary" />
               <Input
                 placeholder="Filter members by name or email..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="h-14 pl-12 bg-background border-border rounded-2xl focus:border-[#daa857] font-bold text-sm w-full"
+                className="h-14 pl-12 bg-background border-border rounded-2xl focus:border-primary font-bold text-sm w-full"
               />
             </div>
             
@@ -304,25 +304,25 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
                   <div 
                     key={member.id} 
                     onClick={() => openMemberDetails(member)}
-                    className="flex flex-col md:flex-row md:items-center justify-between rounded-3xl bg-card/50 border border-border p-4 md:p-6 hover:border-[#daa857]/30 transition-all group relative overflow-hidden cursor-pointer"
+                    className="flex flex-col md:flex-row md:items-center justify-between rounded-3xl bg-card/50 border border-border p-4 md:p-6 hover:border-primary/30 transition-all group relative overflow-hidden cursor-pointer"
                   >
-                    <div className="absolute -right-12 -top-12 h-16 md:h-24 w-24 rounded-full bg-accent blur-2xl group-hover:bg-[#daa857]/5 transition-colors" />
+                    <div className="absolute -right-12 -top-12 h-16 md:h-24 w-24 rounded-full bg-accent blur-2xl group-hover:bg-primary/5 transition-colors" />
                     
                     <div className="flex items-center gap-5 flex-1 min-w-0 relative z-10">
-                      <Avatar className="h-14 w-14 border-2 border-border group-hover:border-[#daa857]/30 transition-all duration-500 shadow-xl">
+                      <Avatar className="h-14 w-14 border-2 border-border group-hover:border-primary/30 transition-all duration-500 shadow-xl">
                         <AvatarImage src={member.profileImage || undefined} className="object-cover" />
-                        <AvatarFallback className="bg-background text-[#daa857] font-black">
+                        <AvatarFallback className="bg-background text-primary font-black">
                           {initials || <User className="h-6 w-6" />}
                         </AvatarFallback>
                       </Avatar>
                       <div className="min-w-0">
                         <p className="font-black text-foreground uppercase tracking-tight text-lg leading-none mb-1 flex items-center gap-2">
-                          {member.firstName} <span className="text-[#daa857]">{member.lastName}</span>
+                          {member.firstName} <span className="text-primary">{member.lastName}</span>
                         </p>
                         <p className="text-[10px] font-bold text-muted-foreground flex items-center gap-2 mt-1.5">
                           <span className="truncate max-w-[150px]">{member.email}</span>
                           <span className="h-1 w-1 rounded-full bg-muted" />
-                          <span className="text-[#daa857]/50">ID: {member.id.slice(-6).toUpperCase()}</span>
+                          <span className="text-primary/50">ID: {member.id.slice(-6).toUpperCase()}</span>
                         </p>
                       </div>
                     </div>
@@ -352,7 +352,7 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
                         <Badge
                           className={cn(
                             "px-4 py-1.5 rounded-full text-[10px] font-black border-none",
-                            status === 'active' ? "bg-green-500 text-black" : status === 'expiring' ? "bg-[#daa857] text-black" : "bg-red-500 text-white"
+                            status === 'active' ? "bg-green-500 text-black" : status === 'expiring' ? "bg-primary text-black" : "bg-red-500 text-white"
                           )}
                         >
                           {status.toUpperCase()}
@@ -384,7 +384,7 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
                     <Badge
                       className={cn(
                         "px-3 py-1 rounded-full text-[9px] font-black border-none uppercase shadow-sm",
-                        status === 'active' ? "bg-green-500 text-black" : status === 'expiring' ? "bg-[#daa857] text-black" : "bg-red-500 text-white"
+                        status === 'active' ? "bg-green-500 text-black" : status === 'expiring' ? "bg-primary text-black" : "bg-red-500 text-white"
                       )}
                     >
                       {status.toUpperCase()}
@@ -402,13 +402,13 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
                   <div className="flex flex-col items-center mt-4">
                     <Avatar className="h-24 w-24 border-4 border-background shadow-2xl mb-4 relative z-10">
                       <AvatarImage src={selectedMember.profileImage || undefined} className="object-cover" />
-                      <AvatarFallback className="bg-accent text-[#daa857] font-black text-2xl">
+                      <AvatarFallback className="bg-accent text-primary font-black text-2xl">
                         {initials || <User className="h-10 w-10" />}
                       </AvatarFallback>
                     </Avatar>
                     
                     <SheetTitle className="text-2xl md:text-3xl font-black uppercase tracking-tighter text-center">
-                      {selectedMember.firstName} <span className="text-[#daa857]">{selectedMember.lastName}</span>
+                      {selectedMember.firstName} <span className="text-primary">{selectedMember.lastName}</span>
                     </SheetTitle>
                     <SheetDescription className="text-center font-bold text-xs mt-1">
                       Member ID: {selectedMember.id.slice(-8).toUpperCase()}
@@ -421,7 +421,7 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
                   {/* Personal Information */}
                   <div className="space-y-4">
                     <h3 className="text-[10px] font-black tracking-[0.2em] text-muted-foreground flex items-center gap-2 uppercase">
-                      <User className="h-4 w-4 text-[#daa857]" /> Personal Info
+                      <User className="h-4 w-4 text-primary" /> Personal Info
                     </h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-background/30 rounded-2xl p-4 border border-border">
                       <div className="flex items-center gap-3">
@@ -498,7 +498,7 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
                   <div className="space-y-4">
                     <div className="flex justify-between items-center">
                       <h3 className="text-[10px] font-black tracking-[0.2em] text-muted-foreground flex items-center gap-2 uppercase">
-                        <CreditCard className="h-4 w-4 text-[#daa857]" /> Membership Details
+                        <CreditCard className="h-4 w-4 text-primary" /> Membership Details
                       </h3>
                       {status !== 'active' && (
                         <ManualRenewalDialog 
@@ -556,7 +556,7 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
                   {/* Emergency Contact */}
                   <div className="space-y-4">
                     <h3 className="text-[10px] font-black tracking-[0.2em] text-muted-foreground flex items-center gap-2 uppercase">
-                      <AlertCircle className="h-4 w-4 text-[#daa857]" /> Emergency Contact
+                      <AlertCircle className="h-4 w-4 text-primary" /> Emergency Contact
                     </h3>
                     <div className="bg-background/30 rounded-2xl p-4 border border-border flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                        <div>
@@ -576,7 +576,7 @@ export default function MembersList({ onMemberAdded }: { onMemberAdded?: () => v
                       <Separator className="bg-border/50" />
                       <div className="space-y-4 mb-8">
                         <h3 className="text-[10px] font-black tracking-[0.2em] text-muted-foreground flex items-center gap-2 uppercase">
-                          <Activity className="h-4 w-4 text-[#daa857]" /> Health & Goals
+                          <Activity className="h-4 w-4 text-primary" /> Health & Goals
                         </h3>
                         <div className="bg-background/30 rounded-2xl p-4 border border-border">
                            {selectedMember.memberProfile.fitnessGoals && (

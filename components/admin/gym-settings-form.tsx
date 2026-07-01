@@ -155,7 +155,7 @@ export function GymSettingsForm() {
   }
 
   if (loading) {
-    return <div className="flex justify-center p-5 md:p-10"><Loader2 className="animate-spin text-[#daa857]" /></div>
+    return <div className="flex justify-center p-5 md:p-10"><Loader2 className="animate-spin text-primary" /></div>
   }
 
   return (
@@ -163,19 +163,19 @@ export function GymSettingsForm() {
       
       {/* Header Section */}
       <div className="bg-card border border-border rounded-[2.5rem] p-4 md:p-8 shadow-2xl relative overflow-hidden flex flex-col md:flex-row justify-between md:items-center gap-6">
-        <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-[#daa857]/5 blur-[100px]" />
+        <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-primary/5 blur-[100px]" />
         
         <div className="relative z-10 flex items-center gap-4 md:gap-6">
           <div className="h-16 w-16 md:h-20 md:w-20 rounded-full border border-border overflow-hidden flex items-center justify-center bg-white shadow-xl">
             {gymData?.logo ? (
               <img src={gymData.logo} alt="Logo" className="w-full h-full object-contain p-2" />
             ) : (
-              <span className="font-black text-xl text-[#daa857]">{form.name ? form.name[0].toUpperCase() : 'G'}</span>
+              <span className="font-black text-xl text-primary">{form.name ? form.name[0].toUpperCase() : 'G'}</span>
             )}
           </div>
           <div className="space-y-1">
             <h2 className="text-2xl md:text-3xl font-black uppercase tracking-tighter text-foreground">
-              Gym <span className="text-[#daa857]">Settings</span>
+              Gym <span className="text-primary">Settings</span>
             </h2>
             <p className="text-[10px] font-bold text-muted-foreground">
               Configure your branding & integrations
@@ -184,7 +184,7 @@ export function GymSettingsForm() {
         </div>
 
         <div className="relative z-10 flex flex-col items-start md:items-end gap-3">
-          <div className="bg-[#daa857]/10 text-[#daa857] px-4 py-2 rounded-xl text-[10px] font-black border border-[#daa857]/20">
+          <div className="bg-primary/10 text-primary px-4 py-2 rounded-xl text-[10px] font-black border border-primary/20">
             Plan: {currentPlan.toUpperCase()}
           </div>
           <Button 
@@ -203,11 +203,11 @@ export function GymSettingsForm() {
         {/* Branding Modal Trigger */}
         <Dialog open={isBrandingModalOpen} onOpenChange={setIsBrandingModalOpen}>
           <DialogTrigger asChild>
-            <div className="group cursor-pointer bg-card border border-border rounded-3xl p-4 md:p-8 hover:border-[#daa857]/30 transition-all duration-500 shadow-xl relative overflow-hidden">
-              <div className="absolute -right-12 -top-12 h-16 md:h-24 w-24 rounded-full bg-[#daa857]/5 blur-2xl group-hover:bg-[#daa857]/10 transition-colors" />
+            <div className="group cursor-pointer bg-card border border-border rounded-3xl p-4 md:p-8 hover:border-primary/30 transition-all duration-500 shadow-xl relative overflow-hidden">
+              <div className="absolute -right-12 -top-12 h-16 md:h-24 w-24 rounded-full bg-primary/5 blur-2xl group-hover:bg-primary/10 transition-colors" />
               <div className="flex items-center justify-between relative z-10">
                 <div className="flex items-center gap-4 md:gap-6">
-                  <div className="h-14 w-14 rounded-2xl bg-[#daa857]/10 flex items-center justify-center text-[#daa857] group-hover:scale-110 transition-transform">
+                  <div className="h-14 w-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
                     <Palette className="h-7 w-7" />
                   </div>
                   <div>
@@ -215,14 +215,14 @@ export function GymSettingsForm() {
                     <p className="text-[10px] font-bold text-muted-foreground">Name, Colors & Tagline</p>
                   </div>
                 </div>
-                <ChevronRight className="h-6 w-6 text-muted-foreground group-hover:text-[#daa857] transition-colors" />
+                <ChevronRight className="h-6 w-6 text-muted-foreground group-hover:text-primary transition-colors" />
               </div>
             </div>
           </DialogTrigger>
           <DialogContent className="bg-card border-border text-foreground rounded-[2.5rem] p-5 md:p-10 max-w-2xl max-h-[90vh] overflow-y-auto custom-scrollbar">
             <DialogHeader className="space-y-4">
               <DialogTitle className="text-3xl font-black uppercase tracking-tighter">
-                Branding & <span className="text-[#daa857]">Display</span>
+                Branding & <span className="text-primary">Display</span>
               </DialogTitle>
               <DialogDescription className="text-muted-foreground font-medium text-[10px] leading-relaxed">
                 Update your gym's textual identity and brand colors.
@@ -236,7 +236,7 @@ export function GymSettingsForm() {
                   <Input 
                     value={form.name}
                     onChange={e => setForm({...form, name: e.target.value})}
-                    className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-6 font-bold text-[10px]"
+                    className="h-14 bg-background border-border rounded-xl focus:border-primary px-6 font-bold text-[10px]"
                   />
                 </div>
                 <div className="space-y-3">
@@ -244,7 +244,7 @@ export function GymSettingsForm() {
                   <Input 
                     value={form.tagline}
                     onChange={e => setForm({...form, tagline: e.target.value})}
-                    className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-6 font-bold text-[10px]"
+                    className="h-14 bg-background border-border rounded-xl focus:border-primary px-6 font-bold text-[10px]"
                   />
                 </div>
               </div>
@@ -255,7 +255,7 @@ export function GymSettingsForm() {
                   <Input 
                     value={form.heroTitle}
                     onChange={e => setForm({...form, heroTitle: e.target.value})}
-                    className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-6 font-bold text-[10px]"
+                    className="h-14 bg-background border-border rounded-xl focus:border-primary px-6 font-bold text-[10px]"
                   />
                 </div>
                 <div className="space-y-3">
@@ -263,7 +263,7 @@ export function GymSettingsForm() {
                   <Input 
                     value={form.heroSubtitle}
                     onChange={e => setForm({...form, heroSubtitle: e.target.value})}
-                    className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-6 font-bold text-[10px]"
+                    className="h-14 bg-background border-border rounded-xl focus:border-primary px-6 font-bold text-[10px]"
                   />
                 </div>
               </div>
@@ -281,8 +281,8 @@ export function GymSettingsForm() {
                         className={cn(
                           "p-4 rounded-xl border bg-background text-left transition-all duration-300 relative group flex flex-col justify-between h-28 cursor-pointer",
                           isSelected 
-                            ? "border-[#daa857] shadow-lg shadow-[#daa857]/10 bg-[#daa857]/5" 
-                            : "border-border hover:border-[#daa857]/50 hover:bg-card"
+                            ? "border-primary shadow-lg shadow-primary/10 bg-primary/5" 
+                            : "border-border hover:border-primary/50 hover:bg-card"
                         )}
                       >
                         <div className="flex gap-2">
@@ -311,7 +311,7 @@ export function GymSettingsForm() {
                 <Button 
                   type="submit" 
                   disabled={savingBranding}
-                  className="flex-1 h-14 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black rounded-xl transition-all shadow-xl shadow-[#daa857]/10"
+                  className="flex-1 h-14 bg-primary hover:bg-[#cdb48b] text-black font-black rounded-xl transition-all shadow-xl shadow-primary/10"
                 >
                   {savingBranding ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : 'Update Branding'}
                 </Button>
@@ -323,11 +323,11 @@ export function GymSettingsForm() {
         {/* Media Assets Modal Trigger */}
         <Dialog open={isMediaModalOpen} onOpenChange={setIsMediaModalOpen}>
           <DialogTrigger asChild>
-            <div className="group cursor-pointer bg-card border border-border rounded-3xl p-4 md:p-8 hover:border-[#daa857]/30 transition-all duration-500 shadow-xl relative overflow-hidden">
-              <div className="absolute -right-12 -top-12 h-16 md:h-24 w-24 rounded-full bg-[#daa857]/5 blur-2xl group-hover:bg-[#daa857]/10 transition-colors" />
+            <div className="group cursor-pointer bg-card border border-border rounded-3xl p-4 md:p-8 hover:border-primary/30 transition-all duration-500 shadow-xl relative overflow-hidden">
+              <div className="absolute -right-12 -top-12 h-16 md:h-24 w-24 rounded-full bg-primary/5 blur-2xl group-hover:bg-primary/10 transition-colors" />
               <div className="flex items-center justify-between relative z-10">
                 <div className="flex items-center gap-4 md:gap-6">
-                  <div className="h-14 w-14 rounded-2xl bg-[#daa857]/10 flex items-center justify-center text-[#daa857] group-hover:scale-110 transition-transform">
+                  <div className="h-14 w-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
                     <ImagePlus className="h-7 w-7" />
                   </div>
                   <div>
@@ -335,14 +335,14 @@ export function GymSettingsForm() {
                     <p className="text-[10px] font-bold text-muted-foreground">Logos & Visual Assets</p>
                   </div>
                 </div>
-                <ChevronRight className="h-6 w-6 text-muted-foreground group-hover:text-[#daa857] transition-colors" />
+                <ChevronRight className="h-6 w-6 text-muted-foreground group-hover:text-primary transition-colors" />
               </div>
             </div>
           </DialogTrigger>
           <DialogContent className="bg-card border-border text-foreground rounded-[2.5rem] p-5 md:p-10 max-w-4xl max-h-[90vh] overflow-y-auto custom-scrollbar">
             <DialogHeader className="space-y-4">
               <DialogTitle className="text-3xl font-black uppercase tracking-tighter">
-                Media <span className="text-[#daa857]">Assets</span>
+                Media <span className="text-primary">Assets</span>
               </DialogTitle>
               <DialogDescription className="text-muted-foreground font-medium text-[10px] leading-relaxed">
                 Upload your gym's visual identity assets directly. Changes save automatically.
@@ -351,55 +351,55 @@ export function GymSettingsForm() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 py-6">
               {/* Logo Upload */}
-              <div className="p-6 bg-background border border-border rounded-3xl flex flex-col items-center justify-center gap-4 text-center group transition-colors hover:border-[#daa857]/30">
+              <div className="p-6 bg-background border border-border rounded-3xl flex flex-col items-center justify-center gap-4 text-center group transition-colors hover:border-primary/30">
                 <div className="h-24 w-24 rounded-full border-2 border-border overflow-hidden flex items-center justify-center bg-card shadow-lg">
                   {gymData?.logo ? <img src={gymData.logo} alt="Logo" className="w-full h-full object-contain p-2" /> : <Camera className="text-muted-foreground" />}
                 </div>
-                <Label className="text-[10px] font-black cursor-pointer group-hover:text-[#daa857] px-6 py-3 border border-border rounded-xl bg-card transition-colors">
+                <Label className="text-[10px] font-black cursor-pointer group-hover:text-primary px-6 py-3 border border-border rounded-xl bg-card transition-colors">
                   {uploadingField === 'logo' ? 'Uploading...' : 'Upload Logo'}
                   <input type="file" className="hidden" accept="image/*" onChange={e => handleFileUpload(e, 'logo')} disabled={!!uploadingField} />
                 </Label>
               </div>
 
               {/* Favicon Upload */}
-              <div className="p-6 bg-background border border-border rounded-3xl flex flex-col items-center justify-center gap-4 text-center group transition-colors hover:border-[#daa857]/30">
+              <div className="p-6 bg-background border border-border rounded-3xl flex flex-col items-center justify-center gap-4 text-center group transition-colors hover:border-primary/30">
                 <div className="h-24 w-24 rounded-2xl border-2 border-border overflow-hidden flex items-center justify-center bg-card shadow-lg">
                   {gymData?.favicon ? <img src={gymData.favicon} alt="Favicon" className="w-full h-full object-contain p-4" /> : <ImageIcon className="text-muted-foreground" />}
                 </div>
-                <Label className="text-[10px] font-black cursor-pointer group-hover:text-[#daa857] px-6 py-3 border border-border rounded-xl bg-card transition-colors">
+                <Label className="text-[10px] font-black cursor-pointer group-hover:text-primary px-6 py-3 border border-border rounded-xl bg-card transition-colors">
                   {uploadingField === 'favicon' ? 'Uploading...' : 'Upload Favicon'}
                   <input type="file" className="hidden" accept="image/x-icon,image/png,image/jpeg" onChange={e => handleFileUpload(e, 'favicon')} disabled={!!uploadingField} />
                 </Label>
               </div>
 
               {/* Hero Video Upload */}
-              <div className="p-6 bg-background border border-border rounded-3xl flex flex-col items-center justify-center gap-4 text-center group transition-colors hover:border-[#daa857]/30">
+              <div className="p-6 bg-background border border-border rounded-3xl flex flex-col items-center justify-center gap-4 text-center group transition-colors hover:border-primary/30">
                 <div className="h-24 w-24 rounded-2xl border-2 border-border overflow-hidden flex items-center justify-center bg-card shadow-lg">
-                  {gymData?.heroVideo ? <Video className="h-10 w-10 text-[#daa857]" /> : <Video className="h-10 w-10 text-muted-foreground" />}
+                  {gymData?.heroVideo ? <Video className="h-10 w-10 text-primary" /> : <Video className="h-10 w-10 text-muted-foreground" />}
                 </div>
-                <Label className="text-[10px] font-black cursor-pointer group-hover:text-[#daa857] px-6 py-3 border border-border rounded-xl bg-card transition-colors">
+                <Label className="text-[10px] font-black cursor-pointer group-hover:text-primary px-6 py-3 border border-border rounded-xl bg-card transition-colors">
                   {uploadingField === 'heroVideo' ? 'Uploading...' : 'Upload Hero Video'}
                   <input type="file" className="hidden" accept="video/*" onChange={e => handleFileUpload(e, 'heroVideo')} disabled={!!uploadingField} />
                 </Label>
               </div>
 
               {/* Showcase 1 Upload */}
-              <div className="p-6 bg-background border border-border rounded-3xl flex flex-col items-center justify-center gap-4 text-center group transition-colors hover:border-[#daa857]/30">
+              <div className="p-6 bg-background border border-border rounded-3xl flex flex-col items-center justify-center gap-4 text-center group transition-colors hover:border-primary/30">
                 <div className="h-32 w-full rounded-2xl border-2 border-border overflow-hidden flex items-center justify-center bg-card shadow-lg">
                   {gymData?.showcaseImage1 ? <img src={gymData.showcaseImage1} alt="S1" className="w-full h-full object-cover" /> : <ImageIcon className="text-muted-foreground" />}
                 </div>
-                <Label className="text-[10px] font-black cursor-pointer group-hover:text-[#daa857] px-6 py-3 border border-border rounded-xl bg-card transition-colors">
+                <Label className="text-[10px] font-black cursor-pointer group-hover:text-primary px-6 py-3 border border-border rounded-xl bg-card transition-colors">
                   {uploadingField === 'showcaseImage1' ? 'Uploading...' : 'Showcase Image 1'}
                   <input type="file" className="hidden" accept="image/*" onChange={e => handleFileUpload(e, 'showcaseImage1')} disabled={!!uploadingField} />
                 </Label>
               </div>
 
               {/* Showcase 2 Upload */}
-              <div className="p-6 bg-background border border-border rounded-3xl flex flex-col items-center justify-center gap-4 text-center group transition-colors hover:border-[#daa857]/30">
+              <div className="p-6 bg-background border border-border rounded-3xl flex flex-col items-center justify-center gap-4 text-center group transition-colors hover:border-primary/30">
                 <div className="h-32 w-full rounded-2xl border-2 border-border overflow-hidden flex items-center justify-center bg-card shadow-lg">
                   {gymData?.showcaseImage2 ? <img src={gymData.showcaseImage2} alt="S2" className="w-full h-full object-cover" /> : <ImageIcon className="text-muted-foreground" />}
                 </div>
-                <Label className="text-[10px] font-black cursor-pointer group-hover:text-[#daa857] px-6 py-3 border border-border rounded-xl bg-card transition-colors">
+                <Label className="text-[10px] font-black cursor-pointer group-hover:text-primary px-6 py-3 border border-border rounded-xl bg-card transition-colors">
                   {uploadingField === 'showcaseImage2' ? 'Uploading...' : 'Showcase Image 2'}
                   <input type="file" className="hidden" accept="image/*" onChange={e => handleFileUpload(e, 'showcaseImage2')} disabled={!!uploadingField} />
                 </Label>
@@ -410,7 +410,7 @@ export function GymSettingsForm() {
                <Button 
                   type="button" 
                   onClick={() => setIsMediaModalOpen(false)}
-                  className="w-full sm:w-auto h-14 px-10 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black rounded-xl transition-all shadow-xl shadow-[#daa857]/10"
+                  className="w-full sm:w-auto h-14 px-10 bg-primary hover:bg-[#cdb48b] text-black font-black rounded-xl transition-all shadow-xl shadow-primary/10"
                 >
                   Done
                 </Button>
@@ -421,11 +421,11 @@ export function GymSettingsForm() {
         {/* Payments Modal Trigger */}
         <Dialog open={isPaymentsModalOpen} onOpenChange={setIsPaymentsModalOpen}>
           <DialogTrigger asChild>
-            <div className="group cursor-pointer bg-card border border-border rounded-3xl p-4 md:p-8 hover:border-[#daa857]/30 transition-all duration-500 shadow-xl relative overflow-hidden">
-              <div className="absolute -right-12 -top-12 h-16 md:h-24 w-24 rounded-full bg-[#daa857]/5 blur-2xl group-hover:bg-[#daa857]/10 transition-colors" />
+            <div className="group cursor-pointer bg-card border border-border rounded-3xl p-4 md:p-8 hover:border-primary/30 transition-all duration-500 shadow-xl relative overflow-hidden">
+              <div className="absolute -right-12 -top-12 h-16 md:h-24 w-24 rounded-full bg-primary/5 blur-2xl group-hover:bg-primary/10 transition-colors" />
               <div className="flex items-center justify-between relative z-10">
                 <div className="flex items-center gap-4 md:gap-6">
-                  <div className="h-14 w-14 rounded-2xl bg-[#daa857]/10 flex items-center justify-center text-[#daa857] group-hover:scale-110 transition-transform">
+                  <div className="h-14 w-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
                     <CreditCard className="h-7 w-7" />
                   </div>
                   <div>
@@ -433,14 +433,14 @@ export function GymSettingsForm() {
                     <p className="text-[10px] font-bold text-muted-foreground">Gateway Configuration</p>
                   </div>
                 </div>
-                <ChevronRight className="h-6 w-6 text-muted-foreground group-hover:text-[#daa857] transition-colors" />
+                <ChevronRight className="h-6 w-6 text-muted-foreground group-hover:text-primary transition-colors" />
               </div>
             </div>
           </DialogTrigger>
           <DialogContent className="bg-card border-border text-foreground rounded-[2.5rem] p-5 md:p-10 max-w-2xl max-h-[90vh] overflow-y-auto custom-scrollbar">
             <DialogHeader className="space-y-4">
               <DialogTitle className="text-3xl font-black uppercase tracking-tighter">
-                Payment <span className="text-[#daa857]">Gateway</span>
+                Payment <span className="text-primary">Gateway</span>
               </DialogTitle>
               <DialogDescription className="text-muted-foreground font-medium text-[10px] leading-relaxed">
                 Connect your Paystack account to receive automated subscriptions and payments.
@@ -500,7 +500,7 @@ export function GymSettingsForm() {
                     onChange={e => setForm({...form, paystackPublicKey: e.target.value})}
                     type="password"
                     placeholder="pk_test_..."
-                    className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-6 font-bold tracking-widest"
+                    className="h-14 bg-background border-border rounded-xl focus:border-primary px-6 font-bold tracking-widest"
                   />
                 </div>
                 <div className="space-y-3">
@@ -510,7 +510,7 @@ export function GymSettingsForm() {
                     onChange={e => setForm({...form, paystackSecretKey: e.target.value})}
                     type="password"
                     placeholder="sk_test_..."
-                    className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-6 font-bold tracking-widest"
+                    className="h-14 bg-background border-border rounded-xl focus:border-primary px-6 font-bold tracking-widest"
                   />
                 </div>
               </div>
@@ -527,7 +527,7 @@ export function GymSettingsForm() {
                 <Button 
                   type="submit" 
                   disabled={savingPayments}
-                  className="flex-1 h-14 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black rounded-xl transition-all shadow-xl shadow-[#daa857]/10"
+                  className="flex-1 h-14 bg-primary hover:bg-[#cdb48b] text-black font-black rounded-xl transition-all shadow-xl shadow-primary/10"
                 >
                   {savingPayments ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : 'Save API Keys'}
                 </Button>
@@ -539,11 +539,11 @@ export function GymSettingsForm() {
         {/* Bank Details Modal Trigger */}
         <Dialog open={isBankModalOpen} onOpenChange={setIsBankModalOpen}>
           <DialogTrigger asChild>
-            <div className="group cursor-pointer bg-card border border-border rounded-3xl p-4 md:p-8 hover:border-[#daa857]/30 transition-all duration-500 shadow-xl relative overflow-hidden">
-              <div className="absolute -right-12 -top-12 h-16 md:h-24 w-24 rounded-full bg-[#daa857]/5 blur-2xl group-hover:bg-[#daa857]/10 transition-colors" />
+            <div className="group cursor-pointer bg-card border border-border rounded-3xl p-4 md:p-8 hover:border-primary/30 transition-all duration-500 shadow-xl relative overflow-hidden">
+              <div className="absolute -right-12 -top-12 h-16 md:h-24 w-24 rounded-full bg-primary/5 blur-2xl group-hover:bg-primary/10 transition-colors" />
               <div className="flex items-center justify-between relative z-10">
                 <div className="flex items-center gap-4 md:gap-6">
-                  <div className="h-14 w-14 rounded-2xl bg-[#daa857]/10 flex items-center justify-center text-[#daa857] group-hover:scale-110 transition-transform">
+                  <div className="h-14 w-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
                     <Building2 className="h-7 w-7" />
                   </div>
                   <div>
@@ -551,14 +551,14 @@ export function GymSettingsForm() {
                     <p className="text-[10px] font-bold text-muted-foreground">Manual Payments Info</p>
                   </div>
                 </div>
-                <ChevronRight className="h-6 w-6 text-muted-foreground group-hover:text-[#daa857] transition-colors" />
+                <ChevronRight className="h-6 w-6 text-muted-foreground group-hover:text-primary transition-colors" />
               </div>
             </div>
           </DialogTrigger>
           <DialogContent className="bg-card border-border text-foreground rounded-[2.5rem] p-5 md:p-10 max-w-xl max-h-[90vh] overflow-y-auto custom-scrollbar shadow-2xl">
             <DialogHeader className="space-y-4">
               <DialogTitle className="text-3xl font-black uppercase tracking-tighter">
-                Bank <span className="text-[#daa857]">Details</span>
+                Bank <span className="text-primary">Details</span>
               </DialogTitle>
               <DialogDescription className="text-muted-foreground font-medium text-[10px] leading-relaxed">
                 Provide your gym's bank details for manual member renewals and signups.
@@ -573,7 +573,7 @@ export function GymSettingsForm() {
                     value={form.bankName}
                     onChange={e => setForm({...form, bankName: e.target.value})}
                     placeholder="e.g. GTBank, Zenith, FCMB"
-                    className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-6 font-bold text-[10px]"
+                    className="h-14 bg-background border-border rounded-xl focus:border-primary px-6 font-bold text-[10px]"
                   />
                 </div>
                 <div className="space-y-3">
@@ -582,7 +582,7 @@ export function GymSettingsForm() {
                     value={form.accountNumber}
                     onChange={e => setForm({...form, accountNumber: e.target.value})}
                     placeholder="0000000000"
-                    className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-6 font-bold tracking-widest"
+                    className="h-14 bg-background border-border rounded-xl focus:border-primary px-6 font-bold tracking-widest"
                   />
                 </div>
                 <div className="space-y-3">
@@ -591,7 +591,7 @@ export function GymSettingsForm() {
                     value={form.accountName}
                     onChange={e => setForm({...form, accountName: e.target.value})}
                     placeholder="Legal Gym Name"
-                    className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-6 font-bold text-[10px]"
+                    className="h-14 bg-background border-border rounded-xl focus:border-primary px-6 font-bold text-[10px]"
                   />
                 </div>
               </div>
@@ -608,7 +608,7 @@ export function GymSettingsForm() {
                 <Button 
                   type="submit" 
                   disabled={savingBank}
-                  className="flex-1 h-14 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black rounded-xl transition-all shadow-xl shadow-[#daa857]/10"
+                  className="flex-1 h-14 bg-primary hover:bg-[#cdb48b] text-black font-black rounded-xl transition-all shadow-xl shadow-primary/10"
                 >
                   {savingBank ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : 'Save Bank Details'}
                 </Button>
@@ -621,11 +621,11 @@ export function GymSettingsForm() {
         {currentPlan.toLowerCase() === 'elite' && (
           <Dialog open={isBranchesModalOpen} onOpenChange={setIsBranchesModalOpen}>
             <DialogTrigger asChild>
-              <div className="group cursor-pointer bg-card border border-border rounded-3xl p-4 md:p-8 hover:border-[#daa857]/30 transition-all duration-500 shadow-xl relative overflow-hidden">
-                <div className="absolute -right-12 -top-12 h-16 md:h-24 w-24 rounded-full bg-[#daa857]/5 blur-2xl group-hover:bg-[#daa857]/10 transition-colors" />
+              <div className="group cursor-pointer bg-card border border-border rounded-3xl p-4 md:p-8 hover:border-primary/30 transition-all duration-500 shadow-xl relative overflow-hidden">
+                <div className="absolute -right-12 -top-12 h-16 md:h-24 w-24 rounded-full bg-primary/5 blur-2xl group-hover:bg-primary/10 transition-colors" />
                 <div className="flex items-center justify-between relative z-10">
                   <div className="flex items-center gap-4 md:gap-6">
-                    <div className="h-14 w-14 rounded-2xl bg-[#daa857]/10 flex items-center justify-center text-[#daa857] group-hover:scale-110 transition-transform">
+                    <div className="h-14 w-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
                       <Building2 className="h-7 w-7" />
                     </div>
                     <div>
@@ -633,7 +633,7 @@ export function GymSettingsForm() {
                       <p className="text-[10px] font-bold text-muted-foreground">Manage Locations</p>
                     </div>
                   </div>
-                  <ChevronRight className="h-6 w-6 text-muted-foreground group-hover:text-[#daa857] transition-colors" />
+                  <ChevronRight className="h-6 w-6 text-muted-foreground group-hover:text-primary transition-colors" />
                 </div>
               </div>
             </DialogTrigger>

@@ -91,7 +91,7 @@ export default function StaffList() {
         <div className="flex flex-col gap-4 md:gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <CardTitle className="flex items-center gap-3">
-              <UserCheck className="h-5 w-5 text-[#daa857]" /> Staff <span className="text-[#daa857]">Members</span>
+              <UserCheck className="h-5 w-5 text-primary" /> Staff <span className="text-primary">Members</span>
             </CardTitle>
             <CardDescription>{staff.length} authorized staff managing the gym</CardDescription>
           </div>
@@ -111,12 +111,12 @@ export default function StaffList() {
       </CardHeader>
       <CardContent className="space-y-8">
         <div className="relative group">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground transition-colors group-focus-within:text-[#daa857]" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground transition-colors group-focus-within:text-primary" />
           <Input
             placeholder="Search personnel by name, email or role..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="h-14 pl-12 bg-background border-border rounded-2xl focus:border-[#daa857] font-bold text-sm"
+            className="h-14 pl-12 bg-background border-border rounded-2xl focus:border-primary font-bold text-sm"
           />
         </div>
 
@@ -131,24 +131,24 @@ export default function StaffList() {
               const initials = `${s.firstName?.[0] ?? ''}${s.lastName?.[0] ?? ''}`.toUpperCase()
 
               return (
-                <div key={s.id} className="flex flex-col md:flex-row md:items-center justify-between rounded-3xl bg-card/50 border border-border p-4 md:p-6 hover:border-[#daa857]/30 transition-all group relative overflow-hidden">
-                  <div className="absolute -right-12 -top-12 h-16 md:h-24 w-24 rounded-full bg-accent blur-2xl group-hover:bg-[#daa857]/5 transition-colors" />
+                <div key={s.id} className="flex flex-col md:flex-row md:items-center justify-between rounded-3xl bg-card/50 border border-border p-4 md:p-6 hover:border-primary/30 transition-all group relative overflow-hidden">
+                  <div className="absolute -right-12 -top-12 h-16 md:h-24 w-24 rounded-full bg-accent blur-2xl group-hover:bg-primary/5 transition-colors" />
                   
                   <div className="flex items-center gap-5 flex-1 min-w-0 relative z-10">
-                    <Avatar className="h-14 w-14 border-2 border-border group-hover:border-[#daa857]/30 transition-all duration-500 shadow-xl">
+                    <Avatar className="h-14 w-14 border-2 border-border group-hover:border-primary/30 transition-all duration-500 shadow-xl">
                       <AvatarImage src={s.profileImage || undefined} className="object-cover" />
-                      <AvatarFallback className="bg-background text-[#daa857] font-black">
+                      <AvatarFallback className="bg-background text-primary font-black">
                         {initials || <User className="h-6 w-6" />}
                       </AvatarFallback>
                     </Avatar>
                     <div className="min-w-0">
                       <p className="font-black text-foreground uppercase tracking-tight text-lg leading-none mb-1">
-                        {s.firstName} <span className="text-[#daa857]">{s.lastName}</span>
+                        {s.firstName} <span className="text-primary">{s.lastName}</span>
                       </p>
                       <p className="text-[10px] font-bold text-muted-foreground flex items-center gap-2">
                         <span>{s.email}</span>
                         <span className="h-1 w-1 rounded-full bg-muted" />
-                        <span className="text-[#daa857]/50">{s.role.toUpperCase()} CORE</span>
+                        <span className="text-primary/50">{s.role.toUpperCase()} CORE</span>
                       </p>
                     </div>
                   </div>
@@ -166,7 +166,7 @@ export default function StaffList() {
                       </p>
                     </div>
 
-                    <Badge className="bg-[#daa857]/10 text-[#daa857] border border-[#daa857]/20 px-4 py-1 rounded-full text-[8px] font-black">
+                    <Badge className="bg-primary/10 text-primary border border-primary/20 px-4 py-1 rounded-full text-[8px] font-black">
                       {s.role.toUpperCase()}
                     </Badge>
                   </div>

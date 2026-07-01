@@ -26,7 +26,7 @@ function AdminMobileNavContent({ className, role = 'admin' }: AdminMobileNavProp
   const currentTab = searchParams.get('tab') || 'overview'
   const [open, setOpen] = useState(false)
 
-  const accent = gymData?.primaryColor || '#daa857'
+  const accent = gymData?.primaryColor || 'var(--primary)'
 
   const allNavItems = [
     { title: 'Overview', tab: 'overview', icon: LayoutDashboard },

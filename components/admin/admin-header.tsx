@@ -21,7 +21,7 @@ export default function AdminHeader({ adminData, onLogout, title, description }:
   const initials = `${adminData.firstName?.[0] ?? ''}${adminData.lastName?.[0] ?? ''}`.toUpperCase()
   const profileImage = adminData.profileImage || adminData.memberProfile?.profileImage
 
-  const accent = gymData?.primaryColor || '#daa857'
+  const accent = gymData?.primaryColor || 'var(--primary)'
   const logo = gymData?.logo
   const gymName = gymData?.name || 'Gym'
   const gymInitials = gymName.split(' ').map((n: string) => n[0]).join('').substring(0, 2).toUpperCase()

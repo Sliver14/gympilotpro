@@ -77,7 +77,7 @@ export default function RevenueAnalytics() {
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
-          <CreditCard className="h-5 w-5 text-[#daa857]" /> Financial <span className="text-[#daa857]">Overview</span>
+          <CreditCard className="h-5 w-5 text-primary" /> Financial <span className="text-primary">Overview</span>
         </CardTitle>
         <CardDescription>Monthly revenue trends and payment history</CardDescription>
       </CardHeader>
@@ -89,9 +89,9 @@ export default function RevenueAnalytics() {
             { label: 'Avg. Monthly', value: formatCurrency(avgMonthly), sub: 'MONTHLY AVERAGE', accent: true },
             { label: 'Total Transactions', value: totalPayments.toLocaleString('en-NG'), sub: 'PAYMENT COUNT' }
           ].map((stat, i) => (
-            <div key={i} className="rounded-2xl bg-card border border-border p-4 md:p-6 hover:border-[#daa857]/50 transition-all group shadow-sm">
+            <div key={i} className="rounded-2xl bg-card border border-border p-4 md:p-6 hover:border-primary/50 transition-all group shadow-sm">
               <p className="text-[8px] font-black tracking-[0.2em] text-muted-foreground mb-2">{stat.label}</p>
-              <p className={cn("text-2xl font-black tracking-tighter group-hover:scale-105 transition-transform origin-left", stat.accent ? "text-[#daa857]" : "text-foreground")}>
+              <p className={cn("text-2xl font-black tracking-tighter group-hover:scale-105 transition-transform origin-left", stat.accent ? "text-primary" : "text-foreground")}>
                 {stat.value}
               </p>
               <p className="text-[8px] font-black text-muted-foreground mt-1">{stat.sub}</p>
@@ -134,12 +134,12 @@ export default function RevenueAnalytics() {
                         color: 'var(--foreground)',
                         boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)'
                       }}
-                      itemStyle={{ color: '#daa857' }}
+                      itemStyle={{ color: 'var(--primary)' }}
                       labelStyle={{ color: 'var(--muted-foreground)', marginBottom: '4px' }}
                     />
                     <Bar 
                       dataKey="revenue" 
-                      fill="#daa857" 
+                      fill="var(--primary)" 
                       name="REVENUE" 
                       radius={[6, 6, 0, 0]}
                       barSize={24}

@@ -251,17 +251,17 @@ export default function CheckInPanel() {
               : result.message.toLowerCase().includes('pending verification')
               ? 'border-orange-500/30 bg-orange-500/5'
               : result.message.includes('Already checked in')
-              ? 'border-[#daa857]/30 bg-[#daa857]/5'
+              ? 'border-primary/30 bg-primary/5'
               : 'border-red-500/30 bg-red-500/5'
           )}
         >
-          <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full opacity-20 blur-[80px]" style={{ backgroundColor: result.isValid ? '#22c55e' : result.message.toLowerCase().includes('pending verification') ? '#f97316' : result.message.includes('Already checked in') ? '#daa857' : '#ef4444' }} />
+          <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full opacity-20 blur-[80px]" style={{ backgroundColor: result.isValid ? '#22c55e' : result.message.toLowerCase().includes('pending verification') ? '#f97316' : result.message.includes('Already checked in') ? 'var(--primary)' : '#ef4444' }} />
           
           <div className="flex flex-col items-center text-center gap-4 md:gap-8 relative z-10">
             {result.member && (
               <Avatar className="h-40 w-40 border-4 border-border shadow-2xl group transition-transform duration-500 hover:scale-105">
                 <AvatarImage src={result.member.profileImage || undefined} className="object-cover" />
-                <AvatarFallback className="text-2xl md:text-4xl bg-background font-black uppercase text-[#daa857]">
+                <AvatarFallback className="text-2xl md:text-4xl bg-background font-black uppercase text-primary">
                   {result.member.fullName.split(' ').map(n => n[0]).join('')}
                 </AvatarFallback>
               </Avatar>
@@ -279,7 +279,7 @@ export default function CheckInPanel() {
                   <span className="text-3xl font-black uppercase tracking-tighter">Pending Verification</span>
                 </div>
               ) : result.message.includes('Already checked in') ? (
-                <div className="flex items-center justify-center gap-3 text-[#daa857]">
+                <div className="flex items-center justify-center gap-3 text-primary">
                   <Clock className="h-8 w-8 stroke-[3px]" />
                   <span className="text-3xl font-black uppercase tracking-tighter">Duplicate Check-in</span>
                 </div>
@@ -291,7 +291,7 @@ export default function CheckInPanel() {
               )}
               <p className={cn(
                 "text-sm font-bold",
-                result.isValid ? 'text-green-400/70' : result.message.toLowerCase().includes('pending verification') ? 'text-orange-400/70' : result.message.includes('Already checked in') ? 'text-[#daa857]/70' : 'text-red-400/70'
+                result.isValid ? 'text-green-400/70' : result.message.toLowerCase().includes('pending verification') ? 'text-orange-400/70' : result.message.includes('Already checked in') ? 'text-primary/70' : 'text-red-400/70'
               )}>
                 {result.message}
               </p>
@@ -313,7 +313,7 @@ export default function CheckInPanel() {
               onClick={resetScanner}
               className={cn(
                 "w-full h-16 text-black font-black rounded-2xl transition-all hover:scale-[1.02] shadow-xl",
-                result.isValid ? "bg-green-500 hover:bg-green-600" : "bg-[#daa857] hover:bg-[#cdb48b]"
+                result.isValid ? "bg-green-500 hover:bg-green-600" : "bg-primary hover:bg-[#cdb48b]"
               )}
             >
               <RefreshCw className="h-5 w-5 mr-2" />
@@ -337,7 +337,7 @@ export default function CheckInPanel() {
 
             {!isScanning && !isValidating && (
               <div className="aspect-square flex flex-col items-center justify-center bg-card/50 relative group">
-                <div className="absolute inset-0 bg-[#daa857]/5 opacity-0 group-hover:opacity-100 transition-opacity blur-[100px]" />
+                <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity blur-[100px]" />
                 {error ? (
                   <div className="text-center p-5 md:p-10 space-y-6 relative z-10">
                     <div className="h-16 md:h-20 w-20 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center mx-auto">
@@ -354,8 +354,8 @@ export default function CheckInPanel() {
                   </div>
                 ) : (
                   <div className="text-center space-y-8 relative z-10">
-                    <div className="h-16 md:h-24 w-24 rounded-full bg-[#daa857]/10 border border-[#daa857]/20 flex items-center justify-center mx-auto shadow-2xl shadow-[#daa857]/5">
-                      <Camera className="h-10 w-10 text-[#daa857]" />
+                    <div className="h-16 md:h-24 w-24 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center mx-auto shadow-2xl shadow-primary/5">
+                      <Camera className="h-10 w-10 text-primary" />
                     </div>
                     <div className="space-y-2">
                       <h3 className="text-xl font-black text-foreground uppercase tracking-tighter">Manual Check-in</h3>
@@ -363,7 +363,7 @@ export default function CheckInPanel() {
                     </div>
                     <Button 
                       onClick={startScanner} 
-                      className="h-16 px-10 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black rounded-2xl transition-all hover:scale-105 shadow-xl shadow-[#daa857]/10"
+                      className="h-16 px-10 bg-primary hover:bg-[#cdb48b] text-black font-black rounded-2xl transition-all hover:scale-105 shadow-xl shadow-primary/10"
                     >
                       Start QR Scan
                     </Button>
@@ -376,19 +376,19 @@ export default function CheckInPanel() {
               <div className="absolute inset-0 flex flex-col items-center justify-center bg-card/50 backdrop-blur-sm">
                 {isValidating ? (
                   <div className="flex flex-col items-center gap-4 md:gap-6">
-                    <Loader2 className="h-16 w-16 animate-spin text-[#daa857]" />
-                    <p className="text-[10px] font-black text-[#daa857] tracking-[0.5em] animate-pulse">Processing QR Code</p>
+                    <Loader2 className="h-16 w-16 animate-spin text-primary" />
+                    <p className="text-[10px] font-black text-primary tracking-[0.5em] animate-pulse">Processing QR Code</p>
                   </div>
                 ) : (
                   <div className="text-foreground text-center space-y-4">
-                    <div className="relative h-64 w-64 border-2 border-[#daa857]/50 rounded-3xl animate-pulse">
-                      <div className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-[#daa857]" />
-                      <div className="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-[#daa857]" />
-                      <div className="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-[#daa857]" />
-                      <div className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-[#daa857]" />
-                      <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-[#daa857]/30 animate-scan" />
+                    <div className="relative h-64 w-64 border-2 border-primary/50 rounded-3xl animate-pulse">
+                      <div className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-primary" />
+                      <div className="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-primary" />
+                      <div className="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-primary" />
+                      <div className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-primary" />
+                      <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-primary/30 animate-scan" />
                     </div>
-                    <p className="text-[10px] font-black tracking-[0.3em] text-[#daa857]">Align QR Code</p>
+                    <p className="text-[10px] font-black tracking-[0.3em] text-primary">Align QR Code</p>
                   </div>
                 )}
               </div>
@@ -407,7 +407,7 @@ export default function CheckInPanel() {
                     placeholder="Search by ID, Name or Comm..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="h-14 pl-12 bg-background border-border rounded-xl focus:border-[#daa857] font-bold"
+                    className="h-14 pl-12 bg-background border-border rounded-xl focus:border-primary font-bold"
                   />
                 </div>
                 <Button
@@ -426,18 +426,18 @@ export default function CheckInPanel() {
               <div className="max-h-80 overflow-y-auto space-y-2 pr-2 custom-scrollbar">
                 {searchLoading ? (
                   <div className="p-5 md:p-10 text-center">
-                    <Loader2 className="h-8 w-8 animate-spin text-[#daa857] mx-auto" />
+                    <Loader2 className="h-8 w-8 animate-spin text-primary mx-auto" />
                   </div>
                 ) : filteredMembers.length > 0 ? (
                   filteredMembers.map((member) => (
                     <div
                       key={member.id}
-                      className="flex items-center justify-between p-4 rounded-2xl bg-card/50 border border-border hover:border-[#daa857]/30 transition-all group"
+                      className="flex items-center justify-between p-4 rounded-2xl bg-card/50 border border-border hover:border-primary/30 transition-all group"
                     >
                       <div className="flex items-center gap-4">
                         <Avatar className="h-12 w-12 border border-border">
                           <AvatarImage src={member.profileImage || undefined} className="object-cover" />
-                          <AvatarFallback className="bg-background text-[#daa857] font-black text-xs">
+                          <AvatarFallback className="bg-background text-primary font-black text-xs">
                             {member.fullName.split(' ').map(n => n[0]).join('')}
                           </AvatarFallback>
                         </Avatar>
@@ -452,7 +452,7 @@ export default function CheckInPanel() {
                         size="sm"
                         onClick={() => manualCheckIn(member)}
                         disabled={isValidating}
-                        className="h-10 px-6 bg-accent hover:bg-[#daa857] hover:text-black text-muted-foreground font-black text-[10px] rounded-xl transition-all"
+                        className="h-10 px-6 bg-accent hover:bg-primary hover:text-black text-muted-foreground font-black text-[10px] rounded-xl transition-all"
                       >
                         Checkin
                       </Button>

@@ -125,7 +125,7 @@ export default function ManualRenewalDialog({ memberId, memberName, onRenewed }:
       <DialogContent className="bg-card border-border text-foreground rounded-[2.5rem] p-5 md:p-10 max-w-lg">
         <DialogHeader className="space-y-4">
           <DialogTitle className="text-3xl font-black uppercase tracking-tighter">
-            Manual <span className="text-[#daa857]">Renewal</span>
+            Manual <span className="text-primary">Renewal</span>
           </DialogTitle>
           <DialogDescription className="text-muted-foreground font-medium text-[10px] leading-relaxed">
             Renewing membership for <span className="text-foreground font-black">{memberName}</span>.
@@ -139,12 +139,12 @@ export default function ManualRenewalDialog({ memberId, memberName, onRenewed }:
               value={formData.membershipId}
               onValueChange={(value) => setFormData({ ...formData, membershipId: value })}
             >
-              <SelectTrigger id="membership" className="h-16 bg-background border-border rounded-2xl focus:border-[#daa857] px-6 font-black text-xs">
+              <SelectTrigger id="membership" className="h-16 bg-background border-border rounded-2xl focus:border-primary px-6 font-black text-xs">
                 <SelectValue placeholder="SELECT PLAN" />
               </SelectTrigger>
               <SelectContent className="bg-card border-border text-foreground">
                 {memberships.map((m) => (
-                  <SelectItem key={m.id} value={m.id} className="focus:bg-[#daa857]/10 focus:text-[#daa857] font-bold text-[10px]">
+                  <SelectItem key={m.id} value={m.id} className="focus:bg-primary/10 focus:text-primary font-bold text-[10px]">
                     {m.name.toUpperCase()} - ₦{m.price.toLocaleString('en-NG')}
                   </SelectItem>
                 ))}
@@ -161,7 +161,7 @@ export default function ManualRenewalDialog({ memberId, memberName, onRenewed }:
                 value={formData.startDate}
                 onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
                 max={today}
-                className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-4 font-black text-[10px]"
+                className="h-14 bg-background border-border rounded-xl focus:border-primary px-4 font-black text-[10px]"
                 required
               />
             </div>
@@ -171,12 +171,12 @@ export default function ManualRenewalDialog({ memberId, memberName, onRenewed }:
                 value={formData.paymentMethod}
                 onValueChange={(value) => setFormData({ ...formData, paymentMethod: value })}
               >
-                <SelectTrigger id="paymentMethod" className="h-14 bg-background border-border rounded-xl focus:border-[#daa857] px-4 font-black text-[10px]">
+                <SelectTrigger id="paymentMethod" className="h-14 bg-background border-border rounded-xl focus:border-primary px-4 font-black text-[10px]">
                   <SelectValue placeholder="METHOD" />
                 </SelectTrigger>
                 <SelectContent className="bg-card border-border text-foreground">
                   {PAYMENT_METHODS.map((method) => (
-                    <SelectItem key={method} value={method} className="focus:bg-[#daa857]/10 focus:text-[#daa857] font-bold text-[10px]">
+                    <SelectItem key={method} value={method} className="focus:bg-primary/10 focus:text-primary font-bold text-[10px]">
                       {method.toUpperCase()}
                     </SelectItem>
                   ))}
@@ -197,7 +197,7 @@ export default function ManualRenewalDialog({ memberId, memberName, onRenewed }:
             <Button 
               type="submit" 
               disabled={isLoading}
-              className="flex-1 h-14 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black rounded-xl transition-all shadow-xl shadow-[#daa857]/10"
+              className="flex-1 h-14 bg-primary hover:bg-[#cdb48b] text-black font-black rounded-xl transition-all shadow-xl shadow-primary/10"
             >
               {isLoading ? (
                 <Loader2 className="h-4 w-4 animate-spin mr-2" />

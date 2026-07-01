@@ -164,7 +164,7 @@ export default function BranchesTab() {
     return <div className="flex justify-center py-12"><Spinner className="h-8 w-8" /></div>
   }
 
-  const accent = gymData?.primaryColor || '#daa857'
+  const accent = gymData?.primaryColor || 'var(--primary)'
 
   return (
     <div className="space-y-6">
@@ -182,7 +182,7 @@ export default function BranchesTab() {
         {branches.map((branch) => (
           <Card key={branch.id} className="rounded-[2rem] overflow-hidden border border-border shadow-xl hover:shadow-2xl transition-all duration-300 relative group bg-card">
             {branch.isDefault && (
-              <div className="absolute top-4 left-4 bg-[#daa857]/20 border border-[#daa857]/30 text-[#daa857] px-3 py-1 rounded-full text-[9px] font-black tracking-widest uppercase flex items-center gap-1 z-10">
+              <div className="absolute top-4 left-4 bg-primary/20 border border-primary/30 text-primary px-3 py-1 rounded-full text-[9px] font-black tracking-widest uppercase flex items-center gap-1 z-10">
                 <Star className="h-3 w-3 fill-current" /> Default Branch
               </div>
             )}

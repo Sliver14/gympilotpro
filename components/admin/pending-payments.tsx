@@ -155,7 +155,7 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
         <div className="flex flex-col gap-4 md:gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <CardTitle className="flex items-center gap-3">
-              <CreditCard className="h-5 w-5 text-[#daa857]" /> Update <span className="text-[#daa857]">Queue</span>
+              <CreditCard className="h-5 w-5 text-primary" /> Update <span className="text-primary">Queue</span>
             </CardTitle>
             <CardDescription>{payments.length} inbound payments awaiting verification</CardDescription>
           </div>
@@ -179,15 +179,15 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
         ) : (
           <div className="grid gap-4">
             {payments.map((payment) => (
-              <div key={payment.id} className="flex flex-col md:flex-row md:items-center justify-between rounded-3xl bg-card/50 border border-border p-4 md:p-6 hover:border-[#daa857]/30 transition-all group relative overflow-hidden">
-                <div className="absolute -right-12 -top-12 h-16 md:h-24 w-24 rounded-full bg-accent blur-2xl group-hover:bg-[#daa857]/5 transition-colors" />
+              <div key={payment.id} className="flex flex-col md:flex-row md:items-center justify-between rounded-3xl bg-card/50 border border-border p-4 md:p-6 hover:border-primary/30 transition-all group relative overflow-hidden">
+                <div className="absolute -right-12 -top-12 h-16 md:h-24 w-24 rounded-full bg-accent blur-2xl group-hover:bg-primary/5 transition-colors" />
                 
                 <div className="space-y-4 flex-1 min-w-0 relative z-10">
                   <div className="flex items-center gap-3">
                     <p className="font-black text-foreground uppercase tracking-tight text-lg">
-                      {payment.user.firstName} <span className="text-[#daa857]">{payment.user.lastName}</span>
+                      {payment.user.firstName} <span className="text-primary">{payment.user.lastName}</span>
                     </p>
-                    <Badge className="bg-[#daa857]/10 text-[#daa857] border-[#daa857]/20 text-[8px] font-black px-2">
+                    <Badge className="bg-primary/10 text-primary border-primary/20 text-[8px] font-black px-2">
                       {payment.paymentMethod.toUpperCase()}
                     </Badge>
                   </div>
@@ -212,14 +212,14 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
 
                   <div className="flex flex-wrap gap-x-6 gap-y-2 pt-2 border-t border-border">
                     <div className="flex items-center gap-2 text-[8px] font-black text-muted-foreground">
-                      <Mail className="h-3 w-3 text-[#daa857]/50" />
+                      <Mail className="h-3 w-3 text-primary/50" />
                       {payment.user.email}
                     </div>
                     <div className="flex items-center gap-2 text-[8px] font-black text-muted-foreground">
-                      <Phone className="h-3 w-3 text-[#daa857]/50" />
+                      <Phone className="h-3 w-3 text-primary/50" />
                       {payment.user.phoneNumber}
                     </div>
-                    <div className="flex items-center gap-2 text-[8px] font-black text-[#daa857]/70">
+                    <div className="flex items-center gap-2 text-[8px] font-black text-primary/70">
                       <AlertCircle className="h-3 w-3" />
                       REF: {payment.reference.toUpperCase()}
                     </div>
@@ -238,7 +238,7 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
                   </Button>
                   <Button 
                     disabled={!!processingId}
-                    className="w-full sm:w-auto h-14 px-8 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black rounded-xl transition-all hover:scale-105 shadow-xl shadow-[#daa857]/10"
+                    className="w-full sm:w-auto h-14 px-8 bg-primary hover:bg-[#cdb48b] text-black font-black rounded-xl transition-all hover:scale-105 shadow-xl shadow-primary/10"
                     onClick={() => {
                       setSelectedPayment(payment)
                       setStartDate(new Date().toISOString().split('T')[0])
@@ -262,18 +262,18 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
           <DialogContent className="bg-card border-border text-foreground rounded-[2.5rem] p-5 md:p-10 max-w-lg">
             <DialogHeader className="space-y-4">
               <DialogTitle className="text-3xl font-black uppercase tracking-tighter">
-                Manual <span className="text-[#daa857]">Authorization</span>
+                Manual <span className="text-primary">Authorization</span>
               </DialogTitle>
               <DialogDescription className="text-muted-foreground font-medium text-[10px] leading-relaxed">
                 Confirm payload verification for <span className="text-foreground font-black">{selectedPayment?.user.firstName} {selectedPayment?.user.lastName}</span>
-                <br />Amount: <span className="text-[#daa857] font-black">₦{selectedPayment?.amount.toLocaleString('en-NG')}</span>
+                <br />Amount: <span className="text-primary font-black">₦{selectedPayment?.amount.toLocaleString('en-NG')}</span>
               </DialogDescription>
             </DialogHeader>
             
             <div className="grid gap-4 md:gap-8 py-8">
               <div className="space-y-3">
                 <Label htmlFor="startDate" className="flex items-center gap-2 text-[10px] font-black tracking-[0.2em] text-muted-foreground ml-1">
-                  <CalendarIcon className="h-3.5 w-3.5 text-[#daa857]" />
+                  <CalendarIcon className="h-3.5 w-3.5 text-primary" />
                   Plan Start Date
                 </Label>
                 <Input
@@ -282,10 +282,10 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
                   max={today}
-                  className="h-16 bg-background border-border rounded-2xl focus:border-[#daa857] px-6 font-black text-sm"
+                  className="h-16 bg-background border-border rounded-2xl focus:border-primary px-6 font-black text-sm"
                 />
-                <div className="p-4 rounded-xl bg-[#daa857]/5 border border-[#daa857]/10">
-                  <p className="text-[9px] font-bold text-[#daa857]/70 leading-relaxed">
+                <div className="p-4 rounded-xl bg-primary/5 border border-primary/10">
+                  <p className="text-[9px] font-bold text-primary/70 leading-relaxed">
                     The system will automatically calculate expiry based on the member's selected plan from this timestamp.
                   </p>
                 </div>
@@ -303,7 +303,7 @@ export default function PendingPayments({ onPaymentProcessed }: { onPaymentProce
               <Button 
                 onClick={() => selectedPayment && handleApprove(selectedPayment.id)}
                 disabled={!!processingId}
-                className="flex-1 h-14 bg-[#daa857] hover:bg-[#cdb48b] text-black font-black rounded-xl transition-all shadow-xl shadow-[#daa857]/10"
+                className="flex-1 h-14 bg-primary hover:bg-[#cdb48b] text-black font-black rounded-xl transition-all shadow-xl shadow-primary/10"
               >
                 {processingId ? (
                   <>
