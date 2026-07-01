@@ -30,6 +30,14 @@ import {
 import { cn } from '@/lib/utils'
 import BranchesTab from './branches-tab'
 
+const THEMES = [
+  { name: 'Sunset Gold', primary: '#daa857', secondary: '#111111' },
+  { name: 'Crimson Force', primary: '#ef4444', secondary: '#1a0505' },
+  { name: 'Electric Neon', primary: '#3b82f6', secondary: '#051126' },
+  { name: 'Emerald Peak', primary: '#10b981', secondary: '#021810' },
+  { name: 'Cyber Violet', primary: '#8b5cf6', secondary: '#0f0521' },
+]
+
 export function GymSettingsForm() {
   const { toast } = useToast()
   const [loading, setLoading] = useState(true)
@@ -260,38 +268,34 @@ export function GymSettingsForm() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                <div className="space-y-3">
-                  <Label className="text-[10px] font-black tracking-[0.2em] text-muted-foreground ml-1">Primary Color</Label>
-                  <div className="flex gap-4 items-center">
-                    <input 
-                      type="color"
-                      value={form.primaryColor}
-                      onChange={e => setForm({...form, primaryColor: e.target.value})}
-                      className="h-14 w-14 rounded-xl cursor-pointer bg-background border border-border"
-                    />
-                    <Input 
-                      value={form.primaryColor}
-                      onChange={e => setForm({...form, primaryColor: e.target.value})}
-                      className="flex-1 h-14 bg-background border-border rounded-xl focus:border-[#daa857] font-mono text-sm px-6"
-                    />
-                  </div>
-                </div>
-                <div className="space-y-3">
-                  <Label className="text-[10px] font-black tracking-[0.2em] text-muted-foreground ml-1">Secondary Color</Label>
-                  <div className="flex gap-4 items-center">
-                    <input 
-                      type="color"
-                      value={form.secondaryColor}
-                      onChange={e => setForm({...form, secondaryColor: e.target.value})}
-                      className="h-14 w-14 rounded-xl cursor-pointer bg-background border border-border"
-                    />
-                    <Input 
-                      value={form.secondaryColor}
-                      onChange={e => setForm({...form, secondaryColor: e.target.value})}
-                      className="flex-1 h-14 bg-background border-border rounded-xl focus:border-[#daa857] font-mono text-sm px-6"
-                    />
-                  </div>
+              <div className="space-y-4">
+                <Label className="text-[10px] font-black tracking-[0.2em] text-muted-foreground ml-1 uppercase">Brand Color Theme</Label>
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                  {THEMES.map((theme) => {
+                    const isSelected = form.primaryColor === theme.primary && form.secondaryColor === theme.secondary
+                    return (
+                      <button
+                        key={theme.name}
+                        type="button"
+                        onClick={() => setForm({ ...form, primaryColor: theme.primary, secondaryColor: theme.secondary })}
+                        className={cn(
+                          "p-4 rounded-xl border bg-background text-left transition-all duration-300 relative group flex flex-col justify-between h-28 cursor-pointer",
+                          isSelected 
+                            ? "border-[#daa857] shadow-lg shadow-[#daa857]/10 bg-[#daa857]/5" 
+                            : "border-border hover:border-[#daa857]/50 hover:bg-card"
+                        )}
+                      >
+                        <div className="flex gap-2">
+                          <div className="w-5 h-5 rounded-full border border-border" style={{ backgroundColor: theme.primary }} />
+                          <div className="w-5 h-5 rounded-full border border-border" style={{ backgroundColor: theme.secondary }} />
+                        </div>
+                        <div>
+                          <p className="text-[10px] font-black uppercase text-foreground">{theme.name}</p>
+                          <p className="text-[8px] font-bold text-muted-foreground uppercase mt-0.5 tracking-wider">{theme.primary}</p>
+                        </div>
+                      </button>
+                    )
+                  })}
                 </div>
               </div>
 
