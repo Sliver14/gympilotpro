@@ -208,11 +208,23 @@ export function GymProvider({
                 '--primary-gym',
                 data.primaryColor
               );
+              document.documentElement.style.setProperty(
+                '--primary',
+                data.primaryColor
+              );
+              document.documentElement.style.setProperty(
+                '--ring',
+                data.primaryColor
+              );
             }
 
             if (data.secondaryColor) {
               document.documentElement.style.setProperty(
                 '--secondary-gym',
+                data.secondaryColor
+              );
+              document.documentElement.style.setProperty(
+                '--secondary',
                 data.secondaryColor
               );
             }

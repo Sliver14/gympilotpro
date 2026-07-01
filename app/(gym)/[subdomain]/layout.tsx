@@ -116,6 +116,14 @@ export default async function GymSubdomainLayout({
         initialAccent={gym.primaryColor || '#daa857'}
         userRole={user?.role || 'guest'}
       >
+        <style dangerouslySetInnerHTML={{ __html: `
+          :root {
+            --primary-gym: ${gym.primaryColor || '#daa857'};
+            --secondary-gym: ${gym.secondaryColor || '#111111'};
+            --primary: ${gym.primaryColor || '#daa857'};
+            --ring: ${gym.primaryColor || '#daa857'};
+          }
+        `}} />
         {children}
       </GymProvider>
     )
