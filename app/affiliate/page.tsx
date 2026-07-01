@@ -321,7 +321,7 @@ export default function AffiliateLandingPage() {
             asChild
             className="h-16 sm:h-24 px-12 sm:px-20 bg-white text-black hover:bg-black hover:text-white text-lg sm:text-2xl font-black uppercase rounded-none transition-all shadow-2xl"
           >
-            <Link href="/affiliate/signup">Become an Partner Now</Link>
+            <Link href="/affiliate/signup">Become a Partner Now</Link>
           </Button>
           <p className="mt-8 text-white/90 font-bold uppercase tracking-[0.2em] italic text-xs sm:text-sm">
             Join the Gym Pilot Pro Affiliate Network. Free Activation.
