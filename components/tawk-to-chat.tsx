@@ -1,8 +1,20 @@
 'use client'
 
 import Script from 'next/script'
+import { usePathname } from 'next/navigation'
 
 export default function TawkToChat() {
+  const pathname = usePathname()
+  
+  // Do not load on any dashboard or portal routes
+  const isDashboard = pathname.includes('/dashboard') || 
+                      pathname.includes('/admin') || 
+                      pathname.includes('/staff') || 
+                      pathname.includes('/saas-admin') ||
+                      pathname.includes('/portal')
+
+  if (isDashboard) return null
+
   return (
     <Script
       id="tawk-to"
