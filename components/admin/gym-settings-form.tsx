@@ -36,6 +36,11 @@ const THEMES = [
   { name: 'Electric Neon', primary: '#3b82f6', secondary: '#051126' },
   { name: 'Emerald Peak', primary: '#10b981', secondary: '#021810' },
   { name: 'Cyber Violet', primary: '#8b5cf6', secondary: '#0f0521' },
+  { name: 'Volcanic Amber', primary: '#f97316', secondary: '#1c0b02' },
+  { name: 'Monochrome Dark', primary: '#64748b', secondary: '#0f172a' },
+  { name: 'Ocean Teal', primary: '#06b6d4', secondary: '#021a1e' },
+  { name: 'Rose Velvet', primary: '#ec4899', secondary: '#200311' },
+  { name: 'Sunfire Yellow', primary: '#eab308', secondary: '#181302' },
 ]
 
 export function GymSettingsForm() {
@@ -116,6 +121,7 @@ export function GymSettingsForm() {
       if (!res.ok) throw new Error('Failed to update settings')
       toast({ title: 'Success', description: 'Gym settings updated successfully' })
       closeModal()
+      window.location.reload()
     } catch (error: any) {
       toast({ title: 'Error', description: error.message, variant: 'destructive' })
     } finally {
