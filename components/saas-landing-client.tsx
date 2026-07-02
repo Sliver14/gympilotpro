@@ -148,7 +148,7 @@ export default function SaaSLandingClient() {
       </nav>
 
       {/* Hero */}
-      <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden pt-20">
+      <section className="relative h-screen min-h-[650px] flex items-center justify-center overflow-hidden pt-20">
         <div className="absolute inset-0 z-0">
           <img
             src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop"
@@ -161,31 +161,31 @@ export default function SaaSLandingClient() {
         </div>
 
         <div className="container mx-auto px-5 sm:px-6 md:px-8 lg:px-10 relative z-10 flex flex-col items-center lg:items-start text-center lg:text-left">
-          <div className="max-w-4xl lg:max-w-5xl pt-8 lg:pt-0">
+          <div className="max-w-4xl lg:max-w-5xl pt-4 lg:pt-0">
             <SectionTag>// Revenue Protection Infrastructure</SectionTag>
 
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-orange-500/10 border border-orange-500/20 rounded-none mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-orange-500/10 border border-orange-500/20 rounded-none mb-4">
               <Zap size={14} className="text-orange-500 fill-orange-500" />
               <span className="text-[10px] font-black uppercase tracking-widest text-orange-500 italic">
                 Run your Gym like a Pro
               </span>
             </div>
 
-            <h1 className="text-[2.75rem] sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black uppercase leading-[0.92] tracking-tight italic mb-6 sm:mb-8 px-1 text-white">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black uppercase leading-[0.92] tracking-tight italic mb-4 sm:mb-6 px-1 text-white">
               Stop Losing Money <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-orange-500/50 border-t-2 border-b-2 border-border pr-2">
                 From Expired Members
               </span>
             </h1>
 
-            <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground mb-10 sm:mb-14 max-w-2xl font-medium leading-relaxed mx-auto lg:mx-0">
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground mb-8 sm:mb-10 max-w-2xl font-medium leading-relaxed mx-auto lg:mx-0">
               GymPilot Pro automatically tracks active members, sends payment reminders, and controls access—so you never lose revenue again.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center lg:justify-start">
               <Button
                 asChild
-                className="h-16 sm:h-20 px-10 sm:px-12 bg-orange-500 text-white hover:bg-orange-600 text-lg sm:text-xl font-black uppercase rounded-none group shadow-[0_0_30px_rgba(249,115,22,0.3)]"
+                className="h-14 sm:h-16 px-8 sm:px-10 bg-orange-500 text-white hover:bg-orange-600 text-base sm:text-lg font-black uppercase rounded-none group shadow-[0_0_30px_rgba(249,115,22,0.3)]"
               >
                 <Link href="/plans">
                   Get Started Now
@@ -195,14 +195,14 @@ export default function SaaSLandingClient() {
 
               <Button
                 onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
-                className="h-16 sm:h-20 px-10 sm:px-12 text-foreground border-2 border-border hover:border-orange-500 hover:bg-orange-500/5 hover:text-foreground text-lg sm:text-xl font-black uppercase rounded-none bg-white/5 backdrop-blur-sm"
+                className="h-14 sm:h-16 px-8 sm:px-10 text-foreground border-2 border-border hover:border-orange-500 hover:bg-orange-500/5 hover:text-foreground text-base sm:text-lg font-black uppercase rounded-none bg-white/5 backdrop-blur-sm"
               >
                 See How It Works
               </Button>
             </div>
 
-            <p className="mt-10 text-muted-foreground text-sm sm:text-base font-bold tracking-widest uppercase italic flex items-center gap-2 justify-center lg:justify-start">
-              <ShieldCheck className="text-orange-500" size={20} />
+            <p className="mt-6 sm:mt-8 text-muted-foreground text-xs sm:text-sm font-bold tracking-widest uppercase italic flex items-center gap-2 justify-center lg:justify-start">
+              <ShieldCheck className="text-orange-500" size={18} />
               Trusted by growing gyms to recover lost revenue
             </p>
           </div>
