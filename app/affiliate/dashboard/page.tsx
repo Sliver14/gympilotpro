@@ -63,11 +63,11 @@ export default async function AffiliateDashboard() {
             <span className="text-sm font-bold text-muted-foreground hidden md:inline">
               Welcome, <span className="text-white">{affiliate.name}</span>
             </span>
-            <form action="/api/auth/logout" method="POST">
-              <Button type="submit" variant="ghost" className="text-muted-foreground hover:text-white uppercase font-black text-xs tracking-wider gap-2">
+            <Button asChild variant="ghost" className="text-muted-foreground hover:text-white uppercase font-black text-xs tracking-wider gap-2">
+              <Link href="/api/auth/logout">
                 <LogOut className="w-4 h-4" /> Log Out
-              </Button>
-            </form>
+              </Link>
+            </Button>
           </div>
         </div>
       </header>
