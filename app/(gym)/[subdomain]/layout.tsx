@@ -4,7 +4,6 @@ import { prisma } from '@/lib/prisma'
 import { notFound } from 'next/navigation'
 import { getCurrentUser } from '@/lib/auth'
 import { Metadata } from 'next'
-import TawkToChat from '@/components/tawk-to-chat'
 
 export async function generateMetadata({ 
   params 
@@ -126,7 +125,6 @@ export default async function GymSubdomainLayout({
           }
         `}} />
         {children}
-        <TawkToChat />
       </GymProvider>
     )
   }
@@ -134,7 +132,6 @@ export default async function GymSubdomainLayout({
   return (
     <GymProvider>
       {children}
-      <TawkToChat />
     </GymProvider>
   )
 }

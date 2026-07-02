@@ -19,7 +19,7 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { QrCode, TrendingUp, Users, Calendar, CreditCard, LogOut, Settings, UserCheck, Wallet, Globe, Package, Lock, LayoutDashboard } from 'lucide-react'
+import { QrCode, TrendingUp, Users, Calendar, CreditCard, LogOut, Settings, UserCheck, Wallet, Globe, Package, Lock, LayoutDashboard, MessageSquare } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { hasPremiumAccess } from '@/lib/plans'
 import { ModeToggle } from '@/components/mode-toggle'
@@ -110,6 +110,12 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
       icon: Package,
       active: currentTab === 'packages',
       adminOnly: true,
+    },
+    {
+      title: 'Support',
+      url: tenantPath('/support'),
+      icon: MessageSquare,
+      active: pathname.endsWith('/support'),
     },
   ]
 
