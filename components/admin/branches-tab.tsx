@@ -293,7 +293,7 @@ export default function BranchesTab() {
 
       {/* Create/Edit Modal */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="w-[92vw] sm:w-full sm:max-w-md rounded-2xl md:rounded-[2.5rem] bg-card border-border text-foreground">
+        <DialogContent className="w-[92vw] sm:w-full sm:max-w-2xl rounded-none bg-card border-border text-foreground">
           <DialogHeader>
             <DialogTitle className="text-2xl font-black uppercase tracking-tighter">
               {editingBranch ? 'Edit Branch' : 'Create New Branch'}
@@ -310,7 +310,7 @@ export default function BranchesTab() {
                 value={form.name} 
                 onChange={(e) => setForm({...form, name: e.target.value})}
                 placeholder="Lagos Mainland Branch"
-                className="rounded-xl mt-1.5 h-11 bg-background border-border font-medium text-sm"
+                className="rounded-none mt-1.5 h-11 bg-background border-border font-medium text-sm"
                 required 
               />
             </div>
@@ -321,7 +321,7 @@ export default function BranchesTab() {
                 value={form.address} 
                 onChange={(e) => setForm({...form, address: e.target.value})}
                 placeholder="123 Fitness Avenue, Lagos"
-                className="rounded-xl mt-1.5 bg-background border-border font-medium text-sm"
+                className="rounded-none mt-1.5 bg-background border-border font-medium text-sm"
                 rows={2}
               />
             </div>
@@ -333,7 +333,7 @@ export default function BranchesTab() {
                   value={form.phone} 
                   onChange={(e) => setForm({...form, phone: e.target.value})}
                   placeholder="+234 801 234 5678"
-                  className="rounded-xl mt-1.5 h-11 bg-background border-border font-medium text-sm"
+                  className="rounded-none mt-1.5 h-11 bg-background border-border font-medium text-sm"
                 />
               </div>
               <div>
@@ -342,7 +342,7 @@ export default function BranchesTab() {
                   type="number"
                   value={form.capacity} 
                   onChange={(e) => setForm({...form, capacity: parseInt(e.target.value) || 0})}
-                  className="rounded-xl mt-1.5 h-11 bg-background border-border font-medium text-sm"
+                  className="rounded-none mt-1.5 h-11 bg-background border-border font-medium text-sm"
                 />
               </div>
             </div>
@@ -353,15 +353,15 @@ export default function BranchesTab() {
                 value={form.manager} 
                 onChange={(e) => setForm({...form, manager: e.target.value})}
                 placeholder="John Doe"
-                className="rounded-xl mt-1.5 h-11 bg-background border-border font-medium text-sm"
+                className="rounded-none mt-1.5 h-11 bg-background border-border font-medium text-sm"
               />
             </div>
 
             <DialogFooter className="pt-4 gap-2 sm:gap-0 border-t border-border/50">
-              <Button type="button" variant="outline" className="rounded-xl font-bold" onClick={() => setIsModalOpen(false)}>
+              <Button type="button" variant="outline" className="rounded-none font-bold" onClick={() => setIsModalOpen(false)}>
                 Cancel
               </Button>
-              <Button type="submit" disabled={isSaving} style={{ backgroundColor: accent, color: '#000' }} className="rounded-xl font-black">
+              <Button type="submit" disabled={isSaving} style={{ backgroundColor: accent, color: '#000' }} className="rounded-none font-black">
                 {isSaving ? 'Saving...' : editingBranch ? 'Update Branch' : 'Create Branch'}
               </Button>
             </DialogFooter>
@@ -371,7 +371,7 @@ export default function BranchesTab() {
 
       {/* QR Code Dialog */}
       <Dialog open={!!qrModalBranch} onOpenChange={(open) => !open && setQrModalBranch(null)}>
-        <DialogContent className="w-[92vw] sm:w-full sm:max-w-md rounded-2xl md:rounded-[2.5rem] bg-card border-border text-foreground p-0 overflow-hidden">
+        <DialogContent className="w-[92vw] sm:w-full sm:max-w-md rounded-none bg-card border-border text-foreground p-0 overflow-hidden">
           {qrModalBranch && (
             <BranchQRCode 
               branchSlug={qrModalBranch.slug} 

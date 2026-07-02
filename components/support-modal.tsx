@@ -94,7 +94,7 @@ export function SupportModal() {
 
       {/* Reusable Support Dialog */}
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="w-[92vw] sm:w-full sm:max-w-md rounded-2xl md:rounded-[2.5rem] bg-card border-border text-foreground p-6 overflow-hidden">
+        <DialogContent className="w-[92vw] sm:w-full sm:max-w-md rounded-none bg-card border-border text-foreground p-6 overflow-hidden">
           
           {/* MENU VIEW */}
           {view === 'menu' && (
@@ -112,10 +112,10 @@ export function SupportModal() {
                 {/* Live Chat / WhatsApp */}
                 <button
                   onClick={handleWhatsAppRedirect}
-                  className="w-full flex items-center justify-between p-4 rounded-2xl border border-border bg-background hover:bg-green-500/10 hover:border-green-500/30 transition-all duration-300 text-left group"
+                  className="w-full flex items-center justify-between p-4 rounded-none border border-border bg-background hover:bg-green-500/10 hover:border-green-500/30 transition-all duration-300 text-left group"
                 >
                   <div className="flex items-center gap-4">
-                    <div className="h-10 w-10 rounded-xl bg-green-500/10 flex items-center justify-center text-green-500">
+                    <div className="h-10 w-10 rounded-none bg-green-500/10 flex items-center justify-center text-green-500">
                       <MessageSquare className="h-5 w-5" />
                     </div>
                     <div>
@@ -129,10 +129,10 @@ export function SupportModal() {
                  {/* Email Support */}
                 <button
                   onClick={handleDirectEmailRedirect}
-                  className="w-full flex items-center justify-between p-4 rounded-2xl border border-border bg-background hover:bg-primary/10 hover:border-primary/30 transition-all duration-300 text-left group"
+                  className="w-full flex items-center justify-between p-4 rounded-none border border-border bg-background hover:bg-primary/10 hover:border-primary/30 transition-all duration-300 text-left group"
                 >
                   <div className="flex items-center gap-4">
-                    <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+                    <div className="h-10 w-10 rounded-none bg-primary/10 flex items-center justify-center text-primary">
                       <Mail className="h-5 w-5" />
                     </div>
                     <div>
@@ -146,10 +146,10 @@ export function SupportModal() {
                 {/* Suggest Improvement */}
                 <button
                   onClick={() => setView('improvement')}
-                  className="w-full flex items-center justify-between p-4 rounded-2xl border border-border bg-background hover:bg-orange-500/10 hover:border-orange-500/30 transition-all duration-300 text-left group"
+                  className="w-full flex items-center justify-between p-4 rounded-none border border-border bg-background hover:bg-orange-500/10 hover:border-orange-500/30 transition-all duration-300 text-left group"
                 >
                   <div className="flex items-center gap-4">
-                    <div className="h-10 w-10 rounded-xl bg-orange-500/10 flex items-center justify-center text-orange-500">
+                    <div className="h-10 w-10 rounded-none bg-orange-500/10 flex items-center justify-center text-orange-500">
                       <AlertTriangle className="h-5 w-5" />
                     </div>
                     <div>
@@ -194,17 +194,17 @@ export function SupportModal() {
                     value={suggestTitle}
                     onChange={(e) => setSuggestTitle(e.target.value)}
                     placeholder="e.g. Add dark mode switch to admin view"
-                    className="h-11 rounded-xl bg-background border-border font-bold text-xs"
+                    className="h-11 rounded-none border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900/50 font-bold text-xs"
                     required
                   />
                 </div>
                 <div className="space-y-1.5">
                   <Label htmlFor="modalSuggestUrgency" className="text-[9px] font-black uppercase tracking-wider">Urgency Level</Label>
                   <Select value={suggestUrgency} onValueChange={setSuggestUrgency}>
-                    <SelectTrigger id="modalSuggestUrgency" className="h-11 rounded-xl bg-background border-border font-bold text-xs">
+                    <SelectTrigger id="modalSuggestUrgency" className="h-11 rounded-none border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900/50 font-bold text-xs">
                       <SelectValue placeholder="Select urgency" />
                     </SelectTrigger>
-                    <SelectContent className="bg-popover border-border rounded-xl">
+                    <SelectContent className="bg-popover border-border rounded-none">
                       <SelectItem value="low" className="font-bold text-xs">Low (Nice to Have)</SelectItem>
                       <SelectItem value="medium" className="font-bold text-xs">Medium (Standard Improvement)</SelectItem>
                       <SelectItem value="high" className="font-bold text-xs">High (Important Polish)</SelectItem>
@@ -219,11 +219,11 @@ export function SupportModal() {
                     value={suggestDesc}
                     onChange={(e) => setSuggestDesc(e.target.value)}
                     placeholder="Detail your request and how it adds value to the system..."
-                    className="rounded-xl bg-background border-border font-bold text-xs min-h-[90px]"
+                    className="rounded-none border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900/50 font-bold text-xs min-h-[90px]"
                     required
                   />
                 </div>
-                <Button type="submit" className="w-full h-11 bg-primary hover:bg-primary/95 text-primary-foreground font-black rounded-xl uppercase tracking-wider text-xs">
+                <Button type="submit" className="w-full h-11 bg-primary hover:bg-primary/95 text-primary-foreground font-black rounded-none uppercase tracking-wider text-xs">
                   Submit Feedback
                 </Button>
               </form>
