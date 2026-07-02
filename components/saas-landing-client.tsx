@@ -90,7 +90,12 @@ export default function SaaSLandingClient() {
             <Link href="#features" className="hover:text-orange-500 transition-colors text-white">Revenue System</Link>
             <Link href="#how-it-works" className="hover:text-orange-500 transition-colors text-white">How It Works</Link>
             <Link href="#testimonials" className="hover:text-orange-500 transition-colors text-white">Testimonials</Link>
-            <Link href="/support" className="hover:text-orange-500 transition-colors text-white">Support</Link>
+            <button 
+              onClick={() => window.dispatchEvent(new Event('open-support-modal'))}
+              className="hover:text-orange-500 transition-colors text-white text-[11px] font-black tracking-[0.2em] uppercase"
+            >
+              Support
+            </button>
             <Button
               onClick={openModal}
               className="bg-orange-500 hover:bg-orange-600 text-white font-black rounded-none px-8 py-6 shadow-[0_0_20px_rgba(249,115,22,0.3)] text-xs tracking-widest"
@@ -134,7 +139,15 @@ export default function SaaSLandingClient() {
                 <Link href="#features" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-orange-500 transition-colors">Revenue System</Link>
                 <Link href="#how-it-works" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-orange-500 transition-colors">How It Works</Link>
                 <Link href="#testimonials" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-orange-500 transition-colors">Testimonials</Link>
-                <Link href="/support" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-orange-500 transition-colors">Support</Link>
+                <button 
+                  onClick={() => {
+                    setIsMobileMenuOpen(false)
+                    window.dispatchEvent(new Event('open-support-modal'))
+                  }} 
+                  className="hover:text-orange-500 transition-colors text-left"
+                >
+                  Support
+                </button>
               </div>
               <div className="mt-auto p-8 pb-12">
                 <Button
@@ -480,7 +493,14 @@ export default function SaaSLandingClient() {
                   <li><Link href="/plans" className="hover:text-white transition-colors">Get Started</Link></li>
                   <li><Link href="#features" className="hover:text-white transition-colors">Features</Link></li>
                   <li><Link href="#how-it-works" className="hover:text-white transition-colors">Operations</Link></li>
-                  <li><Link href="/support" className="hover:text-white transition-colors">Support Portal</Link></li>
+                  <li>
+                    <button 
+                      onClick={() => window.dispatchEvent(new Event('open-support-modal'))} 
+                      className="hover:text-white transition-colors text-left"
+                    >
+                      Support Portal
+                    </button>
+                  </li>
                 </ul>
               </div>
               <div className="space-y-4">

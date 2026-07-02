@@ -113,9 +113,9 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
     },
     {
       title: 'Support',
-      url: tenantPath('/support'),
+      url: '#',
       icon: MessageSquare,
-      active: pathname.endsWith('/support'),
+      active: false,
     },
   ]
 
@@ -183,7 +183,16 @@ function AdminSidebarContent({ adminData, onLogout }: AdminSidebarProps) {
                       borderRightColor: accent
                     } : {}}
                   >
-                    <Link href={item.url} onClick={() => setOpenMobile(false)}>
+                    <Link 
+                      href={item.url} 
+                      onClick={(e) => {
+                        setOpenMobile(false)
+                        if (item.title === 'Support') {
+                          e.preventDefault()
+                          window.dispatchEvent(new Event('open-support-modal'))
+                        }
+                      }}
+                    >
                       <item.icon className={cn("size-4", item.active && "text-primary")} style={item.active ? { color: accent } : {}} />
                       <span>{item.title}</span>
                     </Link>

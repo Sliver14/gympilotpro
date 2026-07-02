@@ -5,6 +5,7 @@ import { Plus_Jakarta_Sans, JetBrains_Mono } from 'next/font/google'
 import { Toaster } from '@/components/ui/toaster'
 import { ThemeProvider } from '@/components/theme-provider'
 import { CookieConsent } from '@/components/cookie-consent'
+import { SupportModal } from '@/components/support-modal'
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -111,6 +112,7 @@ export default function RootLayout({
           <Toaster />
           <Analytics />
           <CookieConsent />
+          <SupportModal />
         </ThemeProvider>
       </body>
     </html>
