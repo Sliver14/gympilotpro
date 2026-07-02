@@ -293,7 +293,7 @@ export default function BranchesTab() {
 
       {/* Create/Edit Modal */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="max-w-md rounded-[2.5rem] bg-card border-border text-foreground">
+        <DialogContent className="w-[92vw] sm:w-full sm:max-w-md rounded-2xl md:rounded-[2.5rem] bg-card border-border text-foreground">
           <DialogHeader>
             <DialogTitle className="text-2xl font-black uppercase tracking-tighter">
               {editingBranch ? 'Edit Branch' : 'Create New Branch'}
@@ -371,7 +371,7 @@ export default function BranchesTab() {
 
       {/* QR Code Dialog */}
       <Dialog open={!!qrModalBranch} onOpenChange={(open) => !open && setQrModalBranch(null)}>
-        <DialogContent className="max-w-md rounded-[2.5rem] bg-card border-border text-foreground p-0 overflow-hidden">
+        <DialogContent className="w-[92vw] sm:w-full sm:max-w-md rounded-2xl md:rounded-[2.5rem] bg-card border-border text-foreground p-0 overflow-hidden">
           {qrModalBranch && (
             <BranchQRCode 
               branchSlug={qrModalBranch.slug} 

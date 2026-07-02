@@ -38,7 +38,7 @@ function AdminBillingContent() {
   }, [fetchAdminData])
 
   if (isLoading || !adminData || !gymData) {
-    return <div className="flex min-h-screen items-center justify-center bg-background"><Spinner className="h-8 w-8 text-[#daa857]" /></div>
+    return <div className="flex min-h-screen items-center justify-center bg-background"><Spinner className="h-8 w-8 text-primary" /></div>
   }
 
   const currentPlan = gymData.subscriptions?.[0]?.plan || 'starter'

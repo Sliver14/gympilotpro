@@ -124,7 +124,7 @@ function AdminPackagesContent() {
   }
 
   if (isLoading || !adminData) {
-    return <div className="flex min-h-screen items-center justify-center"><Spinner className="h-8 w-8 text-[#daa857]" /></div>
+    return <div className="flex min-h-screen items-center justify-center"><Spinner className="h-8 w-8 text-primary" /></div>
   }
 
   return (
@@ -135,7 +135,7 @@ function AdminPackagesContent() {
           <SidebarTrigger className="-ml-1" />
           <div className="flex items-center gap-2">
             <h1 className="text-sm font-black tracking-[0.2em] text-muted-foreground">
-              Admin <span className="text-[#daa857]">Packages</span>
+              Admin <span className="text-primary">Packages</span>
             </h1>
           </div>
         </header>
@@ -144,7 +144,7 @@ function AdminPackagesContent() {
           <div className="max-w-6xl mx-auto w-full space-y-8">
             <div className="flex justify-between items-center">
               <h2 className="text-3xl font-black uppercase tracking-tighter text-foreground">Membership Plans</h2>
-              <Button onClick={() => openModal()} className="bg-[#daa857] hover:bg-[#cdb48b] text-black font-black rounded-xl">
+              <Button onClick={() => openModal()} className="bg-primary hover:bg-primary/80 text-black font-black rounded-xl">
                 <Plus className="mr-2 h-4 w-4" /> New Package
               </Button>
             </div>
@@ -159,7 +159,7 @@ function AdminPackagesContent() {
                   </CardHeader>
                   <CardContent className="p-4 md:p-6 space-y-4">
                     <div>
-                      <span className="text-3xl font-black text-[#daa857]">₦{pkg.price.toLocaleString()}</span>
+                      <span className="text-3xl font-black text-primary">₦{pkg.price.toLocaleString()}</span>
                     </div>
                     <p className="text-xs font-bold text-muted-foreground">Duration: {pkg.duration} Days</p>
                     <p className="text-sm text-muted-foreground mt-4">{pkg.description}</p>
@@ -191,7 +191,7 @@ function AdminPackagesContent() {
         <DialogContent className="bg-card border-border text-foreground rounded-[2.5rem] p-4 md:p-8 max-w-md">
           <DialogHeader>
             <DialogTitle className="text-2xl font-black uppercase tracking-tighter text-foreground">
-              {editingId ? 'Edit' : 'Create'} <span className="text-[#daa857]">Package</span>
+              {editingId ? 'Edit' : 'Create'} <span className="text-primary">Package</span>
             </DialogTitle>
           </DialogHeader>
           
@@ -245,7 +245,7 @@ function AdminPackagesContent() {
               <Button type="button" variant="ghost" onClick={() => setIsModalOpen(false)} className="hover:bg-accent hover:text-foreground text-muted-foreground">
                 Cancel
               </Button>
-              <Button type="submit" disabled={isSaving} className="bg-[#daa857] hover:bg-[#cdb48b] text-black font-black rounded-xl px-8">
+              <Button type="submit" disabled={isSaving} className="bg-primary hover:bg-primary/80 text-black font-black rounded-xl px-8">
                 {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Save Package'}
               </Button>
             </DialogFooter>

@@ -80,7 +80,7 @@ function AdminSettingsContent() {
           <SidebarTrigger className="-ml-1" />
           <div className="flex items-center gap-2">
             <h1 className="text-sm font-black tracking-[0.2em] text-muted-foreground">
-              Admin <span className="text-[#daa857]">Settings</span>
+              Admin <span className="text-primary">Settings</span>
             </h1>
           </div>
         </header>
