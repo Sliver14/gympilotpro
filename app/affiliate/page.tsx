@@ -324,7 +324,7 @@ export default function AffiliateLandingPage() {
             <Link href="/affiliate/signup">Become a Partner Now</Link>
           </Button>
           <p className="mt-8 text-white/90 font-bold uppercase tracking-[0.2em] italic text-xs sm:text-sm">
-            Join the Gym Pilot Pro Affiliate Network. Free Activation.
+            Join the Gym Pilot Pro Affiliate Network. Free Activation
           </p>
         </div>
       </section>
