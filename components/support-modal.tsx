@@ -18,9 +18,6 @@ export function SupportModal() {
   const pathname = usePathname()
 
   // Form States
-  const [contactName, setContactName] = useState('')
-  const [contactSubject, setContactSubject] = useState('')
-  const [contactMessage, setContactMessage] = useState('')
   const [suggestTitle, setSuggestTitle] = useState('')
   const [suggestUrgency, setSuggestUrgency] = useState('medium')
   const [suggestDesc, setSuggestDesc] = useState('')
@@ -35,21 +32,11 @@ export function SupportModal() {
     return () => window.removeEventListener('open-support-modal', handleOpen)
   }, [])
 
-  const handleContactSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!contactName || !contactSubject || !contactMessage) {
-      toast({ title: 'Validation Error', description: 'Please fill in all fields', variant: 'destructive' })
-      return
-    }
-
+  const handleDirectEmailRedirect = () => {
     const email = 'admin@insightnovatech.com'
-    const subject = encodeURIComponent(`[Support Inquiry] ${contactSubject}`)
-    const body = encodeURIComponent(
-      `Name: ${contactName}\n\nMessage:\n${contactMessage}\n\n---\nSent via GymPilot Pro Customer Support.`
-    )
-    
-    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`
-    toast({ title: 'Opening Email Client', description: 'Your default mail app is opening to send this message.' })
+    const subject = encodeURIComponent('[Support Inquiry] GymPilot Pro Support')
+    window.location.href = `mailto:${email}?subject=${subject}`
+    toast({ title: 'Opening Email Client', description: 'Your default mail app is opening to send an email to admin@insightnovatech.com.' })
     setIsOpen(false)
   }
 
@@ -139,9 +126,9 @@ export function SupportModal() {
                   <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-green-500 transition-colors" />
                 </button>
 
-                {/* Email Support */}
+                 {/* Email Support */}
                 <button
-                  onClick={() => setView('contact')}
+                  onClick={handleDirectEmailRedirect}
                   className="w-full flex items-center justify-between p-4 rounded-2xl border border-border bg-background hover:bg-primary/10 hover:border-primary/30 transition-all duration-300 text-left group"
                 >
                   <div className="flex items-center gap-4">
@@ -177,65 +164,7 @@ export function SupportModal() {
           )}
 
           {/* CONTACT FORM VIEW */}
-          {view === 'contact' && (
-            <div className="space-y-6">
-              <div className="flex items-center gap-3">
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  onClick={() => setView('menu')} 
-                  className="h-8 w-8 rounded-full border"
-                >
-                  <ArrowLeft className="h-4 w-4" />
-                </Button>
-                <div>
-                  <DialogTitle className="text-xl font-black uppercase tracking-tighter">Contact Us</DialogTitle>
-                  <DialogDescription className="text-[10px] font-semibold text-muted-foreground">
-                    Inquiry will go to admin@insightnovatech.com
-                  </DialogDescription>
-                </div>
-              </div>
 
-              <form onSubmit={handleContactSubmit} className="space-y-4">
-                <div className="space-y-1.5">
-                  <Label htmlFor="modalName" className="text-[9px] font-black uppercase tracking-wider">Your Name</Label>
-                  <Input 
-                    id="modalName"
-                    value={contactName}
-                    onChange={(e) => setContactName(e.target.value)}
-                    placeholder="e.g. John Doe"
-                    className="h-11 rounded-xl bg-background border-border font-bold text-xs"
-                    required
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <Label htmlFor="modalSubject" className="text-[9px] font-black uppercase tracking-wider">Subject</Label>
-                  <Input 
-                    id="modalSubject"
-                    value={contactSubject}
-                    onChange={(e) => setContactSubject(e.target.value)}
-                    placeholder="e.g. Access control question"
-                    className="h-11 rounded-xl bg-background border-border font-bold text-xs"
-                    required
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <Label htmlFor="modalMessage" className="text-[9px] font-black uppercase tracking-wider">Message Details</Label>
-                  <Textarea 
-                    id="modalMessage"
-                    value={contactMessage}
-                    onChange={(e) => setContactMessage(e.target.value)}
-                    placeholder="Describe your issue or inquiry..."
-                    className="rounded-xl bg-background border-border font-bold text-xs min-h-[90px]"
-                    required
-                  />
-                </div>
-                <Button type="submit" className="w-full h-11 bg-primary hover:bg-primary/95 text-primary-foreground font-black rounded-xl uppercase tracking-wider text-xs">
-                  <Send className="h-3.5 w-3.5 mr-2" /> Send Email
-                </Button>
-              </form>
-            </div>
-          )}
 
           {/* IMPROVEMENT SUGGESTION VIEW */}
           {view === 'improvement' && (
