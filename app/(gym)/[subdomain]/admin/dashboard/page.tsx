@@ -125,8 +125,6 @@ function AdminDashboardContent() {
           <SidebarTrigger className="-ml-1" />
           <div className="flex items-center justify-between w-full">
             <div className="flex items-center gap-2">
-              <BranchSwitcher />
-              <div className="h-6 w-px bg-border" />
               <h1 className="text-sm font-black tracking-[0.2em] text-muted-foreground">
                 {adminData.role} <span className="text-primary">Dashboard</span>
               </h1>

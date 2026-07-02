@@ -7,7 +7,6 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { LogOut, Settings } from 'lucide-react'
 import { useGym } from '@/components/gym-provider'
-import { BranchSwitcher } from '@/components/branch-switcher'
 
 interface AdminHeaderProps {
   adminData: any
@@ -56,7 +55,6 @@ export default function AdminHeader({ adminData, onLogout, title, description }:
         </div>
 
         <div className="flex items-center gap-4">
-          <BranchSwitcher />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="relative h-10 w-10 rounded-full p-0" style={{ hover: { backgroundColor: `${accent}1a` } } as any}>
