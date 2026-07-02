@@ -80,8 +80,16 @@ export function SupportModal() {
   }
 
   // Determine if the floating support button should show
-  // We hide it on full payment pages or setup states, but show generally
-  const showFloatingButton = !pathname.includes('/setup') && !pathname.includes('/payment/success')
+  // We hide it on all dashboards, full payment pages, or setup states, but show on landing/public pages
+  const isDashboard = pathname.includes('/dashboard') || 
+                      pathname.includes('/admin') || 
+                      pathname.includes('/staff') || 
+                      pathname.includes('/saas-admin') ||
+                      pathname.includes('/portal')
+
+  const showFloatingButton = !isDashboard && 
+                             !pathname.includes('/setup') && 
+                             !pathname.includes('/payment/success')
 
   return (
     <>
@@ -89,10 +97,11 @@ export function SupportModal() {
       {showFloatingButton && (
         <button
           onClick={() => { setView('menu'); setIsOpen(true) }}
-          className="fixed bottom-6 right-6 z-50 h-14 w-14 rounded-full bg-orange-500 hover:bg-orange-600 text-white flex items-center justify-center shadow-[0_4px_20px_rgba(249,115,22,0.4)] hover:scale-110 active:scale-95 transition-all duration-300"
+          className="fixed bottom-6 right-6 z-50 h-12 px-6 rounded-full bg-orange-500 hover:bg-orange-600 text-white flex items-center justify-center gap-2 shadow-[0_4px_20px_rgba(249,115,22,0.4)] hover:scale-105 active:scale-95 transition-all duration-300 font-black uppercase text-[10px] tracking-widest"
           aria-label="Open support options"
         >
-          <LifeBuoy className="h-6 w-6 animate-[spin_8s_linear_infinite]" />
+          <LifeBuoy className="h-4 w-4 animate-[spin_8s_linear_infinite]" />
+          <span>Support</span>
         </button>
       )}
 
