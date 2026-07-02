@@ -133,7 +133,7 @@ export default function AdminStats({
             </div>
             <div>
               <p className={cn(
-                "text-2xl md:text-3xl font-black tracking-tighter",
+                "text-lg sm:text-xl md:text-2xl lg:text-3xl font-black tracking-tighter truncate",
                 item.accent ? "text-primary" : "text-foreground",
                 item.warning && "text-destructive"
               )}>

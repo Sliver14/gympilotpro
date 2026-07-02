@@ -220,8 +220,8 @@ function AdminDashboardContent() {
               <div className="space-y-10">
                 {/* Stats Overview */}
                 <AdminStats refreshTrigger={refreshTrigger} />
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                  <div className="md:col-span-1">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  <div className="lg:col-span-1">
                     {adminData?.gym && (
                       <GymQRCode
                         qrCodeUrl={adminData.gym.qrCodeUrl}
@@ -230,7 +230,7 @@ function AdminDashboardContent() {
                       />
                     )}
                   </div>
-                  <div className="md:col-span-1 lg:col-span-2 space-y-10">
+                  <div className="lg:col-span-2 space-y-10">
                     <RevenueAnalytics />
                   </div>
                 </div>
