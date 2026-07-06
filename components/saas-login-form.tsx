@@ -26,10 +26,15 @@ export default function SaaSLoginForm() {
         body: JSON.stringify({ email, password }),
       })
 
-      const data = await res.json()
+      let data
+      try {
+        data = await res.json()
+      } catch (e) {
+        throw new Error('Received invalid response from server. Please try again later.')
+      }
 
       if (!res.ok) {
-        throw new Error(data.error || 'Login failed')
+        throw new Error(data?.error || 'Login failed')
       }
 
       toast({
