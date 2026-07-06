@@ -37,14 +37,15 @@ export default function SaaSLoginForm() {
         description: 'Welcome back, Super Admin!',
       })
 
-      router.push('/saas-admin/dashboard')
+      setTimeout(() => {
+        window.location.href = '/saas-admin/dashboard'
+      }, 1500)
     } catch (error: any) {
       toast({
         title: 'Authentication Error',
         description: error.message,
         variant: 'destructive',
       })
-    } finally {
       setIsLoading(false)
     }
   }
