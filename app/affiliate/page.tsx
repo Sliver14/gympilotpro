@@ -315,7 +315,7 @@ export default function AffiliateLandingPage() {
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-20 mix-blend-overlay" />
         <div className="container mx-auto px-5 sm:px-6 md:px-8 lg:px-10 relative z-10 text-center">
           <h2 className="text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter italic text-white mb-8">
-            Ready to Start <br />Earning
+            Ready to Start <br />Earning?
           </h2>
           <Button
             asChild
