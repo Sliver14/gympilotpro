@@ -15,7 +15,8 @@ import {
   Star,
   Trophy,
   Menu,
-  X
+  X,
+  Sparkles
 } from 'lucide-react'
 import {
   Sheet,
@@ -155,14 +156,14 @@ export default function PlansPage() {
       {/* Pricing Grid */}
       <section className="pb-32 relative">
         <div className="container mx-auto px-5 sm:px-6 md:px-8 lg:px-10">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
             {(Object.keys(PLANS) as PlanKey[]).map((key) => {
               const p = PLANS[key]
               const isPopular = key === 'pro'
               const selectedMonths = 1
               const totalSetupAndMonthly = p.setupFee + p.monthlyFee
 
-              const Icon = key === 'starter' ? Zap : key === 'pro' ? Star : Trophy
+              const Icon = key === 'free' ? Sparkles : key === 'starter' ? Zap : key === 'pro' ? Star : Trophy
 
               return (
                 <div
@@ -183,7 +184,7 @@ export default function PlansPage() {
                   <div className="flex justify-between items-start mb-8">
                     <div>
                       <h3 className="text-3xl font-black uppercase italic mb-1 text-white">{p.name}</h3>
-                      <p className="text-muted-foreground text-xs font-bold uppercase tracking-widest">For {key === 'starter' ? 'Small Gyms' : key === 'pro' ? 'Growth Stages' : 'Elite Facilities'}</p>
+                      <p className="text-muted-foreground text-xs font-bold uppercase tracking-widest">For {key === 'free' ? 'Hobby/Trial' : key === 'starter' ? 'Small Gyms' : key === 'pro' ? 'Growth Stages' : 'Elite Facilities'}</p>
                     </div>
                     <Icon className={cn("w-10 h-10", isPopular ? "text-orange-500" : "text-muted-foreground/30")} />
                   </div>

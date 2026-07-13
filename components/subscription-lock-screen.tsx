@@ -97,7 +97,15 @@ export function SubscriptionLockScreen({
       const dataRenew = await resRenew.json()
       if (!resRenew.ok) throw new Error(dataRenew.error || 'Failed to initiate renewal')
       
-      const { authorization_url } = dataRenew
+      const { authorization_url, freeActivated } = dataRenew
+
+      if (freeActivated || selectedPlan === 'free' || !authorization_url) {
+        toast({ title: 'Success', description: 'Free plan activated successfully!' })
+        setTimeout(() => {
+          window.location.reload()
+        }, 1500)
+        return
+      }
 
       toast({ title: 'Redirecting', description: 'Taking you to Paystack secure checkout...' })
 

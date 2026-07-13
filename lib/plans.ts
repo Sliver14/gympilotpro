@@ -1,4 +1,18 @@
 export const PLANS = {
+  free: {
+    id: 'free',
+    name: "Free",
+    setupFee: 0,
+    originalSetupFee: 0,
+    monthlyFee: 0,
+    features: [
+      "Up to 20 Members",
+      "Automated WhatsApp Reminders",
+      "Revenue Tracking Dashboard",
+      "QR Check-in Access Control",
+    ],
+  },
+
   starter: {
     id: 'starter',
     name: "Starter",
@@ -52,8 +66,9 @@ export const DURATIONS = [
   { months: 12, label: "12 Months", discount: 0.15 },
 ];
 
-export const PLAN_WEIGHTS = { starter: 1, pro: 2, elite: 3 };
+export const PLAN_WEIGHTS = { free: 0, starter: 1, pro: 2, elite: 3 };
 export const PLAN_LIMITS: Record<string, number> = {
+  free: 20,
   starter: 200,
   pro: 500,
   elite: Infinity

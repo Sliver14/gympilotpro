@@ -61,6 +61,12 @@ export async function POST(req: Request) {
     // Generate a default temporary password
     const hashedPassword = await bcrypt.hash('ChangeMe123!', 10);
 
+    const isFreePlan = plan === 'free';
+    const now = new Date();
+    const subscriptionEndDate = isFreePlan 
+      ? new Date(now.getFullYear() + 100, now.getMonth(), now.getDate()) 
+      : now;
+
     // Create the Gym and User in a transaction
     const result = await prisma.$transaction(async (tx) => {
       // 1. Create the pending Gym
@@ -70,7 +76,7 @@ export async function POST(req: Request) {
           slug: slug,
           email: email,
           phone: phone,
-          status: 'pending',
+          status: isFreePlan ? 'active' : 'pending',
           qrCodeUrl: qrCodeUrl,
           referredById: affiliateId || undefined
         },
@@ -85,21 +91,19 @@ export async function POST(req: Request) {
           lastName,
           phoneNumber: phone,
           role: 'admin',
-          status: 'pending',
+          status: isFreePlan ? 'active' : 'pending',
           gymId: gym.id,
         },
       });
 
       // 3. Create initial pending subscription with no free trial period
-      const now = new Date();
-
       await tx.gymSubscription.create({
         data: {
           gymId: gym.id,
           plan: plan,
-          status: 'pending',
+          status: isFreePlan ? 'active' : 'pending',
           startDate: now,
-          endDate: now,
+          endDate: subscriptionEndDate,
         }
       });
 

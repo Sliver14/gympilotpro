@@ -62,6 +62,57 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    if (planKey === 'free') {
+      const now = new Date();
+      const farFuture = new Date(now.getFullYear() + 100, now.getMonth(), now.getDate());
+
+      await prisma.$transaction(async (tx) => {
+        // Activate Gym and User
+        await tx.gym.update({
+          where: { id: gymId },
+          data: { status: 'active' },
+        });
+        await tx.user.updateMany({
+          where: { gymId, role: 'admin' },
+          data: { status: 'active' },
+        });
+
+        // Check if there is an existing pending or active subscription
+        const existingSub = await tx.gymSubscription.findFirst({
+          where: { gymId },
+          orderBy: { endDate: 'desc' }
+        });
+
+        if (existingSub) {
+          await tx.gymSubscription.update({
+            where: { id: existingSub.id },
+            data: {
+              plan: 'free',
+              status: 'active',
+              startDate: now,
+              endDate: farFuture
+            }
+          });
+        } else {
+          await tx.gymSubscription.create({
+            data: {
+              gymId,
+              plan: 'free',
+              status: 'active',
+              startDate: now,
+              endDate: farFuture
+            }
+          });
+        }
+      });
+
+      return NextResponse.json({
+        success: true,
+        authorization_url: null,
+        freeActivated: true
+      });
+    }
+
     const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET_KEY;
     if (!PAYSTACK_SECRET_KEY) {
       return NextResponse.json({ error: 'Paystack secret key not configured' }, { status: 500 });
