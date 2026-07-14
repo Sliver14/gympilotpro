@@ -90,7 +90,7 @@ export default function SaaSLandingClient() {
             <Link href="#features" className="hover:text-orange-500 transition-colors text-white">Revenue System</Link>
             <Link href="#how-it-works" className="hover:text-orange-500 transition-colors text-white">How It Works</Link>
             <Link href="#testimonials" className="hover:text-orange-500 transition-colors text-white">Testimonials</Link>
-            <button 
+            <button
               onClick={() => window.dispatchEvent(new Event('open-support-modal'))}
               className="hover:text-orange-500 transition-colors text-white text-[11px] font-black tracking-[0.2em] uppercase"
             >
@@ -139,11 +139,11 @@ export default function SaaSLandingClient() {
                 <Link href="#features" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-orange-500 transition-colors">Revenue System</Link>
                 <Link href="#how-it-works" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-orange-500 transition-colors">How It Works</Link>
                 <Link href="#testimonials" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-orange-500 transition-colors">Testimonials</Link>
-                <button 
+                <button
                   onClick={() => {
                     setIsMobileMenuOpen(false)
                     window.dispatchEvent(new Event('open-support-modal'))
-                  }} 
+                  }}
                   className="hover:text-orange-500 transition-colors text-left"
                 >
                   Support
@@ -220,6 +220,24 @@ export default function SaaSLandingClient() {
               <ShieldCheck className="text-orange-500" size={18} />
               Trusted by growing gyms to recover lost revenue
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Dashboard Showcase */}
+      <section className="relative z-20 px-5 sm:px-6 md:px-8 lg:px-10 py-16 sm:py-24">
+        <div className="container mx-auto max-w-7xl">
+          <div className="relative group border border-zinc-800 bg-[#0c0c0c] p-1 sm:p-2 shadow-[0_0_50px_rgba(249,115,22,0.15)] hover:shadow-[0_0_70px_rgba(249,115,22,0.25)] hover:border-orange-500/40 transition-all duration-700">
+            <div className="absolute -inset-[1px] bg-gradient-to-r from-orange-500 to-amber-500 opacity-20 group-hover:opacity-40 blur-sm transition-opacity duration-700 pointer-events-none" />
+            <div className="relative border border-zinc-900 overflow-hidden bg-black aspect-[16/9]">
+              <Image
+                src="/www.klimarsspace.com_admin_dashboard.png"
+                alt="GymPilot Pro Admin Dashboard"
+                fill
+                className="object-cover object-top transform hover:scale-[1.02] transition-transform duration-700"
+                priority
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -494,8 +512,8 @@ export default function SaaSLandingClient() {
                   <li><Link href="#features" className="hover:text-white transition-colors">Features</Link></li>
                   <li><Link href="#how-it-works" className="hover:text-white transition-colors">Operations</Link></li>
                   <li>
-                    <button 
-                      onClick={() => window.dispatchEvent(new Event('open-support-modal'))} 
+                    <button
+                      onClick={() => window.dispatchEvent(new Event('open-support-modal'))}
                       className="hover:text-white transition-colors text-left"
                     >
                       Support Portal
