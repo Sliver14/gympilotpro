@@ -224,24 +224,6 @@ export default function SaaSLandingClient() {
         </div>
       </section>
 
-      {/* Dashboard Showcase */}
-      <section className="relative z-20 px-5 sm:px-6 md:px-8 lg:px-10 py-16 sm:py-24">
-        <div className="container mx-auto max-w-7xl">
-          <div className="relative group border border-zinc-800 bg-[#0c0c0c] p-1 sm:p-2 shadow-[0_0_50px_rgba(249,115,22,0.15)] hover:shadow-[0_0_70px_rgba(249,115,22,0.25)] hover:border-orange-500/40 transition-all duration-700">
-            <div className="absolute -inset-[1px] bg-gradient-to-r from-orange-500 to-amber-500 opacity-20 group-hover:opacity-40 blur-sm transition-opacity duration-700 pointer-events-none" />
-            <div className="relative border border-zinc-900 overflow-hidden bg-black aspect-[16/9]">
-              <Image
-                src="/www.klimarsspace.com_admin_dashboard.png"
-                alt="GymPilot Pro Admin Dashboard"
-                fill
-                className="object-cover object-top transform hover:scale-[1.02] transition-transform duration-700"
-                priority
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Social Proof */}
       <section id="testimonials" className="py-20 md:py-28 lg:py-32 bg-[#080808] border-y border-border">
         <div className="container mx-auto px-5 sm:px-6 md:px-8 lg:px-10">
@@ -271,6 +253,24 @@ export default function SaaSLandingClient() {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Dashboard Showcase */}
+      <section className="relative z-20 px-5 sm:px-6 md:px-8 lg:px-10 py-16 sm:py-24">
+        <div className="container mx-auto max-w-7xl">
+          <div className="relative group border border-zinc-800 bg-[#0c0c0c] p-1 sm:p-2 shadow-[0_0_50px_rgba(249,115,22,0.15)] hover:shadow-[0_0_70px_rgba(249,115,22,0.25)] hover:border-orange-500/40 transition-all duration-700">
+            <div className="absolute -inset-[1px] bg-gradient-to-r from-orange-500 to-amber-500 opacity-20 group-hover:opacity-40 blur-sm transition-opacity duration-700 pointer-events-none" />
+            <div className="relative border border-zinc-900 overflow-hidden bg-black aspect-[16/9]">
+              <Image
+                src="/www.klimarsspace.com_admin_dashboard.png"
+                alt="GymPilot Pro Admin Dashboard"
+                fill
+                className="object-cover object-top transform hover:scale-[1.02] transition-transform duration-700"
+                priority
+              />
             </div>
           </div>
         </div>
