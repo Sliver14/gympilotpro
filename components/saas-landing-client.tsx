@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
@@ -18,7 +18,8 @@ import {
   TrendingUp,
   Smartphone,
   Menu,
-  X
+  X,
+  Play
 } from 'lucide-react'
 import {
   Sheet,
@@ -54,6 +55,58 @@ const FeatureCard = ({ icon: Icon, title, desc }: { icon: any; title: string; de
 export default function SaaSLandingClient() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  const handlePlayVideo = () => {
+    const video = videoRef.current
+    if (!video) return
+
+    if (video.requestFullscreen) {
+      video.requestFullscreen().then(() => {
+        video.play().catch(err => console.error("Play error:", err))
+      }).catch(err => console.error("Fullscreen error:", err))
+    } else if ((video as any).webkitEnterFullscreen) {
+      try {
+        (video as any).webkitEnterFullscreen();
+        video.play().catch(err => console.error("Play error:", err))
+      } catch (err) {
+        console.error("webkitEnterFullscreen error:", err)
+      }
+    } else if ((video as any).webkitRequestFullscreen) {
+      (video as any).webkitRequestFullscreen();
+      video.play().catch(err => console.error("Play error:", err))
+    } else {
+      video.play().catch(err => console.error("Play error:", err))
+    }
+  }
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+
+    const onFullscreenChange = () => {
+      const isFullscreen = document.fullscreenElement === video ||
+        (document as any).webkitFullscreenElement === video ||
+        (video as any).webkitDisplayingFullscreen;
+      if (!isFullscreen) {
+        video.pause()
+      }
+    }
+
+    const onWebkitEndFullscreen = () => {
+      video.pause()
+    }
+
+    video.addEventListener('fullscreenchange', onFullscreenChange)
+    video.addEventListener('webkitfullscreenchange', onFullscreenChange)
+    video.addEventListener('webkitendfullscreen', onWebkitEndFullscreen)
+
+    return () => {
+      video.removeEventListener('fullscreenchange', onFullscreenChange)
+      video.removeEventListener('webkitfullscreenchange', onFullscreenChange)
+      video.removeEventListener('webkitendfullscreen', onWebkitEndFullscreen)
+    }
+  }, [])
 
   const openModal = () => {
     setIsModalOpen(true)
@@ -263,14 +316,23 @@ export default function SaaSLandingClient() {
         <div className="container mx-auto max-w-7xl">
           <div className="relative group border border-zinc-800 bg-[#0c0c0c] p-1 sm:p-2 shadow-[0_0_50px_rgba(249,115,22,0.15)] hover:shadow-[0_0_70px_rgba(249,115,22,0.25)] hover:border-orange-500/40 transition-all duration-700">
             <div className="absolute -inset-[1px] bg-gradient-to-r from-orange-500 to-amber-500 opacity-20 group-hover:opacity-40 blur-sm transition-opacity duration-700 pointer-events-none" />
-            <div className="relative border border-zinc-900 overflow-hidden bg-black aspect-[16/9]">
-              <Image
-                src="/www.klimarsspace.com_admin_dashboard.png"
-                alt="GymPilot Pro Admin Dashboard"
-                fill
-                className="object-cover object-top transform hover:scale-[1.02] transition-transform duration-700"
-                priority
+            <div className="relative border border-zinc-900 overflow-hidden bg-black aspect-[16/9] group/video">
+              <video
+                ref={videoRef}
+                src="/Gympilotpro%20Clip1%20Voiceover%202.mp4"
+                poster="/www.klimarsspace.com_admin_dashboard.png"
+                className="w-full h-full object-cover"
+                controls
+                controlsList="nodownload"
               />
+              <div 
+                className="absolute inset-0 flex items-center justify-center bg-black/40 hover:bg-black/20 transition-all duration-300 cursor-pointer"
+                onClick={handlePlayVideo}
+              >
+                <div className="w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(249,115,22,0.4)] sm:shadow-[0_0_50px_rgba(249,115,22,0.4)] transition-all duration-300 transform hover:scale-110 active:scale-95 border border-white/15">
+                  <Play className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 fill-white translate-x-0.5" />
+                </div>
+              </div>
             </div>
           </div>
         </div>
