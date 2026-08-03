@@ -5,7 +5,7 @@ import { AlertCircle, Loader2, LogOut, CreditCard, Check, ChevronDown, ChevronLe
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/hooks/use-toast'
-import { PLANS, DURATIONS, calculatePrice, calculateUpgradePrice, PlanKey, PLAN_WEIGHTS } from '@/lib/plans'
+import { PLANS, DURATIONS, calculatePrice, calculateUpgradePrice, PlanKey, PLAN_WEIGHTS, PLAN_LIMITS } from '@/lib/plans'
 import { cn } from '@/lib/utils'
 
 interface SubscriptionLockScreenProps {
@@ -15,6 +15,7 @@ interface SubscriptionLockScreenProps {
   currentPlan?: string
   accent?: string
   isUpgradeMode?: boolean
+  membersCount?: number
 }
 
 export function SubscriptionLockScreen({ 
@@ -23,7 +24,8 @@ export function SubscriptionLockScreen({
   gymStatus = 'active', 
   currentPlan = 'starter',
   accent = '#daa857',
-  isUpgradeMode = false
+  isUpgradeMode = false,
+  membersCount = 0
 }: SubscriptionLockScreenProps) {
   const router = useRouter()
   const { toast } = useToast()
@@ -32,7 +34,12 @@ export function SubscriptionLockScreen({
   // Normalized current plan key
   const currentPlanKey = (currentPlan?.toLowerCase() || 'starter') as PlanKey
   
-  const [selectedPlan, setSelectedPlan] = useState<PlanKey>(currentPlanKey)
+  // If current plan is free but members exceed the limit, default to starter
+  const defaultSelectedPlan = currentPlanKey === 'free' && membersCount > (PLAN_LIMITS.free || 20)
+    ? 'starter'
+    : currentPlanKey
+
+  const [selectedPlan, setSelectedPlan] = useState<PlanKey>(defaultSelectedPlan)
   const [selectedMonths, setSelectedMonths] = useState(1)
   
   const isAdmins = role === 'admin' || role === 'owner'
@@ -214,24 +221,38 @@ export function SubscriptionLockScreen({
                       const plan = PLANS[key];
                       const isCurrent = key === currentPlanKey;
                       const isSelected = key === selectedPlan;
+                      const isLimitExceeded = key === 'free' && membersCount > (PLAN_LIMITS.free || 20);
                       
                       return (
                         <button
                           key={key}
+                          disabled={isLimitExceeded}
                           onClick={() => setSelectedPlan(key)}
                           className={cn(
-                            "p-2 md:p-5 rounded-lg md:rounded-2xl border-2 text-left transition-all relative overflow-hidden group",
+                            "p-2 md:p-5 rounded-lg md:rounded-2xl border-2 text-left transition-all relative overflow-hidden group flex flex-col justify-between min-h-[70px] md:min-h-[110px]",
                             isSelected 
                               ? "bg-white/5 border-orange-500 shadow-[0_0_20px_rgba(249,115,22,0.1)]" 
-                              : "bg-card/20 border-border hover:border-border/50"
+                              : "bg-card/20 border-border hover:border-border/50",
+                            isLimitExceeded && "opacity-40 cursor-not-allowed border-dashed border-red-500/30 hover:border-red-500/30"
                           )}
-                          style={isSelected ? { borderColor: accent } : {}}
+                          style={isSelected && !isLimitExceeded ? { borderColor: accent } : {}}
+                          title={isLimitExceeded ? `Disabled: Gym has ${membersCount} members (Free Plan limit is ${PLAN_LIMITS.free})` : undefined}
                         >
-                          <p className={cn("text-[7px] md:text-[9px] font-black mb-0.5 uppercase tracking-wider", isSelected ? "text-orange-500" : "text-muted-foreground")}
-                             style={isSelected ? { color: accent } : {}}>
-                            {plan.name}
-                          </p>
-                          <p className="text-[10px] md:text-lg font-black text-foreground">₦{plan.monthlyFee.toLocaleString()}</p>
+                          <div>
+                            <p className={cn(
+                              "text-[7px] md:text-[9px] font-black mb-0.5 uppercase tracking-wider", 
+                              isSelected ? "text-orange-500" : "text-muted-foreground"
+                            )}
+                               style={isSelected && !isLimitExceeded ? { color: accent } : {}}>
+                              {plan.name}
+                            </p>
+                            <p className="text-[10px] md:text-lg font-black text-foreground">₦{plan.monthlyFee.toLocaleString()}</p>
+                          </div>
+                          {isLimitExceeded && (
+                            <span className="text-[6px] md:text-[8px] text-red-500 font-bold block mt-1 uppercase tracking-tighter">
+                              Limit Exceeded ({membersCount}/20)
+                            </span>
+                          )}
                           {isCurrent && !isPending && (
                             <span className="absolute top-0.5 right-0.5 bg-white/10 text-[6px] font-bold px-0.5 rounded uppercase tracking-tighter scale-75 md:scale-100">Current</span>
                           )}

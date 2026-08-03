@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getCurrentUser } from '@/lib/auth'
 import axios from 'axios'
-import { PLANS, calculatePrice, calculateUpgradePrice, PlanKey, PLAN_WEIGHTS } from '@/lib/plans'
+import { PLANS, calculatePrice, calculateUpgradePrice, PlanKey, PLAN_WEIGHTS, PLAN_LIMITS } from '@/lib/plans'
 
 export async function POST(req: NextRequest) {
   try {
@@ -63,6 +63,18 @@ export async function POST(req: NextRequest) {
     }
 
     if (planKey === 'free') {
+      // Validate that gym doesn't exceed free member limit
+      const memberCount = await prisma.memberProfile.count({
+        where: { gymId }
+      })
+
+      const freeLimit = PLAN_LIMITS.free || 20
+      if (memberCount > freeLimit) {
+        return NextResponse.json({
+          error: `Cannot downgrade to Free Plan: Your gym has ${memberCount} members, which exceeds the limit of ${freeLimit} members for the Free Plan.`
+        }, { status: 400 })
+      }
+
       const now = new Date();
       const farFuture = new Date(now.getFullYear() + 100, now.getMonth(), now.getDate());
 

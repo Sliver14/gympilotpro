@@ -317,6 +317,7 @@ export function GymProvider({
           gymData?.subscriptions?.[0]?.plan || initialCurrentPlan
         }
         accent={gymData?.primaryColor || initialAccent}
+        membersCount={gymData?.membersCount || 0}
       />
     );
   }

@@ -41,6 +41,11 @@ export async function GET(
             isActive: true,
             isDefault: true,
           }
+        },
+        _count: {
+          select: {
+            memberProfiles: true
+          }
         }
       },
     })
@@ -57,11 +62,12 @@ export async function GET(
       slug: b.name.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
     }));
 
-    const { paystackSecretKey, ...safeGymData } = gym;
-    safeGymData.branches = branchesWithSlug;
+    const { paystackSecretKey, _count, ...safeGymData } = gym;
 
     return NextResponse.json({
       ...safeGymData,
+      branches: branchesWithSlug,
+      membersCount: _count?.memberProfiles ?? 0,
       hasPaystack: !!paystackSecretKey
     })
   } catch (error) {

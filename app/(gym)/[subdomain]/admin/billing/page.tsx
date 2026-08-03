@@ -52,6 +52,7 @@ function AdminBillingContent() {
         currentPlan={currentPlan}
         accent={gymData.primaryColor}
         isUpgradeMode={true}
+        membersCount={gymData.membersCount || 0}
       />
     </div>
   )
