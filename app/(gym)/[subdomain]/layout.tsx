@@ -4,7 +4,6 @@ import { prisma } from '@/lib/prisma'
 import { notFound } from 'next/navigation'
 import { getCurrentUser } from '@/lib/auth'
 import { Metadata } from 'next'
-import { SupportModal } from '@/components/support-modal'
 
 export async function generateMetadata({ 
   params 
@@ -126,7 +125,6 @@ export default async function GymSubdomainLayout({
           }
         `}} />
         {children}
-        <SupportModal />
       </GymProvider>
     )
   }
@@ -134,7 +132,7 @@ export default async function GymSubdomainLayout({
   return (
     <GymProvider>
       {children}
-      <SupportModal />
     </GymProvider>
   )
 }
+

@@ -17,14 +17,14 @@ export const config = {
 export default function middleware(req: NextRequest) {
   const url = req.nextUrl;
   
-  // Get hostname of request (e.g. demo.gympilotpro.com, gympilotpro.com, or www.customdomain.com)
+  // Get hostname of request (e.g. demo.gympilotpro.com, gympilotpro.com, 192.168.1.15, or www.customdomain.com)
   let hostname = req.headers.get('host') || '';
 
-  // Remove port if present (for localhost testing)
+  // Remove port if present (for localhost testing / mobile dev)
   hostname = hostname.split(':')[0].toLowerCase();
 
-  // Define our root domains
-  const ROOT_DOMAIN = 'gympilotpro.com';
+  // Define our root domain from env or default
+  const ROOT_DOMAIN = process.env.NEXT_PUBLIC_ROOT_DOMAIN || 'gympilotpro.com';
   const VERCEL_DOMAIN = 'vercel.app'; // Useful if deployed on Vercel default domain
 
   // Normalize www.gympilotpro.com to gympilotpro.com
@@ -32,8 +32,19 @@ export default function middleware(req: NextRequest) {
     hostname = ROOT_DOMAIN;
   }
 
-  // 1. Root domain / Landing page
-  if (hostname === ROOT_DOMAIN || hostname.endsWith(VERCEL_DOMAIN) || hostname === 'localhost') {
+  // Check if request is from localhost, local IP (e.g. testing from iPhone on Wi-Fi), or preview tunnels
+  const isLocalOrIp = 
+    !hostname ||
+    hostname === 'localhost' ||
+    hostname === '127.0.0.1' ||
+    hostname === '[::1]' ||
+    /^(\d{1,3}\.){3}\d{1,3}$/.test(hostname) || // IPv4 LAN address (e.g. 192.168.x.x, 10.x.x.x)
+    hostname.endsWith('.local') ||
+    hostname.includes('ngrok') ||
+    hostname.includes('loca.lt');
+
+  // 1. Root domain / Landing page / Local testing
+  if (hostname === ROOT_DOMAIN || hostname.endsWith(VERCEL_DOMAIN) || isLocalOrIp) {
     return NextResponse.next();
   }
 
@@ -48,10 +59,15 @@ export default function middleware(req: NextRequest) {
   }
 
   // 3. Custom Domains (e.g., klimarxgym.com)
-  const normalizedDomain = hostname;
-  const requestHeaders = new Headers(req.headers);
-  requestHeaders.set('x-pathname', url.pathname);
-  return NextResponse.rewrite(new URL(`/${normalizedDomain}${url.pathname}`, req.url), {
-    request: { headers: requestHeaders }
-  });
+  if (hostname && !hostname.includes(ROOT_DOMAIN)) {
+    const normalizedDomain = hostname;
+    const requestHeaders = new Headers(req.headers);
+    requestHeaders.set('x-pathname', url.pathname);
+    return NextResponse.rewrite(new URL(`/${normalizedDomain}${url.pathname}`, req.url), {
+      request: { headers: requestHeaders }
+    });
+  }
+
+  return NextResponse.next();
 }
+

@@ -61,10 +61,27 @@ export default function SaaSLandingClient() {
 
   const openVideoModal = () => {
     setIsVideoModalOpen(true)
-    setIsPlaying(true)
+    setTimeout(() => {
+      const video = modalVideoRef.current
+      if (video) {
+        const playPromise = video.play()
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => setIsPlaying(true))
+            .catch(() => {
+              // iOS autoplay restriction: video is paused, waiting for user tap
+              setIsPlaying(false)
+            })
+        }
+      }
+    }, 100)
   }
 
   const closeVideoModal = () => {
+    const video = modalVideoRef.current
+    if (video) {
+      video.pause()
+    }
     setIsVideoModalOpen(false)
     setIsPlaying(false)
   }
@@ -73,12 +90,21 @@ export default function SaaSLandingClient() {
     const video = modalVideoRef.current
     if (!video) return
     if (video.paused) {
-      video.play().then(() => setIsPlaying(true)).catch(err => console.error(err))
+      const playPromise = video.play()
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => setIsPlaying(true))
+          .catch(err => {
+            console.error('Play failed:', err)
+            setIsPlaying(false)
+          })
+      }
     } else {
       video.pause()
       setIsPlaying(false)
     }
   }
+
 
   const openModal = () => {
     setIsModalOpen(true)
@@ -606,11 +632,12 @@ export default function SaaSLandingClient() {
               ref={modalVideoRef}
               src="/Gympilotpro%20Clip1%20Voiceover%202.mp4"
               className="w-full h-full object-contain cursor-pointer"
-              autoPlay
-              loop
               playsInline
+              preload="auto"
+              loop
               onClick={togglePlayPause}
             />
+
             {!isPlaying && (
               <div 
                 className="absolute inset-0 flex items-center justify-center bg-black/40 cursor-pointer pointer-events-none"

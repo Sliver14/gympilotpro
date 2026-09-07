@@ -68,15 +68,18 @@ export function SupportModal() {
 
   // Determine if the floating support button should show
   // We hide it on all dashboards, full payment pages, or setup states, but show on landing/public pages
-  const isDashboard = pathname.includes('/dashboard') || 
-                      pathname.includes('/admin') || 
-                      pathname.includes('/staff') || 
-                      pathname.includes('/saas-admin') ||
-                      pathname.includes('/portal')
+  const isDashboard = Boolean(
+    pathname?.includes('/dashboard') || 
+    pathname?.includes('/admin') || 
+    pathname?.includes('/staff') || 
+    pathname?.includes('/saas-admin') ||
+    pathname?.includes('/portal')
+  )
 
   const showFloatingButton = !isDashboard && 
-                             !pathname.includes('/setup') && 
-                             !pathname.includes('/payment/success')
+                             Boolean(!pathname?.includes('/setup')) && 
+                             Boolean(!pathname?.includes('/payment/success'))
+
 
   return (
     <>

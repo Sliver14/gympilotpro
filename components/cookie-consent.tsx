@@ -10,22 +10,37 @@ export function CookieConsent() {
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
-    const consent = localStorage.getItem('cookie-consent')
-    if (!consent) {
-      const timer = setTimeout(() => setIsVisible(true), 1500)
-      return () => clearTimeout(timer)
+    try {
+      if (typeof window !== 'undefined') {
+        const consent = window.localStorage.getItem('cookie-consent')
+        if (!consent) {
+          const timer = setTimeout(() => setIsVisible(true), 1500)
+          return () => clearTimeout(timer)
+        }
+      }
+    } catch (e) {
+      // Storage unavailable or restricted (e.g. iOS Safari Private Browsing)
     }
   }, [])
 
   const handleAccept = () => {
-    localStorage.setItem('cookie-consent', 'accepted')
+    try {
+      if (typeof window !== 'undefined') {
+        window.localStorage.setItem('cookie-consent', 'accepted')
+      }
+    } catch (e) {}
     setIsVisible(false)
   }
 
   const handleDecline = () => {
-    localStorage.setItem('cookie-consent', 'declined')
+    try {
+      if (typeof window !== 'undefined') {
+        window.localStorage.setItem('cookie-consent', 'declined')
+      }
+    } catch (e) {}
     setIsVisible(false)
   }
+
 
   if (!isVisible) return null
 

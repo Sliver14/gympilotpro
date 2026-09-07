@@ -258,7 +258,14 @@ export function GymProvider({
       return;
     }
 
-    const saved = localStorage.getItem(`branch_${gymData.id}`);
+    let saved: string | null = null;
+    try {
+      if (typeof window !== 'undefined') {
+        saved = window.localStorage.getItem(`branch_${gymData.id}`);
+      }
+    } catch (e) {
+      // Storage restricted or unavailable (e.g. iOS Safari Private Browsing)
+    }
 
     if (saved) {
       setSelectedBranchState(saved as BranchSelection);
@@ -283,12 +290,17 @@ export function GymProvider({
     setSelectedBranchState(branchId);
 
     if (gymData?.id) {
-      localStorage.setItem(
-        `branch_${gymData.id}`,
-        branchId ?? 'all'
-      );
+      try {
+        if (typeof window !== 'undefined') {
+          window.localStorage.setItem(
+            `branch_${gymData.id}`,
+            branchId ?? 'all'
+          );
+        }
+      } catch (e) {}
     }
   }, [gymData]);
+
 
   const activeBranchId = selectedBranch;
   const setActiveBranchId = setSelectedBranch;
