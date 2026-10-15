@@ -417,6 +417,38 @@ export async function POST(req: Request) {
               // Re-evaluate restriction and lift it immediately
               const { evaluateGymRestriction } = await import('@/lib/billing');
               await evaluateGymRestriction(gymId);
+
+              // Send settlement confirmation email to gym owner
+              const gym = await prisma.gym.findUnique({
+                where: { id: gymId },
+                select: {
+                  name: true,
+                  slug: true,
+                  email: true,
+                  customDomain: true,
+                  users: {
+                    where: { role: { in: ['admin', 'owner'] } },
+                    select: { email: true },
+                    take: 1,
+                  },
+                },
+              });
+
+              const targetEmail = gym?.email || gym?.users[0]?.email;
+              if (targetEmail && gym) {
+                const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN || 'gympilotpro.com';
+                const gymDomain = gym.customDomain
+                  ? `https://${gym.customDomain}`
+                  : `https://${gym.slug}.${rootDomain}`;
+                const { sendGymInvoiceSettledEmail } = await import('@/lib/email');
+                await sendGymInvoiceSettledEmail({
+                  email: targetEmail,
+                  gymName: gym.name,
+                  amountPaid: actualAmount,
+                  reference,
+                  dashboardUrl: `${gymDomain}/admin/billing`,
+                });
+              }
             }
             break;
           }

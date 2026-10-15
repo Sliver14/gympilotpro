@@ -550,4 +550,231 @@ export async function sendBatchEmails(emails: {
   }
 }
 
+/**
+ * 1. Monthly 5% Commission Invoice Notification
+ */
+export async function sendGymInvoiceIssuedEmail(params: {
+  email: string;
+  gymName: string;
+  invoiceNumber: string;
+  billingMonth: string;
+  totalMemberRevenue: number;
+  amountDue: number;
+  dueDate: string;
+  paymentUrl: string;
+}) {
+  const {
+    email,
+    gymName,
+    invoiceNumber,
+    billingMonth,
+    totalMemberRevenue,
+    amountDue,
+    dueDate,
+    paymentUrl,
+  } = params;
+
+  try {
+    await resend.emails.send({
+      from: getFromAddress('GymPilotPro Billing'),
+      to: email,
+      subject: `New Invoice ${invoiceNumber}: Monthly 5% Platform Fee for ${gymName}`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #e5e7eb; border-radius: 12px; background-color: #ffffff;">
+          <div style="text-align: center; margin-bottom: 24px;">
+            <h2 style="color: #f97316; margin: 0; font-size: 24px; text-transform: uppercase; letter-spacing: -0.5px;">GymPilotPro Statement</h2>
+            <p style="color: #6b7280; margin: 4px 0 0 0; font-size: 14px;">Billing Period: ${billingMonth}</p>
+          </div>
+
+          <p style="color: #374151; font-size: 16px; line-height: 1.5;">Hello <strong>${gymName}</strong> Management,</p>
+          <p style="color: #4b5563; font-size: 14px; line-height: 1.6;">
+            Your monthly platform commission invoice for <strong>${billingMonth}</strong> has been generated based on your approved member subscriptions.
+          </p>
+
+          <div style="background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px; margin: 24px 0;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+              <tr>
+                <td style="color: #6b7280; padding: 8px 0;">Invoice Number:</td>
+                <td style="text-align: right; font-weight: bold; color: #111827; font-family: monospace;">${invoiceNumber}</td>
+              </tr>
+              <tr>
+                <td style="color: #6b7280; padding: 8px 0;">Member Revenue Collected:</td>
+                <td style="text-align: right; font-weight: bold; color: #111827;">₦${totalMemberRevenue.toLocaleString()}</td>
+              </tr>
+              <tr>
+                <td style="color: #6b7280; padding: 8px 0;">Platform Fee Rate:</td>
+                <td style="text-align: right; font-weight: bold; color: #111827;">5%</td>
+              </tr>
+              <tr style="border-top: 1px solid #e5e7eb;">
+                <td style="color: #111827; font-weight: bold; padding: 12px 0 8px 0; font-size: 16px;">Total Amount Due:</td>
+                <td style="text-align: right; font-weight: 900; color: #f97316; padding: 12px 0 8px 0; font-size: 20px;">₦${amountDue.toLocaleString()}</td>
+              </tr>
+              <tr>
+                <td style="color: #6b7280; padding: 4px 0; font-size: 12px;">Payment Due Date:</td>
+                <td style="text-align: right; color: #6b7280; font-size: 12px;">${dueDate}</td>
+              </tr>
+            </table>
+          </div>
+
+          <div style="text-align: center; margin: 32px 0;">
+            <a href="${paymentUrl}" style="background-color: #f97316; color: #ffffff; padding: 16px 36px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block;">
+              View & Settle Invoice via Paystack
+            </a>
+          </div>
+
+          <p style="color: #6b7280; font-size: 12px; line-height: 1.5; border-top: 1px solid #f3f4f6; padding-top: 20px; text-align: center;">
+            GymPilotPro operates on a 2-month grace window. Invoices should be settled monthly to keep your check-in scanners and member terminals in continuous good standing.
+          </p>
+        </div>
+      `,
+    });
+    console.log(`Invoice email sent to ${email} for gym ${gymName}`);
+  } catch (err) {
+    console.error(`Failed to send invoice email to ${email}:`, err);
+  }
+}
+
+/**
+ * 2. 30-Day Overdue Warning Reminder
+ */
+export async function sendGymBillingReminderEmail(params: {
+  email: string;
+  gymName: string;
+  unpaidInvoicesCount: number;
+  totalOutstandingDue: number;
+  paymentUrl: string;
+}) {
+  const { email, gymName, unpaidInvoicesCount, totalOutstandingDue, paymentUrl } = params;
+
+  try {
+    await resend.emails.send({
+      from: getFromAddress('GymPilotPro Billing'),
+      to: email,
+      subject: `Reminder: Monthly Platform Fee is 1 Month Overdue (${gymName})`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #fde68a; border-radius: 12px; background-color: #fffbeb;">
+          <h2 style="color: #d97706; margin-top: 0; font-size: 22px;">Payment Reminder: 1 Month Overdue</h2>
+          <p style="color: #374151; font-size: 15px;">Hello <strong>${gymName}</strong> Management,</p>
+          <p style="color: #4b5563; font-size: 14px; line-height: 1.6;">
+            This is a friendly reminder that you have <strong>${unpaidInvoicesCount}</strong> monthly 5% commission invoice(s) with an outstanding balance of <strong style="color: #d97706;">₦${totalOutstandingDue.toLocaleString()}</strong>.
+          </p>
+          <p style="color: #4b5563; font-size: 13px; line-height: 1.5;">
+            <strong>Important Policy Note:</strong> GymPilotPro provides a 2-month window for monthly payments. Accounts with balances overdue past 2 months (60 days) are automatically restricted from check-in scanners and registrations.
+          </p>
+
+          <div style="text-align: center; margin: 30px 0;">
+            <a href="${paymentUrl}" style="background-color: #d97706; color: #ffffff; padding: 14px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">
+              Settle Outstanding Balance
+            </a>
+          </div>
+
+          <p style="color: #92400e; font-size: 12px; text-align: center;">
+            If you have already made this payment, please disregard this notice.
+          </p>
+        </div>
+      `,
+    });
+    console.log(`Billing reminder sent to ${email} for gym ${gymName}`);
+  } catch (err) {
+    console.error(`Failed to send billing reminder to ${email}:`, err);
+  }
+}
+
+/**
+ * 3. 60-Day Restriction Notice Email
+ */
+export async function sendGymAccountRestrictedEmail(params: {
+  email: string;
+  gymName: string;
+  totalOutstandingDue: number;
+  paymentUrl: string;
+}) {
+  const { email, gymName, totalOutstandingDue, paymentUrl } = params;
+
+  try {
+    await resend.emails.send({
+      from: getFromAddress('GymPilotPro Security & Billing'),
+      to: email,
+      subject: `URGENT: Account Restricted due to Overdue Billing (${gymName})`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 2px solid #ef4444; border-radius: 12px; background-color: #fef2f2;">
+          <h2 style="color: #dc2626; margin-top: 0; font-size: 22px;">Account Temporarily Restricted</h2>
+          <p style="color: #374151; font-size: 15px;">Hello <strong>${gymName}</strong> Management,</p>
+          <p style="color: #4b5563; font-size: 14px; line-height: 1.6;">
+            Your gym account has been restricted because your platform commission invoices are overdue past <strong>2 months (60 days)</strong> with an outstanding balance of <strong style="color: #dc2626;">₦${totalOutstandingDue.toLocaleString()}</strong>.
+          </p>
+          
+          <div style="background-color: #fee2e2; border-left: 4px solid #dc2626; padding: 14px; margin: 20px 0; font-size: 13px; color: #991b1b;">
+            <strong>Restricted Services:</strong> QR check-in scanning, manual check-in terminal, and member registration are currently locked.
+          </div>
+
+          <p style="color: #4b5563; font-size: 14px;">
+            To restore full service instantly, please settle your outstanding balance below:
+          </p>
+
+          <div style="text-align: center; margin: 30px 0;">
+            <a href="${paymentUrl}" style="background-color: #dc2626; color: #ffffff; padding: 16px 36px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">
+              Pay ₦${totalOutstandingDue.toLocaleString()} to Restore Access
+            </a>
+          </div>
+
+          <p style="color: #6b7280; font-size: 12px; text-align: center;">
+            Upon payment confirmation from Paystack, your account and scanners are automatically un-restricted immediately.
+          </p>
+        </div>
+      `,
+    });
+    console.log(`Account restriction email sent to ${email} for gym ${gymName}`);
+  } catch (err) {
+    console.error(`Failed to send account restriction email to ${email}:`, err);
+  }
+}
+
+/**
+ * 4. Invoice Settled & Account Restored Confirmation
+ */
+export async function sendGymInvoiceSettledEmail(params: {
+  email: string;
+  gymName: string;
+  amountPaid: number;
+  reference: string;
+  dashboardUrl: string;
+}) {
+  const { email, gymName, amountPaid, reference, dashboardUrl } = params;
+
+  try {
+    await resend.emails.send({
+      from: getFromAddress('GymPilotPro Billing'),
+      to: email,
+      subject: `Payment Confirmed: ₦${amountPaid.toLocaleString()} Received (${gymName})`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #10b981; border-radius: 12px; background-color: #ffffff;">
+          <h2 style="color: #10b981; margin-top: 0; font-size: 22px;">Payment Confirmed — Account In Good Standing</h2>
+          <p style="color: #374151; font-size: 15px;">Hello <strong>${gymName}</strong> Management,</p>
+          <p style="color: #4b5563; font-size: 14px; line-height: 1.6;">
+            We have successfully received your payment of <strong style="color: #10b981;">₦${amountPaid.toLocaleString()}</strong> (Ref: <code>${reference}</code>).
+          </p>
+          <p style="color: #4b5563; font-size: 14px;">
+            Your account is in good standing and all check-in scanners and terminals are operating normally.
+          </p>
+
+          <div style="text-align: center; margin: 30px 0;">
+            <a href="${dashboardUrl}" style="background-color: #10b981; color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">
+              Go to Gym Dashboard
+            </a>
+          </div>
+
+          <p style="color: #6b7280; font-size: 12px; text-align: center; border-top: 1px solid #f3f4f6; padding-top: 16px;">
+            Thank you for partnering with GymPilotPro.
+          </p>
+        </div>
+      `,
+    });
+    console.log(`Payment confirmation email sent to ${email} for gym ${gymName}`);
+  } catch (err) {
+    console.error(`Failed to send payment confirmation email to ${email}:`, err);
+  }
+}
+
+
 
