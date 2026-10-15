@@ -134,16 +134,27 @@ export async function logout() {
 export async function requireActiveGymSubscription(gymId: string) {
   const gym = await prisma.gym.findUnique({
     where: { id: gymId },
-    include: { subscriptions: { orderBy: { endDate: 'desc' }, take: 1 } }
+    select: {
+      id: true,
+      status: true,
+      billingStatus: true,
+      restrictionReason: true,
+      subscriptions: { orderBy: { endDate: 'desc' }, take: 1 }
+    }
   });
 
-  const latestSub = gym?.subscriptions[0];
-  const now = new Date()
-  const endDate = latestSub ? new Date(latestSub.endDate) : now
-  
-  const isExpired = !latestSub || endDate < now || latestSub.status === 'expired' || gym?.status === 'pending' || latestSub?.status === 'pending';
+  if (!gym) {
+    throw new Error('Gym not found');
+  }
 
-  if (isExpired) {
-    throw new Error('Gym subscription expired');
+  // Under the 5% revenue share model, restrictions are triggered when 2+ months of invoices remain unpaid
+  if (gym.billingStatus === 'restricted' || gym.status === 'restricted') {
+    throw new Error(gym.restrictionReason || 'Gym account is temporarily restricted due to overdue billing.');
+  }
+
+  // If gym status is pending (e.g. initial setup not completed)
+  if (gym.status === 'pending') {
+    throw new Error('Gym account is pending activation');
   }
 }
+

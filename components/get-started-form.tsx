@@ -199,28 +199,15 @@ export default function GetStartedForm() {
 
           <div className="grid md:grid-cols-2 gap-4 md:gap-6">
             <div>
-              <label className="block text-xs font-bold text-muted-foreground mb-2">Selected Plan</label>
-              <div className="relative">
-                <select 
-                  name="plan"
-                  disabled={loading}
-                  value={formData.plan}
-                  onChange={handleChange}
-                  className="w-full bg-background border-2 border-border p-4 font-black focus:border-orange-500 outline-none transition-colors text-foreground appearance-none cursor-pointer"
-                >
-                  {Object.values(PLANS).map(p => (
-                    <option key={p.id} value={p.id}>{p.name}</option>
-                  ))}
-                </select>
-                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-orange-500">▼</div>
+              <label className="block text-xs font-bold text-muted-foreground mb-2">Pricing Model</label>
+              <div className="w-full bg-background border-2 border-border p-4 font-black text-foreground">
+                5% Member Revenue Share
               </div>
             </div>
             <div>
-              <label className="block text-xs font-bold text-zinc-500 mb-2">Initial Period</label>
-              <div className="relative">
-                <div className="w-full bg-background border-2 border-border p-4 font-black text-foreground opacity-70">
-                  1 MONTH
-                </div>
+              <label className="block text-xs font-bold text-zinc-500 mb-2">Billing Cycle</label>
+              <div className="w-full bg-background border-2 border-border p-4 font-black text-foreground opacity-70">
+                Monthly Invoicing
               </div>
             </div>
           </div>
@@ -241,16 +228,16 @@ export default function GetStartedForm() {
           <div className="pt-6 border-t border-border">
             <div className="space-y-2 mb-6">
               <div className="flex justify-between text-xs font-bold text-muted-foreground">
-                <span>Setup Fee</span>
-                <span className="text-white">₦{PLANS[formData.plan].setupFee.toLocaleString()}</span>
+                <span>Account Setup & Onboarding</span>
+                <span className="text-emerald-500 font-black uppercase">₦0 (Free)</span>
               </div>
               <div className="flex justify-between text-xs font-bold text-muted-foreground">
-                <span>First Month Subscription</span>
-                <span className="text-white">₦{PLANS[formData.plan].monthlyFee.toLocaleString()}</span>
+                <span>Platform Software Fee</span>
+                <span className="text-white">5% on member subscriptions</span>
               </div>
               <div className="flex justify-between items-center text-xl font-black uppercase text-foreground pt-4 border-t border-white/5 mt-4">
                 <span>Total Due Today</span>
-                <span className="text-orange-500 italic tracking-tighter text-2xl">₦{(PLANS[formData.plan].setupFee + PLANS[formData.plan].monthlyFee).toLocaleString()}</span>
+                <span className="text-emerald-500 italic tracking-tighter text-2xl">₦0 (Pay As You Earn)</span>
               </div>
             </div>
 

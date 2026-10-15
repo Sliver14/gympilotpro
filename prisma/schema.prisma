@@ -52,6 +52,12 @@ model Gym {
   staffProfiles     StaffProfile[]
   users             User[]
 
+  // Revenue-Share Billing & Restriction
+  billingStatus     String              @default("active") // "active" | "warning" | "restricted"
+  restrictedAt      DateTime?
+  restrictionReason String?
+  invoices          GymInvoice[]
+
   referredById      String?
   referredBy        Affiliate?   @relation(fields: [referredById], references: [id])
   commissions       Commission[]
@@ -389,3 +395,29 @@ model Commission {
   @@index([affiliateId])
   @@index([gymId])
 }
+
+model GymInvoice {
+  id                 String    @id @default(cuid())
+  gymId              String
+  invoiceNumber      String    @unique
+  periodStart        DateTime
+  periodEnd          DateTime
+  billingMonth       String    // e.g. "2026-03"
+  totalMemberRevenue Float     // Total approved member payments in period
+  commissionRate     Float     @default(0.05) // 5%
+  amountDue          Float     // totalMemberRevenue * 0.05
+  amountPaid         Float     @default(0)
+  status             String    @default("unpaid") // "unpaid" | "paid" | "waived"
+  dueDate            DateTime  // e.g. 14 days after periodEnd
+  paidAt             DateTime?
+  paymentReference   String?   @unique
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  gym                Gym       @relation(fields: [gymId], references: [id], onDelete: Cascade)
+
+  @@index([gymId])
+  @@index([status])
+  @@index([billingMonth])
+  @@index([dueDate])
+}

@@ -55,8 +55,8 @@ export async function POST(req: Request) {
         const durationMonths = parseInt(months) || 1;
         const actualAmount = amount / 100; // Convert from Kobo
 
-        // Store payment for SaaS billing (signup, renewal, upgrade)
-        if (['signup', 'renewal', 'upgrade'].includes(paymentType)) {
+        // Store payment for SaaS billing (signup, renewal, upgrade, invoice_payment)
+        if (['signup', 'renewal', 'upgrade', 'invoice_payment'].includes(paymentType)) {
           const existingPayment = await prisma.saaSPayment.findUnique({
             where: { reference },
           });
@@ -390,6 +390,33 @@ export async function POST(req: Request) {
                 expiryDate: result.newExpiry.toLocaleDateString(),
                 datePaid: new Date().toLocaleDateString(),
               });
+            }
+            break;
+          }
+
+          case 'invoice_payment': {
+            const invoiceIds: string[] = metadata?.invoiceIds || [];
+            if (invoiceIds.length > 0) {
+              await prisma.$transaction(async (tx) => {
+                for (const invId of invoiceIds) {
+                  const inv = await tx.gymInvoice.findUnique({ where: { id: invId } });
+                  if (inv) {
+                    await tx.gymInvoice.update({
+                      where: { id: invId },
+                      data: {
+                        status: 'paid',
+                        amountPaid: inv.amountDue,
+                        paidAt: new Date(),
+                        paymentReference: reference,
+                      },
+                    });
+                  }
+                }
+              });
+
+              // Re-evaluate restriction and lift it immediately
+              const { evaluateGymRestriction } = await import('@/lib/billing');
+              await evaluateGymRestriction(gymId);
             }
             break;
           }

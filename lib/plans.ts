@@ -68,16 +68,15 @@ export const DURATIONS = [
 
 export const PLAN_WEIGHTS = { free: 0, starter: 1, pro: 2, elite: 3 };
 export const PLAN_LIMITS: Record<string, number> = {
-  free: 20,
-  starter: 200,
-  pro: 500,
+  free: Infinity,
+  starter: Infinity,
+  pro: Infinity,
   elite: Infinity
 };
 
-export function hasPremiumAccess(currentPlan: string, requiredPlan: 'pro' | 'elite') {
-  const currentWeight = PLAN_WEIGHTS[currentPlan as keyof typeof PLAN_WEIGHTS] || 1;
-  const requiredWeight = PLAN_WEIGHTS[requiredPlan];
-  return currentWeight >= requiredWeight;
+export function hasPremiumAccess(currentPlan?: string, requiredPlan?: 'pro' | 'elite') {
+  // Under the 5% commission model, all features (custom domain, multi-branch, automations) are fully unlocked for all gyms
+  return true;
 }
 
 export type PlanKey = keyof typeof PLANS;

@@ -81,29 +81,27 @@ export default async function GymsPage() {
                   </TableCell>
                   <TableCell>
                     {(() => {
-                      const activeSub = gym.subscriptions.find(s => s.status === 'active' && new Date(s.endDate) > now)
-                      if (activeSub) {
+                      if (gym.billingStatus === 'restricted' || gym.status === 'restricted') {
                         return (
-                          <Badge className="bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 border border-emerald-500/20 uppercase text-[10px] font-black">
-                            Active
+                          <Badge className="bg-red-500/10 text-red-400 border border-red-500/30 uppercase text-[10px] font-black">
+                            Restricted (Overdue)
                           </Badge>
-                        )
+                        );
                       }
-                      
-                      const hasExpired = gym.subscriptions.some(s => new Date(s.endDate) <= now)
-                      if (hasExpired) {
+
+                      if (gym.billingStatus === 'warning') {
                         return (
-                          <Badge className="bg-red-500/10 text-red-400 hover:bg-red-500/20 border border-red-500/20 uppercase text-[10px] font-black">
-                            Expired
+                          <Badge className="bg-yellow-500/10 text-yellow-400 border border-yellow-500/30 uppercase text-[10px] font-black">
+                            Warning (1 Mo Due)
                           </Badge>
-                        )
+                        );
                       }
 
                       return (
-                        <Badge className="bg-zinc-800 text-zinc-400 border-zinc-700 uppercase text-[10px] font-black">
-                          {gym.status}
+                        <Badge className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 uppercase text-[10px] font-black">
+                          Active
                         </Badge>
-                      )
+                      );
                     })()}
                   </TableCell>
                   <TableCell>

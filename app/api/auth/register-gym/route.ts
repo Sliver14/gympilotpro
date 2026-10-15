@@ -61,28 +61,26 @@ export async function POST(req: Request) {
     // Generate a default temporary password
     const hashedPassword = await bcrypt.hash('ChangeMe123!', 10);
 
-    const isFreePlan = plan === 'free';
     const now = new Date();
-    const subscriptionEndDate = isFreePlan 
-      ? new Date(now.getFullYear() + 100, now.getMonth(), now.getDate()) 
-      : now;
+    const farFuture = new Date(now.getFullYear() + 100, now.getMonth(), now.getDate());
 
     // Create the Gym and User in a transaction
     const result = await prisma.$transaction(async (tx) => {
-      // 1. Create the pending Gym
+      // 1. Create the active Gym under the 5% revenue-share model
       const gym = await tx.gym.create({
         data: {
           name: gymName,
           slug: slug,
           email: email,
           phone: phone,
-          status: isFreePlan ? 'active' : 'pending',
+          status: 'active',
+          billingStatus: 'active',
           qrCodeUrl: qrCodeUrl,
           referredById: affiliateId || undefined
         },
       });
 
-      // 2. Create the pending User
+      // 2. Create the active User
       const user = await tx.user.create({
         data: {
           email,
@@ -91,19 +89,19 @@ export async function POST(req: Request) {
           lastName,
           phoneNumber: phone,
           role: 'admin',
-          status: isFreePlan ? 'active' : 'pending',
+          status: 'active',
           gymId: gym.id,
         },
       });
 
-      // 3. Create initial pending subscription with no free trial period
+      // 3. Create active subscription with revenue_share plan
       await tx.gymSubscription.create({
         data: {
           gymId: gym.id,
-          plan: plan,
-          status: isFreePlan ? 'active' : 'pending',
+          plan: plan || 'revenue_share',
+          status: 'active',
           startDate: now,
-          endDate: subscriptionEndDate,
+          endDate: farFuture,
         }
       });
 
@@ -123,7 +121,7 @@ export async function POST(req: Request) {
       gymId: result.gym.id, 
       userId: result.user.id,
       slug: slug,
-      message: 'Account created. Please complete setup by paying.'
+      message: 'Account created successfully! You can now log into your dashboard.'
     });
 
   } catch (error: any) {

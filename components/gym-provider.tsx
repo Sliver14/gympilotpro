@@ -189,18 +189,13 @@ export function GymProvider({
 
             setGymData(data);
 
-            // Verify subscription
-            if (data.subscriptions?.length > 0) {
-              const latest = data.subscriptions[0];
+            // Under the 5% revenue-share model, lockout occurs only when restricted (2+ months overdue) or pending
+            const restricted = 
+              data.billingStatus === 'restricted' || 
+              data.status === 'restricted' || 
+              data.status === 'pending';
 
-              const expired =
-                new Date(latest.endDate) < new Date() ||
-                latest.status === 'expired';
-
-              setIsExpired(expired);
-            } else {
-              setIsExpired(true);
-            }
+            setIsExpired(restricted);
 
             // Theme
             if (data.primaryColor) {
