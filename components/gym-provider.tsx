@@ -305,9 +305,9 @@ export function GymProvider({
       (branch: any) => branch.id === selectedBranch
     ) ?? null;
 
-  // Subscription lock
+  // Subscription / restriction lock
   if (!isPublicRoute && isExpired) {
-    if (isUserChecking) {
+    if (isLoading || isUserChecking) {
       return (
         <div className="fixed inset-0 z-[110] flex items-center justify-center bg-background">
           <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#daa857] border-t-transparent" />

@@ -99,19 +99,17 @@ export default async function GymSubdomainLayout({
       return notFound()
     }
 
-    // Calculate subscription status server-side
+    // Calculate restriction status server-side under 5% revenue-share model
     const latestSub = gym.subscriptions[0];
-    const now = new Date()
-    const endDate = latestSub ? new Date(latestSub.endDate) : now
-    const isExpired = !latestSub || endDate < now || latestSub.status === 'expired' || gym.status === 'pending' || latestSub?.status === 'pending';
+    const isRestricted = gym.billingStatus === 'restricted' || gym.status === 'restricted' || gym.status === 'pending';
 
     const user = await getCurrentUser()
 
     return (
       <GymProvider 
-        initialIsExpired={isExpired} 
+        initialIsExpired={isRestricted} 
         initialGymStatus={gym.status}
-        initialCurrentPlan={latestSub?.plan || 'starter'}
+        initialCurrentPlan={latestSub?.plan || 'revenue_share'}
         initialGymId={gym.id}
         initialAccent={gym.primaryColor || '#daa857'}
         userRole={user?.role || 'guest'}
