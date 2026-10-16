@@ -285,7 +285,7 @@ export default function SaaSLandingClient() {
                 <div className="w-32 h-32 sm:w-48 sm:h-48 rounded-none overflow-hidden border-4 border-orange-500/40 flex-shrink-0 rotate-3">
                   <img
                     src="alex-emiko.jpg"
-                    alt="Nere Emiko - Klimarx Space Gym"
+                    alt="Alex Emiko - Klimarx Space Gym"
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -295,8 +295,8 @@ export default function SaaSLandingClient() {
                   </p>
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                     <div>
-                      <h4 className="text-xl sm:text-2xl font-black uppercase text-orange-500 italic">Nere Emiko</h4>
-                      <p className="text-muted-foreground font-bold text-xs sm:text-sm tracking-widest mt-1 uppercase">Owner, Klimarx Space Gym</p>
+                      <h4 className="text-xl sm:text-2xl font-black uppercase text-orange-500 italic">Alex Emiko</h4>
+                      <p className="text-muted-foreground font-bold text-xs sm:text-sm tracking-widest mt-1 uppercase">CEO, Klimarx Space Gym</p>
                     </div>
                     <div className="px-4 py-2 bg-orange-500/10 border border-orange-500/20 text-orange-500 text-xs font-black uppercase tracking-widest">
                       Automated reminders + better tracking = more revenue
@@ -312,7 +312,7 @@ export default function SaaSLandingClient() {
       {/* Dashboard Showcase */}
       <section className="relative z-20 px-5 sm:px-6 md:px-8 lg:px-10 py-16 sm:py-24">
         <div className="container mx-auto max-w-7xl">
-          <div 
+          <div
             onClick={openVideoModal}
             className="relative group border border-zinc-800 bg-[#0c0c0c] p-1 sm:p-2 shadow-[0_0_50px_rgba(249,115,22,0.15)] hover:shadow-[0_0_70px_rgba(249,115,22,0.25)] hover:border-orange-500/40 transition-all duration-700 cursor-pointer"
           >
@@ -323,7 +323,7 @@ export default function SaaSLandingClient() {
                 alt="GymPilot Pro Admin Dashboard"
                 className="w-full h-full object-cover transform hover:scale-[1.01] transition-transform duration-700"
               />
-              <div 
+              <div
                 className="absolute inset-0 flex items-center justify-center bg-black/40 hover:bg-black/20 transition-all duration-300"
               >
                 <div className="w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(249,115,22,0.4)] sm:shadow-[0_0_50px_rgba(249,115,22,0.4)] transition-all duration-300 transform hover:scale-110 active:scale-95 border border-white/15">
@@ -612,19 +612,19 @@ export default function SaaSLandingClient() {
 
       {/* Video Modal */}
       {isVideoModalOpen && (
-        <div 
+        <div
           className="fixed inset-0 z-[200] flex items-center justify-center bg-black/95 backdrop-blur-sm p-4 sm:p-6 md:p-10"
           onClick={closeVideoModal}
         >
-          <button 
+          <button
             onClick={closeVideoModal}
             className="absolute top-6 right-6 text-white/70 hover:text-white transition-colors z-[210] p-2 hover:bg-white/5 rounded-full"
             aria-label="Close video modal"
           >
             <X size={32} />
           </button>
-          
-          <div 
+
+          <div
             className="relative w-full max-w-5xl aspect-[16/9] border border-zinc-800 bg-black shadow-[0_0_80px_rgba(249,115,22,0.2)]"
             onClick={(e) => e.stopPropagation()}
           >
@@ -639,7 +639,7 @@ export default function SaaSLandingClient() {
             />
 
             {!isPlaying && (
-              <div 
+              <div
                 className="absolute inset-0 flex items-center justify-center bg-black/40 cursor-pointer pointer-events-none"
               >
                 <div className="w-16 h-16 sm:w-20 sm:h-20 bg-orange-500 text-white rounded-full flex items-center justify-center shadow-lg border border-white/15">
