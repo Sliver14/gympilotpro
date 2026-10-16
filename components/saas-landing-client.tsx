@@ -291,7 +291,7 @@ export default function SaaSLandingClient() {
                 </div>
                 <div className="text-center md:text-left">
                   <p className="text-xl sm:text-2xl md:text-4xl font-black uppercase italic leading-[1.1] mb-8 pr-4 text-white">
-                    "In just 3 months, we recovered over <span className="text-orange-500 underline decoration-2 underline-offset-4 md:underline-offset-8 pr-2">₦1.2M in expired memberships</span> using GymPilot Pro."
+                    "In just 1 month, we recovered over <span className="text-orange-500 underline decoration-2 underline-offset-4 md:underline-offset-8 pr-2">₦1.2M in expired memberships</span> using GymPilot Pro."
                   </p>
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                     <div>
